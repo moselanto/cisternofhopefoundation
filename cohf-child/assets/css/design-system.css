@@ -1,0 +1,949 @@
+/* ==========================================================================
+   COHF DESIGN SYSTEM - Phase 1
+   Canonical palette, type scale and section rhythm, ported from the
+   approved v3 standalone prototype.
+
+   This file is enqueued LAST on purpose. Redefining the tokens here
+   re-colours the entire existing cascade without editing any selector
+   in prototype.css or wp-adapt.css.
+   ========================================================================== */
+
+:root{
+  /* ---- Canonical palette (v3 prototype) ---- */
+  /* Accessibility: --muted and --terra are 7% and 3% darker than the
+     prototype's values. Measured against the four light grounds, the
+     originals failed WCAG AA for normal text - muted on sage was 4.04:1
+     and terracotta labels on sage were 4.44:1, both under the 4.5
+     threshold. The shift is imperceptible and makes every combination pass. */
+  --forest:#123a2d;
+  --forest2:#09261e;
+  --green:#1d4634;
+  --terra:#a34d2a;
+  --gold:#d9a227;
+  --sage:#e1ebe4;
+  --cream:#f7f3ea;
+  --warm:#fcfaf6;
+  --ink:#1c1b19;
+  --muted:#606a65;
+  --line:#dfe4df;
+
+  --max:1220px;
+  --shadow:0 18px 55px rgba(18,58,45,.10);
+  --shadow-sm:0 6px 20px rgba(18,58,45,.07);
+
+  /* ---- Legacy aliases ----
+     The shipped stylesheets address colours as --g, --g2, --s, --c, --t.
+     Re-pointing them at the canonical palette upgrades every existing
+     component in place. Do not remove these until the cascade is migrated. */
+  --g:var(--forest);
+  --g2:var(--green);
+  --s:var(--sage);
+  --c:var(--cream);
+  --t:var(--terra);
+
+  /* ---- Type scale ----
+     Display is deliberately capped. The prototype rendered its H1 at
+     100.8px, which overwhelms the measure and hurts the credibility the
+     Foundation needs. 72px is assertive without shouting. */
+  --fs-display:clamp(40px,5.2vw,72px);
+  --fs-h1:clamp(34px,4.2vw,56px);
+  --fs-h2:clamp(28px,3.2vw,44px);
+  --fs-h3:clamp(20px,1.5vw,25px);
+  --fs-lede:clamp(17px,1.25vw,19px);
+  --fs-body:17px;
+  --fs-small:14px;
+  --fs-micro:11px;
+
+  /* ---- Rhythm ---- */
+  --space-section:clamp(64px,7vw,104px);
+  --space-head:clamp(30px,3.4vw,44px);
+}
+
+/* --------------------------------------------------------------------------
+   TYPOGRAPHY
+   Playfair Display is a high-contrast face. At display sizes it needs
+   tighter tracking and leading than a low-contrast serif would.
+   -------------------------------------------------------------------------- */
+
+body{font-size:var(--fs-body)}
+
+h1,h2,h3{letter-spacing:-0.015em}
+
+.hero h1,
+.page-hero h1{letter-spacing:-0.022em;line-height:1.04}
+
+.hero h1{font-size:var(--fs-display)}
+.page-hero h1{font-size:var(--fs-h1)}
+
+.section-head h2,
+.story-copy h2,
+.feature h2,
+.cta-band h2{font-size:var(--fs-h2);line-height:1.06}
+
+.purpose h3,.card h3{font-size:var(--fs-h3)}
+
+.hero p,.page-hero p{font-size:var(--fs-lede)}
+
+/* --------------------------------------------------------------------------
+   RHYTHM
+   -------------------------------------------------------------------------- */
+
+section{padding:var(--space-section) 0}
+.section-head{margin-bottom:var(--space-head)}
+
+/* --------------------------------------------------------------------------
+   NUMBERED SECTION LABEL
+   The prototype's strongest structural device. A numbered, ruled eyebrow
+   turns a stack of blocks into a document with an argument, which is how
+   institutional donors and government stakeholders read a governance site.
+
+   Markup:
+     <div class="sec-label">
+       <span class="sec-label__num">01</span>
+       <span class="sec-label__rule"></span>
+       <span class="sec-label__text">Executive leadership</span>
+     </div>
+   -------------------------------------------------------------------------- */
+
+.sec-label{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:12px;
+}
+
+.sec-label__num{
+  font-family:var(--font-body);
+  font-size:var(--fs-micro);
+  font-weight:800;
+  letter-spacing:2px;
+  line-height:1;
+  color:var(--terra);
+  font-variant-numeric:tabular-nums;
+}
+
+.sec-label__rule{
+  flex:0 0 auto;
+  width:clamp(28px,5vw,64px);
+  height:1px;
+  background:var(--line);
+}
+
+.sec-label__text{
+  font-size:var(--fs-micro);
+  font-weight:900;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--terra);
+}
+
+/* Dark sections invert to the warm gold, which holds contrast on forest. */
+.impact .sec-label__num,
+.impact .sec-label__text,
+.on-dark .sec-label__num,
+.on-dark .sec-label__text{color:#e9c16a}
+
+.impact .sec-label__rule,
+.on-dark .sec-label__rule{background:rgba(255,255,255,.22)}
+
+/* --------------------------------------------------------------------------
+   SECTION COUNT BADGE
+   Honest, quiet reporting of what a section contains, e.g.
+   "4 leaders - photographs pending". Small confidence signal.
+   -------------------------------------------------------------------------- */
+
+.sec-count{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:var(--fs-micro);
+  font-weight:800;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+  color:var(--muted);
+  white-space:nowrap;
+}
+
+.sec-count::before{
+  content:"";
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--gold);
+  flex:0 0 auto;
+}
+
+.on-dark .sec-count{color:#cfded6}
+
+/* --------------------------------------------------------------------------
+   STATEMENT HEADING
+   A section title that makes a claim rather than naming a category.
+   -------------------------------------------------------------------------- */
+
+.sec-statement{
+  font-family:var(--font-display);
+  font-size:var(--fs-h2);
+  line-height:1.06;
+  letter-spacing:-0.015em;
+  margin:0 0 10px;
+  max-width:19ch;
+}
+
+.sec-statement--wide{max-width:30ch}
+
+.sec-lede{
+  color:var(--muted);
+  font-size:var(--fs-lede);
+  max-width:60ch;
+  margin:0;
+}
+
+.on-dark .sec-lede{color:#d0ddd6}
+
+/* --------------------------------------------------------------------------
+   ACCESSIBILITY
+   WCAG 2.1 AA. A visible, high-contrast focus ring on every interactive
+   element. The gold reads against both the cream and forest grounds.
+   -------------------------------------------------------------------------- */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible{
+  outline:3px solid var(--gold);
+  outline-offset:3px;
+  border-radius:4px;
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    animation-duration:0.01ms;
+    animation-iteration-count:1;
+    transition-duration:0.01ms;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE
+   -------------------------------------------------------------------------- */
+
+@media (max-width:600px){
+  .sec-label{gap:10px}
+  .sec-label__rule{width:24px}
+  .sec-statement{max-width:none}
+}
+
+
+/* --------------------------------------------------------------------------
+   CASCADE CORRECTIONS
+   Two defects found by rendering the theme in a real browser for the first
+   time. Both are legacy collisions, not prototype decisions.
+   -------------------------------------------------------------------------- */
+
+/* 1. COLLISION: prototype.css declares `.cta,.gold{background:var(--gold)}`,
+      so the prototype's `class="eyebrow gold"` (which means gold TEXT)
+      rendered as a solid gold bar behind the label. Restore the intent. */
+.eyebrow.gold{
+  background:transparent;
+  color:#e9c16a;
+  padding:0;
+}
+
+/* 2. LEGACY: the accent-voice rule was written for Newsreader Italic, a
+      low-contrast serif that stays legible in italic at small sizes.
+      Playfair Display is a high-contrast didone - its italic degrades badly
+      at 17-19px, and on the mid-range Android screens most of the
+      Foundation's audience uses it reads as blurred rather than editorial.
+      It also miscasts a lede as a pull quote.
+
+      Lede paragraphs return to Inter roman. Playfair italic is reserved for
+      genuine pull quotes (.quote) and the opt-in .accent-voice class. */
+.section-head p,
+.hero p,
+.page-hero p,
+.sec-lede{
+  font-family:var(--font-body);
+  font-style:normal;
+  font-weight:400;
+}
+
+/* Opt in deliberately where the Foundation speaks rather than labels. */
+.accent-voice{
+  font-family:var(--font-accent);
+  font-style:italic;
+  font-weight:450;
+  letter-spacing:-0.008em;
+}
+
+
+/* --------------------------------------------------------------------------
+   PRIMARY NAVIGATION - dropdown groups
+   Replaces the flat seven-item list. Top-level entries with children are
+   buttons, not links, so keyboard and screen-reader users can open them.
+   -------------------------------------------------------------------------- */
+
+.navgroup{position:relative;display:flex;align-items:center}
+
+.navgroup__btn{
+  appearance:none;
+  -webkit-appearance:none;
+  background:none;
+  border:0;
+  padding:6px 0;
+  font:inherit;
+  font-weight:700;
+  color:inherit;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  white-space:nowrap;
+  border-bottom:2px solid transparent;
+  transition:.18s;
+}
+.navgroup__btn:hover{color:var(--terra);border-bottom-color:var(--terra)}
+.navgroup__btn[data-current="true"]{color:var(--forest);border-bottom-color:var(--gold)}
+
+.navgroup__chev{width:9px;height:6px;flex:0 0 auto;transition:transform .18s}
+.navgroup.is-open .navgroup__chev{transform:rotate(180deg)}
+
+.navgroup__panel{
+  position:absolute;
+  top:100%;
+  left:50%;
+  transform:translateX(-50%) translateY(-6px);
+  min-width:288px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  padding:10px;
+  margin-top:14px;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .16s ease,transform .16s ease;
+  z-index:60;
+}
+.navgroup.is-open .navgroup__panel{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+
+/* Hover bridge: without this the pointer crosses a 14px dead gap and the
+   panel closes before it can be reached. */
+.navgroup__panel::before{content:"";position:absolute;left:0;right:0;top:-14px;height:14px}
+
+.links .navgroup__panel a{
+  display:block;
+  padding:10px 12px;
+  border-radius:12px;
+  border-bottom:0;
+  white-space:normal;
+  font-size:13px;
+  font-weight:700;
+  line-height:1.3;
+  color:var(--ink);
+}
+.links .navgroup__panel a:hover{background:var(--cream);color:var(--forest);border-bottom-color:transparent}
+.links .navgroup__panel a[aria-current]{background:var(--sage);color:var(--forest)}
+
+.navgroup__desc{
+  display:block;
+  margin-top:3px;
+  font-size:11.5px;
+  font-weight:400;
+  letter-spacing:0;
+  color:var(--muted);
+}
+
+/* Mobile: the dropdown becomes an in-drawer accordion. */
+@media(max-width:900px){
+  .navgroup{display:block}
+  .navgroup__btn{
+    width:100%;
+    justify-content:space-between;
+    font-size:15px;
+    padding:13px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .navgroup__panel{
+    position:static;
+    transform:none;
+    opacity:1;
+    visibility:visible;
+    display:none;
+    min-width:0;
+    margin:0;
+    padding:4px 0 10px;
+    border:0;
+    border-radius:0;
+    box-shadow:none;
+    background:transparent;
+  }
+  .navgroup__panel::before{display:none}
+  .navgroup.is-open .navgroup__panel{display:block}
+  .links .navgroup__panel a{padding:10px 0 10px 14px;border-left:2px solid var(--line);border-radius:0}
+  .links .navgroup__panel a:hover{background:transparent}
+}
+
+
+/* --------------------------------------------------------------------------
+   LEADERSHIP TIER HEAD
+   Numbered label, statement heading, and the count badge aligned to the
+   baseline on the opposite edge.
+   -------------------------------------------------------------------------- */
+
+.leader-tier__head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:28px;
+  flex-wrap:wrap;
+}
+.leader-tier__heading{flex:1 1 380px;min-width:0}
+.leader-tier__title{margin:0 0 8px}
+.leader-tier__intro{margin:0;color:var(--muted);font-size:15px;max-width:56ch}
+.leader-tier__head .sec-count{flex:0 0 auto;padding-bottom:5px}
+
+@media(max-width:700px){
+  .leader-tier__head{gap:12px;align-items:flex-start}
+  .leader-tier__head .sec-count{padding-bottom:0}
+}
+
+
+/* --------------------------------------------------------------------------
+   LEADERSHIP CARD - equal heights
+   A leader whose biography has not been supplied previously rendered a card
+   with a name, a role and nothing else, which read as broken rather than
+   pending. Cards now stretch to a common height, the body fills the space,
+   and any action sits on the bottom edge so a short card still looks resolved.
+   -------------------------------------------------------------------------- */
+
+.leader-grid{align-items:stretch}
+.leader-grid > .leader-card{height:100%}
+
+.leader-card{display:flex;flex-direction:column}
+.leader-card__body{display:flex;flex-direction:column;flex:1 1 auto}
+.leader-card__more{margin-top:auto;align-self:flex-start}
+
+/* Honest placeholder - stated as pending, never invented biography. */
+.leader-card__bio--pending{
+  color:var(--muted);
+  font-style:italic;
+  opacity:.75;
+}
+
+
+/* --------------------------------------------------------------------------
+   GIVING
+   The donation card. Radios are visually styled but remain real radios, so
+   the grouping is announced and the keyboard behaviour is native.
+   -------------------------------------------------------------------------- */
+
+.give-layout{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:clamp(32px,4vw,64px);
+  align-items:start;
+}
+.give-layout__copy .sec-statement{max-width:15ch}
+
+.give-assure{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:11px}
+.give-assure li{
+  position:relative;
+  padding-left:26px;
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.5;
+}
+.give-assure li::before{
+  content:"";
+  position:absolute;
+  left:0; top:.52em;
+  width:9px; height:9px;
+  border-radius:50%;
+  background:var(--gold);
+}
+.give-assure__link{margin-top:22px}
+
+.give-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  padding:clamp(22px,2.4vw,32px);
+}
+
+.give-card__offline h3{margin:0 0 10px;font-size:22px}
+.give-card__offline p{color:var(--muted);margin:0 0 18px}
+
+.give fieldset{border:0;margin:0 0 20px;padding:0;min-width:0}
+.give__legend{
+  padding:0;
+  font-size:var(--fs-micro);
+  font-weight:900;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+
+/* Segmented once / monthly control */
+.give__freq{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.give__seg{position:relative;display:block}
+.give__seg input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.give__seg span{
+  display:block;
+  text-align:center;
+  padding:13px 12px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  font-weight:800;
+  font-size:14px;
+  transition:.16s;
+}
+.give__seg input:checked + span{background:var(--forest);border-color:var(--forest);color:#fff}
+.give__seg input:focus-visible + span{outline:3px solid var(--gold);outline-offset:2px}
+
+/* Amount presets */
+.give__amount-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.give__amount{position:relative;display:block}
+.give__amount input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.give__amount span{
+  display:block;
+  text-align:center;
+  padding:13px 8px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  font-weight:800;
+  font-size:14px;
+  white-space:nowrap;
+  transition:.16s;
+}
+.give__amount input:checked + span{background:var(--sage);border-color:var(--forest);color:var(--forest)}
+.give__amount input:focus-visible + span{outline:3px solid var(--gold);outline-offset:2px}
+
+.give__field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.give__field label{font-size:13px;font-weight:700}
+.give__row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+.give__note{font-size:13px;color:var(--muted);margin:4px 0 16px;line-height:1.5}
+
+.give__error{
+  margin:0 0 14px;
+  padding:12px 14px;
+  border-radius:12px;
+  background:#fdf1ec;
+  border:1px solid #e8c3b4;
+  color:#8f3c1c;
+  font-size:14px;
+  font-weight:600;
+}
+
+.give__submit{width:100%;text-align:center;border:0;cursor:pointer;font-size:15px;padding:15px 20px}
+.give__submit:disabled{opacity:.6;cursor:progress}
+
+.give__trust{margin:14px 0 0;font-size:12.5px;color:var(--muted);text-align:center}
+
+.give-thanks{
+  background:#fff;
+  border:1px solid var(--line);
+  border-left:4px solid var(--gold);
+  border-radius:20px;
+  padding:clamp(24px,3vw,40px);
+}
+.give-thanks__ref{margin-top:14px;font-size:14px;color:var(--muted)}
+.give-thanks__ref code{background:var(--cream);padding:3px 8px;border-radius:6px}
+
+.warm{background:var(--warm)}
+
+@media(max-width:900px){
+  .give-layout{grid-template-columns:1fr}
+  .give-layout__copy .sec-statement{max-width:none}
+}
+@media(max-width:480px){
+  .give__amount-grid{grid-template-columns:repeat(2,1fr)}
+  .give__row{grid-template-columns:1fr;gap:0}
+}
+
+
+/* --------------------------------------------------------------------------
+   HOPE MARKET
+   WooCommerce brought into the theme's visual language. Kept deliberately
+   restrained: the storefront should read as part of the Foundation, not as
+   a separate shop bolted on.
+   -------------------------------------------------------------------------- */
+
+.shop-main{padding:var(--space-section) 0}
+.shop-intro{margin-bottom:38px;max-width:70ch}
+.shop-intro .sec-lede{margin-top:4px}
+
+.woocommerce ul.products{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.woocommerce ul.products::before,
+.woocommerce ul.products::after{display:none}
+
+.woocommerce ul.products li.product{
+  width:auto;
+  margin:0;
+  float:none;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--r,20px);
+  overflow:hidden;
+  padding:0 0 20px;
+  transition:.2s;
+  display:flex;
+  flex-direction:column;
+}
+.woocommerce ul.products li.product:hover{
+  transform:translateY(-4px);
+  box-shadow:var(--shadow);
+  border-color:#cfdad3;
+}
+.woocommerce ul.products li.product a img{
+  margin:0 0 16px;
+  aspect-ratio:4/3;
+  object-fit:cover;
+  width:100%;
+}
+.woocommerce ul.products li.product .woocommerce-loop-product__title{
+  font-family:var(--font-display);
+  font-size:19px;
+  line-height:1.25;
+  padding:0 20px;
+  margin:0 0 6px;
+  color:var(--ink);
+}
+.woocommerce ul.products li.product .price{
+  display:block;
+  padding:0 20px;
+  margin:0 0 14px;
+  color:var(--forest);
+  font-weight:800;
+  font-size:16px;
+}
+.woocommerce ul.products li.product .price del{color:var(--muted);font-weight:500;margin-right:6px}
+.woocommerce ul.products li.product .button{margin:auto 20px 0;text-align:center}
+
+.woocommerce span.onsale{
+  background:var(--terra);
+  color:#fff;
+  border-radius:999px;
+  min-height:0;
+  min-width:0;
+  padding:6px 13px;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  line-height:1.4;
+  top:14px;
+  left:14px;
+  margin:0;
+}
+
+/* Buttons inherit the theme's pill shape */
+.woocommerce #respond input#submit,
+.woocommerce a.button,
+.woocommerce button.button,
+.woocommerce input.button{
+  background:var(--forest);
+  color:#fff;
+  border-radius:999px;
+  padding:12px 20px;
+  font-weight:800;
+  font-size:14px;
+  line-height:1.2;
+}
+.woocommerce a.button:hover,
+.woocommerce button.button:hover,
+.woocommerce input.button:hover,
+.woocommerce #respond input#submit:hover{background:var(--green);color:#fff}
+
+.woocommerce .button.alt,
+.woocommerce button.button.alt{background:var(--gold);color:var(--ink)}
+.woocommerce .button.alt:hover,
+.woocommerce button.button.alt:hover{background:#c8941f;color:var(--ink)}
+
+/* Single product */
+.woocommerce div.product .product_title{font-family:var(--font-display);font-size:var(--fs-h2);line-height:1.08}
+.woocommerce div.product p.price{color:var(--forest);font-size:24px;font-weight:800}
+.woocommerce div.product .woocommerce-tabs ul.tabs li.active{background:var(--cream);border-bottom-color:var(--cream)}
+
+/* Notices in brand colours */
+.woocommerce-message{border-top-color:var(--forest)}
+.woocommerce-info{border-top-color:var(--gold)}
+.woocommerce-error{border-top-color:var(--terra)}
+
+@media(max-width:900px){
+  .woocommerce ul.products{grid-template-columns:repeat(2,1fr);gap:16px}
+}
+@media(max-width:520px){
+  .woocommerce ul.products{grid-template-columns:1fr}
+}
+
+
+/* --------------------------------------------------------------------------
+   GIVING - overflow containment
+   Grid and flex children default to min-width:auto, and form controls carry
+   an intrinsic minimum width from their size attribute. Together those made
+   the giving column refuse to shrink, pushing the page 32px wider than the
+   viewport on desktop and 83px on a 390px phone. Every track and control is
+   explicitly allowed to shrink.
+   -------------------------------------------------------------------------- */
+
+.give-layout{min-width:0}
+.give-layout > *{min-width:0}
+.give-card{min-width:0;max-width:100%}
+.give,
+.give fieldset,
+.give__freq,
+.give__amounts,
+.give__amount-grid,
+.give__row,
+.give__field{min-width:0}
+
+.give__field input,
+.give__field select,
+.give__field textarea{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  box-sizing:border-box;
+}
+
+/* Preset labels may wrap rather than force the track wider. */
+.give__amount span{white-space:normal}
+.give__seg span,
+.give__amount span{overflow-wrap:anywhere}
+
+
+/* --------------------------------------------------------------------------
+   HOPE MARKET - cart, checkout and account
+   WooCommerce ships these unstyled relative to a custom theme. Checkout is
+   where a sale is won or lost, so it gets the same care as the rest.
+   -------------------------------------------------------------------------- */
+
+.woocommerce table.shop_table{
+  border:1px solid var(--line);
+  border-radius:18px;
+  border-collapse:separate;
+  border-spacing:0;
+  overflow:hidden;
+  background:#fff;
+}
+.woocommerce table.shop_table th{
+  background:var(--cream);
+  font-family:var(--font-body);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:1.4px;
+  text-transform:uppercase;
+  color:var(--muted);
+  padding:16px 18px;
+  border-top:0;
+}
+.woocommerce table.shop_table td{padding:18px;border-top:1px solid var(--line);vertical-align:middle}
+.woocommerce table.shop_table img{width:64px;border-radius:10px}
+.woocommerce table.shop_table .product-name a{font-weight:700;color:var(--ink)}
+.woocommerce table.shop_table .product-name a:hover{color:var(--terra)}
+
+.woocommerce .quantity .qty{
+  width:70px;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  text-align:center;
+}
+
+.woocommerce a.remove{
+  color:var(--terra);
+  font-weight:700;
+  line-height:1;
+}
+.woocommerce a.remove:hover{background:var(--terra);color:#fff}
+
+/* Cart totals and the checkout order panel read as one card */
+.woocommerce .cart_totals,
+.woocommerce-checkout #order_review{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  box-shadow:var(--shadow-sm);
+  padding:24px;
+}
+.woocommerce .cart_totals h2,
+.woocommerce-checkout h3{
+  font-family:var(--font-display);
+  font-size:22px;
+  margin:0 0 14px;
+}
+.woocommerce .cart_totals table.shop_table{border:0;box-shadow:none}
+.woocommerce .cart_totals table.shop_table th{background:transparent;padding:12px 0}
+.woocommerce .cart_totals table.shop_table td{padding:12px 0;text-align:right}
+.woocommerce .order-total .amount{color:var(--forest);font-size:20px;font-weight:800}
+
+/* Checkout: two columns on desktop, stacked on mobile */
+@media(min-width:901px){
+  .woocommerce-checkout form.checkout{
+    display:grid;
+    grid-template-columns:1.25fr 1fr;
+    gap:44px;
+    align-items:start;
+  }
+  .woocommerce-checkout form.checkout #customer_details{min-width:0}
+  .woocommerce-checkout form.checkout h3#order_review_heading{grid-column:2;margin-top:0}
+  .woocommerce-checkout form.checkout #order_review{grid-column:2;min-width:0}
+}
+
+.woocommerce form .form-row{margin:0 0 16px;padding:0}
+.woocommerce form .form-row label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+.woocommerce form .form-row input.input-text,
+.woocommerce form .form-row textarea,
+.woocommerce form .form-row select,
+.woocommerce .select2-container .select2-selection--single{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  padding:13px 14px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  font:inherit;
+  background:#fff;
+  height:auto;
+}
+.woocommerce form .form-row input.input-text:focus,
+.woocommerce form .form-row textarea:focus,
+.woocommerce form .form-row select:focus{
+  outline:3px solid var(--gold);
+  outline-offset:2px;
+  border-color:var(--forest);
+}
+.woocommerce form .form-row.woocommerce-invalid input.input-text{border-color:var(--terra)}
+
+.woocommerce-checkout #payment{
+  background:var(--cream);
+  border-radius:16px;
+  padding:6px 18px 18px;
+}
+.woocommerce-checkout #payment ul.payment_methods{border-bottom:1px solid var(--line);padding:16px 0}
+.woocommerce-checkout #payment div.payment_box{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  font-size:14px;
+  color:var(--muted);
+}
+.woocommerce-checkout #payment div.payment_box::before{border-bottom-color:#fff}
+.woocommerce-checkout #payment #place_order{width:100%;padding:16px 20px;font-size:16px}
+
+/* Coupon row */
+.woocommerce-cart .coupon{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.woocommerce-cart .coupon .input-text{
+  width:auto;
+  min-width:0;
+  flex:1 1 180px;
+  padding:12px 14px;
+  border:1px solid var(--line);
+  border-radius:12px;
+}
+
+/* My Account */
+.woocommerce-account .woocommerce-MyAccount-navigation ul{
+  list-style:none;
+  margin:0 0 24px;
+  padding:0;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.woocommerce-account .woocommerce-MyAccount-navigation li a{
+  display:inline-block;
+  padding:10px 16px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  font-size:13px;
+  font-weight:700;
+  background:#fff;
+}
+.woocommerce-account .woocommerce-MyAccount-navigation li.is-active a{
+  background:var(--forest);
+  border-color:var(--forest);
+  color:#fff;
+}
+
+/* Empty cart should still feel like the Foundation, not a dead end */
+.woocommerce .cart-empty{
+  font-family:var(--font-display);
+  font-size:26px;
+  color:var(--forest);
+}
+.woocommerce .return-to-shop{margin-top:18px}
+
+@media(max-width:600px){
+  .woocommerce table.shop_table,
+  .woocommerce table.shop_table thead,
+  .woocommerce table.shop_table tbody,
+  .woocommerce table.shop_table tr,
+  .woocommerce table.shop_table td{display:block;width:100%}
+  .woocommerce table.shop_table thead{display:none}
+  .woocommerce table.shop_table tr{border-bottom:1px solid var(--line)}
+  .woocommerce table.shop_table td{border-top:0;text-align:left;padding:10px 16px}
+  .woocommerce table.shop_table td::before{
+    content:attr(data-title) ": ";
+    font-weight:800;
+    font-size:12px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .woocommerce table.shop_table td.product-remove::before,
+  .woocommerce table.shop_table td.product-thumbnail::before{content:""}
+}
+
+
+/* --------------------------------------------------------------------------
+   PRODUCT PROVENANCE
+   -------------------------------------------------------------------------- */
+
+.prov{
+  margin-top:26px;
+  padding:22px;
+  background:var(--cream);
+  border-radius:16px;
+  border-left:4px solid var(--gold);
+}
+.prov__list{margin:10px 0 0;padding:0}
+.prov__row{display:flex;gap:10px;flex-wrap:wrap;padding:6px 0}
+.prov__row dt{
+  margin:0;
+  min-width:86px;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  color:var(--muted);
+  padding-top:2px;
+}
+.prov__row dd{margin:0;font-weight:700;color:var(--ink)}
+.prov__row dd a{color:var(--terra);text-decoration:underline;text-underline-offset:2px}
+.prov__note{
+  margin:14px 0 0;
+  font-size:13px;
+  line-height:1.5;
+  color:var(--muted);
+}
