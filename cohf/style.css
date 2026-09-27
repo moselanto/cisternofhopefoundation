@@ -1,0 +1,16 @@
+/*
+Theme Name: COHF Base
+Theme URI: https://cisternofhope.org
+Author: Cistern of Hope Foundation
+Description: Lightweight, dependency-free WordPress base theme for Cistern of Hope Foundation. Provides semantic HTML5 document structure, navigation, and template fallbacks. All design, content structures and templates live in the COHF child theme.
+Version: 9.7.0
+Requires at least: 6.2
+Requires PHP: 8.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: cohf
+Tags: nonprofit, accessibility-ready, block-styles, custom-menu, translation-ready
+*/
+
+/* The base theme intentionally ships almost no CSS.
+   The child theme (cohf-child) provides the full design system. */
