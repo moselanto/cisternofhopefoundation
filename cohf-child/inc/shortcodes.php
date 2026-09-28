@@ -122,26 +122,45 @@ unset( $cohf_tag, $cohf_slug );
  */
 function cohf_sc_cta( $atts ) {
 	$atts = shortcode_atts( array(
-		'title'         => '',
-		'text'          => '',
-		'primary_label' => '',
-		'primary_page'  => '',
+		'title'           => '',
+		'text'            => '',
+		'primary_label'   => '',
+		'primary_page'    => '',
+		'primary_key'     => '',
+		'secondary_label' => '',
+		'secondary_page'  => '',
 	), $atts, 'cohf_cta' );
 
 	/*
-	 * The target is given as a template file rather than a URL so the link
-	 * resolves at render time. A pasted URL would break the moment a page is
-	 * renamed or the permalink structure changes.
+	 * Targets are given as template files, or as keys into cohf_cta_links(),
+	 * rather than as URLs. Both resolve at render time; a pasted URL would
+	 * break the moment a page is renamed or the permalinks change.
 	 */
-	$page = $atts['primary_page'];
-	unset( $atts['primary_page'] );
+	$links = function_exists( 'cohf_cta_links' ) ? cohf_cta_links() : array();
 
-	if ( $page && function_exists( 'cohf_page_url' ) ) {
-		$url = cohf_page_url( $page );
-
-		if ( $url ) {
-			$atts['primary_url'] = $url;
+	$resolve = static function ( $page, $key ) use ( $links ) {
+		if ( $key && isset( $links[ $key ] ) ) {
+			return $links[ $key ];
 		}
+
+		if ( $page && function_exists( 'cohf_page_url' ) ) {
+			return cohf_page_url( $page );
+		}
+
+		return '';
+	};
+
+	$primary   = $resolve( $atts['primary_page'], $atts['primary_key'] );
+	$secondary = $resolve( $atts['secondary_page'], '' );
+
+	unset( $atts['primary_page'], $atts['primary_key'], $atts['secondary_page'] );
+
+	if ( $primary ) {
+		$atts['primary_url'] = $primary;
+	}
+
+	if ( $secondary ) {
+		$atts['secondary_url'] = $secondary;
 	}
 
 	$args = array_filter( $atts, static function ( $value ) {
@@ -188,6 +207,89 @@ function cohf_sc_contact_details() {
 	return implode( "\n", $rows );
 }
 add_shortcode( 'cohf_contact_details', 'cohf_sc_contact_details' );
+
+/**
+ * [cohf_section_nav items="#journey|Five-year journey;;#objectives|Objectives"]
+ *
+ * Anchor links for a long page. Pairs are separated by ";;" and each pair is
+ * anchor, a pipe, then the label, so labels containing a comma or a single
+ * semicolon survive intact.
+ *
+ * @param array $atts Attributes.
+ * @return string
+ */
+function cohf_sc_section_nav( $atts ) {
+	$atts = shortcode_atts( array( 'items' => '' ), $atts, 'cohf_section_nav' );
+
+	$sections = array();
+
+	foreach ( array_filter( explode( ';;', (string) $atts['items'] ) ) as $pair ) {
+		if ( false === strpos( $pair, '|' ) ) {
+			continue;
+		}
+
+		list( $anchor, $label ) = explode( '|', $pair, 2 );
+
+		$anchor = trim( $anchor );
+		$label  = trim( $label );
+
+		if ( '' !== $anchor && '' !== $label ) {
+			$sections[ $anchor ] = $label;
+		}
+	}
+
+	if ( ! $sections ) {
+		return '';
+	}
+
+	return cohf_shortcode_part( 'template-parts/section-nav', array( 'sections' => $sections ) );
+}
+add_shortcode( 'cohf_section_nav', 'cohf_sc_section_nav' );
+
+/**
+ * [cohf_stories count="3"] - recent community stories.
+ *
+ * Mirrors the home page behaviour: when no stories exist, visitors see
+ * nothing at all and only signed-in editors get the note explaining where
+ * to add them. An empty section on a live home page helps nobody.
+ *
+ * @param array $atts Attributes.
+ * @return string
+ */
+function cohf_sc_stories( $atts ) {
+	$atts = shortcode_atts( array( 'count' => 3 ), $atts, 'cohf_stories' );
+
+	$stories = new WP_Query( array(
+		'post_type'      => 'cohf_story',
+		'posts_per_page' => max( 1, (int) $atts['count'] ),
+		'no_found_rows'  => true,
+	) );
+
+	if ( ! $stories->have_posts() ) {
+		wp_reset_postdata();
+
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			return '';
+		}
+
+		return sprintf(
+			'<p class="partner-empty">%s</p>',
+			esc_html__( 'Community stories will appear here once the first story is published. Add them under Stories in the WordPress admin. Only signed-in editors can see this message.', 'cohf-child' )
+		);
+	}
+
+	ob_start();
+	echo '<div class="grid">';
+	while ( $stories->have_posts() ) {
+		$stories->the_post();
+		get_template_part( 'template-parts/story-card' );
+	}
+	echo '</div>';
+	wp_reset_postdata();
+
+	return (string) ob_get_clean();
+}
+add_shortcode( 'cohf_stories', 'cohf_sc_stories' );
 
 /**
  * [cohf_leadership] - the three governance tiers and the profile panel.

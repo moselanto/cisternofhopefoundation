@@ -50,10 +50,20 @@ function cohf_seed_p( $text, $class = '' ) {
  * @param int    $level Heading level.
  * @return string
  */
-function cohf_seed_h( $text, $level = 2 ) {
-	$attrs = ( 2 === $level ) ? '' : ' {"level":' . (int) $level . '}';
+function cohf_seed_h( $text, $level = 2, $class = '' ) {
+	$json = array();
 
-	return "<!-- wp:heading{$attrs} -->\n<h{$level} class=\"wp-block-heading\">" . esc_html( $text ) . "</h{$level}>\n<!-- /wp:heading -->\n\n";
+	if ( 2 !== $level ) {
+		$json['level'] = (int) $level;
+	}
+	if ( $class ) {
+		$json['className'] = $class;
+	}
+
+	$attrs = $json ? ' ' . wp_json_encode( $json ) : '';
+	$cls   = trim( 'wp-block-heading ' . $class );
+
+	return "<!-- wp:heading{$attrs} -->\n<h{$level} class=\"" . esc_attr( $cls ) . '">' . esc_html( $text ) . "</h{$level}>\n<!-- /wp:heading -->\n\n";
 }
 
 /**
@@ -255,6 +265,77 @@ function cohf_seed_table( $head_a, $head_b, $rows ) {
 }
 
 /**
+ * A table of any width.
+ *
+ * Cells are passed through as given so a builder can emit <strong>; callers
+ * are responsible for escaping their own text. See cohf_seed_table for the
+ * reason body cells are td rather than th.
+ *
+ * @param string[]               $headers Column headings, already escaped.
+ * @param array<int,string[]>    $rows    Rows of cells, already escaped.
+ * @return string
+ */
+function cohf_seed_table_n( $headers, $rows ) {
+	$head = '';
+
+	foreach ( $headers as $header ) {
+		$head .= '<th>' . $header . '</th>';
+	}
+
+	$body = '';
+
+	foreach ( $rows as $row ) {
+		$body .= '<tr>';
+
+		foreach ( $row as $cell ) {
+			$body .= '<td>' . $cell . '</td>';
+		}
+
+		$body .= "</tr>\n";
+	}
+
+	return "<!-- wp:table {\"className\":\"cohf-table\"} -->\n"
+		. '<figure class="wp-block-table cohf-table"><table><thead><tr>'
+		. $head . "</tr></thead><tbody>\n" . $body . "</tbody></table></figure>\n"
+		. "<!-- /wp:table -->\n\n";
+}
+
+/**
+ * A home-page section heading: ruled label, wide statement, optional lede.
+ *
+ * The home page uses a different heading treatment from the inner pages -
+ * a rule-and-label pair rather than a plain kicker - so it gets its own
+ * builder instead of bending cohf_seed_section_head out of shape.
+ *
+ * @param string $label     Small ruled label.
+ * @param string $statement Wide statement heading.
+ * @param string $lede      Optional supporting paragraph.
+ * @param string $aside     Optional trailing markup, such as an arrow link.
+ * @return string
+ */
+function cohf_seed_sec_head( $label, $statement, $lede = '', $aside = '' ) {
+	$label_html = cohf_seed_p(
+		'<span class="sec-label__rule"></span><span class="sec-label__text">' . esc_html( $label ) . '</span>',
+		'sec-label'
+	);
+
+	$inner = cohf_seed_group(
+		$label_html . cohf_seed_h( $statement, 2, 'sec-statement sec-statement--wide' ),
+		''
+	);
+
+	if ( $lede ) {
+		$inner .= cohf_seed_p( $lede );
+	}
+
+	if ( $aside ) {
+		$inner .= $aside;
+	}
+
+	return cohf_seed_group( $inner, 'section-head' );
+}
+
+/**
  * A raw HTML block.
  *
  * Reserved for structures core blocks cannot express without changing how
@@ -310,6 +391,8 @@ function cohf_page_seed_map() {
 		'page-templates/page-resources.php'    => 'cohf_seed_resources',
 		'page-templates/page-leadership.php'   => 'cohf_seed_leadership',
 		'page-templates/page-impact.php'       => 'cohf_seed_impact',
+		'page-templates/page-strategy.php'     => 'cohf_seed_strategy',
+		'page-templates/page-home.php'         => 'cohf_seed_home',
 	) );
 }
 
@@ -1083,4 +1166,305 @@ function cohf_seed_impact() {
 	);
 
 	return $section_reported . $section_education . $section_women . $section_across . $section_measure . $cta;
+}
+
+/**
+ * The Strategic Journey page, as blocks.
+ *
+ * Mirrors page-templates/page-strategy.php.
+ *
+ * @return string
+ */
+function cohf_seed_strategy() {
+
+	// 1. Anchor navigation for a long page.
+	$nav = cohf_seed_shortcode(
+		'[cohf_section_nav items="'
+		. '#journey|' . esc_attr__( 'Five-year journey', 'cohf-child' ) . ';;'
+		. '#objectives|' . esc_attr__( 'Objectives', 'cohf-child' ) . ';;'
+		. '#aspirations|' . esc_attr__( 'Aspirations', 'cohf-child' )
+		. '"]'
+	);
+
+	// 2. Five-year journey.
+	$section_journey = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_section_head(
+				__( 'Five-year journey', 'cohf-child' ),
+				__( 'Establish, consolidate, scale, deepen, sustain.', 'cohf-child' ),
+				__( 'A deliberate journey to become stronger as we grow.', 'cohf-child' )
+			)
+			. cohf_seed_shortcode( '[cohf_timeline]' ),
+			'container'
+		),
+		'',
+		'section',
+		'journey'
+	);
+
+	// 3. Strategic objectives.
+	$objectives = array(
+		array( 'SO1', __( 'Education and child development', 'cohf-child' ), __( 'More vulnerable children access, remain in and benefit from education, mentorship, protection and holistic support.', 'cohf-child' ) ),
+		array( 'SO2', __( 'Youth empowerment', 'cohf-child' ), __( 'Young people gain skills, confidence, employability, entrepreneurship and livelihood pathways.', 'cohf-child' ) ),
+		array( 'SO3', __( 'Women\'s economic empowerment', 'cohf-child' ), __( 'Women strengthen enterprise capacity, income opportunities, financial resilience and market access.', 'cohf-child' ) ),
+		array( 'SO4', __( 'Poverty reduction and household resilience', 'cohf-child' ), __( 'Vulnerable households receive appropriate support and develop pathways toward recovery and resilience.', 'cohf-child' ) ),
+		array( 'SO5', __( 'Counselling, mentorship and wellbeing', 'cohf-child' ), __( 'Children, adolescents, youth and adults have improved access to counselling, mentorship and life skills.', 'cohf-child' ) ),
+		array( 'SO6', __( 'Health, hygiene and dignity', 'cohf-child' ), __( 'Communities experience improved awareness and access related to health, nutrition, menstrual dignity and hygiene.', 'cohf-child' ) ),
+		array( 'SO7', __( 'Community development and partnerships', 'cohf-child' ), __( 'Communities participate actively and the Foundation builds meaningful, strategic partnerships.', 'cohf-child' ) ),
+		array( 'SO8', __( 'Institutional sustainability', 'cohf-child' ), __( 'We strengthen governance, finance, safeguarding, monitoring and evaluation, human resources, fundraising and communications.', 'cohf-child' ) ),
+	);
+
+	$objective_rows = array();
+
+	foreach ( $objectives as $objective ) {
+		$objective_rows[] = array(
+			esc_html( $objective[0] ),
+			'<strong>' . esc_html( $objective[1] ) . '</strong>',
+			esc_html( $objective[2] ),
+		);
+	}
+
+	$section_objectives = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_section_head(
+				__( 'Strategic objectives', 'cohf-child' ),
+				__( 'Eight interconnected objectives.', 'cohf-child' )
+			)
+			. cohf_seed_table_n(
+				array(
+					esc_html__( 'Code', 'cohf-child' ),
+					esc_html__( 'Objective', 'cohf-child' ),
+					esc_html__( 'What success means to us', 'cohf-child' ),
+				),
+				$objective_rows
+			),
+			'container'
+		),
+		'cream',
+		'section',
+		'objectives'
+	);
+
+	// 4. Theory of change.
+	$section_toc = cohf_seed_shortcode( '[cohf_theory_of_change]' );
+
+	// 5. 2030 aspirations.
+	$aspirations = array(
+		__( 'Education', 'cohf-child' )                  => __( 'Expand structured support for vulnerable learners and strengthen retention, mentorship and holistic support.', 'cohf-child' ),
+		__( 'Youth', 'cohf-child' )                      => __( 'Support a growing number of young people through skills, enterprise, employability, mentorship and opportunity pathways.', 'cohf-child' ),
+		__( 'Women', 'cohf-child' )                      => __( 'Expand women\'s enterprise support and strengthen the number and sustainability of women-led businesses.', 'cohf-child' ),
+		__( 'Counselling and mentorship', 'cohf-child' ) => __( 'Increase structured counselling, mentorship and life-skills engagement for children, adolescents and youth.', 'cohf-child' ),
+		__( 'Menstrual dignity', 'cohf-child' )          => __( 'Expand reliable access to sanitary products and menstrual-health information.', 'cohf-child' ),
+		__( 'Health and wellbeing', 'cohf-child' )       => __( 'Develop stronger community-health and referral partnerships.', 'cohf-child' ),
+		__( 'Environment', 'cohf-child' )                => __( 'Establish practical community and youth-led environmental initiatives.', 'cohf-child' ),
+		__( 'WASH', 'cohf-child' )                       => __( 'Expand hygiene, sanitation, safe-water and menstrual-dignity programming.', 'cohf-child' ),
+		__( 'Partnerships', 'cohf-child' )               => __( 'Build a diversified network of strategic programme, technical and funding partners.', 'cohf-child' ),
+		__( 'Institution', 'cohf-child' )                => __( 'Become a credible, accountable, well-governed and evidence-driven Kenyan organisation capable of managing larger partnerships responsibly.', 'cohf-child' ),
+	);
+
+	$section_aspirations = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_section_head(
+				__( '2030 aspirations', 'cohf-child' ),
+				__( 'The direction in which we are working.', 'cohf-child' ),
+				__( 'These aspirations guide our annual plans and project-specific targets. They are directions of travel, not numerical promises.', 'cohf-child' )
+			)
+			. cohf_seed_table(
+				__( 'Area', 'cohf-child' ),
+				__( '2030 aspiration', 'cohf-child' ),
+				$aspirations
+			),
+			'container'
+		),
+		'sage',
+		'section',
+		'aspirations'
+	);
+
+	return $nav . $section_journey . $section_objectives . $section_toc . $section_aspirations . cohf_seed_shortcode( '[cohf_cta]' );
+}
+
+/**
+ * The Home page, as blocks.
+ *
+ * Mirrors page-templates/page-home.php from the story section down. The
+ * rotating hero stays in the template: it is defined by cohf_hero_slides()
+ * and sits above the point where block content is inserted.
+ *
+ * @return string
+ */
+function cohf_seed_home() {
+
+	$org_get = static function ( $key ) {
+		return function_exists( 'cohf_org_get' ) ? cohf_org_get( $key ) : '';
+	};
+
+	$page_url = static function ( $template ) {
+		return function_exists( 'cohf_page_url' ) ? cohf_page_url( $template ) : '';
+	};
+
+	$sec_label = static function ( $text ) {
+		return cohf_seed_p(
+			'<span class="sec-label__rule"></span><span class="sec-label__text">' . esc_html( $text ) . '</span>',
+			'sec-label'
+		);
+	};
+
+	// 1. Our story.
+	$facts = array(
+		array( $org_get( 'founded' ), __( 'Founded in Uthiru, Nairobi', 'cohf-child' ) ),
+		array( $org_get( 'registered' ), __( 'Formally registered in Kenya', 'cohf-child' ) ),
+		array( '2026-30', __( 'Five-year strategic journey', 'cohf-child' ) ),
+	);
+
+	$story = cohf_seed_group(
+		$sec_label( __( 'Our story', 'cohf-child' ) )
+		. cohf_seed_h( __( 'From a local response to a growing movement of hope.', 'cohf-child' ), 2, 'sec-statement sec-statement--wide' )
+		. cohf_seed_p( __( 'Cistern of Hope Foundation began in 2021 in Uthiru, Nairobi, during the COVID-19 pandemic. What began with food and essential supplies has grown into a wider movement focused on dignity, empowerment, opportunity and lasting change.', 'cohf-child' ) )
+		. cohf_seed_facts( $facts )
+		. cohf_seed_btn( __( 'Read Our Story', 'cohf-child' ), 'page-templates/page-about.php', 'outline' ),
+		'story-copy'
+	);
+
+	$section_story = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_shortcode( '[cohf_image key="story-community"]' ) . $story,
+			'container story'
+		),
+		'',
+		'section'
+	);
+
+	// 2. Purpose.
+	$section_purpose = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_sec_head(
+				__( 'Our purpose', 'cohf-child' ),
+				__( 'People first. Progress that lasts.', 'cohf-child' ),
+				__( 'We respond to immediate needs while building pathways toward sustainable livelihoods, education, wellbeing, resilience and self-reliance.', 'cohf-child' )
+			)
+			. cohf_seed_shortcode( '[cohf_purpose]' ),
+			'container'
+		),
+		'cream',
+		'section'
+	);
+
+	// 3. Approach.
+	$section_approach = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_sec_head(
+				__( 'Our approach', 'cohf-child' ),
+				__( 'From support to self-reliance.', 'cohf-child' ),
+				__( 'A connected pathway that links compassion with empowerment, opportunity, resilience and community ownership.', 'cohf-child' )
+			)
+			. cohf_seed_shortcode( '[cohf_approach]' ),
+			'container'
+		),
+		'sage',
+		'section'
+	);
+
+	// 4. Featured programmes.
+	$programmes_url = $page_url( 'page-templates/page-programmes.php' );
+
+	$explore = $programmes_url
+		? cohf_seed_p( '<a class="arrow" href="' . esc_url( $programmes_url ) . '">' . esc_html__( 'Explore all', 'cohf-child' ) . '</a>' )
+		: '';
+
+	$section_programmes = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_sec_head(
+				__( 'Programmes', 'cohf-child' ),
+				__( 'Built around real community needs.', 'cohf-child' ),
+				'',
+				$explore
+			)
+			. cohf_seed_shortcode( '[cohf_programmes count="3"]' ),
+			'container'
+		),
+		'',
+		'section'
+	);
+
+	// 5. Impact.
+	$section_impact = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_sec_head(
+				__( 'Our impact', 'cohf-child' ),
+				__( 'Turning hope into meaningful change.', 'cohf-child' ),
+				__( 'Impact is measured by the difference our work makes in people\'s lives.', 'cohf-child' )
+			)
+			. cohf_seed_shortcode( '[cohf_impact_numbers]' )
+			. cohf_seed_btn( __( 'Explore Impact', 'cohf-child' ), 'page-templates/page-impact.php', 'light' ),
+			'container'
+		),
+		'impact',
+		'section'
+	);
+
+	// 6. The change we seek.
+	$change = cohf_seed_group(
+		$sec_label( __( 'The change we seek', 'cohf-child' ) )
+		. cohf_seed_h( __( 'Every person deserves dignity and an opportunity to improve their life.', 'cohf-child' ), 2, 'sec-statement sec-statement--wide' )
+		. cohf_seed_p( __( 'Assistance becomes more powerful when it creates a pathway toward self-reliance. Communities are active partners in shaping their own future.', 'cohf-child' ) )
+		. cohf_seed_p( __( 'We do not simply want to give people hope for today. We want to help create pathways to a better tomorrow.', 'cohf-child' ), 'quote' )
+	);
+
+	$section_change = cohf_seed_group(
+		cohf_seed_group(
+			$change . cohf_seed_shortcode( '[cohf_image key="programme-01"]' ),
+			'container feature'
+		),
+		'cream',
+		'section'
+	);
+
+	// 7. Stories from the work.
+	$section_stories = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_sec_head(
+				__( 'Stories from the work', 'cohf-child' ),
+				__( 'Real people. Real journeys.', 'cohf-child' ),
+				__( 'Our work is more than programme figures. It is found in children returning to school, young people receiving mentorship, and people building small businesses with support.', 'cohf-child' )
+			)
+			. cohf_seed_shortcode( '[cohf_stories count="3"]' ),
+			'container'
+		),
+		'cream',
+		'section'
+	);
+
+	// 8. Strategic journey.
+	$section_journey = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_sec_head(
+				__( 'Strategic journey', 'cohf-child' ),
+				__( '2026-2030', 'cohf-child' ),
+				__( 'A deliberate journey to become stronger as we grow.', 'cohf-child' )
+			)
+			. cohf_seed_shortcode( '[cohf_timeline]' ),
+			'container'
+		),
+		'',
+		'section'
+	);
+
+	/*
+	 * 9. Closing call to action. The primary link uses the partner key
+	 * rather than the contact page: the label promises the partnership
+	 * route, and sending people to the general form loses the context the
+	 * enquiry form would otherwise preselect.
+	 */
+	$cta = cohf_seed_shortcode(
+		'[cohf_cta title="' . esc_attr__( 'Let\'s build lasting change together.', 'cohf-child' ) . '"'
+		. ' text="' . esc_attr__( 'Partner with Cistern of Hope Foundation to strengthen pathways for children, young people, women, families and communities.', 'cohf-child' ) . '"'
+		. ' primary_label="' . esc_attr__( 'Partner With Us', 'cohf-child' ) . '"'
+		. ' primary_key="partner"'
+		. ' secondary_label="' . esc_attr__( 'Contact Us', 'cohf-child' ) . '"'
+		. ' secondary_page="page-templates/page-contact.php"]'
+	);
+
+	return $section_story . $section_purpose . $section_approach . $section_programmes
+		. $section_impact . $section_change . $section_stories . $section_journey . $cta;
 }
