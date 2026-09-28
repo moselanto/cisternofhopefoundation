@@ -549,7 +549,72 @@ select:user-invalid {
 
 
 /* --------------------------------------------------------------------------
-   18. Print
+   18. Header navigation capacity
+   The theme used to ignore the WordPress menu entirely because nine assigned
+   items overflowed the container and broke the header onto two lines. That
+   fixed a layout bug by taking the menu away from editors. The menu is back
+   (see cohf_nav() in inc/theme-functions.php); this is the actual fix.
+
+   The row tightens progressively as the viewport narrows, and the brand
+   wordmark - the widest flexible element up there - is allowed to give up
+   space before the links do. Below 900px the whole row collapses into the
+   existing mobile toggle, which is untouched.
+   -------------------------------------------------------------------------- */
+@media (min-width: 901px) {
+  .nav {
+    gap: 16px;
+    min-width: 0;
+  }
+
+  /* The links row is the part that must not overflow. */
+  .links {
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-wrap: nowrap;
+    justify-content: center;
+  }
+
+  .links > a,
+  .navgroup {
+    flex: 0 0 auto;
+  }
+
+  /* Let the wordmark shrink and, if it must, truncate - rather than pushing
+     the links into an overflow. The logo mark itself never shrinks. */
+  .brand {
+    min-width: 0;
+    flex: 0 1 auto;
+  }
+
+  .brand > span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cta { flex: 0 0 auto; }
+}
+
+/* Tier 1: a seven-to-eight item menu. */
+@media (min-width: 901px) and (max-width: 1280px) {
+  .links { gap: 0 13px; font-size: 12px; }
+  .navgroup__btn { font-size: 12px; }
+}
+
+/* Tier 2: nine or more items, or long labels. Below this the layout is
+   genuinely out of room, and collapsing to the toggle is the honest answer. */
+@media (min-width: 901px) and (max-width: 1080px) {
+  .links { gap: 0 9px; font-size: 11.5px; }
+  .navgroup__btn { font-size: 11.5px; }
+  .nav { gap: 10px; }
+  .cta { padding: 10px 14px; font-size: 12px; }
+  .brand small { display: none; }
+}
+
+
+/* --------------------------------------------------------------------------
+   19. Print
    Supporters and funders do print these pages. Drop the furniture.
    -------------------------------------------------------------------------- */
 @media print {

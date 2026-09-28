@@ -353,6 +353,12 @@ function cohf_hero_slides() {
  */
 function cohf_default_nav_items() {
 	$items = array(
+		// Home was previously absent here and ignored when added in the admin,
+		// so there was no way to get it into the header at all.
+		array(
+			'label' => __( 'Home', 'cohf-child' ),
+			'url'   => home_url( '/' ),
+		),
 		array(
 			'label'    => __( 'About', 'cohf-child' ),
 			'url'      => cohf_page_url( 'page-templates/page-about.php' ),
@@ -452,22 +458,38 @@ function cohf_explore_nav_children() {
 /**
  * Resolve the primary navigation.
  *
- * The theme's own list wins by default. A WordPress-assigned menu is only used
- * when the site explicitly opts in, either by setting the 'cohf_nav_source'
- * option to 'wordpress' or by returning 'wordpress' from the filter of the
- * same name.
+ * A menu assigned to the 'primary' location in the WordPress admin now wins.
+ * The theme's own list is the fallback for when no menu has been assigned.
  *
- * Why the theme overrides by default: the live site had nine items assigned in
- * Appearance > Menus ("Home" and "Partners" on top of the intended seven),
- * which overflowed the 1180px container and broke the header onto two lines.
- * The nav is a fixed-width component, so the theme owns it.
+ * History, because this reverses an earlier decision: the theme used to
+ * override the WordPress menu unconditionally. The reason given was that the
+ * live site had nine items assigned in Appearance > Menus ("Home" and
+ * "Partners" on top of the intended seven), which overflowed the container
+ * and broke the header onto two lines.
  *
- * Individual items remain filterable through 'cohf_nav_items'.
+ * That treated a layout bug as a content problem. The consequence was that
+ * the menu editor silently did nothing: an administrator could add, reorder
+ * or remove items in Appearance > Menus or the Customizer and the front end
+ * would never change, with nothing on screen explaining why. Adding "Home"
+ * and having it not appear is exactly that failure.
+ *
+ * The overflow is fixed where it belongs, in the stylesheet - see the header
+ * navigation section of assets/css/ux-refinements.css, which tightens the
+ * row progressively so a longer menu stays on one line. Editors get their
+ * menu back.
+ *
+ * Setting the 'cohf_nav_source' option, or filtering it, still forces either
+ * source explicitly. Individual fallback items remain filterable through
+ * 'cohf_nav_items'.
  *
  * @return array{source:string,items:array} Navigation source and items.
  */
 function cohf_nav() {
-	$source = get_option( 'cohf_nav_source', 'theme' );
+	// An assigned menu is an explicit act by an administrator, so it is the
+	// default source whenever one exists.
+	$default = has_nav_menu( 'primary' ) ? 'wordpress' : 'theme';
+
+	$source = get_option( 'cohf_nav_source', $default );
 	$source = apply_filters( 'cohf_nav_source', $source );
 
 	$items = apply_filters( 'cohf_nav_items', cohf_default_nav_items() );
