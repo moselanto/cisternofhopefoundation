@@ -122,9 +122,27 @@ unset( $cohf_tag, $cohf_slug );
  */
 function cohf_sc_cta( $atts ) {
 	$atts = shortcode_atts( array(
-		'title' => '',
-		'text'  => '',
+		'title'         => '',
+		'text'          => '',
+		'primary_label' => '',
+		'primary_page'  => '',
 	), $atts, 'cohf_cta' );
+
+	/*
+	 * The target is given as a template file rather than a URL so the link
+	 * resolves at render time. A pasted URL would break the moment a page is
+	 * renamed or the permalink structure changes.
+	 */
+	$page = $atts['primary_page'];
+	unset( $atts['primary_page'] );
+
+	if ( $page && function_exists( 'cohf_page_url' ) ) {
+		$url = cohf_page_url( $page );
+
+		if ( $url ) {
+			$atts['primary_url'] = $url;
+		}
+	}
 
 	$args = array_filter( $atts, static function ( $value ) {
 		return '' !== trim( (string) $value );
@@ -170,6 +188,117 @@ function cohf_sc_contact_details() {
 	return implode( "\n", $rows );
 }
 add_shortcode( 'cohf_contact_details', 'cohf_sc_contact_details' );
+
+/**
+ * [cohf_resource_library] - search, filter, list and pagination.
+ *
+ * The document library is the least block-like section on the site: a search
+ * form, a taxonomy filter bar, a paginated query across three content types
+ * and a per-row download link. Seeding it as static blocks would turn a
+ * working library into a snapshot that never updates, so it stays whole.
+ *
+ * @param array $atts Attributes.
+ * @return string
+ */
+function cohf_sc_resource_library( $atts ) {
+	$atts = shortcode_atts( array( 'per_page' => 20 ), $atts, 'cohf_resource_library' );
+
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public read-only search.
+	$search = isset( $_GET['rq'] ) ? sanitize_text_field( wp_unslash( $_GET['rq'] ) ) : '';
+	$paged  = max( 1, (int) get_query_var( 'paged' ) );
+
+	$query_args = array(
+		'post_type'      => array( 'cohf_report', 'cohf_resource', 'cohf_news' ),
+		'posts_per_page' => max( 1, (int) $atts['per_page'] ),
+		'paged'          => $paged,
+	);
+
+	if ( $search ) {
+		$query_args['s'] = $search;
+	}
+
+	$library = new WP_Query( $query_args );
+	$types   = get_terms( array(
+		'taxonomy'   => 'cohf_content_type',
+		'hide_empty' => true,
+	) );
+
+	ob_start();
+	?>
+	<form class="search-form" method="get" action="<?php echo esc_url( get_permalink() ); ?>">
+		<label class="search-form__label" for="resource-search"><?php esc_html_e( 'Search resources', 'cohf-child' ); ?></label>
+		<div class="search-form__row">
+			<input class="search-form__input" type="search" id="resource-search" name="rq" value="<?php echo esc_attr( $search ); ?>" placeholder="<?php esc_attr_e( 'Title or keyword', 'cohf-child' ); ?>">
+			<button class="btn dark" type="submit"><?php esc_html_e( 'Search', 'cohf-child' ); ?></button>
+		</div>
+	</form>
+
+	<?php if ( ! empty( $types ) && ! is_wp_error( $types ) ) : ?>
+		<div class="filter-bar" data-filter-group data-filter-target="#resource-list" data-filter-status="#resource-filter-status" role="group" aria-label="<?php esc_attr_e( 'Filter resources by type', 'cohf-child' ); ?>">
+			<button type="button" data-filter="all" aria-pressed="true"><?php esc_html_e( 'All', 'cohf-child' ); ?></button>
+			<?php foreach ( $types as $type ) : ?>
+				<button type="button" data-filter="<?php echo esc_attr( $type->slug ); ?>" aria-pressed="false"><?php echo esc_html( $type->name ); ?></button>
+			<?php endforeach; ?>
+		</div>
+		<p id="resource-filter-status" class="screen-reader-text" role="status"></p>
+	<?php endif; ?>
+
+	<div id="resource-list">
+		<?php if ( $library->have_posts() ) : ?>
+			<?php
+			while ( $library->have_posts() ) :
+				$library->the_post();
+				$terms     = get_the_terms( get_the_ID(), 'cohf_content_type' );
+				$slugs     = ( $terms && ! is_wp_error( $terms ) ) ? implode( ' ', wp_list_pluck( $terms, 'slug' ) ) : '';
+				$file      = function_exists( 'cohf_field' ) ? cohf_field( 'file_url' ) : '';
+				$size      = function_exists( 'cohf_field' ) ? cohf_field( 'file_size' ) : '';
+				$post_type = get_post_type_object( get_post_type() );
+				?>
+				<article class="resource-row" data-filter-value="<?php echo function_exists( 'cohf_attr' ) ? cohf_attr( $slugs ) : esc_attr( $slugs ); ?>">
+					<div>
+						<p class="resource-row__type"><?php echo esc_html( $post_type ? $post_type->labels->singular_name : '' ); ?></p>
+						<h3 class="resource-row__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+						<p class="resource-row__meta">
+							<?php echo esc_html( get_the_date() ); ?><?php echo $size ? ' - ' . esc_html( $size ) : ''; ?>
+						</p>
+					</div>
+					<div>
+						<a class="btn outline" href="<?php echo esc_url( $file ? $file : get_permalink() ); ?>"<?php echo $file ? ' download' : ''; ?>>
+							<?php
+							$label = $file ? __( 'Download', 'cohf-child' ) : __( 'Read', 'cohf-child' );
+
+							if ( function_exists( 'cohf_link_context' ) ) {
+								cohf_link_context( $label, get_the_title() );
+							} else {
+								echo esc_html( $label );
+							}
+							?>
+						</a>
+					</div>
+				</article>
+				<?php
+			endwhile;
+			?>
+			<div class="pagination">
+				<?php
+				echo wp_kses_post( paginate_links( array(
+					'total'   => (int) $library->max_num_pages,
+					'current' => $paged,
+					'type'    => 'list',
+				) ) );
+				?>
+			</div>
+			<?php wp_reset_postdata(); ?>
+		<?php else : ?>
+			<p class="partner-empty">
+				<?php esc_html_e( 'No documents have been published yet. Annual reports, programme reports, strategic documents and policies will appear here as they are finalised and approved.', 'cohf-child' ); ?>
+			</p>
+		<?php endif; ?>
+	</div>
+	<?php
+	return (string) ob_get_clean();
+}
+add_shortcode( 'cohf_resource_library', 'cohf_sc_resource_library' );
 
 /**
  * [cohf_programmes count="12"] - the programme card grid.

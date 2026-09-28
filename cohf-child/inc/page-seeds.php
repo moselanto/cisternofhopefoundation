@@ -136,6 +136,34 @@ function cohf_seed_cards( $cards ) {
 }
 
 /**
+ * A grid of numbered route cards, each ending in an arrow link.
+ *
+ * @param array<int,array{0:string,1:string,2:string,3:string}> $routes Number, title, text, url.
+ * @param string                                                $link_label Arrow link text.
+ * @return string
+ */
+function cohf_seed_route_cards( $routes, $link_label ) {
+	$inner = '';
+
+	foreach ( $routes as $route ) {
+		$body = cohf_seed_p( $route[0], 'kicker' )
+			. cohf_seed_h( $route[1], 3 )
+			. cohf_seed_p( $route[2] );
+
+		// Skip the link rather than point it nowhere when the page is missing.
+		if ( ! empty( $route[3] ) ) {
+			$body .= cohf_seed_p(
+				'<a class="arrow" href="' . esc_url( $route[3] ) . '">' . esc_html( $link_label ) . '</a>'
+			);
+		}
+
+		$inner .= cohf_seed_group( cohf_seed_group( $body, 'card-body' ), 'card', 'article' );
+	}
+
+	return cohf_seed_group( $inner, 'grid' );
+}
+
+/**
  * A row of headline facts.
  *
  * @param array<int,array{0:string,1:string}> $facts Figure and label pairs.
@@ -214,8 +242,10 @@ function cohf_page_seed_map() {
 		'page-templates/page-partners.php'   => 'cohf_seed_partners',
 		'page-templates/page-approach.php'   => 'cohf_seed_approach',
 		'page-templates/page-contact.php'    => 'cohf_seed_contact',
-		'page-templates/page-about.php'      => 'cohf_seed_about',
-		'page-templates/page-programmes.php' => 'cohf_seed_programmes',
+		'page-templates/page-about.php'        => 'cohf_seed_about',
+		'page-templates/page-programmes.php'   => 'cohf_seed_programmes',
+		'page-templates/page-get-involved.php' => 'cohf_seed_get_involved',
+		'page-templates/page-resources.php'    => 'cohf_seed_resources',
 	) );
 }
 
@@ -592,4 +622,179 @@ function cohf_seed_programmes() {
 	);
 
 	return $section_grid . $section_connect . $cta;
+}
+
+/**
+ * The Get Involved page, as blocks.
+ *
+ * Mirrors page-templates/page-get-involved.php.
+ *
+ * Note on wording: the template renders "Volunteer &amp; Mentor" through
+ * esc_html(), which double-encodes the entity and shows the raw "&amp;" on
+ * the page. The seed spells the word out instead, so the copy an editor
+ * inherits is the copy a visitor should have been reading.
+ *
+ * @return string
+ */
+function cohf_seed_get_involved() {
+
+	$links   = function_exists( 'cohf_cta_links' ) ? cohf_cta_links() : array();
+	$contact = function_exists( 'cohf_page_url' ) ? cohf_page_url( 'page-templates/page-contact.php' ) : '';
+
+	// 1. The three main routes in.
+	$routes = array(
+		array(
+			'01',
+			__( 'Partner With Us', 'cohf-child' ),
+			__( 'Explore programme, technical, market, research and institutional partnerships.', 'cohf-child' ),
+			isset( $links['partner'] ) ? $links['partner'] : '',
+		),
+		array(
+			'02',
+			__( 'Support Our Work', 'cohf-child' ),
+			__( 'Support programmes and strengthen pathways toward self-reliance.', 'cohf-child' ),
+			isset( $links['support'] ) ? $links['support'] : '',
+		),
+		array(
+			'03',
+			__( 'Volunteer and Mentor', 'cohf-child' ),
+			__( 'Bring your time, skills, relationships or professional expertise.', 'cohf-child' ),
+			$contact ? $contact . '#enquire' : '',
+		),
+	);
+
+	$section_routes = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_route_cards( $routes, __( 'Start a conversation', 'cohf-child' ) ),
+			'container'
+		),
+		'',
+		'section'
+	);
+
+	// 2. Other ways to help.
+	$others = array(
+		array( __( 'Sponsor a programme', 'cohf-child' ), __( 'Fund a defined programme area for a defined period, with agreed indicators and reporting.', 'cohf-child' ) ),
+		array( __( 'Provide technical support', 'cohf-child' ), __( 'Offer expertise in health, agriculture, WASH, digital skills, monitoring and evaluation or safeguarding.', 'cohf-child' ) ),
+		array( __( 'Provide in-kind support', 'cohf-child' ), __( 'Contribute equipment, learning materials, sanitary products, food support or other practical resources.', 'cohf-child' ) ),
+		array( __( 'Offer market linkages', 'cohf-child' ), __( 'Connect supported enterprises to buyers, employment opportunities and business networks.', 'cohf-child' ) ),
+	);
+
+	$section_others = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_section_head(
+				__( 'Other ways to help', 'cohf-child' ),
+				__( 'Practical contributions that go further.', 'cohf-child' )
+			)
+			. cohf_seed_cards( $others ),
+			'container'
+		),
+		'cream',
+		'section'
+	);
+
+	// 3. Volunteering.
+	$volunteering = cohf_seed_group(
+		cohf_seed_p( __( 'Volunteering', 'cohf-child' ), 'kicker' )
+		. cohf_seed_h( __( 'Volunteers are part of our journey.', 'cohf-child' ) )
+		. cohf_seed_p( __( 'We value volunteers not simply as extra hands, but as people who bring skills, relationships, ideas and community knowledge.', 'cohf-child' ) )
+		. cohf_seed_p( __( 'We create clear roles, appropriate supervision, ethical standards and safeguarding expectations for everyone working on behalf of the Foundation. Volunteers working with children or vulnerable adults are subject to our Child Safeguarding and Protection Policy and our Code of Conduct.', 'cohf-child' ) )
+	);
+
+	$section_volunteering = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_shortcode( '[cohf_image key="programme-04"]' ) . $volunteering,
+			'container feature'
+		),
+		'',
+		'section'
+	);
+
+	// 4. Enquiry.
+	$section_enquire = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_section_head(
+				__( 'Start a conversation', 'cohf-child' ),
+				__( 'Tell us how you would like to take part.', 'cohf-child' )
+			)
+			. cohf_seed_shortcode( '[cohf_enquiry_form type="volunteer"]' ),
+			'container'
+		),
+		'sage',
+		'section',
+		'enquire'
+	);
+
+	return $section_routes . $section_others . $section_volunteering . $section_enquire;
+}
+
+/**
+ * The Resources page, as blocks.
+ *
+ * Mirrors page-templates/page-resources.php. The document library keeps its
+ * search box, type filter, query and pagination through a shortcode.
+ *
+ * @return string
+ */
+function cohf_seed_resources() {
+
+	// 1. What you will find here - three category cards, no links.
+	$categories = array(
+		array(
+			__( 'Strategic framework', 'cohf-child' ),
+			__( 'Master Institutional Profile and Strategic Programme Framework 2026-2030', 'cohf-child' ),
+			__( 'The Foundation\'s five-year direction and programme framework.', 'cohf-child' ),
+			'',
+		),
+		array(
+			__( 'Reports', 'cohf-child' ),
+			__( 'Programme and Impact Reports', 'cohf-child' ),
+			__( 'Published here with dates and downloads as each reporting cycle completes.', 'cohf-child' ),
+			'',
+		),
+		array(
+			__( 'Policies', 'cohf-child' ),
+			__( 'Safeguarding and Accountability', 'cohf-child' ),
+			__( 'Child safeguarding, data protection, financial management and related policies.', 'cohf-child' ),
+			'',
+		),
+	);
+
+	$section_categories = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_section_head(
+				__( 'What you will find here', 'cohf-child' ),
+				__( 'Three kinds of document.', 'cohf-child' ),
+				__( 'Documents are published as each is finalised and approved. Partners and institutions can request anything not yet published.', 'cohf-child' )
+			)
+			. cohf_seed_route_cards( $categories, '' ),
+			'container'
+		),
+		'',
+		'section'
+	);
+
+	// 2. The library itself.
+	$section_library = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_section_head(
+				__( 'Document library', 'cohf-child' ),
+				__( 'Search the library.', 'cohf-child' )
+			)
+			. cohf_seed_shortcode( '[cohf_resource_library]' ),
+			'container'
+		),
+		'cream',
+		'section'
+	);
+
+	// 3. Call to action, pointing at Contact.
+	$cta = cohf_seed_shortcode(
+		'[cohf_cta title="' . esc_attr__( 'Need a document we have not published?', 'cohf-child' ) . '"'
+		. ' text="' . esc_attr__( 'Partners and institutions can request our Constitution, strategic framework, policies and programme documentation directly from the Foundation.', 'cohf-child' ) . '"'
+		. ' primary_label="' . esc_attr__( 'Contact Us', 'cohf-child' ) . '"'
+		. ' primary_page="page-templates/page-contact.php"]'
+	);
+
+	return $section_categories . $section_library . $cta;
 }
