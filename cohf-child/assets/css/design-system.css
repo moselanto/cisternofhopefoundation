@@ -382,7 +382,13 @@ summary:focus-visible,
     background:transparent;
   }
   .navgroup__panel::before{display:none}
-  .navgroup.is-open .navgroup__panel{display:block}
+  /* transform:none above is on a single class, while the desktop open-state
+     rule that centres the panel is three classes deep and sits outside this
+     media query. It therefore won on mobile the moment a group opened, and
+     translateX(-50%) slid the panel half its own width off the left edge -
+     the submenu was expanding correctly and rendering out of sight. The
+     reset has to be restated at matching specificity. */
+  .navgroup.is-open .navgroup__panel{display:block;transform:none}
   .links .navgroup__panel a{padding:10px 0 10px 14px;border-left:2px solid var(--line);border-radius:0}
   .links .navgroup__panel a:hover{background:transparent}
 }
