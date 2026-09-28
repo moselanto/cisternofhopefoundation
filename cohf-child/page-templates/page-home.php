@@ -2,7 +2,20 @@
 /**
  * Template Name: Home
  *
- * Section order and markup mirror the approved prototype (index.html) exactly.
+ * Section order follows the approved prototype, with two later removals.
+ *
+ * Community stories and the 2026-2030 strategic journey both used to sit
+ * between "The change we seek" and the closing call to action. They were
+ * cut because the page had started repeating itself:
+ *
+ * - The strategic journey listed five sequential phases immediately after
+ *   Our Approach had already walked the reader through seven sequential
+ *   steps. Two numbered journeys in one page is one too many, and the
+ *   homepage already names the plan in the Our Story facts ("2026-30,
+ *   five-year strategic journey"). The full timeline still lives on the
+ *   Strategy page, which is where someone looking for it will go.
+ * - Community stories had no published stories behind it, so it rendered
+ *   as an editor-only placeholder occupying a full section band.
  *
  * @package COHF_Child
  */
@@ -23,8 +36,6 @@ $contact = cohf_page_url( 'page-templates/page-contact.php' );
 	// put the slider into single-slide mode and show only one static slide.
 	get_template_part( 'template-parts/hero' );
 	?>
-
-	<?php if ( cohf_page_body_is_blocks() ) : cohf_the_page_body(); else : ?>
 
 	<!-- Story -->
 	<section>
@@ -127,8 +138,10 @@ $contact = cohf_page_url( 'page-templates/page-contact.php' );
 				<p><?php esc_html_e( 'Impact is measured by the difference our work makes in people\'s lives.', 'cohf-child' ); ?></p>
 			</div>
 			<?php get_template_part( 'template-parts/numbers' ); ?>
-			<br>
-			<a class="btn light" href="<?php echo esc_url( $impact ); ?>"><?php esc_html_e( 'Explore Impact', 'cohf-child' ); ?></a>
+			<?php // Spacing below the figures is set in CSS; a <br> cannot be adjusted per breakpoint. ?>
+			<div class="impact__more">
+				<a class="btn light" href="<?php echo esc_url( $impact ); ?>"><?php esc_html_e( 'Explore Impact', 'cohf-child' ); ?></a>
+			</div>
 		</div>
 	</section>
 
@@ -142,71 +155,6 @@ $contact = cohf_page_url( 'page-templates/page-contact.php' );
 				<div class="quote"><?php esc_html_e( 'We do not simply want to give people hope for today. We want to help create pathways to a better tomorrow.', 'cohf-child' ); ?></div>
 			</div>
 			<?php cohf_the_image( 'programme-01', array( 'sizes' => '(max-width: 60em) 100vw, 50vw' ) ); ?>
-		</div>
-	</section>
-
-	<!-- Stories from the work -->
-	<?php
-	$cohf_stories = new WP_Query( array(
-		'post_type'      => 'cohf_story',
-		'posts_per_page' => 3,
-		'no_found_rows'  => true,
-	) );
-
-	if ( $cohf_stories->have_posts() ) :
-		$cohf_story_archive = get_post_type_archive_link( 'cohf_story' );
-		?>
-		<section class="cream">
-			<div class="container">
-				<div class="section-head">
-					<div>
-						<div class="sec-label">
-							<span class="sec-label__rule"></span>
-							<span class="sec-label__text"><?php esc_html_e( 'Stories from the work', 'cohf-child' ); ?></span>
-						</div>
-						<h2 class="sec-statement sec-statement--wide"><?php esc_html_e( 'Real people. Real journeys.', 'cohf-child' ); ?></h2>
-						<p class="sec-lede"><?php esc_html_e( 'Our work is more than programme figures. It is found in children returning to school, young people receiving mentorship, and people building small businesses with support.', 'cohf-child' ); ?></p>
-					</div>
-					<?php if ( $cohf_story_archive ) : ?>
-						<a class="arrow" href="<?php echo esc_url( $cohf_story_archive ); ?>"><?php esc_html_e( 'Explore community stories', 'cohf-child' ); ?></a>
-					<?php endif; ?>
-				</div>
-				<div class="grid">
-					<?php
-					while ( $cohf_stories->have_posts() ) {
-						$cohf_stories->the_post();
-						get_template_part( 'template-parts/story-card' );
-					}
-					?>
-				</div>
-			</div>
-		</section>
-		<?php
-	elseif ( current_user_can( 'edit_posts' ) ) :
-		?>
-		<section class="cream">
-			<div class="container">
-				<p class="partner-empty">
-					<?php esc_html_e( 'Community stories will appear here once the first story is published. Add them under Stories in the WordPress admin. Only signed-in editors can see this message.', 'cohf-child' ); ?>
-				</p>
-			</div>
-		</section>
-		<?php
-	endif;
-	wp_reset_postdata();
-	?>
-
-	<!-- Strategic journey -->
-	<section>
-		<div class="container">
-			<div class="section-head">
-				<div>
-					<div class="sec-label"><span class="sec-label__rule"></span><span class="sec-label__text"><?php esc_html_e( 'Strategic journey', 'cohf-child' ); ?></span></div>
-					<h2 class="sec-statement sec-statement--wide"><?php esc_html_e( '2026-2030', 'cohf-child' ); ?></h2>
-				</div>
-				<p><?php esc_html_e( 'A deliberate journey to become stronger as we grow.', 'cohf-child' ); ?></p>
-			</div>
-			<?php get_template_part( 'template-parts/timeline' ); ?>
 		</div>
 	</section>
 
@@ -224,6 +172,5 @@ $contact = cohf_page_url( 'page-templates/page-contact.php' );
 	) );
 	?>
 
-	<?php endif; ?>
 </main>
 <?php get_footer();

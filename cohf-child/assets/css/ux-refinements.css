@@ -1114,3 +1114,178 @@ select:user-invalid {
 
   section { padding: 18px 0; break-inside: avoid; }
 }
+
+/* --------------------------------------------------------------------------
+   22. Homepage: slider arrows, Our Approach, Our Impact
+   -------------------------------------------------------------------------- */
+
+/* --- 22a. Slider arrows on the centre line ---------------------------------
+   The arrows and the dots shared one flex row pinned to the bottom of the
+   hero, so the arrows sat in the bottom corners - far from the image they
+   page through, and level with the dots that do the same job. Moving them
+   to the vertical centre puts them where a carousel is reached for, and
+   leaves the dots alone as the position indicator.
+
+   Only above 700px, which is where the arrows are visible at all; below
+   that they are hidden and the dots stay bottom-centred. */
+@media (min-width: 701px) {
+  .hero--slider .hero__controls {
+    top: 0;
+    bottom: 0;
+    height: auto;
+    margin-block: 0;
+    align-items: center;
+  }
+
+  .hero--slider .hero__dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 26px;
+    justify-content: center;
+    margin: 0;
+  }
+}
+
+/* Slightly larger, so a 48px target is reachable and the glyph is not lost
+   against a photograph. */
+.hero__arrow {
+  width: 48px;
+  height: 48px;
+  font-size: 24px;
+}
+
+/* --- 22b. Our Approach ------------------------------------------------------
+   Seven steps in a rigid four-column grid, each drawing its own 2px top
+   rule, read as a table of contents rather than a pathway: row two stopped
+   three-quarters of the way across, so a filler cell had to be generated
+   just to finish the line.
+
+   Switching from grid to centred flex removes the cause instead of patching
+   it. Row two now holds three cards centred under four, which looks
+   deliberate, and the shared rule is gone along with the ragged edge. Each
+   step becomes a white card on the sage band, matching the purpose trio and
+   the programme cards elsewhere on the page, and the number becomes a badge
+   rather than a stray coloured word above the heading. */
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+}
+
+/* The filler cell from 19c completed the old grid's broken rule. With no
+   shared rule and no rigid columns it would now render as an empty card. */
+.steps::after {
+  display: none;
+}
+
+.steps > .step {
+  flex: 0 1 calc(25% - 13.5px);
+  padding: 24px 22px 26px;
+  border-top: 0;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 1px 2px #17231e0f;
+}
+
+.step .num {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--s);
+  color: var(--g);
+  font: 800 12px/1 var(--font-body);
+  letter-spacing: 0.02em;
+}
+
+.step h3 {
+  font-size: 19px;
+  line-height: 1.25;
+}
+
+.step p {
+  font-size: 14px;
+}
+
+@media (max-width: 1024px) {
+  .steps > .step {
+    flex-basis: calc(33.333% - 12px);
+  }
+}
+
+@media (max-width: 900px) {
+  .steps > .step {
+    flex-basis: calc(50% - 9px);
+  }
+}
+
+@media (max-width: 600px) {
+  .steps > .step {
+    flex-basis: 100%;
+  }
+}
+
+/* --- 22c. Our Impact --------------------------------------------------------
+   The figures were five cells separated by 1px seams, which is how a data
+   table is drawn, not how an achievement is presented. The numerals were
+   also small enough that "8" and "6" read as footnotes rather than results.
+
+   Each figure now sits on its own softly lit panel with room around it, and
+   the numerals scale up. Nothing about the data changed; it is simply given
+   the weight it earned. */
+.impact .numbers {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  background: transparent;
+}
+
+.impact .number {
+  display: flex;
+  flex-direction: column;
+  padding: 26px 20px 24px;
+  background: #ffffff0f;
+  border: 1px solid #ffffff1f;
+  border-radius: 16px;
+}
+
+.impact .number strong {
+  font-size: clamp(38px, 3.4vw, 50px);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.impact .number span {
+  font-size: 13px;
+  line-height: 1.45;
+  color: #cfded6;
+  /* These labels are full phrases and wrap to two or three lines. Balancing
+     stops one word being stranded on the last line of a narrow panel. */
+  text-wrap: balance;
+}
+
+/* Replaces a <br> in the template, which could not be tuned per breakpoint. */
+.impact__more {
+  margin-top: 34px;
+}
+
+@media (max-width: 1024px) {
+  .impact .numbers {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .impact .numbers {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 460px) {
+  .impact .numbers {
+    grid-template-columns: 1fr;
+  }
+}
