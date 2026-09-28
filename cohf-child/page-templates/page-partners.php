@@ -2,12 +2,53 @@
 /**
  * Template Name: Partners
  *
+ * Reworked in 9.36.0. Three consecutive sections - who we work with, what we
+ * invite partners to contribute, and the areas we seek partnerships in - were
+ * all rendered as the same thing: a centred heading above a two-column list
+ * with hollow circle bullets. Thirty short lines of text in one repeated
+ * pattern, spread across the full 1180px measure with a great deal of air
+ * between them.
+ *
+ * The problem was not the content, which is good. It was that three different
+ * kinds of information were being given one undifferentiated shape, so the
+ * page read as a data dump and a visitor could not tell the sections apart.
+ *
+ * Each now gets the treatment its content actually calls for:
+ *
+ * - Who we work with: eleven short category names. They are labels, so they
+ *   are set as chips - a compact centred cluster that can be taken in at a
+ *   glance rather than read line by line.
+ * - What we invite partners to contribute: nine substantive offers. These
+ *   carry the most weight on the page, so they become numbered cards.
+ * - Priority areas: ten thematic areas. A quiet three-column ruled index,
+ *   which is dense without being cramped and is deliberately the plainest of
+ *   the three so it does not compete with the cards above it.
+ *
+ * Priority areas was also nested inside the opportunities section, sharing
+ * its background and padding. It is now its own section, which lets the
+ * backgrounds alternate and gives the anchor link something real to land on.
+ *
+ * .list-check is untouched - Accountability, Impact and Support still use it.
+ *
  * @package COHF_Child
  */
 defined( 'ABSPATH' ) || exit;
 get_header();
+
+$cohf_priority_areas = array(
+	__( 'Women and girls\' economic empowerment', 'cohf-child' ),
+	__( 'Youth skills, employment and entrepreneurship', 'cohf-child' ),
+	__( 'Education and child development', 'cohf-child' ),
+	__( 'Health, nutrition and community wellbeing', 'cohf-child' ),
+	__( 'Agriculture, food security and livelihoods', 'cohf-child' ),
+	__( 'Environment, climate and conservation', 'cohf-child' ),
+	__( 'Water, sanitation and hygiene', 'cohf-child' ),
+	__( 'Digital inclusion and innovation', 'cohf-child' ),
+	__( 'Community development and resilience', 'cohf-child' ),
+	__( 'Institutional strengthening, safeguarding, M&E and organisational development', 'cohf-child' ),
+);
 ?>
-<main id="main-content" tabindex="-1">
+<main id="main-content" class="partners-page" tabindex="-1">
 
 	<?php
 	get_template_part( 'template-parts/page-hero', null, array(
@@ -31,12 +72,10 @@ get_header();
 	) );
 	?>
 
-	<?php if ( cohf_page_body_is_blocks() ) : cohf_the_page_body(); else : ?>
-
 	<section id="message">
 		<div class="container feature">
 			<div>
-				<div class="kicker"><?php esc_html_e( 'Our message to partners', 'cohf-child' ); ?></div>
+				<div class="sec-label"><span class="sec-label__rule"></span><span class="sec-label__text"><?php esc_html_e( 'Our message to partners', 'cohf-child' ); ?></span></div>
 				<h2><?php esc_html_e( 'A young but determined Kenyan organisation.', 'cohf-child' ); ?></h2>
 				<p><?php esc_html_e( 'We are not presenting ourselves as an organisation that has already solved the problems we seek to address. We are presenting ourselves as an organisation that has started, has learned from the communities we serve, has demonstrated the willingness to act, and is now building the systems and partnerships required to increase our impact responsibly.', 'cohf-child' ); ?></p>
 				<p><?php esc_html_e( 'Our early work with women, youth and children has given us practical experience. Our Constitution gives us an institutional foundation. Our 2026-2030 strategy gives us direction. Our partnerships will give us the opportunity to take solutions further.', 'cohf-child' ); ?></p>
@@ -50,12 +89,17 @@ get_header();
 		<div class="container">
 			<div class="section-head">
 				<div>
-					<div class="kicker"><?php esc_html_e( 'Who we work with', 'cohf-child' ); ?></div>
+					<div class="sec-label"><span class="sec-label__rule"></span><span class="sec-label__text"><?php esc_html_e( 'Who we work with', 'cohf-child' ); ?></span></div>
 					<h2><?php esc_html_e( 'The partners we welcome.', 'cohf-child' ); ?></h2>
 				</div>
+				<p><?php esc_html_e( 'We work with organisations and individuals of every size. What matters is a shared commitment to lasting change, not the letterhead it arrives on.', 'cohf-child' ); ?></p>
 			</div>
-			<ul class="list-check list-check--2col">
-				<?php foreach ( cohf_partner_types() as $type ) { printf( '<li>%s</li>', esc_html( $type ) ); } ?>
+			<ul class="chip-set">
+				<?php
+				foreach ( cohf_partner_types() as $cohf_type ) {
+					printf( '<li class="chip">%s</li>', esc_html( $cohf_type ) );
+				}
+				?>
 			</ul>
 		</div>
 	</section>
@@ -64,35 +108,40 @@ get_header();
 		<div class="container">
 			<div class="section-head">
 				<div>
-					<div class="kicker"><?php esc_html_e( 'Partnership opportunities', 'cohf-child' ); ?></div>
+					<div class="sec-label"><span class="sec-label__rule"></span><span class="sec-label__text"><?php esc_html_e( 'Partnership opportunities', 'cohf-child' ); ?></span></div>
 					<h2><?php esc_html_e( 'What we invite partners to contribute.', 'cohf-child' ); ?></h2>
 				</div>
+				<p><?php esc_html_e( 'Partnership is rarely only about funding. These are the contributions that move our work furthest.', 'cohf-child' ); ?></p>
 			</div>
-			<ul class="list-check list-check--2col">
-				<?php foreach ( cohf_partnership_offers() as $offer ) { printf( '<li>%s</li>', esc_html( $offer ) ); } ?>
+			<ul class="offer-grid">
+				<?php
+				$cohf_offer_n = 0;
+				foreach ( cohf_partnership_offers() as $cohf_offer ) {
+					++$cohf_offer_n;
+					printf(
+						'<li class="offer"><span class="offer__n" aria-hidden="true">%1$s</span><span class="offer__t">%2$s</span></li>',
+						esc_html( sprintf( '%02d', $cohf_offer_n ) ),
+						esc_html( $cohf_offer )
+					);
+				}
+				?>
 			</ul>
+		</div>
+	</section>
 
-			<div class="section-head section-head--stacked" id="priority-areas">
+	<section class="cream" id="priority-areas">
+		<div class="container">
+			<div class="section-head">
 				<div>
-					<div class="kicker"><?php esc_html_e( 'Priority areas', 'cohf-child' ); ?></div>
+					<div class="sec-label"><span class="sec-label__rule"></span><span class="sec-label__text"><?php esc_html_e( 'Priority areas', 'cohf-child' ); ?></span></div>
 					<h2><?php esc_html_e( 'Areas where we seek partnerships.', 'cohf-child' ); ?></h2>
 				</div>
+				<p><?php esc_html_e( 'Our 2026-2030 strategy concentrates on these areas. A partnership does not have to fit neatly into one of them.', 'cohf-child' ); ?></p>
 			</div>
-			<ul class="list-check list-check--2col">
+			<ul class="area-index">
 				<?php
-				foreach ( array(
-					__( 'Women and girls\' economic empowerment', 'cohf-child' ),
-					__( 'Youth skills, employment and entrepreneurship', 'cohf-child' ),
-					__( 'Education and child development', 'cohf-child' ),
-					__( 'Health, nutrition and community wellbeing', 'cohf-child' ),
-					__( 'Agriculture, food security and livelihoods', 'cohf-child' ),
-					__( 'Environment, climate and conservation', 'cohf-child' ),
-					__( 'Water, sanitation and hygiene', 'cohf-child' ),
-					__( 'Digital inclusion and innovation', 'cohf-child' ),
-					__( 'Community development and resilience', 'cohf-child' ),
-					__( 'Institutional strengthening, safeguarding, M&E and organisational development', 'cohf-child' ),
-				) as $area ) {
-					printf( '<li>%s</li>', esc_html( $area ) );
+				foreach ( $cohf_priority_areas as $cohf_area ) {
+					printf( '<li class="area-index__item">%s</li>', esc_html( $cohf_area ) );
 				}
 				?>
 			</ul>
@@ -103,7 +152,7 @@ get_header();
 		<div class="container">
 			<div class="section-head">
 				<div>
-					<div class="kicker"><?php esc_html_e( 'Partnership snapshot', 'cohf-child' ); ?></div>
+					<div class="sec-label"><span class="sec-label__rule"></span><span class="sec-label__text"><?php esc_html_e( 'Partnership snapshot', 'cohf-child' ); ?></span></div>
 					<h2><?php esc_html_e( 'The questions partners ask us.', 'cohf-child' ); ?></h2>
 				</div>
 			</div>
@@ -137,7 +186,7 @@ get_header();
 		<div class="container">
 			<div class="section-head">
 				<div>
-					<div class="kicker"><?php esc_html_e( 'Start a conversation', 'cohf-child' ); ?></div>
+					<div class="sec-label"><span class="sec-label__rule"></span><span class="sec-label__text"><?php esc_html_e( 'Start a conversation', 'cohf-child' ); ?></span></div>
 					<h2><?php esc_html_e( 'Partnership enquiry.', 'cohf-child' ); ?></h2>
 				</div>
 				<p><?php esc_html_e( 'Tell us about your organisation and the kind of partnership you are considering. A member of the team will respond.', 'cohf-child' ); ?></p>
@@ -146,6 +195,5 @@ get_header();
 		</div>
 	</section>
 
-	<?php endif; ?>
 </main>
 <?php get_footer();

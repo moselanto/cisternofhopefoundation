@@ -1513,3 +1513,151 @@ select:user-invalid {
     border-radius: 22px;
   }
 }
+
+/* --------------------------------------------------------------------------
+   26. Partners: three kinds of information, three shapes
+
+   Who we work with, what we invite partners to contribute, and the areas we
+   seek partnerships in were all rendered identically - a centred heading
+   above a two-column list of hollow circle bullets. Thirty short lines in
+   one repeated pattern, spread across the full 1180px measure. The content
+   was good; it had simply been given one undifferentiated shape, so the page
+   read as a data dump and the sections were indistinguishable.
+
+   .list-check is deliberately untouched. Accountability, Impact and Support
+   still use it and are not part of this rework.
+   -------------------------------------------------------------------------- */
+
+/* The page is a long single scroll of eight sections. At 85px top and bottom
+   that is 1360px of padding alone, which is most of why it felt airy and
+   slow. 58px still separates the sections clearly. */
+.partners-page section {
+  padding: 58px 0;
+}
+
+.partners-page .section-head {
+  margin-bottom: 28px;
+}
+
+/* The anchor row sat hard left under a centred page. */
+.partners-page .section-nav__list {
+  justify-content: center;
+}
+
+/* --- 26a. Chips: who we work with -----------------------------------------
+   Eleven short category names. They are labels rather than statements, so
+   nothing is gained by giving each a full line and a bullet. As a centred
+   cluster the whole set is taken in at a glance, and it occupies about a
+   third of the height the two-column list did. */
+.chip-set {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  padding: 9px 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--g);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* --- 26b. Numbered cards: what partners contribute -------------------------
+   Nine substantive offers, and the most consequential content on the page -
+   this is the section a prospective partner is actually scanning for what
+   is being asked of them. Cards give each offer its own surface, and the
+   numbers turn a list into a considered set. */
+.offer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.offer {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+/* min-width:0 lets a long offer wrap inside the flex row instead of forcing
+   the card wider than its grid column. */
+.offer__t {
+  min-width: 0;
+}
+
+.offer__n {
+  flex: 0 0 auto;
+  padding-top: 2px;
+  color: var(--t);
+  font: 800 11px/1.4 var(--font-body);
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- 26c. Ruled index: priority areas --------------------------------------
+   Ten thematic areas. Deliberately the plainest of the three treatments: it
+   follows the cards, and two card grids in succession would flatten the
+   distinction the cards are there to make. A hairline per row is enough
+   structure at this density. */
+.area-index {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0 30px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.area-index__item {
+  padding: 13px 0;
+  border-top: 1px solid var(--line);
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+@media (max-width: 1024px) {
+  .offer-grid,
+  .area-index {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 680px) {
+  .partners-page section {
+    padding: 46px 0;
+  }
+
+  .offer-grid,
+  .area-index {
+    grid-template-columns: 1fr;
+  }
+
+  .chip-set {
+    gap: 8px;
+  }
+
+  .chip {
+    padding: 8px 15px;
+    font-size: 13.5px;
+  }
+}
