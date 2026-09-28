@@ -2056,3 +2056,150 @@ a.card:focus-visible {
     border-radius: 20px;
   }
 }
+
+/* 32 ---------------------------------------------------------------
+   Leadership, properly presented.
+
+   9.37.0 gave every tier one card size to stop the executive tier's
+   two people rendering at 560px wide while management's four came out
+   at half that. It fixed the inflation but overcorrected: at a 268px
+   basis a tier of two reads as two small cards adrift in a 1180px
+   field, and the board's single card is stranded in the middle of an
+   otherwise empty row. Management's four look right, because four
+   cards at that size genuinely fill the line.
+
+   The mistake was treating this as a question of card WIDTH when it is
+   a question of card SHAPE. A tier of one or two needs a card built
+   along the horizontal axis; a tier of four needs the vertical one.
+   Both can carry the same portrait scale and the same type, so nobody
+   is inflated and nothing is stranded.
+   ------------------------------------------------------------------ */
+
+/* Management and any future tier of three or more: the vertical card,
+   fractionally wider than 9.37.0 so a row of four fills the container. */
+.leader-grid > .leader-card {
+  flex: 0 1 276px;
+}
+
+/* Bodies become columns so the profile action always sits on the card
+   floor. Without this it floats directly under a short biography while
+   the card behind it stretches to match its taller neighbour. */
+.leader-card__body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.leader-card__more {
+  margin-top: auto;
+  align-self: flex-start;
+  padding-top: 16px;
+}
+
+/* The portraits come from six different settings - studio white, grey
+   curtain, blue sky, pink wall. Nothing in CSS can reconcile those, but
+   a common ground behind them stops cut-out and full-bleed photographs
+   sitting on two different colours. */
+.leader-card__media {
+  background: var(--sage, var(--s));
+}
+
+/* --- 32a. The horizontal card, for the senior tiers ----------------------- */
+.leader-grid--feature > .leader-card,
+.leader-grid--board > .leader-card {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  flex: 1 1 520px;
+  max-width: 558px;
+  text-align: left;
+}
+
+/* One person, so the card is allowed a little more width and simply
+   centres. A single 620px card reads as a considered statement; a
+   single 268px card reads as an accident. */
+.leader-grid--board > .leader-card {
+  flex: 0 1 620px;
+  max-width: 620px;
+}
+
+.leader-grid--feature > .leader-card .leader-card__media,
+.leader-grid--board > .leader-card .leader-card__media {
+  height: 100%;
+  min-height: 288px;
+  aspect-ratio: auto;
+}
+
+.leader-grid--feature > .leader-card .leader-card__img,
+.leader-grid--board > .leader-card .leader-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.leader-grid--feature > .leader-card .leader-card__body,
+.leader-grid--board > .leader-card .leader-card__body {
+  justify-content: center;
+  padding: 28px 30px;
+}
+
+/* A horizontal card has the width for a fuller biography, which is the
+   point of giving the senior tiers this shape. Three lines was sized
+   for a 268px column and was clipping mid-clause. */
+.leader-grid--feature > .leader-card .leader-card__bio,
+.leader-grid--board > .leader-card .leader-card__bio {
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-line-clamp: 5;
+}
+
+.leader-grid--board > .leader-card .leader-card__name,
+.leader-grid--feature > .leader-card .leader-card__name {
+  font-size: 22px;
+}
+
+/* --- 32b. The tier count badge -------------------------------------------
+   "1 leader" set under "Governance and oversight." does not read as the
+   candour it was meant to be; it reads as a thin board announcing
+   itself. The tier heading and the cards beneath it already say how
+   many people there are. The pending-photograph count it also carried
+   is useful to an editor, not to a donor, and no portraits are pending
+   now that the set is bundled. */
+.leader-tier .sec-count {
+  display: none;
+}
+
+/* Tiers need a touch more air now that the senior cards are taller. */
+.leadership .container > .leader-tier + .leader-tier {
+  margin-top: 66px;
+}
+
+/* --- 32c. Narrow screens --------------------------------------------------
+   Below 720px a 210px portrait column leaves too little for the text,
+   so the senior cards return to the vertical arrangement everyone else
+   uses. */
+@media (max-width: 720px) {
+  .leader-grid--feature > .leader-card,
+  .leader-grid--board > .leader-card {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 300px;
+    max-width: 360px;
+  }
+
+  .leader-grid--feature > .leader-card .leader-card__media,
+  .leader-grid--board > .leader-card .leader-card__media {
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+  }
+
+  .leader-grid--feature > .leader-card .leader-card__body,
+  .leader-grid--board > .leader-card .leader-card__body {
+    padding: 22px 22px 24px;
+  }
+
+  .leader-grid--feature > .leader-card .leader-card__bio,
+  .leader-grid--board > .leader-card .leader-card__bio {
+    -webkit-line-clamp: 4;
+  }
+}
