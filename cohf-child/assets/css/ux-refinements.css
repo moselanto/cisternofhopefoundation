@@ -792,7 +792,135 @@ select:user-invalid {
 }
 
 /* --------------------------------------------------------------------------
-   20. Block-built page bodies
+   20. Mobile menu: fewer rules, and a permanent way to act
+
+   The drawer drew a full-width rule under all seven top-level items, a
+   coloured rule under whichever was open, and a vertical rule beside every
+   child. With each child also carrying a description, opening Programmes
+   produced seven stacked items and well over a dozen lines on a screen
+   about 360px wide. The lines were doing work that space and weight do
+   better, and they were competing with the content.
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+
+  /* Separation by rhythm rather than by rules. */
+  .links a,
+  .navgroup__btn {
+    border-bottom: 0;
+    padding: 14px 0;
+  }
+
+  /* The open group becomes a single tinted block. One shape replaces the
+     coloured rule above the panel and the vertical rule beside it, and it
+     groups parent and children far more clearly than a line ever did. */
+  .navgroup.is-open {
+    background: var(--cream);
+    border-radius: 16px;
+    padding: 0 14px;
+    margin: 6px 0;
+  }
+
+  .navgroup.is-open .navgroup__btn {
+    color: var(--terra);
+    padding-bottom: 8px;
+  }
+
+  .links .navgroup__panel a {
+    border-left: 0;
+    border-radius: 10px;
+    padding: 11px 0 11px 12px;
+    font-size: 14.5px;
+  }
+
+  /* Descriptions earn their place on a wide dropdown, where they sit beside
+     the page they describe. Stacked on a phone they double the height of
+     every group and push the later items out of reach. */
+  .navgroup__desc {
+    display: none;
+  }
+
+  /* The drawer keeps its own Support button. The action bar is hidden while
+     the menu is open, so removing this as "redundant" would leave an open
+     menu with no way to give at all. It also gives the drawer a proper
+     closing action instead of trailing off after the last link. */
+  .links .cta-mobile {
+    margin-top: 18px;
+  }
+}
+
+/* --- 20b. Persistent action bar -------------------------------------------
+   Below 900px the header's Support Our Work button is hidden to make room
+   for the toggle, so every route to the Foundation - give, partner, call,
+   email - sat behind the menu button or at the bottom of the footer. This
+   keeps all four on screen without costing any content width. */
+.cohf-actionbar {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .cohf-actionbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 70;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    align-items: stretch;
+    background: #fff;
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -8px 24px #17231e1a;
+    /* Clears the home indicator on iOS without padding other devices. */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .cohf-actionbar__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    /* 56px plus padding keeps every target above the 44px minimum. */
+    min-height: 56px;
+    padding: 9px 4px;
+    border-bottom: 0;
+    color: var(--forest, var(--g));
+    font: 650 11px/1.1 var(--font-body);
+    letter-spacing: 0.02em;
+    text-align: center;
+  }
+
+  .cohf-actionbar__icon {
+    width: 21px;
+    height: 21px;
+  }
+
+  /* Giving is the one action worth making unmistakable. */
+  .cohf-actionbar__item--support {
+    background: var(--gold);
+    color: var(--ink);
+    font-weight: 800;
+  }
+
+  .cohf-actionbar__item[aria-current] {
+    color: var(--terra);
+  }
+
+  /* Keep page content, and especially the footer, clear of the bar. */
+  body {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* The open drawer scrolls to its own Support button and footer links, so
+     the bar would overlay them. Hidden while the menu is open. */
+  body:has(.links.is-open) .cohf-actionbar {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   21. Block-built page bodies
    When a page opts into "build this page with blocks", its content renders
    inside .page-blocks. Editor output has no idea about the theme's section
    rhythm, so without this it would run edge to edge with no vertical space.
