@@ -393,6 +393,8 @@ function cohf_page_seed_map() {
 		'page-templates/page-impact.php'       => 'cohf_seed_impact',
 		'page-templates/page-strategy.php'     => 'cohf_seed_strategy',
 		'page-templates/page-home.php'         => 'cohf_seed_home',
+		'page-templates/page-support.php'      => 'cohf_seed_support',
+		'page-templates/page-accountability.php' => 'cohf_seed_accountability',
 	) );
 }
 
@@ -1467,4 +1469,402 @@ function cohf_seed_home() {
 
 	return $section_story . $section_purpose . $section_approach . $section_programmes
 		. $section_impact . $section_change . $section_stories . $section_journey . $cta;
+}
+
+/**
+ * The Support Our Work page, as blocks.
+ *
+ * Mirrors page-templates/page-support.php. The giving form and the
+ * post-payment confirmation stay dynamic; no payment detail is seeded.
+ *
+ * @return string
+ */
+function cohf_seed_support() {
+
+	$page_url = static function ( $template ) {
+		return function_exists( 'cohf_page_url' ) ? cohf_page_url( $template ) : '';
+	};
+
+	$sec_label = static function ( $text ) {
+		return cohf_seed_p(
+			'<span class="sec-label__rule"></span><span class="sec-label__text">' . esc_html( $text ) . '</span>',
+			'sec-label'
+		);
+	};
+
+	$arrow = static function ( $label, $url, $class = 'arrow' ) {
+		if ( ! $url ) {
+			return '';
+		}
+
+		return cohf_seed_p(
+			'<a class="' . esc_attr( $class ) . '" href="' . esc_url( $url ) . '">' . esc_html( $label ) . ' &rarr;</a>'
+		);
+	};
+
+	$accountability = $page_url( 'page-templates/page-accountability.php' );
+
+	// 1. Confirmation after payment. Renders nothing until a donor returns.
+	$thanks = cohf_seed_shortcode( '[cohf_giving_thanks]' );
+
+	// 2. The giving form and its assurances.
+	$assurances = array(
+		__( 'M-Pesa and card, handled on Paystack\'s secure step.', 'cohf-child' ),
+		__( 'No card or M-Pesa details are stored on this website.', 'cohf-child' ),
+		__( 'Receipted separately from any Hope Market purchase.', 'cohf-child' ),
+		__( 'Spent against approved budgets and documented.', 'cohf-child' ),
+	);
+
+	$give_copy = cohf_seed_group(
+		$sec_label( __( 'Give', 'cohf-child' ) )
+		. cohf_seed_h( __( 'Every contribution should have a clear purpose.', 'cohf-child' ), 2, 'sec-statement' )
+		. cohf_seed_p( __( 'Choose an amount and the area of work you want it to strengthen. You can give once or, if you prefer, every month.', 'cohf-child' ), 'sec-lede' )
+		. cohf_seed_checklist( $assurances, 'give-assure' )
+		. $arrow( __( 'How we account for what we receive', 'cohf-child' ), $accountability ),
+		'give-layout__copy'
+	);
+
+	$give_form = cohf_seed_group(
+		cohf_seed_shortcode( '[cohf_giving_form]' ),
+		'give-layout__form'
+	);
+
+	$section_give = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_group( $give_copy . $give_form, 'give-layout' ),
+			'container'
+		),
+		'warm',
+		'section',
+		'give'
+	);
+
+	// 3. Where support goes.
+	$areas = array(
+		array( '01', 'programme-01', __( 'Keep a child in school', 'cohf-child' ), __( 'School fees, exercise books, stationery, textbooks, uniforms, learning materials and school-related food support for vulnerable children.', 'cohf-child' ) ),
+		array( '02', 'programme-06', __( 'Protect menstrual dignity', 'cohf-child' ), __( 'Sanitary pads and menstrual-health education, supporting the monthly distribution that currently reaches more than 200 girls.', 'cohf-child' ) ),
+		array( '03', 'programme-03', __( 'Start or strengthen an enterprise', 'cohf-child' ), __( 'Start-up support, business-management and financial-literacy training, mentorship and market linkages for women and young people.', 'cohf-child' ) ),
+	);
+
+	$area_cards = '';
+
+	foreach ( $areas as $area ) {
+		$area_cards .= cohf_seed_group(
+			cohf_seed_shortcode( '[cohf_image key="' . $area[1] . '" sizes="(max-width: 60em) 100vw, 33vw"]' )
+			. cohf_seed_group(
+				cohf_seed_p( $area[0], 'kicker' )
+				. cohf_seed_h( $area[2], 3 )
+				. cohf_seed_p( $area[3] ),
+				'card-body'
+			),
+			'card',
+			'article'
+		);
+	}
+
+	$section_areas = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_sec_head(
+				__( 'Where support goes', 'cohf-child' ),
+				__( 'What your support makes possible.', 'cohf-child' ),
+				__( 'These are the areas where additional resources have the most direct effect today. We publish no cost-per-beneficiary figures, because we will not present an estimate as if it were a verified number.', 'cohf-child' )
+			)
+			. cohf_seed_group( $area_cards, 'grid' ),
+			'container'
+		),
+		'',
+		'section'
+	);
+
+	// 4. Other ways to help.
+	$other = cohf_seed_group(
+		cohf_seed_h( __( 'Partner with us', 'cohf-child' ), 3 )
+		. cohf_seed_p( __( 'Programme grants, multi-year partnerships, technical assistance, equipment, market linkages and co-funding.', 'cohf-child' ) )
+		. $arrow( __( 'Partnership options', 'cohf-child' ), $page_url( 'page-templates/page-partners.php' ) ),
+		'',
+		'article'
+	);
+
+	$other .= cohf_seed_group(
+		cohf_seed_h( __( 'Volunteer your skills', 'cohf-child' ), 3 )
+		. cohf_seed_p( __( 'Mentorship, training, professional expertise and time given to programmes and to the young people in them.', 'cohf-child' ) )
+		. $arrow( __( 'Ways to get involved', 'cohf-child' ), $page_url( 'page-templates/page-get-involved.php' ) ),
+		'',
+		'article'
+	);
+
+	/*
+	 * The shop link is only meaningful when WooCommerce is active. The
+	 * template hid the link in that case; the seed keeps the card and drops
+	 * the link, so the copy survives if the shop is added later.
+	 */
+	$shop = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : '';
+
+	$other .= cohf_seed_group(
+		cohf_seed_h( __( 'Buy from Hope Market', 'cohf-child' ), 3 )
+		. cohf_seed_p( __( 'Crafts made by the people in our enterprise programmes. Buying supports the maker and the mission at once.', 'cohf-child' ) )
+		. $arrow( __( 'Visit Hope Market', 'cohf-child' ), $shop ),
+		'',
+		'article'
+	);
+
+	$section_other = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_sec_head(
+				__( 'Other ways', 'cohf-child' ),
+				__( 'Giving money is not the only way to help.', 'cohf-child' )
+			)
+			. cohf_seed_group( $other, 'purpose' ),
+			'container'
+		),
+		'cream',
+		'section'
+	);
+
+	// 5. Our promise.
+	$promises = array(
+		__( 'We prepare and work from approved budgets.', 'cohf-child' ),
+		__( 'We maintain appropriate financial records and supporting documentation.', 'cohf-child' ),
+		__( 'We monitor expenditure against approved programme budgets.', 'cohf-child' ),
+		__( 'We maintain appropriate records for donor-funded activities.', 'cohf-child' ),
+		__( 'We support transparent reporting and independent audit or review.', 'cohf-child' ),
+		__( 'We protect the dignity and confidentiality of beneficiaries when documenting our work.', 'cohf-child' ),
+	);
+
+	$section_promise = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_sec_head(
+				__( 'Our promise', 'cohf-child' ),
+				__( 'What we owe anyone who gives.', 'cohf-child' ),
+				__( 'Trust is one of our most important institutional assets. These are the commitments we hold ourselves to.', 'cohf-child' )
+			)
+			. cohf_seed_checklist( $promises )
+			. cohf_seed_btn(
+				__( 'Read Our Accountability Commitments', 'cohf-child' ),
+				'page-templates/page-accountability.php',
+				'light'
+			),
+			'container'
+		),
+		'impact on-dark',
+		'section'
+	);
+
+	// 6. Call to action.
+	$cta = cohf_seed_shortcode(
+		'[cohf_cta title="' . esc_attr__( 'Prefer to partner rather than give?', 'cohf-child' ) . '"'
+		. ' text="' . esc_attr__( 'We welcome programme grants, multi-year partnerships, technical assistance, equipment, market linkages and co-funding.', 'cohf-child' ) . '"'
+		. ' primary_label="' . esc_attr__( 'Partner With Us', 'cohf-child' ) . '"'
+		. ' primary_page="page-templates/page-partners.php"'
+		. ' secondary_label="' . esc_attr__( 'Contact Us', 'cohf-child' ) . '"'
+		. ' secondary_page="page-templates/page-contact.php"]'
+	);
+
+	return $thanks . $section_give . $section_areas . $section_other . $section_promise . $cta;
+}
+
+/**
+ * The Accountability and Safeguarding page, as blocks.
+ *
+ * Mirrors page-templates/page-accountability.php.
+ *
+ * Note on wording: the template renders several headings containing
+ * "&amp;" through esc_html(), which double-encodes the entity so visitors
+ * see a raw "&amp;" in the text. The seeds spell the word out.
+ *
+ * @return string
+ */
+function cohf_seed_accountability() {
+
+	$page_url = static function ( $template ) {
+		return function_exists( 'cohf_page_url' ) ? cohf_page_url( $template ) : '';
+	};
+
+	$contact = $page_url( 'page-templates/page-contact.php' );
+
+	// 1. Anchor navigation. Someone arriving to raise a concern should not
+	// have to scroll through four sections to find the route.
+	$nav = cohf_seed_shortcode(
+		'[cohf_section_nav items="'
+		. '#financial|' . esc_attr__( 'Financial', 'cohf-child' ) . ';;'
+		. '#safeguarding|' . esc_attr__( 'Safeguarding', 'cohf-child' ) . ';;'
+		. '#data-protection|' . esc_attr__( 'Data protection', 'cohf-child' ) . ';;'
+		. '#complaints|' . esc_attr__( 'Complaints', 'cohf-child' ) . ';;'
+		. '#policies|' . esc_attr__( 'Policies', 'cohf-child' )
+		. '"]'
+	);
+
+	// 2. Four pillars. Whole-card links have no core-block equivalent.
+	$pillars = array(
+		array( '01', __( 'Financial accountability', 'cohf-child' ), __( 'Budgets, financial oversight, supporting documentation and responsible reporting.', 'cohf-child' ), '#financial' ),
+		array( '02', __( 'Safeguarding', 'cohf-child' ), __( 'Protecting children and vulnerable people and maintaining safe programme environments.', 'cohf-child' ), '#safeguarding' ),
+		array( '03', __( 'Data protection', 'cohf-child' ), __( 'Protecting confidential beneficiary information and using stories and photographs responsibly.', 'cohf-child' ), '#data-protection' ),
+		array( '04', __( 'Complaints and feedback', 'cohf-child' ), __( 'A clear route for communities, beneficiaries, partners and the public to raise concerns.', 'cohf-child' ), '#complaints' ),
+	);
+
+	$pillar_html = '<div class="purpose">';
+
+	foreach ( $pillars as $pillar ) {
+		$pillar_html .= '<a class="card" href="' . esc_attr( $pillar[3] ) . '">'
+			. '<div class="card-body">'
+			. '<div class="kicker">' . esc_html( $pillar[0] ) . '</div>'
+			. '<h3>' . esc_html( $pillar[1] ) . '</h3>'
+			. '<p>' . esc_html( $pillar[2] ) . '</p>'
+			. '</div></a>';
+	}
+
+	$pillar_html .= '</div>';
+
+	$section_pillars = cohf_seed_group(
+		cohf_seed_group( cohf_seed_html( $pillar_html ), 'container' ),
+		'',
+		'section'
+	);
+
+	// 3. Financial accountability.
+	$financial = array(
+		__( 'We prepare and work from approved budgets.', 'cohf-child' ),
+		__( 'We maintain appropriate financial records and supporting documentation.', 'cohf-child' ),
+		__( 'We separate authorisation and accountability responsibilities as our systems develop.', 'cohf-child' ),
+		__( 'We monitor expenditure against approved programme budgets.', 'cohf-child' ),
+		__( 'We maintain appropriate records for donor-funded activities.', 'cohf-child' ),
+		__( 'We support transparent reporting and independent audit or review.', 'cohf-child' ),
+	);
+
+	$section_financial = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_section_head(
+				__( 'Financial accountability', 'cohf-child' ),
+				__( 'Responsible stewardship.', 'cohf-child' ),
+				__( 'Our Constitution provides for annual budgeting, financial oversight, annual audit by a certified auditor and financial reporting to donors, stakeholders and the public.', 'cohf-child' )
+			)
+			. cohf_seed_checklist( $financial ),
+			'container'
+		),
+		'cream anchor-offset',
+		'section',
+		'financial'
+	);
+
+	// 4. Safeguarding.
+	$safeguarding_pair = cohf_seed_group(
+		cohf_seed_h( __( 'Protect', 'cohf-child' ), 3 )
+		. cohf_seed_p( __( 'Protect children and vulnerable people from abuse, exploitation, discrimination and avoidable harm.', 'cohf-child' ) ),
+		'',
+		'article'
+	) . cohf_seed_group(
+		cohf_seed_h( __( 'Respond', 'cohf-child' ), 3 )
+		. cohf_seed_p( __( 'Maintain appropriate reporting and referral mechanisms and respond appropriately to concerns and allegations.', 'cohf-child' ) ),
+		'',
+		'article'
+	);
+
+	$safeguarding_copy = cohf_seed_group(
+		cohf_seed_p( __( 'Safeguarding and child protection', 'cohf-child' ), 'kicker' )
+		. cohf_seed_h( __( 'People deserve to feel safe, respected and protected.', 'cohf-child' ) )
+		. cohf_seed_p( __( 'Because we work with children, women, youth and vulnerable communities, safeguarding is central to who we are.', 'cohf-child' ) )
+		. cohf_seed_group( $safeguarding_pair, 'purpose purpose--2col stack-md' )
+	);
+
+	$commitments = array(
+		__( 'Safe and respectful programme environments', 'cohf-child' ),
+		__( 'Confidential beneficiary information', 'cohf-child' ),
+		__( 'Responsible photography and storytelling', 'cohf-child' ),
+		__( 'Qualified professionals for specialist services', 'cohf-child' ),
+		__( 'Safeguarding expectations for staff and volunteers', 'cohf-child' ),
+	);
+
+	$safeguarding_card = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_h( __( 'Our safeguarding commitments', 'cohf-child' ), 3 )
+			. cohf_seed_checklist( $commitments, 'list-check stack-xs' ),
+			'card-body'
+		),
+		'card'
+	);
+
+	$section_safeguarding = cohf_seed_group(
+		cohf_seed_group( $safeguarding_copy . $safeguarding_card, 'container feature' ),
+		'anchor-offset',
+		'section',
+		'safeguarding'
+	);
+
+	// 5. Data protection.
+	$data_card = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_p( __( 'Privacy and data protection', 'cohf-child' ), 'kicker' )
+			. cohf_seed_h( __( 'Respecting the information entrusted to us.', 'cohf-child' ), 3 )
+			. cohf_seed_p( __( 'We protect confidential beneficiary information and promote responsible use of photographs, stories and personal information.', 'cohf-child' ) )
+			. cohf_seed_p( __( 'Our communication should protect the dignity and confidentiality of the people whose experiences we share.', 'cohf-child' ) ),
+			'card-body'
+		),
+		'card'
+	);
+
+	$data_copy = cohf_seed_group(
+		cohf_seed_h( __( 'Privacy is part of dignity.', 'cohf-child' ) )
+		. cohf_seed_p( __( 'Data protection is integrated into our safeguarding and accountability approach. Approved policies are published through the Resources section as they are finalised.', 'cohf-child' ) )
+		. cohf_seed_btn( __( 'View Resources and Policies', 'cohf-child' ), 'page-templates/page-resources.php', 'dark' )
+	);
+
+	$section_data = cohf_seed_group(
+		cohf_seed_group( $data_card . $data_copy, 'container feature' ),
+		'sage anchor-offset',
+		'section',
+		'data-protection'
+	);
+
+	// 6. Complaints.
+	$band = '<div class="cta-band"><div>'
+		. '<h2>' . esc_html__( 'Raise a concern.', 'cohf-child' ) . '</h2>'
+		. '<p>' . esc_html__( 'Use the contact form and select "Complaint or feedback", or contact the Foundation directly.', 'cohf-child' ) . '</p>'
+		. '</div>';
+
+	if ( $contact ) {
+		$band .= '<a class="btn gold" href="' . esc_url( $contact ) . '#enquire">'
+			. esc_html__( 'Raise a Concern', 'cohf-child' ) . '</a>';
+	}
+
+	$band .= '</div>';
+
+	$section_complaints = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_section_head(
+				__( 'Complaints and feedback', 'cohf-child' ),
+				__( 'We want to hear when something is not right.', 'cohf-child' ),
+				__( 'Communities, beneficiaries, partners and members of the public can raise concerns or give feedback on our work. Concerns are treated seriously and confidentially.', 'cohf-child' )
+			)
+			. cohf_seed_html( $band ),
+			'container'
+		),
+		'anchor-offset',
+		'section',
+		'complaints'
+	);
+
+	// 7. Policies.
+	$policies = array(
+		array( __( 'Safeguarding and protection', 'cohf-child' ), __( 'Child Safeguarding and Protection Policy. PSEA and Safeguarding Policy.', 'cohf-child' ) ),
+		array( __( 'Integrity and finance', 'cohf-child' ), __( 'Code of Conduct. Financial Management. Procurement. Anti-Fraud and Anti-Corruption.', 'cohf-child' ) ),
+		array( __( 'People and accountability', 'cohf-child' ), __( 'Conflict of Interest. Whistleblowing. Data Protection and Privacy. Complaints and Feedback. Monitoring, Evaluation and Learning.', 'cohf-child' ) ),
+	);
+
+	$section_policies = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_section_head(
+				__( 'Institutional policies', 'cohf-child' ),
+				__( 'Policies that govern our work.', 'cohf-child' ),
+				__( 'Documents are published through the Resources section as each policy is finalised and approved.', 'cohf-child' )
+			)
+			. cohf_seed_cards( $policies ),
+			'container'
+		),
+		'cream',
+		'section',
+		'policies'
+	);
+
+	return $nav . $section_pillars . $section_financial . $section_safeguarding
+		. $section_data . $section_complaints . $section_policies;
 }

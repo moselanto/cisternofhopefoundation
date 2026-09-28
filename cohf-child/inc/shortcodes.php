@@ -209,6 +209,50 @@ function cohf_sc_contact_details() {
 add_shortcode( 'cohf_contact_details', 'cohf_sc_contact_details' );
 
 /**
+ * [cohf_giving_thanks] - the post-payment confirmation.
+ *
+ * Paystack returns the donor to this page with ?giving=thank-you and a
+ * reference. The template rendered that state above the block insertion
+ * point, so a seeded Support page would have dropped the confirmation and
+ * left donors with no acknowledgement. Renders nothing otherwise.
+ *
+ * @return string
+ */
+function cohf_sc_giving_thanks() {
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only return URL from the payment provider.
+	$thanks = isset( $_GET['giving'] ) && 'thank-you' === $_GET['giving'];
+
+	if ( ! $thanks ) {
+		return '';
+	}
+
+	$ref = isset( $_GET['ref'] ) ? sanitize_text_field( wp_unslash( $_GET['ref'] ) ) : '';
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
+
+	// Carries its own section band, so a seeded page shows nothing at all
+	// until a donor actually returns from payment.
+	ob_start();
+	?>
+	<section class="sage">
+		<div class="container">
+			<div class="give-thanks" role="status">
+				<h2 class="sec-statement"><?php esc_html_e( 'Thank you. Your gift has been received.', 'cohf-child' ); ?></h2>
+				<p class="sec-lede"><?php esc_html_e( 'A receipt is on its way to the email address you gave. If anything looks wrong, contact us and we will put it right.', 'cohf-child' ); ?></p>
+				<?php if ( $ref ) : ?>
+					<p class="give-thanks__ref">
+						<?php esc_html_e( 'Reference:', 'cohf-child' ); ?>
+						<code><?php echo esc_html( $ref ); ?></code>
+					</p>
+				<?php endif; ?>
+			</div>
+		</div>
+	</section>
+	<?php
+	return (string) ob_get_clean();
+}
+add_shortcode( 'cohf_giving_thanks', 'cohf_sc_giving_thanks' );
+
+/**
  * [cohf_section_nav items="#journey|Five-year journey;;#objectives|Objectives"]
  *
  * Anchor links for a long page. Pairs are separated by ";;" and each pair is
