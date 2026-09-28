@@ -13,6 +13,24 @@ defined( 'ABSPATH' ) || exit;
 
 $default_type = isset( $args['default_type'] ) ? $args['default_type'] : 'general';
 $types        = cohf_enquiry_types();
+
+/**
+ * Initial visibility for a conditional block.
+ *
+ * The conditional blocks below used to render visible and were hidden by
+ * assets/js/main.js on load. That meant all three message hints appeared at
+ * once before the script ran, and stayed stacked on top of each other for
+ * anyone without JavaScript - reading as one garbled paragraph telling the
+ * visitor to describe their skills, their organisation and their complaint
+ * simultaneously. Rendering the correct state on the server removes the flash
+ * and gives a coherent no-JavaScript page; main.js then only handles changes.
+ *
+ * @param string $for Space-separated enquiry types this block belongs to.
+ * @return string Empty string, or ' hidden'.
+ */
+$cohf_conditional = static function ( $for ) use ( $default_type ) {
+	return in_array( $default_type, preg_split( '/\s+/', $for ), true ) ? '' : ' hidden';
+};
 ?>
 <?php cohf_form_result_notice(); ?>
 
@@ -43,7 +61,7 @@ $types        = cohf_enquiry_types();
 		<input type="tel" id="cohf-phone" name="cohf_phone" autocomplete="tel" placeholder="+254">
 	</div>
 
-	<div class="field full" data-enquiry-for="partnership media support">
+	<div class="field full" data-enquiry-for="partnership media support"<?php echo $cohf_conditional( 'partnership media support' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- returns a fixed literal. ?>>
 		<label for="cohf-organisation"><?php esc_html_e( 'Organisation', 'cohf-child' ); ?></label>
 		<input type="text" id="cohf-organisation" name="cohf_organisation" autocomplete="organization">
 	</div>
@@ -51,9 +69,9 @@ $types        = cohf_enquiry_types();
 	<div class="field full">
 		<label for="cohf-message"><?php esc_html_e( 'Message', 'cohf-child' ); ?> <span class="req" aria-hidden="true">*</span></label>
 		<textarea id="cohf-message" name="cohf_message" required placeholder="<?php esc_attr_e( 'Tell us how we can work together...', 'cohf-child' ); ?>"></textarea>
-		<span class="field__hint" data-enquiry-for="volunteer"><?php esc_html_e( 'Please tell us about your skills, availability and the kind of role you are interested in.', 'cohf-child' ); ?></span>
-		<span class="field__hint" data-enquiry-for="partnership"><?php esc_html_e( 'Please tell us about your organisation and the kind of partnership you are considering.', 'cohf-child' ); ?></span>
-		<span class="field__hint" data-enquiry-for="complaint"><?php esc_html_e( 'Complaints and feedback are treated seriously and confidentially. You may also raise a concern anonymously by telephone.', 'cohf-child' ); ?></span>
+		<span class="field__hint" data-enquiry-for="volunteer"<?php echo $cohf_conditional( 'volunteer' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- returns a fixed literal. ?>><?php esc_html_e( 'Please tell us about your skills, availability and the kind of role you are interested in.', 'cohf-child' ); ?></span>
+		<span class="field__hint" data-enquiry-for="partnership"<?php echo $cohf_conditional( 'partnership' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- returns a fixed literal. ?>><?php esc_html_e( 'Please tell us about your organisation and the kind of partnership you are considering.', 'cohf-child' ); ?></span>
+		<span class="field__hint" data-enquiry-for="complaint"<?php echo $cohf_conditional( 'complaint' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- returns a fixed literal. ?>><?php esc_html_e( 'Complaints and feedback are treated seriously and confidentially. You may also raise a concern anonymously by telephone.', 'cohf-child' ); ?></span>
 	</div>
 
 	<div class="field full">

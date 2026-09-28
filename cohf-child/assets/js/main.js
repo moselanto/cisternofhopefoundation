@@ -6,7 +6,16 @@
 (function () {
   'use strict';
 
+  /* inc/performance.php adds 'no-js' via the body_class filter, so the class
+     lands on <body>. This previously only cleared it from <html>, which never
+     carried it - meaning body.no-js stayed on the page forever and any styling
+     hung off it would have applied even with JavaScript running. Clear both,
+     and set a positive 'js' hook on <html> for styling that needs it. */
   document.documentElement.classList.remove('no-js');
+  document.documentElement.classList.add('js');
+  if (document.body) {
+    document.body.classList.remove('no-js');
+  }
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
