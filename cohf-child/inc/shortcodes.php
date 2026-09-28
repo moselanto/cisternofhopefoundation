@@ -190,6 +190,93 @@ function cohf_sc_contact_details() {
 add_shortcode( 'cohf_contact_details', 'cohf_sc_contact_details' );
 
 /**
+ * [cohf_leadership] - the three governance tiers and the profile panel.
+ *
+ * Leadership is a live query over the Leadership content type, split into
+ * Executive, Board and Management tiers. The profile panel markup travels
+ * with it because leadership.js expects to find it in the document; seeding
+ * the tiers without the panel would leave every profile link inert.
+ *
+ * @return string
+ */
+function cohf_sc_leadership() {
+	$any = new WP_Query( array(
+		'post_type'      => 'cohf_leader',
+		'posts_per_page' => 1,
+		'fields'         => 'ids',
+		'no_found_rows'  => true,
+	) );
+
+	$has_leaders = $any->have_posts();
+	wp_reset_postdata();
+
+	$tiers = array(
+		array(
+			'group'     => 'executive',
+			'number'    => '01',
+			'title'     => __( 'Executive Leadership', 'cohf-child' ),
+			'statement' => __( 'Direction and stewardship.', 'cohf-child' ),
+			'intro'     => __( 'Overall direction, strategy and day-to-day leadership of the Foundation.', 'cohf-child' ),
+			'modifier'  => 'feature',
+		),
+		array(
+			'group'     => 'board',
+			'number'    => '02',
+			'title'     => __( 'Board of Directors', 'cohf-child' ),
+			'statement' => __( 'Governance and oversight.', 'cohf-child' ),
+			'intro'     => __( 'Independent governance, oversight and accountability, meeting quarterly.', 'cohf-child' ),
+			'modifier'  => 'board',
+		),
+		array(
+			'group'     => 'management',
+			'number'    => '03',
+			'title'     => __( 'Management and Operations', 'cohf-child' ),
+			'statement' => __( 'The people moving the work forward.', 'cohf-child' ),
+			'intro'     => __( 'The team delivering programmes and running the Foundation day to day.', 'cohf-child' ),
+			'modifier'  => '',
+		),
+	);
+
+	ob_start();
+
+	if ( $has_leaders ) {
+		foreach ( $tiers as $tier ) {
+			get_template_part( 'template-parts/leadership-tier', null, $tier );
+		}
+	} else {
+		printf(
+			'<p class="partner-empty">%s</p>',
+			esc_html__( 'Leadership records are created from the Leadership menu in the WordPress admin. Run the one-time setup to add the current team.', 'cohf-child' )
+		);
+	}
+	?>
+
+	<div class="leader-panel" id="cohf-leader-panel" hidden>
+		<div class="leader-panel__scrim" data-leader-close></div>
+		<div class="leader-panel__dialog" role="dialog" aria-modal="true" aria-labelledby="cohf-leader-panel-name">
+			<button type="button" class="leader-panel__close" data-leader-close>
+				<span aria-hidden="true">&times;</span>
+				<span class="screen-reader-text"><?php esc_html_e( 'Close profile', 'cohf-child' ); ?></span>
+			</button>
+			<div class="leader-panel__grid">
+				<div class="leader-panel__media">
+					<img class="leader-panel__img" src="" alt="" hidden>
+					<span class="leader-panel__monogram" aria-hidden="true"></span>
+				</div>
+				<div class="leader-panel__body">
+					<h2 class="leader-panel__name" id="cohf-leader-panel-name"></h2>
+					<p class="leader-panel__role"></p>
+					<div class="leader-panel__bio"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php
+	return (string) ob_get_clean();
+}
+add_shortcode( 'cohf_leadership', 'cohf_sc_leadership' );
+
+/**
  * [cohf_resource_library] - search, filter, list and pagination.
  *
  * The document library is the least block-like section on the site: a search

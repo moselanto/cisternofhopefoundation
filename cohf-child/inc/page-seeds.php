@@ -87,20 +87,21 @@ function cohf_seed_group( $inner, $classes = '', $tag = 'div', $anchor = '' ) {
 }
 
 /**
- * A checklist, two columns.
+ * A checklist. Two columns by default.
  *
- * @param string[] $items List items.
+ * @param string[] $items   List items.
+ * @param string   $classes Class names on the list.
  * @return string
  */
-function cohf_seed_checklist( $items ) {
+function cohf_seed_checklist( $items, $classes = 'list-check list-check--2col' ) {
 	$out = '';
 
 	foreach ( $items as $item ) {
 		$out .= "<!-- wp:list-item -->\n<li>" . esc_html( $item ) . "</li>\n<!-- /wp:list-item -->\n";
 	}
 
-	return "<!-- wp:list {\"className\":\"list-check list-check--2col\"} -->\n"
-		. "<ul class=\"wp-block-list list-check list-check--2col\">\n{$out}</ul>\n"
+	return '<!-- wp:list {"className":"' . $classes . "\"} -->\n"
+		. '<ul class="wp-block-list ' . esc_attr( $classes ) . "\">\n{$out}</ul>\n"
 		. "<!-- /wp:list -->\n\n";
 }
 
@@ -206,6 +207,67 @@ function cohf_seed_btn( $label, $template, $style = 'dark' ) {
 }
 
 /**
+ * A trio of statement cards.
+ *
+ * @param array<int,array{0:string,1:string}> $items Title and body pairs.
+ * @return string
+ */
+function cohf_seed_purpose_trio( $items ) {
+	$inner = '';
+
+	foreach ( $items as $item ) {
+		$inner .= cohf_seed_group(
+			cohf_seed_h( $item[0], 3 ) . cohf_seed_p( $item[1] ),
+			'',
+			'article'
+		);
+	}
+
+	return cohf_seed_group( $inner, 'purpose' );
+}
+
+/**
+ * A two-column table.
+ *
+ * Body cells are td rather than th. A row header would be better markup, but
+ * the core table block only recognises header cells in thead and flags the
+ * rest as invalid; an editor meeting a "this block contains unexpected
+ * content" warning on first open is the worse outcome. The first column is
+ * styled as a header in CSS.
+ *
+ * @param string   $head_a First column heading.
+ * @param string   $head_b Second column heading.
+ * @param string[] $rows   Map of first column => second column.
+ * @return string
+ */
+function cohf_seed_table( $head_a, $head_b, $rows ) {
+	$body = '';
+
+	foreach ( $rows as $left => $right ) {
+		$body .= '<tr><td>' . esc_html( $left ) . '</td><td>' . esc_html( $right ) . "</td></tr>\n";
+	}
+
+	return "<!-- wp:table {\"className\":\"cohf-table\"} -->\n"
+		. '<figure class="wp-block-table cohf-table"><table><thead><tr><th>'
+		. esc_html( $head_a ) . '</th><th>' . esc_html( $head_b )
+		. "</th></tr></thead><tbody>\n{$body}</tbody></table></figure>\n"
+		. "<!-- /wp:table -->\n\n";
+}
+
+/**
+ * A raw HTML block.
+ *
+ * Reserved for structures core blocks cannot express without changing how
+ * they look. The text stays editable; only the wrapper is fixed.
+ *
+ * @param string $html Markup.
+ * @return string
+ */
+function cohf_seed_html( $html ) {
+	return "<!-- wp:html -->\n{$html}\n<!-- /wp:html -->\n\n";
+}
+
+/**
  * A section heading pair: kicker plus title.
  *
  * @param string $kicker  Small label.
@@ -246,6 +308,8 @@ function cohf_page_seed_map() {
 		'page-templates/page-programmes.php'   => 'cohf_seed_programmes',
 		'page-templates/page-get-involved.php' => 'cohf_seed_get_involved',
 		'page-templates/page-resources.php'    => 'cohf_seed_resources',
+		'page-templates/page-leadership.php'   => 'cohf_seed_leadership',
+		'page-templates/page-impact.php'       => 'cohf_seed_impact',
 	) );
 }
 
@@ -797,4 +861,226 @@ function cohf_seed_resources() {
 	);
 
 	return $section_categories . $section_library . $cta;
+}
+
+/**
+ * The Leadership and Governance page, as blocks.
+ *
+ * Mirrors page-templates/page-leadership.php. The three tiers and the
+ * profile panel stay dynamic through [cohf_leadership].
+ *
+ * @return string
+ */
+function cohf_seed_leadership() {
+
+	// 1. The tiers themselves.
+	$section_tiers = cohf_seed_group(
+		cohf_seed_group( cohf_seed_shortcode( '[cohf_leadership]' ), 'container' ),
+		'leadership',
+		'section'
+	);
+
+	// 2. Governance chain.
+	$constitution = function_exists( 'cohf_org_get' ) ? cohf_org_get( 'constitution' ) : '';
+
+	$lede = $constitution
+		? sprintf(
+			/* translators: %s: constitution adoption date. */
+			__( 'Our Constitution, adopted on %s, provides for quarterly Board meetings, annual general meetings and monthly staff meetings.', 'cohf-child' ),
+			$constitution
+		)
+		: __( 'Our Constitution provides for quarterly Board meetings, annual general meetings and monthly staff meetings.', 'cohf-child' );
+
+	$chain = array(
+		array( '01', __( 'Members', 'cohf-child' ), __( 'Receive reports at the annual general meeting and hold leadership accountable.', 'cohf-child' ) ),
+		array( '02', __( 'Board of Directors', 'cohf-child' ), __( 'Provides oversight and strategic direction, meeting quarterly.', 'cohf-child' ) ),
+		array( '03', __( 'Executive Director', 'cohf-child' ), __( 'Accountable to the Board for operations and programme delivery.', 'cohf-child' ) ),
+		array( '04', __( 'Management and Operations', 'cohf-child' ), __( 'Deliver programmes and meet monthly to review progress.', 'cohf-child' ) ),
+	);
+
+	/*
+	 * An ordered list whose items each carry a number, a heading and a
+	 * paragraph has no core-block equivalent that keeps this appearance, so
+	 * the chain is raw HTML. The wording stays editable.
+	 */
+	$chain_html = '<ol class="gov-chain">';
+
+	foreach ( $chain as $link ) {
+		$chain_html .= '<li class="gov-chain__item">'
+			. '<span class="gov-chain__num">' . esc_html( $link[0] ) . '</span>'
+			. '<h3>' . esc_html( $link[1] ) . '</h3>'
+			. '<p>' . esc_html( $link[2] ) . '</p>'
+			. '</li>';
+	}
+
+	$chain_html .= '</ol>';
+
+	$section_gov = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_section_head(
+				__( 'Governance', 'cohf-child' ),
+				__( 'How the Foundation is governed.', 'cohf-child' ),
+				$lede
+			)
+			. cohf_seed_html( $chain_html ),
+			'container'
+		),
+		'sage',
+		'section'
+	);
+
+	// 3. Accountability trio.
+	$trio = array(
+		array( __( 'Safeguarding', 'cohf-child' ), __( 'Protecting children and vulnerable people and promoting safe programme environments.', 'cohf-child' ) ),
+		array( __( 'Financial accountability', 'cohf-child' ), __( 'Approved budgets, appropriate records and responsible reporting.', 'cohf-child' ) ),
+		array( __( 'Responsible communication', 'cohf-child' ), __( 'Protecting beneficiary dignity, confidentiality and responsible use of stories.', 'cohf-child' ) ),
+	);
+
+	$section_trio = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_purpose_trio( $trio )
+			. cohf_seed_btn(
+				__( 'Accountability and Safeguarding', 'cohf-child' ),
+				'page-templates/page-accountability.php',
+				'dark'
+			),
+			'container'
+		),
+		'cream',
+		'section'
+	);
+
+	return $section_tiers . $section_gov . $section_trio . cohf_seed_shortcode( '[cohf_cta]' );
+}
+
+/**
+ * The Impact page, as blocks.
+ *
+ * Mirrors page-templates/page-impact.php. The headline figures stay dynamic
+ * through [cohf_impact_numbers] so they keep reading from one place.
+ *
+ * @return string
+ */
+function cohf_seed_impact() {
+
+	// 1. Current reported position.
+	$section_reported = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_section_head(
+				__( 'Current reported position', 'cohf-child' ),
+				__( 'What we have already started achieving.', 'cohf-child' ),
+				__( 'Our strategic framework grows from work we have already started. These are the figures recorded in our own programme records.', 'cohf-child' )
+			)
+			. cohf_seed_shortcode( '[cohf_impact_numbers]' )
+			. cohf_seed_p(
+				__( 'These figures represent the Foundation\'s reported programme experience and current starting point. They are not lifetime totals. Individual projects and donor submissions contain the detailed evidence, dates, locations, budgets and beneficiary records relevant to each intervention.', 'cohf-child' ),
+				'impact-disclaimer stack-lg'
+			),
+			'container'
+		),
+		'impact',
+		'section',
+		'reported'
+	);
+
+	// 2. Education.
+	$education = cohf_seed_group(
+		cohf_seed_p( __( 'Education', 'cohf-child' ), 'kicker' )
+		. cohf_seed_h( __( 'Helping vulnerable children stay in school.', 'cohf-child' ) )
+		. cohf_seed_p( __( 'In June 2026, three children who had been living on the streets were supported to return to school, with ongoing responsibility for their educational needs including school fees, books, learning materials and food support.', 'cohf-child' ) )
+		. cohf_seed_p( __( 'Reach people. Restore hope. Create opportunity. Build resilience. Sustain change.', 'cohf-child' ), 'quote' )
+	);
+
+	$section_education = cohf_seed_group(
+		cohf_seed_group(
+			$education . cohf_seed_shortcode( '[cohf_image key="programme-01"]' ),
+			'container feature'
+		),
+		'',
+		'section',
+		'children'
+	);
+
+	// 3. Women and livelihoods.
+	$women_items = array(
+		__( 'Small-business start-up and strengthening support', 'cohf-child' ),
+		__( 'Entrepreneurship and business-management training', 'cohf-child' ),
+		__( 'Financial literacy and savings linkages', 'cohf-child' ),
+		__( 'Market access and business linkages', 'cohf-child' ),
+	);
+
+	$women = cohf_seed_group(
+		cohf_seed_p( __( 'Women and livelihoods', 'cohf-child' ), 'kicker' )
+		. cohf_seed_h( __( 'Empowerment creates pathways beyond short-term relief.', 'cohf-child' ) )
+		. cohf_seed_p( __( 'We measure progress not simply by the number of women trained, but by the extent to which supported women are able to sustain and grow viable economic activities.', 'cohf-child' ) )
+		. cohf_seed_checklist( $women_items, 'list-check stack-sm' )
+	);
+
+	$section_women = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_shortcode( '[cohf_image key="programme-03"]' ) . $women,
+			'container feature'
+		),
+		'cream',
+		'section',
+		'women'
+	);
+
+	// 4. Across our work.
+	$across = array(
+		array( __( 'Youth empowerment', 'cohf-child' ), __( 'Through mentorship, counselling, career guidance and life-skills activities we help young people make informed choices and identify pathways towards education, employment and entrepreneurship. These programmes run quarterly.', 'cohf-child' ) ),
+		array( __( 'Menstrual dignity', 'cohf-child' ), __( 'Every month we provide sanitary pads to more than 200 girls, reducing absenteeism, discomfort and stigma, and supporting continued participation in school and community life.', 'cohf-child' ) ),
+		array( __( 'Community outreach', 'cohf-child' ), __( 'Our documented 19 August 2026 programme at Kabete "N" reached 82 children, including 26 teenagers and 56 children below the teenage years, combining feeding with counselling, mentorship and recreation.', 'cohf-child' ) ),
+	);
+
+	$section_across = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_section_head(
+				__( 'Across our work', 'cohf-child' ),
+				__( 'Where else change is taking hold.', 'cohf-child' )
+			)
+			. cohf_seed_purpose_trio( $across ),
+			'container'
+		),
+		'sage',
+		'section',
+		'across'
+	);
+
+	// 5. How we measure.
+	$measures = array(
+		__( 'Reach', 'cohf-child' )          => __( 'Women, youth, children, households and communities reached.', 'cohf-child' ),
+		__( 'Activities', 'cohf-child' )     => __( 'Trainings, counselling forums, feeding activities, distributions, enterprise support.', 'cohf-child' ),
+		__( 'Outputs', 'cohf-child' )        => __( 'People trained, children supported, businesses established, outreach delivered.', 'cohf-child' ),
+		__( 'Outcomes', 'cohf-child' )       => __( 'School participation, enterprise continuation, skills gained, referrals completed.', 'cohf-child' ),
+		__( 'Quality', 'cohf-child' )        => __( 'Participant feedback, safeguarding performance, complaints resolution.', 'cohf-child' ),
+		__( 'Sustainability', 'cohf-child' ) => __( 'Continued operation of supported enterprises and continuation of benefits after funding.', 'cohf-child' ),
+	);
+
+	$section_measure = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_section_head(
+				__( 'Monitoring, evaluation and learning', 'cohf-child' ),
+				__( 'Beyond counting activities.', 'cohf-child' ),
+				__( 'Our approach moves beyond counting activities to understanding change.', 'cohf-child' )
+			)
+			. cohf_seed_table(
+				__( 'What we measure', 'cohf-child' ),
+				__( 'Examples', 'cohf-child' ),
+				$measures
+			),
+			'container'
+		),
+		'',
+		'section',
+		'how-we-measure'
+	);
+
+	// 6. Call to action.
+	$cta = cohf_seed_shortcode(
+		'[cohf_cta title="' . esc_attr__( 'Help us close the gap between need and capacity.', 'cohf-child' ) . '"'
+		. ' text="' . esc_attr__( 'The demand for support is greater than the resources currently available to us. Responsible partnerships allow us to reach more children, young people and women.', 'cohf-child' ) . '"]'
+	);
+
+	return $section_reported . $section_education . $section_women . $section_across . $section_measure . $cta;
 }
