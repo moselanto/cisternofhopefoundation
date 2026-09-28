@@ -16,9 +16,32 @@ get_header();
 		'title'   => __( 'Together, we can create lasting change.', 'cohf-child' ),
 		'text'    => __( 'Cistern of Hope Foundation cannot eradicate poverty alone. We welcome strategic relationships with organisations and individuals who share our commitment to lasting change.', 'cohf-child' ),
 	) );
+
+	/*
+	 * In-page navigation. This page is a long single scroll; without it the
+	 * only way to reach the enquiry form is to read past six sections.
+	 */
+	$cohf_sections = array(
+		'#message'              => __( 'Our message', 'cohf-child' ),
+		'#who-we-partner-with'  => __( 'Who we work with', 'cohf-child' ),
+		'#opportunities'        => __( 'Opportunities', 'cohf-child' ),
+		'#priority-areas'       => __( 'Priority areas', 'cohf-child' ),
+		'#snapshot'             => __( 'Snapshot', 'cohf-child' ),
+		'#enquire'              => __( 'Enquire', 'cohf-child' ),
+	);
 	?>
 
-	<section>
+	<nav class="section-nav" aria-label="<?php esc_attr_e( 'On this page', 'cohf-child' ); ?>">
+		<div class="container">
+			<ul class="section-nav__list">
+				<?php foreach ( $cohf_sections as $cohf_href => $cohf_label ) : ?>
+					<li><a href="<?php echo esc_attr( $cohf_href ); ?>"><?php echo esc_html( $cohf_label ); ?></a></li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	</nav>
+
+	<section id="message">
 		<div class="container feature">
 			<div>
 				<div class="kicker"><?php esc_html_e( 'Our message to partners', 'cohf-child' ); ?></div>
@@ -57,7 +80,7 @@ get_header();
 				<?php foreach ( cohf_partnership_offers() as $offer ) { printf( '<li>%s</li>', esc_html( $offer ) ); } ?>
 			</ul>
 
-			<div class="section-head" style="margin-top:55px">
+			<div class="section-head section-head--stacked" id="priority-areas">
 				<div>
 					<div class="kicker"><?php esc_html_e( 'Priority areas', 'cohf-child' ); ?></div>
 					<h2><?php esc_html_e( 'Areas where we seek partnerships.', 'cohf-child' ); ?></h2>

@@ -30,6 +30,9 @@ function cohf_enqueue_assets() {
 		'cohf-prototype' => 'css/prototype.css',
 		'cohf-wp-adapt'  => 'css/wp-adapt.css',
 		'cohf-system'    => 'css/design-system.css',
+		// Interaction, accessibility and readability corrections. Loads last
+		// so it can override the design layer without editing it.
+		'cohf-ux'        => 'css/ux-refinements.css',
 	);
 
 	$deps = array();

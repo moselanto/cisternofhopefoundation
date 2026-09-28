@@ -228,6 +228,54 @@ function cohf_partnership_offers() {
 }
 
 /**
+ * Confirmed partner organisations, for display on the front end.
+ *
+ * Reads the cohf_partner content type and returns only entries whose
+ * "Partnership confirmed in writing" box is ticked. An empty array is a valid
+ * and expected result: the Foundation publishes no placeholder or aspirational
+ * partners, so the Partners page shows an honest empty state instead.
+ *
+ * @return array<int,array<string,string>> Each: name, text, url, type.
+ */
+function cohf_confirmed_partners() {
+	if ( ! post_type_exists( 'cohf_partner' ) ) {
+		return array();
+	}
+
+	$posts = get_posts( array(
+		'post_type'              => 'cohf_partner',
+		'post_status'            => 'publish',
+		'posts_per_page'         => 60,
+		'orderby'                => array(
+			'menu_order' => 'ASC',
+			'title'      => 'ASC',
+		),
+		'no_found_rows'          => true,
+		'update_post_term_cache' => false,
+		// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+		'meta_query'             => array(
+			array(
+				'key'   => '_cohf_confirmed',
+				'value' => '1',
+			),
+		),
+	) );
+
+	$partners = array();
+
+	foreach ( $posts as $cohf_partner_post ) {
+		$partners[] = array(
+			'name' => get_the_title( $cohf_partner_post ),
+			'text' => wp_trim_words( wp_strip_all_tags( (string) $cohf_partner_post->post_content ), 28, '&hellip;' ),
+			'url'  => cohf_field( 'website', $cohf_partner_post->ID ),
+			'type' => cohf_field( 'partner_type', $cohf_partner_post->ID ),
+		);
+	}
+
+	return $partners;
+}
+
+/**
  * Types of partner the Foundation welcomes.
  *
  * Source: Strategic Framework 2026–2030, section 22.1.

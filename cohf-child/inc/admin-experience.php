@@ -239,9 +239,17 @@ add_action( 'admin_notices', 'cohf_consent_notice' );
 /**
  * Only show confirmed partners on the front end.
  *
+ * Named cohf_filter_confirmed_partners, not cohf_only_confirmed_partners.
+ * The old name was also being called as a data getter from
+ * template-parts/partner-section.php. Because this is a pre_get_posts
+ * callback with a required $query argument, that zero-argument call raised an
+ * ArgumentCountError on PHP 8 and brought the whole Partners page down with a
+ * WordPress critical error. The getter now lives in inc/template-tags.php as
+ * cohf_confirmed_partners().
+ *
  * @param WP_Query $query Query.
  */
-function cohf_only_confirmed_partners( $query ) {
+function cohf_filter_confirmed_partners( $query ) {
 	if ( is_admin() || ! $query->is_main_query() ) {
 		return;
 	}
@@ -250,4 +258,4 @@ function cohf_only_confirmed_partners( $query ) {
 		$query->set( 'meta_value', '1' );
 	}
 }
-add_action( 'pre_get_posts', 'cohf_only_confirmed_partners' );
+add_action( 'pre_get_posts', 'cohf_filter_confirmed_partners' );

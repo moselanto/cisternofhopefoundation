@@ -1,0 +1,414 @@
+/* ==========================================================================
+   Cistern of Hope Foundation - UX refinements
+   --------------------------------------------------------------------------
+   Loads last, after prototype.css, wp-adapt.css and design-system.css, so it
+   can correct interaction and readability problems without editing the
+   approved design layer.
+
+   Scope, and the reason for each block, is documented inline. Nothing here
+   changes the brand palette, the type family or the page composition.
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   1. Anchor landing position
+   The header is sticky and html has scroll-behavior:smooth, so every in-page
+   anchor previously landed underneath the header and the heading you clicked
+   toward was hidden. scroll-margin-top reserves the header height.
+   -------------------------------------------------------------------------- */
+:root {
+  --header-h: 78px;
+  --focus-ring: #a34d2a;
+}
+
+section[id],
+h2[id],
+h3[id],
+[id].anchor-target {
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+
+@media (max-width: 600px) {
+  :root { --header-h: 66px; }
+}
+
+
+/* --------------------------------------------------------------------------
+   2. Focus visibility
+   Focus styling was inconsistent between links, buttons and form controls.
+   One ring, used everywhere, at 3:1 against every ground in the palette.
+   -------------------------------------------------------------------------- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* On the dark grounds the terracotta ring is too low-contrast; use gold. */
+.impact a:focus-visible,
+.impact button:focus-visible,
+.page-hero a:focus-visible,
+.hero a:focus-visible,
+footer a:focus-visible,
+.top a:focus-visible,
+.cta-band a:focus-visible {
+  outline-color: #f2c969;
+}
+
+/* Never remove the ring for keyboard users, even if a component tries. */
+:focus-visible { outline-style: solid; }
+
+
+/* --------------------------------------------------------------------------
+   3. Touch targets
+   Nav, footer and utility-bar links were 13px text with no padding, giving
+   tap targets well under the 44px minimum. Height is added with padding so
+   the visual rhythm is unchanged on desktop.
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .links a,
+  .navgroup__btn,
+  .navgroup__panel a,
+  .foot a,
+  .copyright a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .foot a { padding: 4px 0; }
+
+  .nav-toggle {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+.btn,
+.cta,
+.cta-mobile {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* --------------------------------------------------------------------------
+   4. Checklist readability
+   .list-check--2col used CSS multi-column, so items read top-to-bottom down
+   column one and then jump back up to column two. For an unordered list of
+   peers that ordering is arbitrary and hard to scan. Grid restores a natural
+   left-to-right reading order and aligns the rows.
+   -------------------------------------------------------------------------- */
+.list-check--2col {
+  columns: auto;
+  column-gap: normal;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 45px;
+  align-items: start;
+}
+
+@media (max-width: 700px) {
+  .list-check--2col { grid-template-columns: 1fr; }
+}
+
+/* Slightly stronger than --muted: these lists are primary content on the
+   Partners and Accountability pages, not secondary notes. */
+.list-check li { color: #4a534e; }
+
+
+/* --------------------------------------------------------------------------
+   5. Data tables on small screens
+   .cohf-table carried min-width:560px, which forced a horizontal scroll on
+   every phone with no visible cue that content continued sideways. Below
+   600px each row becomes a stacked question/answer block instead.
+   -------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .table-wrap {
+    overflow-x: visible;
+    border: 0;
+    background: transparent;
+  }
+
+  .cohf-table,
+  .cohf-table tbody,
+  .cohf-table tr,
+  .cohf-table th,
+  .cohf-table td {
+    display: block;
+    width: auto;
+    min-width: 0;
+  }
+
+  .cohf-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .cohf-table tbody tr {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 4px 2px;
+    margin-bottom: 14px;
+  }
+
+  .cohf-table tbody th {
+    white-space: normal;
+    border-bottom: 0;
+    padding-bottom: 2px;
+    font-size: 16px;
+  }
+
+  .cohf-table tbody td {
+    border-bottom: 0;
+    padding-top: 0;
+    color: var(--muted);
+  }
+
+  .cohf-table tbody tr:last-child { margin-bottom: 0; }
+}
+
+/* Above 600px the table still scrolls if the viewport is narrow. Give it a
+   visible edge fade so the overflow is discoverable rather than silent. */
+@media (min-width: 601px) {
+  .table-wrap {
+    background-image:
+      linear-gradient(to right, #fff 30%, #fff0),
+      linear-gradient(to left, #fff 30%, #fff0),
+      linear-gradient(to right, #123a2d1f, #123a2d00),
+      linear-gradient(to left, #123a2d1f, #123a2d00);
+    background-position: 0 0, 100% 0, 0 0, 100% 0;
+    background-repeat: no-repeat;
+    background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+    background-attachment: local, local, scroll, scroll;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   6. In-page section navigation
+   The Partners, Accountability, Strategy and Support pages are long, single
+   scroll documents. A chip row under the hero gives orientation and a way to
+   reach a section directly. It is a real <nav> so it is announced correctly.
+   -------------------------------------------------------------------------- */
+.section-nav {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 4;
+  background: #fffffff2;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.section-nav__list {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 0;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.section-nav__list::-webkit-scrollbar { display: none; }
+
+.section-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 16px;
+  white-space: nowrap;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font: 700 13px/1 var(--font-body);
+  color: var(--forest, var(--g));
+  background: #fff;
+  transition: background .18s ease, border-color .18s ease, color .18s ease;
+}
+
+.section-nav a:hover {
+  background: var(--sage, var(--s));
+  border-color: var(--green, var(--g2));
+}
+
+.section-nav a[aria-current="true"] {
+  background: var(--forest, var(--g));
+  border-color: var(--forest, var(--g));
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .section-nav { position: static; }
+}
+
+@media print {
+  .section-nav { display: none; }
+}
+
+
+/* --------------------------------------------------------------------------
+   7. Section heading rhythm
+   .section-head used align-items:end, so a two-line heading and a one-line
+   paragraph sat on mismatched baselines. Aligning to the start and giving the
+   supporting paragraph a measure reads more deliberately.
+   -------------------------------------------------------------------------- */
+.section-head {
+  align-items: start;
+}
+
+.section-head > p {
+  max-width: 46ch;
+  margin-top: 0;
+}
+
+/* The inline style="margin-top:55px" repeated in page templates is replaced
+   by this utility so spacing stays in the stylesheet. */
+.section-head--stacked {
+  margin-top: clamp(40px, 5vw, 64px);
+}
+
+
+/* --------------------------------------------------------------------------
+   8. Cards
+   Cards animated on :hover only, so keyboard users got no equivalent signal,
+   and the lift was suppressed for nobody who had asked for less motion.
+   -------------------------------------------------------------------------- */
+.card:focus-within {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 45px #17231e18;
+}
+
+.card h3 { text-wrap: balance; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card:hover,
+  .card:focus-within,
+  .section-nav a {
+    transition: none;
+    transform: none;
+  }
+
+  html { scroll-behavior: auto; }
+}
+
+
+/* --------------------------------------------------------------------------
+   9. Headline and measure typography
+   Headings wrapped with one orphaned word on common viewport widths. Body
+   copy had no cap, so on wide screens some paragraphs ran past 100 characters
+   per line, which is well beyond the comfortable 50-75 range.
+   -------------------------------------------------------------------------- */
+h1, h2, h3,
+.cta-band h2,
+.section-head h2 {
+  text-wrap: balance;
+}
+
+.feature p,
+.story-copy p,
+section > .container > p {
+  max-width: 68ch;
+}
+
+p { text-wrap: pretty; }
+
+
+/* --------------------------------------------------------------------------
+   10. Empty states
+   The Partners empty state is a genuine editorial position, not an error, so
+   it should read as a considered statement rather than a dashed placeholder.
+   -------------------------------------------------------------------------- */
+.partner-empty {
+  border-style: solid;
+  border-color: var(--line);
+  border-left: 4px solid var(--gold);
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 68ch;
+}
+
+
+/* --------------------------------------------------------------------------
+   11. Images
+   Reserve space so cards and features do not shift as images decode.
+   -------------------------------------------------------------------------- */
+.card img,
+.story img,
+.feature img {
+  background: var(--sage, var(--s));
+}
+
+
+/* --------------------------------------------------------------------------
+   12. Forms
+   Labels, hints and errors were visually uniform with the inputs. Give the
+   label weight, mark required fields, and make the invalid state obvious.
+   -------------------------------------------------------------------------- */
+.field > label {
+  font: 700 13px/1.4 var(--font-body);
+  letter-spacing: .02em;
+  color: var(--forest, var(--g));
+}
+
+.field .required {
+  color: var(--terra, var(--t));
+  margin-left: 2px;
+}
+
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  min-height: 48px;
+  background: #fff;
+}
+
+input:user-invalid,
+textarea:user-invalid,
+select:user-invalid {
+  border-color: #9c2f14;
+  box-shadow: 0 0 0 1px #9c2f14;
+}
+
+::placeholder { color: #8a938e; opacity: 1; }
+
+
+/* --------------------------------------------------------------------------
+   13. Print
+   Supporters and funders do print these pages. Drop the furniture.
+   -------------------------------------------------------------------------- */
+@media print {
+  .top,
+  header,
+  .cta,
+  .cta-mobile,
+  .nav-toggle,
+  .cta-band .buttons {
+    display: none !important;
+  }
+
+  .page-hero {
+    background: none !important;
+    color: #000;
+    padding: 0 0 18px;
+  }
+
+  .page-hero h1,
+  .page-hero p { color: #000; }
+
+  section { padding: 18px 0; break-inside: avoid; }
+}

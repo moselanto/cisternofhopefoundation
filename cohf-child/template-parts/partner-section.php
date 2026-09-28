@@ -9,9 +9,9 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$partners = cohf_only_confirmed_partners();
+$partners = function_exists( 'cohf_confirmed_partners' ) ? cohf_confirmed_partners() : array();
 ?>
-<section class="cream">
+<section class="cream" id="our-partners">
 	<div class="container">
 		<div class="section-head">
 			<div>
