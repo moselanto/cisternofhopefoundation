@@ -115,6 +115,69 @@ function cohf_seed_shortcode( $shortcode ) {
 }
 
 /**
+ * A grid of simple cards.
+ *
+ * @param array<int,array{0:string,1:string}> $cards Title and body pairs.
+ * @return string
+ */
+function cohf_seed_cards( $cards ) {
+	$inner = '';
+
+	foreach ( $cards as $card ) {
+		$body = cohf_seed_group(
+			cohf_seed_h( $card[0], 3 ) . cohf_seed_p( $card[1] ),
+			'card-body'
+		);
+
+		$inner .= cohf_seed_group( $body, 'card', 'article' );
+	}
+
+	return cohf_seed_group( $inner, 'grid' );
+}
+
+/**
+ * A row of headline facts.
+ *
+ * @param array<int,array{0:string,1:string}> $facts Figure and label pairs.
+ * @return string
+ */
+function cohf_seed_facts( $facts ) {
+	$inner = '';
+
+	foreach ( $facts as $fact ) {
+		$inner .= cohf_seed_group(
+			cohf_seed_p( '<strong>' . esc_html( $fact[0] ) . '</strong><span>' . esc_html( $fact[1] ) . '</span>' ),
+			'fact'
+		);
+	}
+
+	return cohf_seed_group( $inner, 'facts' );
+}
+
+/**
+ * A link styled as a button.
+ *
+ * Returns an empty string when the target page does not exist, so a seed
+ * never plants a link to nowhere.
+ *
+ * @param string $label    Link text.
+ * @param string $template Template file of the target page.
+ * @param string $style    Button style class.
+ * @return string
+ */
+function cohf_seed_btn( $label, $template, $style = 'dark' ) {
+	$url = function_exists( 'cohf_page_url' ) ? cohf_page_url( $template ) : '';
+
+	if ( ! $url ) {
+		return '';
+	}
+
+	return cohf_seed_p(
+		'<a class="btn ' . esc_attr( $style ) . '" href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a>'
+	);
+}
+
+/**
  * A section heading pair: kicker plus title.
  *
  * @param string $kicker  Small label.
@@ -148,7 +211,11 @@ function cohf_seed_section_head( $kicker, $title, $lede = '', $classes = '', $an
  */
 function cohf_page_seed_map() {
 	return apply_filters( 'cohf_page_seed_map', array(
-		'page-templates/page-partners.php' => 'cohf_seed_partners',
+		'page-templates/page-partners.php'   => 'cohf_seed_partners',
+		'page-templates/page-approach.php'   => 'cohf_seed_approach',
+		'page-templates/page-contact.php'    => 'cohf_seed_contact',
+		'page-templates/page-about.php'      => 'cohf_seed_about',
+		'page-templates/page-programmes.php' => 'cohf_seed_programmes',
 	) );
 }
 
@@ -303,4 +370,226 @@ function cohf_seed_partners() {
 	);
 
 	return $section_message . $section_who . $section_opps . $section_snapshot . $section_partners . $section_enquire;
+}
+
+/**
+ * The Our Approach page, as blocks.
+ *
+ * Mirrors page-templates/page-approach.php. The approach steps, theory of
+ * change and closing call to action are shared sections used on other pages
+ * too, so they stay as shortcodes rather than being copied in as static text.
+ *
+ * @return string
+ */
+function cohf_seed_approach() {
+
+	// 1. The approach steps.
+	$section_steps = cohf_seed_group(
+		cohf_seed_group( cohf_seed_shortcode( '[cohf_approach]' ), 'container' ),
+		'sage',
+		'section'
+	);
+
+	// 2. Theory of change - renders its own section wrapper.
+	$section_toc = cohf_seed_shortcode( '[cohf_theory_of_change]' );
+
+	// 3. How we work.
+	$how = cohf_seed_group(
+		cohf_seed_p( __( 'How we work', 'cohf-child' ), 'kicker' )
+		. cohf_seed_h( __( 'Communities are partners, not recipients.', 'cohf-child' ) )
+		. cohf_seed_p( __( 'We work with qualified professionals and appropriate institutions wherever services require clinical expertise, diagnosis, treatment or other regulated practice. Our role includes community mobilisation, awareness, outreach coordination, referral and follow-up.', 'cohf-child' ) )
+		. cohf_seed_p( __( 'Sustainable change requires knowledge, mentorship, supportive relationships, access to opportunity and follow-up.', 'cohf-child' ), 'quote' )
+	);
+
+	$section_how = cohf_seed_group(
+		cohf_seed_group(
+			$how . cohf_seed_shortcode( '[cohf_image key="programme-11"]' ),
+			'container feature'
+		),
+		'cream',
+		'section'
+	);
+
+	// 4. Closing call to action.
+	$section_cta = cohf_seed_shortcode( '[cohf_cta]' );
+
+	return $section_steps . $section_toc . $section_how . $section_cta;
+}
+
+/**
+ * The Contact page, as blocks.
+ *
+ * Mirrors page-templates/page-contact.php. The address, phone and email are
+ * left as [cohf_contact_details] so they keep reading from Foundation >
+ * Organisation details; freezing them here would mean a future phone number
+ * change never reaching this page.
+ *
+ * @return string
+ */
+function cohf_seed_contact() {
+
+	$details = cohf_seed_group(
+		cohf_seed_p( __( 'Contact details', 'cohf-child' ), 'kicker' )
+		. cohf_seed_h( __( 'Let\'s build lasting change together.', 'cohf-child' ) )
+		. cohf_seed_shortcode( '[cohf_contact_details]' )
+		. cohf_seed_p(
+			'<b>' . esc_html__( 'Raising a concern', 'cohf-child' ) . '</b><br>'
+			. esc_html__( 'To raise a safeguarding concern or make a complaint, select "Complaint or feedback" in the form. Concerns are treated seriously and confidentially.', 'cohf-child' ),
+			'callout stack-md'
+		)
+	);
+
+	return cohf_seed_group(
+		cohf_seed_group(
+			$details . cohf_seed_shortcode( '[cohf_enquiry_form type="general"]' ),
+			'container story'
+		),
+		'',
+		'section',
+		'enquire'
+	);
+}
+
+/**
+ * The About page, as blocks.
+ *
+ * Mirrors page-templates/page-about.php. Founded and registered years are
+ * read from Organisation details at seed time so the facts row starts out
+ * matching the rest of the site.
+ *
+ * @return string
+ */
+function cohf_seed_about() {
+
+	$org_get = static function ( $key ) {
+		return function_exists( 'cohf_org_get' ) ? cohf_org_get( $key ) : '';
+	};
+
+	// 1. Why we exist.
+	$why = cohf_seed_group(
+		cohf_seed_p( __( 'Why we exist', 'cohf-child' ), 'kicker' )
+		. cohf_seed_h( __( 'Poverty should not define a person\'s future.', 'cohf-child' ) )
+		. cohf_seed_p( __( 'We work with vulnerable children, young people, women and communities, responding to immediate needs while creating pathways toward sustainable livelihoods, education, wellbeing, resilience and self-reliance.', 'cohf-child' ) )
+		. cohf_seed_btn( __( 'See Our Approach', 'cohf-child' ), 'page-templates/page-approach.php', 'dark' ),
+		'story-copy'
+	);
+
+	$section_why = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_shortcode( '[cohf_image key="programme-02"]' ) . $why,
+			'container story'
+		),
+		'',
+		'section'
+	);
+
+	// 2. Purpose.
+	$section_purpose = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_section_head(
+				__( 'Our purpose', 'cohf-child' ),
+				__( 'Vision, mission and motto.', 'cohf-child' )
+			)
+			. cohf_seed_shortcode( '[cohf_purpose]' ),
+			'container'
+		),
+		'sage',
+		'section'
+	);
+
+	// 3. Values.
+	$values = array(
+		array( __( 'Empathy', 'cohf-child' ), __( 'Understanding people\'s circumstances and responding with compassion, dignity and humanity.', 'cohf-child' ) ),
+		array( __( 'Integrity', 'cohf-child' ), __( 'Honesty, transparency, responsible use of resources and accountability.', 'cohf-child' ) ),
+		array( __( 'Sustainability', 'cohf-child' ), __( 'Solutions that build capacity, self-reliance and long-term community development.', 'cohf-child' ) ),
+		array( __( 'Collaboration', 'cohf-child' ), __( 'Working with communities, government, donors and partners to increase impact.', 'cohf-child' ) ),
+		array( __( 'Respect', 'cohf-child' ), __( 'Upholding dignity, rights, inclusion and the equal worth of every person.', 'cohf-child' ) ),
+		array( __( 'Innovation', 'cohf-child' ), __( 'Remaining open to practical and creative ways of addressing changing community challenges.', 'cohf-child' ) ),
+	);
+
+	$section_values = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_section_head(
+				__( 'Our values', 'cohf-child' ),
+				__( 'How we want to work.', 'cohf-child' )
+			)
+			. cohf_seed_cards( $values ),
+			'container'
+		),
+		'cream',
+		'section'
+	);
+
+	// 4. Journey.
+	$facts = array(
+		array( $org_get( 'founded' ), __( 'Founded in Uthiru, Nairobi', 'cohf-child' ) ),
+		array( $org_get( 'registered' ), __( 'Registered under the Registrar of Societies', 'cohf-child' ) ),
+		array( '12', __( 'Connected programme areas', 'cohf-child' ) ),
+	);
+
+	$journey = cohf_seed_group(
+		cohf_seed_p( __( 'Our journey', 'cohf-child' ), 'kicker' )
+		. cohf_seed_h( __( 'A young organisation with a clear direction.', 'cohf-child' ) )
+		. cohf_seed_p( __( 'Our Constitution gives us an institutional foundation, and our 2026-2030 strategy gives us direction. We are building the systems and partnerships required to increase our impact responsibly.', 'cohf-child' ) )
+		. cohf_seed_facts( $facts )
+		. cohf_seed_btn( __( 'Leadership and Governance', 'cohf-child' ), 'page-templates/page-leadership.php', 'outline' )
+	);
+
+	$section_journey = cohf_seed_group(
+		cohf_seed_group(
+			$journey . cohf_seed_shortcode( '[cohf_image key="programme-12"]' ),
+			'container feature'
+		),
+		'',
+		'section'
+	);
+
+	return $section_why . $section_purpose . $section_values . $section_journey . cohf_seed_shortcode( '[cohf_cta]' );
+}
+
+/**
+ * The Programmes page, as blocks.
+ *
+ * Mirrors page-templates/page-programmes.php. The programme grid is a live
+ * query over the Programmes content type and keeps its audience filter bar,
+ * so it stays a shortcode rather than twelve frozen cards.
+ *
+ * @return string
+ */
+function cohf_seed_programmes() {
+
+	// 1. The programme grid, with its audience filter.
+	$section_grid = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_shortcode( '[cohf_programmes count="24" filter="yes"]' ),
+			'container'
+		),
+		'',
+		'section'
+	);
+
+	// 2. How programmes connect.
+	$connect = cohf_seed_group(
+		cohf_seed_p( __( 'How our programmes connect', 'cohf-child' ), 'kicker' )
+		. cohf_seed_h( __( 'One poverty-eradication mission.', 'cohf-child' ) )
+		. cohf_seed_p( __( 'A child who receives school support needs more than fees alone; a young person needs more than a training certificate; a woman starting a business needs more than start-up capital.', 'cohf-child' ) )
+		. cohf_seed_p( __( 'We work with qualified professionals and appropriate institutions wherever services require clinical expertise, diagnosis, treatment or other regulated practice.', 'cohf-child' ) )
+	);
+
+	$section_connect = cohf_seed_group(
+		cohf_seed_group(
+			cohf_seed_shortcode( '[cohf_image key="programme-01"]' ) . $connect,
+			'container feature'
+		),
+		'cream',
+		'section'
+	);
+
+	// 3. Call to action, with wording specific to this page.
+	$cta = cohf_seed_shortcode(
+		'[cohf_cta title="' . esc_attr__( 'Sponsor a programme area.', 'cohf-child' ) . '"'
+		. ' text="' . esc_attr__( 'Fund a defined programme for a defined period, with agreed indicators and reporting. We welcome programme grants, multi-year partnerships, technical assistance and co-funding.', 'cohf-child' ) . '"]'
+	);
+
+	return $section_grid . $section_connect . $cta;
 }

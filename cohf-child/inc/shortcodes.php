@@ -96,7 +96,6 @@ function cohf_simple_part_shortcodes() {
 		'cohf_approach'         => 'template-parts/approach',
 		'cohf_purpose'          => 'template-parts/purpose',
 		'cohf_theory_of_change' => 'template-parts/theory-of-change',
-		'cohf_cta'              => 'template-parts/cta',
 		'cohf_giving_form'      => 'template-parts/giving-form',
 	);
 }
@@ -112,13 +111,77 @@ foreach ( cohf_simple_part_shortcodes() as $cohf_tag => $cohf_slug ) {
 unset( $cohf_tag, $cohf_slug );
 
 /**
+ * [cohf_cta title="" text=""] - the closing call to action.
+ *
+ * Takes attributes because Programmes overrides the wording. Only non-empty
+ * attributes are passed through, so a bare [cohf_cta] keeps the template
+ * part's own defaults rather than blanking the heading.
+ *
+ * @param array $atts Attributes.
+ * @return string
+ */
+function cohf_sc_cta( $atts ) {
+	$atts = shortcode_atts( array(
+		'title' => '',
+		'text'  => '',
+	), $atts, 'cohf_cta' );
+
+	$args = array_filter( $atts, static function ( $value ) {
+		return '' !== trim( (string) $value );
+	} );
+
+	return cohf_shortcode_part( 'template-parts/cta', $args );
+}
+add_shortcode( 'cohf_cta', 'cohf_sc_cta' );
+
+/**
+ * [cohf_contact_details] - postal address, phone, email and location.
+ *
+ * Seeded into the Contact page rather than flattened into text on purpose.
+ * These values already have one home, Foundation > Organisation details, and
+ * copying them into block content would mean a phone number change silently
+ * failing to reach the Contact page.
+ *
+ * @return string
+ */
+function cohf_sc_contact_details() {
+	if ( ! function_exists( 'cohf_org' ) ) {
+		return '';
+	}
+
+	$org  = cohf_org();
+	$tel  = preg_replace( '/[^0-9+]/', '', $org['phone'] );
+	$rows = array();
+
+	$rows[] = '<p><b>' . esc_html( strtoupper( $org['name'] ) ) . '</b></p>';
+
+	$rows[] = '<p><b>' . esc_html__( 'Postal address', 'cohf-child' ) . '</b><br>'
+		. esc_html( $org['address'] ) . '</p>';
+
+	$rows[] = '<p><b>' . esc_html__( 'Phone', 'cohf-child' ) . '</b><br>'
+		. '<a href="tel:' . esc_attr( $tel ) . '">' . esc_html( $org['phone'] ) . '</a></p>';
+
+	$rows[] = '<p><b>' . esc_html__( 'Email', 'cohf-child' ) . '</b><br>'
+		. '<a href="mailto:' . esc_attr( $org['email'] ) . '">' . esc_html( $org['email'] ) . '</a></p>';
+
+	$rows[] = '<p><b>' . esc_html__( 'Where we work', 'cohf-child' ) . '</b><br>'
+		. esc_html__( 'Uthiru, Nairobi, and communities across Kenya.', 'cohf-child' ) . '</p>';
+
+	return implode( "\n", $rows );
+}
+add_shortcode( 'cohf_contact_details', 'cohf_sc_contact_details' );
+
+/**
  * [cohf_programmes count="12"] - the programme card grid.
  *
  * @param array $atts Attributes.
  * @return string
  */
 function cohf_sc_programmes( $atts ) {
-	$atts = shortcode_atts( array( 'count' => 12 ), $atts, 'cohf_programmes' );
+	$atts = shortcode_atts( array(
+		'count'  => 12,
+		'filter' => 'no',
+	), $atts, 'cohf_programmes' );
 
 	$query = new WP_Query( array(
 		'post_type'      => 'cohf_programme',
@@ -134,8 +197,53 @@ function cohf_sc_programmes( $atts ) {
 		return '';
 	}
 
+	// Unique ids so two grids on one page cannot cross-wire their filters.
+	static $instance = 0;
+	++$instance;
+
+	$list_id   = 'programme-list-' . $instance;
+	$status_id = 'programme-filter-status-' . $instance;
+	$want_bar  = in_array( strtolower( (string) $atts['filter'] ), array( 'yes', 'true', '1' ), true );
+
 	ob_start();
-	echo '<div class="grid">';
+
+	if ( $want_bar ) {
+		$audiences = get_terms( array(
+			'taxonomy'   => 'cohf_audience',
+			'hide_empty' => true,
+		) );
+
+		if ( ! empty( $audiences ) && ! is_wp_error( $audiences ) ) {
+			printf(
+				'<div class="filter-bar" data-filter-group data-filter-target="#%1$s" data-filter-status="#%2$s" role="group" aria-label="%3$s">',
+				esc_attr( $list_id ),
+				esc_attr( $status_id ),
+				esc_attr__( 'Filter programmes by audience', 'cohf-child' )
+			);
+
+			printf(
+				'<button type="button" data-filter="all" aria-pressed="true">%s</button>',
+				esc_html__( 'All programmes', 'cohf-child' )
+			);
+
+			foreach ( $audiences as $audience ) {
+				printf(
+					'<button type="button" data-filter="%1$s" aria-pressed="false">%2$s</button>',
+					esc_attr( $audience->slug ),
+					esc_html( $audience->name )
+				);
+			}
+
+			echo '</div>';
+
+			printf(
+				'<p id="%s" class="screen-reader-text" role="status"></p>',
+				esc_attr( $status_id )
+			);
+		}
+	}
+
+	printf( '<div class="grid" id="%s">', esc_attr( $list_id ) );
 	while ( $query->have_posts() ) {
 		$query->the_post();
 		get_template_part( 'template-parts/programme-card' );
