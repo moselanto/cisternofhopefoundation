@@ -37,6 +37,8 @@ foreach ( array(
 	'redirects',
 	'page-body',
 	'block-patterns',
+	'shortcodes',
+	'page-seeds',
 	'custom-post-types',
 	'custom-fields',
 	'admin-experience',

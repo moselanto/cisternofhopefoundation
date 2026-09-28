@@ -130,7 +130,34 @@ function cohf_block_body_meta_box_render( $post ) {
 		<?php if ( $on && ! $has_copy ) : ?>
 			<p class="description" style="color:#b32d2e">
 				<strong><?php esc_html_e( 'This page has no content yet.', 'cohf-child' ); ?></strong>
-				<?php esc_html_e( 'The designed layout is still being shown, so the page is not blank. Add blocks below to replace it. Tip: use Add Block, browse Patterns, then the Cistern of Hope category for ready-made sections.', 'cohf-child' ); ?>
+				<?php esc_html_e( 'The designed layout is still being shown, so the page is not blank. Add blocks below to replace it.', 'cohf-child' ); ?>
+			</p>
+		<?php endif; ?>
+
+		<?php
+		/*
+		 * The whole point of opting in is to edit the page's real copy. Asking
+		 * an editor to retype 400 words that already exist in the template
+		 * would be a poor trade, so where starter content is available we hand
+		 * the existing page over as blocks in one click.
+		 */
+		$seed = function_exists( 'cohf_page_seed_for' ) ? cohf_page_seed_for( $template ) : '';
+		?>
+
+		<?php if ( $seed && ! $has_copy ) : ?>
+			<hr>
+			<p>
+				<a class="button button-primary" href="<?php echo esc_url( cohf_seed_page_url( $post->ID ) ); ?>">
+					<?php esc_html_e( 'Copy the designed layout into blocks', 'cohf-child' ); ?>
+				</a>
+			</p>
+			<p class="description">
+				<?php esc_html_e( 'Fills the editor with this page exactly as it appears now, as editable blocks, and ticks the box above. The live partner list and enquiry form stay dynamic. Nothing is published until you update the page.', 'cohf-child' ); ?>
+			</p>
+		<?php elseif ( $seed && $has_copy ) : ?>
+			<hr>
+			<p class="description">
+				<?php esc_html_e( 'Starter content is available for this template, but this page already has content, so it will not be overwritten. Empty the editor first if you want to start again from the designed layout.', 'cohf-child' ); ?>
 			</p>
 		<?php endif; ?>
 	<?php else : ?>
@@ -140,6 +167,98 @@ function cohf_block_body_meta_box_render( $post ) {
 	<?php endif; ?>
 	<?php
 }
+
+/**
+ * URL for the "copy the designed layout into blocks" action.
+ *
+ * @param int $post_id Page ID.
+ * @return string
+ */
+function cohf_seed_page_url( $post_id ) {
+	return wp_nonce_url(
+		admin_url( 'admin-post.php?action=cohf_seed_page&post=' . (int) $post_id ),
+		'cohf_seed_page_' . (int) $post_id
+	);
+}
+
+/**
+ * Write the template's starter content into the page, then return to the editor.
+ *
+ * Deliberately refuses to run when the page already has content. Overwriting
+ * an editor's work from a link they might click twice, or reach from browser
+ * history, is not a risk worth taking for a convenience action.
+ */
+function cohf_seed_page_handler() {
+	$post_id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : 0;
+
+	if ( ! $post_id ) {
+		wp_die( esc_html__( 'No page specified.', 'cohf-child' ) );
+	}
+
+	check_admin_referer( 'cohf_seed_page_' . $post_id );
+
+	if ( ! current_user_can( 'edit_page', $post_id ) ) {
+		wp_die( esc_html__( 'You do not have permission to edit this page.', 'cohf-child' ) );
+	}
+
+	$post = get_post( $post_id );
+
+	if ( ! $post || 'page' !== $post->post_type ) {
+		wp_die( esc_html__( 'That is not a page.', 'cohf-child' ) );
+	}
+
+	// Never overwrite existing content.
+	if ( '' !== trim( (string) $post->post_content ) ) {
+		wp_safe_redirect( add_query_arg( 'cohf_seeded', 'exists', get_edit_post_link( $post_id, 'url' ) ) );
+		exit;
+	}
+
+	$seed = cohf_page_seed_for( (string) get_page_template_slug( $post_id ) );
+
+	if ( '' === $seed ) {
+		wp_safe_redirect( add_query_arg( 'cohf_seeded', 'none', get_edit_post_link( $post_id, 'url' ) ) );
+		exit;
+	}
+
+	wp_update_post( array(
+		'ID'           => $post_id,
+		'post_content' => $seed,
+	) );
+
+	update_post_meta( $post_id, COHF_BLOCK_BODY_META, '1' );
+
+	wp_safe_redirect( add_query_arg( 'cohf_seeded', 'done', get_edit_post_link( $post_id, 'url' ) ) );
+	exit;
+}
+add_action( 'admin_post_cohf_seed_page', 'cohf_seed_page_handler' );
+
+/**
+ * Report the outcome of the seeding action.
+ */
+function cohf_seed_page_notice() {
+	if ( ! isset( $_GET['cohf_seeded'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only notice.
+		return;
+	}
+
+	$state = sanitize_key( wp_unslash( $_GET['cohf_seeded'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only notice.
+
+	$messages = array(
+		'done'   => array( 'success', __( 'The designed layout has been copied into blocks and this page is now set to use them. Review it below, then Update to publish. Nothing has changed on the live site yet.', 'cohf-child' ) ),
+		'exists' => array( 'warning', __( 'This page already has content, so nothing was copied. Empty the editor first if you want to start again from the designed layout.', 'cohf-child' ) ),
+		'none'   => array( 'warning', __( 'There is no starter content for this page template yet.', 'cohf-child' ) ),
+	);
+
+	if ( ! isset( $messages[ $state ] ) ) {
+		return;
+	}
+
+	printf(
+		'<div class="notice notice-%1$s is-dismissible"><p>%2$s</p></div>',
+		esc_attr( $messages[ $state ][0] ),
+		esc_html( $messages[ $state ][1] )
+	);
+}
+add_action( 'admin_notices', 'cohf_seed_page_notice' );
 
 /**
  * Save the opt-in control.

@@ -657,6 +657,83 @@ select:user-invalid {
 .page-blocks .wp-block-image { margin: 0; }
 .page-blocks .wp-block-image img { border-radius: var(--r, 22px); }
 
+/* The core table block puts the class on the <figure>, not the <table>, so
+   the existing .cohf-table rules never match seeded tables. Re-point them. */
+.page-blocks .wp-block-table.cohf-table {
+  margin: 25px 0 0;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--r, 22px);
+  background: #fff;
+}
+
+.page-blocks .wp-block-table.cohf-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.page-blocks .wp-block-table.cohf-table th,
+.page-blocks .wp-block-table.cohf-table td {
+  padding: 15px 18px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+}
+
+.page-blocks .wp-block-table.cohf-table thead th {
+  background: var(--cream, var(--c));
+  font: 650 12px/1.3 var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: var(--forest, var(--g));
+}
+
+.page-blocks .wp-block-table.cohf-table tbody tr td:first-child {
+  font-weight: 700;
+  color: var(--forest, var(--g));
+}
+
+.page-blocks .wp-block-table.cohf-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Same stacked treatment on phones as the hardcoded tables get. */
+@media (max-width: 600px) {
+  .page-blocks .wp-block-table.cohf-table,
+  .page-blocks .wp-block-table.cohf-table table,
+  .page-blocks .wp-block-table.cohf-table tbody,
+  .page-blocks .wp-block-table.cohf-table tr,
+  .page-blocks .wp-block-table.cohf-table td {
+    display: block;
+    width: auto;
+  }
+
+  .page-blocks .wp-block-table.cohf-table {
+    border: 0;
+    background: transparent;
+    overflow-x: visible;
+  }
+
+  .page-blocks .wp-block-table.cohf-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .page-blocks .wp-block-table.cohf-table tbody tr {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 4px 2px;
+    margin-bottom: 14px;
+  }
+
+  .page-blocks .wp-block-table.cohf-table td { border-bottom: 0; }
+}
+
 
 /* --------------------------------------------------------------------------
    20. Print
