@@ -1661,3 +1661,81 @@ select:user-invalid {
     font-size: 13.5px;
   }
 }
+
+/* --------------------------------------------------------------------------
+   27. Leadership: one card size for everybody
+
+   Each tier set its own column count - two for executive, three for the
+   board, four for management - while the card media is a fixed 4:5. So the
+   fewer people a tier had, the larger its portraits became. Executive, with
+   two people, produced cards around 560px wide and portraits close to 700px
+   tall; management's four came out at less than half that. The board, with
+   one person in a three-column grid, left a single card stranded against
+   two empty columns.
+
+   The result read as an accident of arithmetic rather than a hierarchy, and
+   it is the whole reason the page looked unbalanced.
+
+   Every tier now uses one card size and centres its rows, so a tier of one,
+   two, four or seven all look deliberate. Seniority is carried by the order
+   of the tiers and their headings, which is where it belongs - not by
+   inflating the photographs of the most senior people.
+   -------------------------------------------------------------------------- */
+.leader-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+}
+
+.leader-grid > .leader-card {
+  flex: 0 1 268px;
+  max-width: 100%;
+  height: auto;
+}
+
+/* The modifiers previously existed only to change the column count, which no
+   longer applies. Their gaps are normalised so tiers sit on one rhythm. */
+.leader-grid--feature,
+.leader-grid--board {
+  gap: 24px;
+}
+
+/* The executive tier also scaled its type up to match its oversized cards.
+   At a common card width that just makes the names crowd their boxes. */
+.leader-grid--feature .leader-card__name {
+  font-size: 21px;
+}
+
+.leader-grid--feature .leader-card__bio {
+  font-size: 14.5px;
+  -webkit-line-clamp: 3;
+}
+
+/* Tier heads were a two-column row - heading left, count right - beneath a
+   page whose section introductions are centred everywhere else since 9.34.0.
+   Stacking and centring them puts the whole page on one axis. */
+.leader-tier__head {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+
+.leader-tier__heading {
+  flex: 0 1 auto;
+}
+
+.leader-tier__intro {
+  margin-inline: auto;
+}
+
+.leadership .container > .leader-tier + .leader-tier {
+  margin-top: 58px;
+}
+
+@media (max-width: 600px) {
+  .leader-grid > .leader-card {
+    flex-basis: 300px;
+  }
+}

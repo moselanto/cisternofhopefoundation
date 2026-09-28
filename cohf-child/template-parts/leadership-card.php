@@ -15,7 +15,17 @@ $role  = cohf_field( 'role' );
 $bio   = cohf_field( 'short_bio' );
 $photo = '';
 
-if ( has_post_thumbnail() ) {
+/*
+ * A portrait shipped with the theme wins over the featured image. The
+ * uploaded portraits are old, sepia and in six different aspect ratios; the
+ * bundled set is the Foundation's own colour photography, cropped to one 4:5
+ * frame. See inc/leader-photos.php for how to override or opt out.
+ */
+$bundled = function_exists( 'cohf_leader_photo' ) ? cohf_leader_photo( $name ) : '';
+
+if ( $bundled ) {
+	$photo = $bundled;
+} elseif ( has_post_thumbnail() ) {
 	$src = wp_get_attachment_image_src( get_post_thumbnail_id(), 'medium_large' );
 	if ( empty( $src ) === false ) {
 		$photo = $src[0];
@@ -24,7 +34,15 @@ if ( has_post_thumbnail() ) {
 ?>
 <article class="leader-card<?php echo empty( $photo ) ? ' leader-card--nophoto' : ''; ?>">
 	<div class="leader-card__media">
-		<?php if ( empty( $photo ) === false ) : ?>
+		<?php if ( $bundled ) : ?>
+			<img class="leader-card__img"
+				src="<?php echo esc_url( $bundled ); ?>"
+				alt="<?php echo esc_attr( $name ); ?>"
+				width="800"
+				height="1000"
+				loading="lazy"
+				decoding="async">
+		<?php elseif ( empty( $photo ) === false ) : ?>
 			<?php
 			the_post_thumbnail(
 				'medium_large',
