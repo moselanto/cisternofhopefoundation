@@ -53,8 +53,32 @@ add_action( 'after_setup_theme', 'cohf_child_setup', 11 );
  * @return array<string,string>
  */
 function cohf_org() {
-	return apply_filters( 'cohf_org', array(
-		'name'         => get_option( 'cohf_org_name', 'Cistern of Hope Foundation' ),
+	$defaults = cohf_org_defaults();
+	$values   = array();
+
+	foreach ( $defaults as $key => $default ) {
+		$values[ $key ] = get_option( 'cohf_org_' . $key, $default );
+	}
+
+	return apply_filters( 'cohf_org', $values );
+}
+
+/**
+ * Factory-default organisation details.
+ *
+ * Every one of these used to be a hardcoded literal except name, address,
+ * phone and email. That meant the Foundation could not change its own mission
+ * statement, vision, motto or founding details without a developer editing
+ * PHP - and the mission in particular is published in several places,
+ * including the Partners snapshot table and the structured data search
+ * engines read. They are all options now, editable under Foundation >
+ * Organisation details, and these remain the fallbacks.
+ *
+ * @return array<string,string>
+ */
+function cohf_org_defaults() {
+	return array(
+		'name'         => 'Cistern of Hope Foundation',
 		'abbr'         => 'COHF',
 		'motto'        => 'Together for a lasting change.',
 		'strapline'    => 'Kenya • Community-led poverty eradication',
@@ -66,10 +90,10 @@ function cohf_org() {
 		'registered'   => '2025',
 		'constitution' => '21 June 2024',
 		'country'      => 'Kenya',
-		'address'      => get_option( 'cohf_org_address', 'P.O. Box 23524–00625, Nairobi, Kenya' ),
-		'phone'        => get_option( 'cohf_org_phone', '+254 110 304 521' ),
-		'email'        => get_option( 'cohf_org_email', 'info@cisternofhopefoundation.org' ),
-	) );
+		'address'      => 'P.O. Box 23524–00625, Nairobi, Kenya',
+		'phone'        => '+254 110 304 521',
+		'email'        => 'info@cisternofhopefoundation.org',
+	);
 }
 
 /**
