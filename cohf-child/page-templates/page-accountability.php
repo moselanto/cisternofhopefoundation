@@ -10,7 +10,7 @@ get_header();
 $contact   = cohf_page_url( 'page-templates/page-contact.php' );
 $resources = cohf_page_url( 'page-templates/page-resources.php' );
 ?>
-<main id="main-content" tabindex="-1">
+<main id="main-content" class="accountability-page" tabindex="-1">
 
 	<?php
 	get_template_part( 'template-parts/page-hero', null, array(
@@ -35,12 +35,10 @@ $resources = cohf_page_url( 'page-templates/page-resources.php' );
 	) );
 	?>
 
-	<?php if ( cohf_page_body_is_blocks() ) : cohf_the_page_body(); else : ?>
-
 	<!-- Four pillars -->
 	<section>
 		<div class="container">
-			<div class="purpose">
+			<div class="purpose pillar-grid">
 				<?php
 				$pillars = array(
 					array( '01', __( 'Financial accountability', 'cohf-child' ), __( 'Budgets, financial oversight, supporting documentation and responsible reporting.', 'cohf-child' ), '#financial' ),
@@ -50,7 +48,7 @@ $resources = cohf_page_url( 'page-templates/page-resources.php' );
 				);
 				foreach ( $pillars as $pillar ) :
 					?>
-					<a class="card" href="<?php echo esc_attr( $pillar[3] ); ?>">
+					<a class="card pillar" href="<?php echo esc_attr( $pillar[3] ); ?>">
 						<div class="card-body">
 							<div class="kicker"><?php echo esc_html( $pillar[0] ); ?></div>
 							<h3><?php echo esc_html( wp_strip_all_tags( $pillar[1] ) ); ?></h3>
@@ -69,10 +67,13 @@ $resources = cohf_page_url( 'page-templates/page-resources.php' );
 		<div class="container">
 			<div class="section-head">
 				<div>
-					<div class="kicker"><?php esc_html_e( 'Financial accountability', 'cohf-child' ); ?></div>
-					<h2><?php esc_html_e( 'Responsible stewardship.', 'cohf-child' ); ?></h2>
+					<div class="sec-label">
+						<span class="sec-label__rule"></span>
+						<span class="sec-label__text"><?php esc_html_e( 'Financial accountability', 'cohf-child' ); ?></span>
+					</div>
+					<h2 class="sec-statement sec-statement--wide"><?php esc_html_e( 'Responsible stewardship.', 'cohf-child' ); ?></h2>
 				</div>
-				<p><?php esc_html_e( 'Our Constitution provides for annual budgeting, financial oversight, annual audit by a certified auditor and financial reporting to donors, stakeholders and the public.', 'cohf-child' ); ?></p>
+				<p class="sec-lede"><?php esc_html_e( 'Our Constitution provides for annual budgeting, financial oversight, annual audit by a certified auditor and financial reporting to donors, stakeholders and the public.', 'cohf-child' ); ?></p>
 			</div>
 
 			<ul class="list-check list-check--2col">
@@ -96,7 +97,10 @@ $resources = cohf_page_url( 'page-templates/page-resources.php' );
 	<section class="anchor-offset" id="safeguarding">
 		<div class="container feature">
 			<div>
-				<div class="kicker"><?php esc_html_e( 'Safeguarding &amp; child protection', 'cohf-child' ); ?></div>
+				<div class="sec-label">
+					<span class="sec-label__rule"></span>
+					<span class="sec-label__text"><?php esc_html_e( 'Safeguarding &amp; child protection', 'cohf-child' ); ?></span>
+				</div>
 				<h2><?php esc_html_e( 'People deserve to feel safe, respected and protected.', 'cohf-child' ); ?></h2>
 				<p><?php esc_html_e( 'Because we work with children, women, youth and vulnerable communities, safeguarding is central to who we are.', 'cohf-child' ); ?></p>
 				<div class="purpose purpose--2col stack-md">
@@ -136,16 +140,19 @@ $resources = cohf_page_url( 'page-templates/page-resources.php' );
 		<div class="container feature">
 			<div class="card">
 				<div class="card-body">
-					<div class="kicker"><?php esc_html_e( 'Privacy &amp; data protection', 'cohf-child' ); ?></div>
 					<h3><?php esc_html_e( 'Respecting the information entrusted to us.', 'cohf-child' ); ?></h3>
 					<p><?php esc_html_e( 'We protect confidential beneficiary information and promote responsible use of photographs, stories and personal information.', 'cohf-child' ); ?></p>
 					<p><?php esc_html_e( 'Our communication should protect the dignity and confidentiality of the people whose experiences we share.', 'cohf-child' ); ?></p>
 				</div>
 			</div>
 			<div>
+				<div class="sec-label">
+					<span class="sec-label__rule"></span>
+					<span class="sec-label__text"><?php esc_html_e( 'Privacy &amp; data protection', 'cohf-child' ); ?></span>
+				</div>
 				<h2><?php esc_html_e( 'Privacy is part of dignity.', 'cohf-child' ); ?></h2>
 				<p><?php esc_html_e( 'Data protection is integrated into our safeguarding and accountability approach. Approved policies are published through the Resources section as they are finalised.', 'cohf-child' ); ?></p>
-				<a class="btn dark" href="<?php echo esc_url( $resources ); ?>"><?php esc_html_e( 'View Resources &amp; Policies', 'cohf-child' ); ?></a>
+				<a class="btn dark stack-sm" href="<?php echo esc_url( $resources ); ?>"><?php esc_html_e( 'View Resources &amp; Policies', 'cohf-child' ); ?></a>
 			</div>
 		</div>
 	</section>
@@ -155,17 +162,22 @@ $resources = cohf_page_url( 'page-templates/page-resources.php' );
 		<div class="container">
 			<div class="section-head">
 				<div>
-					<div class="kicker"><?php esc_html_e( 'Complaints &amp; feedback', 'cohf-child' ); ?></div>
-					<h2><?php esc_html_e( 'We want to hear when something is not right.', 'cohf-child' ); ?></h2>
+					<div class="sec-label">
+						<span class="sec-label__rule"></span>
+						<span class="sec-label__text"><?php esc_html_e( 'Complaints &amp; feedback', 'cohf-child' ); ?></span>
+					</div>
+					<h2 class="sec-statement sec-statement--wide"><?php esc_html_e( 'We want to hear when something is not right.', 'cohf-child' ); ?></h2>
 				</div>
-				<p><?php esc_html_e( 'Communities, beneficiaries, partners and members of the public can raise concerns or give feedback on our work. Concerns are treated seriously and confidentially.', 'cohf-child' ); ?></p>
+				<p class="sec-lede"><?php esc_html_e( 'Communities, beneficiaries, partners and members of the public can raise concerns or give feedback on our work. Concerns are treated seriously and confidentially.', 'cohf-child' ); ?></p>
 			</div>
 			<div class="cta-band">
 				<div>
 					<h2><?php esc_html_e( 'Raise a concern.', 'cohf-child' ); ?></h2>
 					<p><?php esc_html_e( 'Use the contact form and select "Complaint or feedback", or contact the Foundation directly.', 'cohf-child' ); ?></p>
 				</div>
-				<a class="btn gold" href="<?php echo esc_url( $contact ); ?>#enquire"><?php esc_html_e( 'Raise a Concern', 'cohf-child' ); ?></a>
+				<div class="buttons">
+					<a class="btn gold" href="<?php echo esc_url( $contact ); ?>#enquire"><?php esc_html_e( 'Raise a Concern', 'cohf-child' ); ?></a>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -175,12 +187,15 @@ $resources = cohf_page_url( 'page-templates/page-resources.php' );
 		<div class="container">
 			<div class="section-head">
 				<div>
-					<div class="kicker"><?php esc_html_e( 'Institutional policies', 'cohf-child' ); ?></div>
-					<h2><?php esc_html_e( 'Policies that govern our work.', 'cohf-child' ); ?></h2>
+					<div class="sec-label">
+						<span class="sec-label__rule"></span>
+						<span class="sec-label__text"><?php esc_html_e( 'Institutional policies', 'cohf-child' ); ?></span>
+					</div>
+					<h2 class="sec-statement sec-statement--wide"><?php esc_html_e( 'Policies that govern our work.', 'cohf-child' ); ?></h2>
 				</div>
-				<p><?php esc_html_e( 'Documents are published through the Resources section as each policy is finalised and approved.', 'cohf-child' ); ?></p>
+				<p class="sec-lede"><?php esc_html_e( 'Documents are published through the Resources section as each policy is finalised and approved.', 'cohf-child' ); ?></p>
 			</div>
-			<div class="grid">
+			<div class="grid policy-grid">
 				<article class="card">
 					<div class="card-body">
 						<h3><?php esc_html_e( 'Safeguarding &amp; protection', 'cohf-child' ); ?></h3>
@@ -203,6 +218,5 @@ $resources = cohf_page_url( 'page-templates/page-resources.php' );
 		</div>
 	</section>
 
-	<?php endif; ?>
 </main>
 <?php get_footer();

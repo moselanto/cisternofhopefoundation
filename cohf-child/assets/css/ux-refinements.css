@@ -1800,3 +1800,119 @@ select:user-invalid {
     gap: 34px;
   }
 }
+
+/* 29 ---------------------------------------------------------------
+   Accountability & Safeguarding.
+
+   Six sections at 85px of padding each, an orphaned fourth pillar, a
+   section label separated from the heading it labels, and four cards
+   that are links but do not behave like them.
+   ------------------------------------------------------------------ */
+
+.accountability-page > section {
+  padding: 58px 0;
+}
+
+.accountability-page .section-head {
+  margin-bottom: 28px;
+}
+
+/* The anchor row sat hard left beneath a centred page, as Partners did. */
+.accountability-page .section-nav__list {
+  justify-content: center;
+}
+
+/* --- 29a. The fourth pillar ------------------------------------------------
+   .purpose is a three-column grid and there are four pillars, so the
+   fourth dropped onto a row of its own and sat alone against two empty
+   columns. The same arithmetic fault the leadership tiers had.
+
+   Four equal cards on one row is the honest shape for four peers: they
+   are the page's table of contents, and a table of contents should be
+   taken in at once. Centred flex means the wrap at narrower widths is
+   two and two, never three and a stray. */
+.accountability-page .pillar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  grid-template-columns: none;
+}
+
+.accountability-page .pillar-grid > .pillar {
+  flex: 1 1 240px;
+  max-width: 290px;
+}
+
+/* The pillars carried the card padding used for cards with images, so a
+   three-line description left a deep well of empty white beneath it. */
+.accountability-page .pillar .card-body {
+  padding: 22px 22px 24px;
+}
+
+.accountability-page .pillar h3 {
+  margin-top: 2px;
+  font-size: 19px;
+  line-height: 1.25;
+}
+
+.accountability-page .pillar p {
+  margin-bottom: 0;
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+/* --- 29b. Linked cards that behaved like inert ones ------------------------
+   Section 13 removes the hover lift from .card and gives it back only to
+   .card:has(a) - a card containing a link. These four pillars are not
+   cards containing a link, they are cards that ARE a link, so the
+   selector never matched and four clickable cards offered no hover or
+   focus feedback at all. This is the fix, and it applies site-wide. */
+a.card:hover,
+a.card:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 45px #17231e18;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.card:hover,
+  a.card:focus-visible {
+    transform: none;
+  }
+}
+
+/* --- 29c. Two-column feature blocks ----------------------------------------
+   Safeguarding and Data protection each pair a tall column with a short
+   card. Stretching the short one to match left its content floating
+   against a tall white box; top-aligning lets each be its own height. */
+.accountability-page .feature {
+  align-items: start;
+}
+
+/* The label for "Privacy is part of dignity." was inside the card in the
+   opposite column, so the heading had no eyebrow and the card carried a
+   label for something else. Moved in the template; this spaces it. */
+.accountability-page .feature > div > .sec-label {
+  margin-bottom: 14px;
+}
+
+/* --- 29d. The financial checklist ------------------------------------------
+   Six commitments set across the full 1180px measure put roughly 90
+   characters between the bullet and the end of the line. Drawn in, they
+   group under their centred heading instead of drifting apart. */
+.accountability-page .list-check--2col {
+  max-width: 960px;
+  margin-inline: auto;
+  column-gap: 54px;
+}
+
+@media (max-width: 680px) {
+  .accountability-page > section {
+    padding: 46px 0;
+  }
+
+  .accountability-page .pillar-grid > .pillar {
+    flex-basis: 260px;
+    max-width: none;
+  }
+}
