@@ -30,7 +30,7 @@ get_header();
 
 			<?php get_template_part( 'template-parts/numbers' ); ?>
 
-			<p class="impact-disclaimer" style="margin-top:35px">
+			<p class="impact-disclaimer stack-lg">
 				<?php esc_html_e( 'These figures represent the Foundation\'s reported programme experience and current starting point. They are not lifetime totals. Individual projects and donor submissions contain the detailed evidence, dates, locations, budgets and beneficiary records relevant to each intervention.', 'cohf-child' ); ?>
 			</p>
 		</div>
@@ -57,7 +57,7 @@ get_header();
 				<div class="kicker"><?php esc_html_e( 'Women and livelihoods', 'cohf-child' ); ?></div>
 				<h2><?php esc_html_e( 'Empowerment creates pathways beyond short-term relief.', 'cohf-child' ); ?></h2>
 				<p><?php esc_html_e( 'We measure progress not simply by the number of women trained, but by the extent to which supported women are able to sustain and grow viable economic activities.', 'cohf-child' ); ?></p>
-				<ul class="list-check" style="margin-top:20px">
+				<ul class="list-check stack-sm">
 					<?php
 					foreach ( array(
 						__( 'Small-business start-up and strengthening support', 'cohf-child' ),
@@ -74,7 +74,7 @@ get_header();
 	</section>
 
 	<!-- Across our work -->
-	<section class="sage">
+	<section class="sage" id="across">
 		<div class="container">
 			<div class="section-head">
 				<div>

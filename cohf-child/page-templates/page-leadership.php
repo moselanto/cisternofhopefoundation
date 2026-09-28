@@ -157,7 +157,7 @@ wp_reset_postdata();
 					<p><?php esc_html_e( 'Protecting beneficiary dignity, confidentiality and responsible use of stories.', 'cohf-child' ); ?></p>
 				</article>
 			</div>
-			<p style="margin-top:28px">
+			<p class="stack-md">
 				<a class="btn dark" href="<?php echo esc_url( $acct ); ?>"><?php esc_html_e( 'Accountability &amp; Safeguarding', 'cohf-child' ); ?></a>
 			</p>
 		</div>

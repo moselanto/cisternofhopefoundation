@@ -213,7 +213,12 @@ $contact = cohf_page_url( 'page-templates/page-contact.php' );
 		'title'         => __( 'Let\'s build lasting change together.', 'cohf-child' ),
 		'text'          => __( 'Partner with Cistern of Hope Foundation to strengthen pathways for children, young people, women, families and communities.', 'cohf-child' ),
 		'primary_label' => __( 'Partner With Us', 'cohf-child' ),
-		'primary_url'   => $contact,
+		// Was $contact. The label promises the partnership page, so sending
+		// people to the general contact form was a broken promise and lost
+		// the partnership context the enquiry form would otherwise preselect.
+		'primary_url'   => $cta['partner'],
+		'secondary_label' => __( 'Contact Us', 'cohf-child' ),
+		'secondary_url'   => $contact,
 	) );
 	?>
 

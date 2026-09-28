@@ -388,7 +388,168 @@ select:user-invalid {
 
 
 /* --------------------------------------------------------------------------
-   13. Print
+   13. Card affordance
+   .card lifted 4px on hover regardless of whether it did anything. On the
+   About values grid, the Get Involved "other ways" grid and the Impact
+   cards, that lift promises a click that never arrives. Restrict the
+   interactive treatment to cards that actually contain a link.
+   -------------------------------------------------------------------------- */
+.card:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.card:has(a):hover,
+.card:has(a):focus-within {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 45px #17231e18;
+}
+
+/* Make the whole linked card clickable, while leaving the link itself as the
+   accessible target rather than adding a redundant tabbable wrapper. */
+.card:has(.arrow) { position: relative; }
+
+.card:has(.arrow) .arrow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   14. Breadcrumbs
+   cohf_breadcrumbs() was written in inc/seo.php but never called from any
+   template, so inner pages offered no route back up. Now rendered in the
+   page hero; this styles it for the dark hero ground.
+   -------------------------------------------------------------------------- */
+.breadcrumbs {
+  margin-bottom: 18px;
+}
+
+.breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: 600 12.5px/1.4 var(--font-body);
+  letter-spacing: .01em;
+}
+
+.breadcrumbs li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.breadcrumbs li + li::before {
+  content: "/";
+  color: #ffffff5c;
+}
+
+.page-hero .breadcrumbs a { color: #cfe0d7; }
+
+.page-hero .breadcrumbs a:hover,
+.page-hero .breadcrumbs a:focus-visible { color: #fff; }
+
+.page-hero .breadcrumbs [aria-current="page"] { color: #ffffff9e; }
+
+@media print {
+  .breadcrumbs { display: none; }
+}
+
+
+/* --------------------------------------------------------------------------
+   15. Filter bar (Programmes, Resources)
+   The pressed state was carried only by aria-pressed, with no visual
+   difference, so sighted users could not tell which filter was active.
+   -------------------------------------------------------------------------- */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: clamp(28px, 3.5vw, 40px);
+}
+
+.filter-bar button {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  font: 700 13px/1 var(--font-body);
+  color: var(--forest, var(--g));
+  cursor: pointer;
+  transition: background .18s ease, border-color .18s ease, color .18s ease;
+}
+
+.filter-bar button:hover {
+  background: var(--sage, var(--s));
+  border-color: var(--green, var(--g2));
+}
+
+.filter-bar button[aria-pressed="true"] {
+  background: var(--forest, var(--g));
+  border-color: var(--forest, var(--g));
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filter-bar button { transition: none; }
+}
+
+
+/* --------------------------------------------------------------------------
+   16. Callout
+   page-contact.php styled a safeguarding notice with .payment-placeholder,
+   a class whose name and dashed treatment both say "unfinished". Raising a
+   safeguarding concern is not a placeholder. This is its own component.
+   -------------------------------------------------------------------------- */
+.callout {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--terra, var(--t));
+  border-radius: 14px;
+  padding: 22px 24px;
+  background: #fff;
+  font-size: 15.5px;
+  line-height: 1.6;
+  max-width: 62ch;
+}
+
+.callout b,
+.callout strong {
+  display: inline-block;
+  margin-bottom: 4px;
+  color: var(--forest, var(--g));
+}
+
+.sage .callout,
+.cream .callout { background: #fff; }
+
+
+/* --------------------------------------------------------------------------
+   17. Spacing utilities
+   Eight templates carried inline style="margin-top:NNpx" values ranging from
+   14px to 55px, set by hand and not on any scale. These replace them so
+   vertical rhythm lives in the stylesheet and stays consistent.
+   -------------------------------------------------------------------------- */
+.stack-xs { margin-top: 14px; }
+.stack-sm { margin-top: 20px; }
+.stack-md { margin-top: 28px; }
+.stack-lg { margin-top: clamp(30px, 3.4vw, 40px); }
+
+/* Two-column variant of the .purpose grid, previously an inline override. */
+.purpose--2col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+@media (max-width: 900px) {
+  .purpose--2col { grid-template-columns: 1fr; }
+}
+
+
+/* --------------------------------------------------------------------------
+   18. Print
    Supporters and funders do print these pages. Drop the furniture.
    -------------------------------------------------------------------------- */
 @media print {

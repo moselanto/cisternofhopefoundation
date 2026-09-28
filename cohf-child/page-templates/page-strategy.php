@@ -16,9 +16,17 @@ get_header();
 		'title'   => __( 'Our Strategic Journey, 2026-2030', 'cohf-child' ),
 		'text'    => __( 'Our five-year direction: what we will build, in what order, and what success means to us.', 'cohf-child' ),
 	) );
+
+	get_template_part( 'template-parts/section-nav', null, array(
+		'sections' => array(
+			'#journey'     => __( 'Five-year journey', 'cohf-child' ),
+			'#objectives'  => __( 'Objectives', 'cohf-child' ),
+			'#aspirations' => __( 'Aspirations', 'cohf-child' ),
+		),
+	) );
 	?>
 
-	<section>
+	<section id="journey">
 		<div class="container">
 			<div class="section-head">
 				<div>

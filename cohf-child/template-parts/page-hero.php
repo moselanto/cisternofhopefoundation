@@ -26,6 +26,17 @@ if ( $a['image'] ) {
 ?>
 <section class="page-hero"<?php echo $style; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built from esc_url above. ?>>
 	<div class="container">
+		<?php
+		/*
+		 * cohf_breadcrumbs() has existed in inc/seo.php since the theme was
+		 * built but was never called, so inner pages gave no route back up.
+		 * It returns early on the front page and defers to Rank Math or Yoast
+		 * when either is active.
+		 */
+		if ( function_exists( 'cohf_breadcrumbs' ) ) {
+			cohf_breadcrumbs();
+		}
+		?>
 		<?php if ( $a['eyebrow'] ) : ?>
 			<div class="eyebrow"><?php echo esc_html( $a['eyebrow'] ); ?></div>
 		<?php endif; ?>

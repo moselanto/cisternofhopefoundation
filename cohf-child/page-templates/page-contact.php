@@ -47,7 +47,7 @@ $org = cohf_org();
 					<?php esc_html_e( 'Uthiru, Nairobi, and communities across Kenya.', 'cohf-child' ); ?>
 				</p>
 
-				<p class="payment-placeholder" style="margin-top:28px">
+				<p class="callout stack-md">
 					<b><?php esc_html_e( 'Raising a concern', 'cohf-child' ); ?></b><br>
 					<?php esc_html_e( 'To raise a safeguarding concern or make a complaint, select "Complaint or feedback" in the form. Concerns are treated seriously and confidentially.', 'cohf-child' ); ?>
 				</p>

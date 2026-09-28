@@ -19,6 +19,20 @@ $resources = cohf_page_url( 'page-templates/page-resources.php' );
 		'title'   => __( 'Trust is one of our most important institutional assets.', 'cohf-child' ),
 		'text'    => __( 'We accept responsibility for the resources entrusted to us, the people we serve, and the way we document, communicate and learn from our work.', 'cohf-child' ),
 	) );
+
+	/*
+	 * Someone arriving to raise a safeguarding concern or read the complaints
+	 * procedure should not have to scroll through four sections to find it.
+	 */
+	get_template_part( 'template-parts/section-nav', null, array(
+		'sections' => array(
+			'#financial'       => __( 'Financial', 'cohf-child' ),
+			'#safeguarding'    => __( 'Safeguarding', 'cohf-child' ),
+			'#data-protection' => __( 'Data protection', 'cohf-child' ),
+			'#complaints'      => __( 'Complaints', 'cohf-child' ),
+			'#policies'        => __( 'Policies', 'cohf-child' ),
+		),
+	) );
 	?>
 
 	<!-- Four pillars -->
@@ -83,7 +97,7 @@ $resources = cohf_page_url( 'page-templates/page-resources.php' );
 				<div class="kicker"><?php esc_html_e( 'Safeguarding &amp; child protection', 'cohf-child' ); ?></div>
 				<h2><?php esc_html_e( 'People deserve to feel safe, respected and protected.', 'cohf-child' ); ?></h2>
 				<p><?php esc_html_e( 'Because we work with children, women, youth and vulnerable communities, safeguarding is central to who we are.', 'cohf-child' ); ?></p>
-				<div class="purpose" style="grid-template-columns:1fr 1fr;margin-top:25px">
+				<div class="purpose purpose--2col stack-md">
 					<article>
 						<h3><?php esc_html_e( 'Protect', 'cohf-child' ); ?></h3>
 						<p><?php esc_html_e( 'Protect children and vulnerable people from abuse, exploitation, discrimination and avoidable harm.', 'cohf-child' ); ?></p>
@@ -97,7 +111,7 @@ $resources = cohf_page_url( 'page-templates/page-resources.php' );
 			<div class="card">
 				<div class="card-body">
 					<h3><?php esc_html_e( 'Our safeguarding commitments', 'cohf-child' ); ?></h3>
-					<ul class="list-check" style="margin-top:14px">
+					<ul class="list-check stack-xs">
 						<?php
 						foreach ( array(
 							__( 'Safe and respectful programme environments', 'cohf-child' ),

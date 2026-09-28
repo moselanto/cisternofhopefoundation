@@ -17,29 +17,19 @@ get_header();
 		'text'    => __( 'Cistern of Hope Foundation cannot eradicate poverty alone. We welcome strategic relationships with organisations and individuals who share our commitment to lasting change.', 'cohf-child' ),
 	) );
 
-	/*
-	 * In-page navigation. This page is a long single scroll; without it the
-	 * only way to reach the enquiry form is to read past six sections.
-	 */
-	$cohf_sections = array(
-		'#message'              => __( 'Our message', 'cohf-child' ),
-		'#who-we-partner-with'  => __( 'Who we work with', 'cohf-child' ),
-		'#opportunities'        => __( 'Opportunities', 'cohf-child' ),
-		'#priority-areas'       => __( 'Priority areas', 'cohf-child' ),
-		'#snapshot'             => __( 'Snapshot', 'cohf-child' ),
-		'#enquire'              => __( 'Enquire', 'cohf-child' ),
-	);
+	// This page is a long single scroll; without this the only route to the
+	// enquiry form is to read past six sections.
+	get_template_part( 'template-parts/section-nav', null, array(
+		'sections' => array(
+			'#message'             => __( 'Our message', 'cohf-child' ),
+			'#who-we-partner-with' => __( 'Who we work with', 'cohf-child' ),
+			'#opportunities'       => __( 'Opportunities', 'cohf-child' ),
+			'#priority-areas'      => __( 'Priority areas', 'cohf-child' ),
+			'#snapshot'            => __( 'Snapshot', 'cohf-child' ),
+			'#enquire'             => __( 'Enquire', 'cohf-child' ),
+		),
+	) );
 	?>
-
-	<nav class="section-nav" aria-label="<?php esc_attr_e( 'On this page', 'cohf-child' ); ?>">
-		<div class="container">
-			<ul class="section-nav__list">
-				<?php foreach ( $cohf_sections as $cohf_href => $cohf_label ) : ?>
-					<li><a href="<?php echo esc_attr( $cohf_href ); ?>"><?php echo esc_html( $cohf_label ); ?></a></li>
-				<?php endforeach; ?>
-			</ul>
-		</div>
-	</nav>
 
 	<section id="message">
 		<div class="container feature">

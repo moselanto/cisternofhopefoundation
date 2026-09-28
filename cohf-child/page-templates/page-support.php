@@ -175,7 +175,7 @@ $thanks = isset( $_GET['giving'] ) && 'thank-you' === $_GET['giving'];
 				?>
 			</ul>
 
-			<p style="margin-top:30px">
+			<p class="stack-lg">
 				<a class="btn light" href="<?php echo esc_url( cohf_page_url( 'page-templates/page-accountability.php' ) ); ?>"><?php esc_html_e( 'Read Our Accountability Commitments', 'cohf-child' ); ?></a>
 			</p>
 		</div>
