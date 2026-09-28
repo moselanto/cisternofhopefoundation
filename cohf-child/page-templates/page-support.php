@@ -14,7 +14,7 @@ get_header();
 $org = cohf_org();
 $thanks = isset( $_GET['giving'] ) && 'thank-you' === $_GET['giving'];
 ?>
-<main id="main-content" tabindex="-1">
+<main id="main-content" class="support-page" tabindex="-1">
 
 	<?php
 	get_template_part( 'template-parts/page-hero', null, array(
@@ -24,8 +24,6 @@ $thanks = isset( $_GET['giving'] ) && 'thank-you' === $_GET['giving'];
 		'text'    => __( 'We respond where the need is urgent, and we connect that response to education, skills, resilience and self-reliance.', 'cohf-child' ),
 	) );
 	?>
-
-	<?php if ( cohf_page_body_is_blocks() ) : cohf_the_page_body(); else : ?>
 
 	<?php if ( $thanks ) : ?>
 		<section class="sage">
@@ -177,7 +175,7 @@ $thanks = isset( $_GET['giving'] ) && 'thank-you' === $_GET['giving'];
 				?>
 			</ul>
 
-			<p class="stack-lg">
+			<p class="promise-more">
 				<a class="btn light" href="<?php echo esc_url( cohf_page_url( 'page-templates/page-accountability.php' ) ); ?>"><?php esc_html_e( 'Read Our Accountability Commitments', 'cohf-child' ); ?></a>
 			</p>
 		</div>
@@ -194,6 +192,5 @@ $thanks = isset( $_GET['giving'] ) && 'thank-you' === $_GET['giving'];
 	) );
 	?>
 
-	<?php endif; ?>
 </main>
 <?php get_footer();

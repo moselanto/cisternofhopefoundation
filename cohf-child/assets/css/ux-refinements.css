@@ -1739,3 +1739,64 @@ select:user-invalid {
     flex-basis: 300px;
   }
 }
+
+/* 28 ---------------------------------------------------------------
+   Support Our Work. The giving card is short while the copy beside it
+   is tall, so the section was reading as a block of dead cream. Tighten
+   the rhythm, top-align the two columns, and stop the promise button
+   from sitting hard left under a centred heading.
+   ------------------------------------------------------------------ */
+
+/* Centred introductions were wrapping into ragged stacks. */
+.section-head > .sec-lede,
+.section-head > p {
+  text-wrap: balance;
+}
+
+.support-page > section {
+  padding-block: 64px;
+}
+
+.support-page .give-layout {
+  align-items: start;
+  gap: 54px;
+}
+
+.support-page .give-layout__copy > .sec-lede {
+  max-width: 46ch;
+}
+
+.support-page .give-assure {
+  margin-top: 26px;
+}
+
+.support-page .give-assure__link {
+  margin-top: 26px;
+}
+
+/* The giving card carried no weight of its own next to a tall column. */
+.support-page .give-layout__form > * {
+  box-shadow: 0 18px 44px rgba(18, 58, 45, 0.09);
+}
+
+/* Promise list and its button, drawn in under the centred heading. */
+.support-page .impact .list-check--2col {
+  max-width: 960px;
+  margin-inline: auto;
+  column-gap: 54px;
+}
+
+.support-page .promise-more {
+  margin-top: 34px;
+  text-align: center;
+}
+
+@media (max-width: 860px) {
+  .support-page > section {
+    padding-block: 52px;
+  }
+
+  .support-page .give-layout {
+    gap: 34px;
+  }
+}
