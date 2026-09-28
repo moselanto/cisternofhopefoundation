@@ -31,7 +31,24 @@ function cohf_mobile_actions() {
 	$links = function_exists( 'cohf_cta_links' ) ? cohf_cta_links() : array();
 
 	$phone = isset( $org['phone'] ) ? preg_replace( '/[^0-9+]/', '', $org['phone'] ) : '';
-	$email = isset( $org['email'] ) ? $org['email'] : '';
+
+	// wa.me takes digits only - no plus, no spaces, country code required.
+	// Falls back to the telephone number when the dedicated field is blank,
+	// which is the common case since most Kenyan mobile numbers carry both.
+	$wa_source = ! empty( $org['whatsapp'] ) ? $org['whatsapp'] : ( isset( $org['phone'] ) ? $org['phone'] : '' );
+	$wa_number = preg_replace( '/[^0-9]/', '', $wa_source );
+
+	// A prefilled opening line. It saves the visitor composing one, and it
+	// tells whoever answers which channel the enquiry came from.
+	$wa_message = sprintf(
+		/* translators: %s: organisation name. */
+		__( 'Hello %s, I would like to know more about your work.', 'cohf-child' ),
+		isset( $org['name'] ) ? $org['name'] : 'Cistern of Hope Foundation'
+	);
+
+	$whatsapp = $wa_number
+		? 'https://wa.me/' . $wa_number . '?text=' . rawurlencode( $wa_message )
+		: '';
 
 	$partner = isset( $links['partner'] ) ? $links['partner'] : '';
 	$support = isset( $links['support'] ) ? $links['support'] : '';
@@ -52,10 +69,13 @@ function cohf_mobile_actions() {
 			'icon'  => '<path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1z"/>',
 		),
 		array(
-			'key'   => 'email',
-			'url'   => $email ? 'mailto:' . $email : '',
-			'label' => __( 'Email', 'cohf-child' ),
-			'icon'  => '<path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/><path d="m3 7 9 6 9-6"/>',
+			'key'   => 'whatsapp',
+			'url'   => $whatsapp,
+			'label' => __( 'WhatsApp', 'cohf-child' ),
+			// The official mark, which people scan for rather than read. It is
+			// a solid glyph, so it renders filled rather than stroked.
+			'fill'  => true,
+			'icon'  => '<path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.87 9.87 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.38c0-4.54 3.7-8.25 8.25-8.25zm-3.6 4.1c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.23.9 2.42 1.02 2.59.13.16 1.76 2.7 4.28 3.78.6.26 1.06.41 1.42.53.6.19 1.14.16 1.57.1.48-.07 1.48-.6 1.69-1.19.2-.59.2-1.09.15-1.2-.06-.1-.23-.16-.48-.29-.25-.12-1.48-.73-1.71-.81-.23-.09-.4-.13-.56.12-.17.25-.65.81-.79.98-.15.16-.29.19-.54.06-.25-.12-1.06-.39-2.01-1.24-.74-.66-1.25-1.48-1.39-1.73-.15-.25-.02-.38.1-.51.12-.11.25-.29.38-.44.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.48-.4-.42-.56-.42h-.2z"/>',
 		),
 		array(
 			'key'   => 'partner',
@@ -96,19 +116,35 @@ function cohf_mobile_action_bar() {
 	<nav class="cohf-actionbar" aria-label="<?php esc_attr_e( 'Quick actions', 'cohf-child' ); ?>">
 		<?php
 		foreach ( $actions as $action ) {
-			$is_page    = ! preg_match( '/^(tel|mailto):/', $action['url'] );
-			$is_current = $is_page && untrailingslashit( $action['url'] ) === $current;
+			$is_link     = ! preg_match( '/^(tel|mailto):/', $action['url'] );
+			$is_internal = $is_link && 0 === strpos( $action['url'], home_url() );
+			$is_current  = $is_internal && untrailingslashit( $action['url'] ) === $current;
+			$is_external = $is_link && ! $is_internal;
+			$filled      = ! empty( $action['fill'] );
+
+			$attrs = $is_current ? ' aria-current="page"' : '';
+
+			// WhatsApp hands off to the app or to web.whatsapp.com, so it
+			// should not replace the page the visitor is reading.
+			if ( $is_external ) {
+				$attrs .= ' target="_blank" rel="noopener noreferrer"';
+			}
 
 			printf(
 				'<a class="cohf-actionbar__item cohf-actionbar__item--%1$s"%5$s href="%2$s">'
-					. '<svg class="cohf-actionbar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">%3$s</svg>'
-					. '<span>%4$s</span>'
+					. '<span class="cohf-actionbar__ico">'
+					. '<svg viewBox="0 0 24 24" %6$s aria-hidden="true" focusable="false">%3$s</svg>'
+					. '</span>'
+					. '<span class="cohf-actionbar__label">%4$s</span>'
 					. '</a>',
 				esc_attr( $action['key'] ),
 				esc_url( $action['url'] ),
 				$action['icon'], // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static developer-authored SVG paths.
 				esc_html( $action['label'] ),
-				$is_current ? ' aria-current="page"' : ''
+				$attrs, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- composed from fixed attribute strings above.
+				$filled
+					? 'fill="currentColor"'
+					: 'fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"'
 			);
 		}
 		?>

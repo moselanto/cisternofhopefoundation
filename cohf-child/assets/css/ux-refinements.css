@@ -851,8 +851,14 @@ select:user-invalid {
 /* --- 20b. Persistent action bar -------------------------------------------
    Below 900px the header's Support Our Work button is hidden to make room
    for the toggle, so every route to the Foundation - give, partner, call,
-   email - sat behind the menu button or at the bottom of the footer. This
-   keeps all four on screen without costing any content width. */
+   message - sat behind the menu button or at the bottom of the footer. This
+   keeps all four on screen without costing any content width.
+
+   The first cut was four flat cells with the gold Give block running hard
+   into the screen corner, which read as an accident rather than a decision.
+   Give is now an inset pill: the same prominence, deliberately placed. The
+   bar is translucent over a blur so content scrolling beneath it stays
+   legible as context rather than being cut off by a solid band. */
 .cohf-actionbar {
   display: none;
 }
@@ -880,26 +886,45 @@ select:user-invalid {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    /* 56px plus padding keeps every target above the 44px minimum. */
-    min-height: 56px;
-    padding: 9px 4px;
+    gap: 5px;
+    /* 50px plus the bar's own padding keeps every target above the 44px
+       minimum while the bar itself stays under 64px. */
+    min-height: 50px;
+    padding: 6px 2px;
     border-bottom: 0;
+    border-radius: 12px;
     color: var(--forest, var(--g));
-    font: 650 11px/1.1 var(--font-body);
-    letter-spacing: 0.02em;
     text-align: center;
+    transition: background-color 0.18s ease, transform 0.18s ease;
   }
 
-  .cohf-actionbar__icon {
-    width: 21px;
-    height: 21px;
+  .cohf-actionbar__ico {
+    display: block;
+    line-height: 0;
   }
 
-  /* Giving is the one action worth making unmistakable. */
+  .cohf-actionbar__ico svg {
+    display: block;
+    width: 22px;
+    height: 22px;
+  }
+
+  .cohf-actionbar__label {
+    font: 650 10.5px/1 var(--font-body);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* Giving is the one action worth making unmistakable, so it carries the
+     gold and a little more width than the three contact actions. */
   .cohf-actionbar__item--support {
     background: var(--gold);
     color: var(--ink);
+    box-shadow: 0 2px 8px #d9a2274d;
+  }
+
+  .cohf-actionbar__item--support .cohf-actionbar__label {
     font-weight: 800;
   }
 
@@ -907,15 +932,38 @@ select:user-invalid {
     color: var(--terra);
   }
 
+  /* A visible press state. Without one a fixed bar feels inert, because
+     there is no page transition to confirm the tap landed. */
+  .cohf-actionbar__item:active {
+    transform: scale(0.97);
+  }
+
+  .cohf-actionbar__item:not(.cohf-actionbar__item--support):active {
+    background: var(--cream);
+  }
+
   /* Keep page content, and especially the footer, clear of the bar. */
   body {
-    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
   }
 
   /* The open drawer scrolls to its own Support button and footer links, so
      the bar would overlay them. Hidden while the menu is open. */
   body:has(.links.is-open) .cohf-actionbar {
     display: none;
+  }
+}
+
+/* A fixed bar prints as a band across the foot of the first page and the
+   body padding leaves a gap on every other page. Neither is wanted on
+   paper, where a tap target means nothing. */
+@media print {
+  .cohf-actionbar {
+    display: none;
+  }
+
+  body {
+    padding-bottom: 0;
   }
 }
 

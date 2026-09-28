@@ -290,6 +290,11 @@ function cohf_org_field_groups() {
 					'label' => __( 'Telephone', 'cohf-child' ),
 					'type'  => 'text',
 				),
+				'whatsapp' => array(
+					'label' => __( 'WhatsApp number', 'cohf-child' ),
+					'type'  => 'text',
+					'hint'  => __( 'Used by the WhatsApp button in the mobile action bar. Include the country code, for example +254 110 304 521. Leave blank to use the telephone number above.', 'cohf-child' ),
+				),
 				'email'   => array(
 					'label' => __( 'Email address', 'cohf-child' ),
 					'type'  => 'email',

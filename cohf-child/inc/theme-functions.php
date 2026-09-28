@@ -92,6 +92,7 @@ function cohf_org_defaults() {
 		'country'      => 'Kenya',
 		'address'      => 'P.O. Box 23524–00625, Nairobi, Kenya',
 		'phone'        => '+254 110 304 521',
+		'whatsapp'     => '+254 110 304 521',
 		'email'        => 'info@cisternofhopefoundation.org',
 	);
 }
