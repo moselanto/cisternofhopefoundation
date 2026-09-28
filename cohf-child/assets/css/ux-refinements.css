@@ -1369,31 +1369,36 @@ select:user-invalid {
 
    Everything here pulls the section inward. Nothing is removed.
 
-   Scoped to the homepage: the Impact page presents the same figures as its
-   subject rather than as a summary, so it keeps the full measure.
+   Originally scoped to the homepage, on the reasoning that the Impact page
+   presents these figures as its subject rather than as a summary and so
+   should keep the full measure. In practice that produced two different
+   presentations of one identical set of numbers, and the wide version was
+   the weaker of the two: five figures spread across 1180px stop reading as
+   a set. Unscoped in 9.40.0 so both surfaces present the figures the same
+   compact way.
    -------------------------------------------------------------------------- */
 
 /* A summary should be read in one glance, not scanned end to end. At 940px
    the five figures group as a single block with the heading above them,
    which is also what makes it read as considered rather than sparse. */
-.home .impact .numbers {
+.impact .numbers {
   max-width: 940px;
   margin-inline: auto;
   gap: 10px;
 }
 
-.home .impact .number {
+.impact .number {
   padding: 10px 8px;
 }
 
 /* 58px was sized for figures standing alone across a full page. Drawn into
    a tighter block they no longer need to shout to hold the space. */
-.home .impact .number strong {
+.impact .number strong {
   font-size: clamp(34px, 3vw, 46px);
   margin-bottom: 8px;
 }
 
-.home .impact .number span {
+.impact .number span {
   font-size: 12.5px;
   line-height: 1.45;
   max-width: 17ch;
@@ -1402,18 +1407,18 @@ select:user-invalid {
 /* Explore Impact was the last element in the section still sitting hard
    left while the label, heading, lede and figures were all centred. One
    stray alignment is enough to make a composition look unresolved. */
-.home .impact__more {
+.impact__more {
   margin-top: 30px;
   text-align: center;
 }
 
 /* The band carried a full 85px of padding above and below a section that is
    now much shorter, which is where the empty green came from. */
-.home .impact {
+.impact {
   padding: 66px 0;
 }
 
-.home .impact .section-head {
+.impact .section-head {
   margin-bottom: 30px;
 }
 
@@ -1914,5 +1919,74 @@ a.card:focus-visible {
   .accountability-page .pillar-grid > .pillar {
     flex-basis: 260px;
     max-width: none;
+  }
+}
+
+/* 30 ---------------------------------------------------------------
+   The Impact page, and the one set of figures it shares with the
+   homepage.
+
+   Both surfaces state the same five figures under the same dark green
+   band, but they were presented as two different things: the homepage
+   compact and centred, the Impact page spread across the full 1180px
+   with 58px numerals. Section 24 is now unscoped, so the figures match.
+   What is left is everything around them on the Impact page.
+   ------------------------------------------------------------------ */
+
+.impact-page > section {
+  padding: 62px 0;
+}
+
+/* The reported-position band sets its own rhythm in section 24, but the
+   disclaimer sits below the figures and needs the room back. */
+.impact-page .impact {
+  padding-bottom: 58px;
+}
+
+/* --- 30a. The reported-figures note ---------------------------------------
+   A 480px note pinned to the left edge under five centred figures, with
+   a clear half-section of empty green to its right and below. It is the
+   last element in the band and the only one off-axis.
+
+   It is also drawn as a dashed box, which reads as an unfinished
+   placeholder. This note is the opposite: it is the Foundation being
+   precise about what the numbers are and are not. Solid edge, centred,
+   and held to a readable measure. */
+.impact-disclaimer {
+  border-style: solid;
+}
+
+.impact .impact-disclaimer {
+  max-width: 760px;
+  margin-inline: auto;
+  text-align: left;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+/* --- 30b. One label treatment ---------------------------------------------
+   The page still used the bare .kicker eyebrow while the homepage band
+   and every page reworked since 9.36.0 use the ruled .sec-label. Two
+   labels for one identical section is exactly the inconsistency this
+   rework is meant to remove. Converted in the template; this holds the
+   feature blocks' labels clear of their headings. */
+.impact-page .feature > div > .sec-label {
+  margin-bottom: 14px;
+}
+
+/* The measurement table ran the full container width while every other
+   block on the page is now drawn in. */
+.impact-page .table-wrap {
+  max-width: 960px;
+  margin-inline: auto;
+}
+
+@media (max-width: 680px) {
+  .impact-page > section {
+    padding: 48px 0;
+  }
+
+  .impact .impact-disclaimer {
+    font-size: 14px;
   }
 }

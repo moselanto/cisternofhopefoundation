@@ -7,7 +7,7 @@
 defined( 'ABSPATH' ) || exit;
 get_header();
 ?>
-<main id="main-content" tabindex="-1">
+<main id="main-content" class="impact-page" tabindex="-1">
 
 	<?php
 	get_template_part( 'template-parts/page-hero', null, array(
@@ -18,16 +18,17 @@ get_header();
 	) );
 	?>
 
-	<?php if ( cohf_page_body_is_blocks() ) : cohf_the_page_body(); else : ?>
-
 	<section class="impact" id="reported">
 		<div class="container">
 			<div class="section-head">
 				<div>
-					<div class="kicker"><?php esc_html_e( 'Current reported position', 'cohf-child' ); ?></div>
-					<h2><?php esc_html_e( 'What we have already started achieving.', 'cohf-child' ); ?></h2>
+					<div class="sec-label">
+						<span class="sec-label__rule"></span>
+						<span class="sec-label__text"><?php esc_html_e( 'Current reported position', 'cohf-child' ); ?></span>
+					</div>
+					<h2 class="sec-statement sec-statement--wide"><?php esc_html_e( 'What we have already started achieving.', 'cohf-child' ); ?></h2>
 				</div>
-				<p><?php esc_html_e( 'Our strategic framework grows from work we have already started. These are the figures recorded in our own programme records.', 'cohf-child' ); ?></p>
+				<p class="sec-lede"><?php esc_html_e( 'Our strategic framework grows from work we have already started. These are the figures recorded in our own programme records.', 'cohf-child' ); ?></p>
 			</div>
 
 			<?php get_template_part( 'template-parts/numbers' ); ?>
@@ -42,7 +43,10 @@ get_header();
 	<section id="children">
 		<div class="container feature">
 			<div>
-				<div class="kicker"><?php esc_html_e( 'Education', 'cohf-child' ); ?></div>
+				<div class="sec-label">
+					<span class="sec-label__rule"></span>
+					<span class="sec-label__text"><?php esc_html_e( 'Education', 'cohf-child' ); ?></span>
+				</div>
 				<h2><?php esc_html_e( 'Helping vulnerable children stay in school.', 'cohf-child' ); ?></h2>
 				<p><?php esc_html_e( 'In June 2026, three children who had been living on the streets were supported to return to school, with ongoing responsibility for their educational needs including school fees, books, learning materials and food support.', 'cohf-child' ); ?></p>
 				<div class="quote"><?php esc_html_e( 'Reach people. Restore hope. Create opportunity. Build resilience. Sustain change.', 'cohf-child' ); ?></div>
@@ -56,7 +60,10 @@ get_header();
 		<div class="container feature">
 			<?php cohf_the_image( 'programme-03', array( 'sizes' => '(max-width: 60em) 100vw, 50vw' ) ); ?>
 			<div>
-				<div class="kicker"><?php esc_html_e( 'Women and livelihoods', 'cohf-child' ); ?></div>
+				<div class="sec-label">
+					<span class="sec-label__rule"></span>
+					<span class="sec-label__text"><?php esc_html_e( 'Women and livelihoods', 'cohf-child' ); ?></span>
+				</div>
 				<h2><?php esc_html_e( 'Empowerment creates pathways beyond short-term relief.', 'cohf-child' ); ?></h2>
 				<p><?php esc_html_e( 'We measure progress not simply by the number of women trained, but by the extent to which supported women are able to sustain and grow viable economic activities.', 'cohf-child' ); ?></p>
 				<ul class="list-check stack-sm">
@@ -80,8 +87,11 @@ get_header();
 		<div class="container">
 			<div class="section-head">
 				<div>
-					<div class="kicker"><?php esc_html_e( 'Across our work', 'cohf-child' ); ?></div>
-					<h2><?php esc_html_e( 'Where else change is taking hold.', 'cohf-child' ); ?></h2>
+					<div class="sec-label">
+						<span class="sec-label__rule"></span>
+						<span class="sec-label__text"><?php esc_html_e( 'Across our work', 'cohf-child' ); ?></span>
+					</div>
+					<h2 class="sec-statement sec-statement--wide"><?php esc_html_e( 'Where else change is taking hold.', 'cohf-child' ); ?></h2>
 				</div>
 			</div>
 			<div class="purpose">
@@ -106,10 +116,13 @@ get_header();
 		<div class="container">
 			<div class="section-head">
 				<div>
-					<div class="kicker"><?php esc_html_e( 'Monitoring, evaluation and learning', 'cohf-child' ); ?></div>
-					<h2><?php esc_html_e( 'Beyond counting activities.', 'cohf-child' ); ?></h2>
+					<div class="sec-label">
+						<span class="sec-label__rule"></span>
+						<span class="sec-label__text"><?php esc_html_e( 'Monitoring, evaluation and learning', 'cohf-child' ); ?></span>
+					</div>
+					<h2 class="sec-statement sec-statement--wide"><?php esc_html_e( 'Beyond counting activities.', 'cohf-child' ); ?></h2>
 				</div>
-				<p><?php esc_html_e( 'Our approach moves beyond counting activities to understanding change.', 'cohf-child' ); ?></p>
+				<p class="sec-lede"><?php esc_html_e( 'Our approach moves beyond counting activities to understanding change.', 'cohf-child' ); ?></p>
 			</div>
 
 			<div class="table-wrap">
@@ -147,6 +160,5 @@ get_header();
 	) );
 	?>
 
-	<?php endif; ?>
 </main>
 <?php get_footer();
