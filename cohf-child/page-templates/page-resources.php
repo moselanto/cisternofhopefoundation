@@ -31,6 +31,8 @@ $library = new WP_Query( $query_args );
 	) );
 	?>
 
+	<?php if ( cohf_page_body_is_blocks() ) : cohf_the_page_body(); else : ?>
+
 	<!-- Categories -->
 	<section>
 		<div class="container">
@@ -151,5 +153,6 @@ $library = new WP_Query( $query_args );
 	) );
 	?>
 
+	<?php endif; ?>
 </main>
 <?php get_footer();

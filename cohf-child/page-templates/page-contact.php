@@ -19,6 +19,8 @@ $org = cohf_org();
 	) );
 	?>
 
+	<?php if ( cohf_page_body_is_blocks() ) : cohf_the_page_body(); else : ?>
+
 	<section id="enquire">
 		<div class="container story">
 			<div>
@@ -61,5 +63,6 @@ $org = cohf_org();
 		<section class="cream"><div class="container prose"><?php while ( have_posts() ) { the_post(); the_content(); } ?></div></section>
 	<?php endif; ?>
 
+	<?php endif; ?>
 </main>
 <?php get_footer();

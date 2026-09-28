@@ -614,7 +614,52 @@ select:user-invalid {
 
 
 /* --------------------------------------------------------------------------
-   19. Print
+   19. Block-built page bodies
+   When a page opts into "build this page with blocks", its content renders
+   inside .page-blocks. Editor output has no idea about the theme's section
+   rhythm, so without this it would run edge to edge with no vertical space.
+   -------------------------------------------------------------------------- */
+.page-blocks {
+  padding: var(--space-section, 85px) 0;
+}
+
+/* A pattern that already supplies its own .container must not be wrapped in
+   a second one, so the width is applied to direct children instead. */
+.page-blocks > :not(.container):not(section):not(.alignfull):not(.alignwide) {
+  width: min(var(--max, 1220px), calc(100% - 40px));
+  margin-inline: auto;
+}
+
+/* Sections inserted from the pattern library bring their own padding. */
+.page-blocks > section { padding: 0 0 var(--space-section, 85px); }
+.page-blocks > section:last-child { padding-bottom: 0; }
+
+.page-blocks > * + * { margin-top: clamp(28px, 3.4vw, 44px); }
+
+.page-blocks .alignfull {
+  width: 100vw;
+  max-width: 100vw;
+  margin-inline: calc(50% - 50vw);
+}
+
+.page-blocks .alignwide {
+  width: min(1420px, calc(100% - 40px));
+  margin-inline: auto;
+}
+
+/* Core block wrappers should not fight the grid classes the patterns set. */
+.page-blocks .wp-block-group.feature,
+.page-blocks .wp-block-group.grid,
+.page-blocks .wp-block-group.cta-band {
+  display: grid;
+}
+
+.page-blocks .wp-block-image { margin: 0; }
+.page-blocks .wp-block-image img { border-radius: var(--r, 22px); }
+
+
+/* --------------------------------------------------------------------------
+   20. Print
    Supporters and funders do print these pages. Drop the furniture.
    -------------------------------------------------------------------------- */
 @media print {

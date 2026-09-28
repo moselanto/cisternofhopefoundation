@@ -25,6 +25,8 @@ $thanks = isset( $_GET['giving'] ) && 'thank-you' === $_GET['giving'];
 	) );
 	?>
 
+	<?php if ( cohf_page_body_is_blocks() ) : cohf_the_page_body(); else : ?>
+
 	<?php if ( $thanks ) : ?>
 		<section class="sage">
 			<div class="container">
@@ -192,5 +194,6 @@ $thanks = isset( $_GET['giving'] ) && 'thank-you' === $_GET['giving'];
 	) );
 	?>
 
+	<?php endif; ?>
 </main>
 <?php get_footer();

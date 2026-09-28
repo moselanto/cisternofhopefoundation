@@ -20,6 +20,8 @@ $audiences = get_terms( array( 'taxonomy' => 'cohf_audience', 'hide_empty' => tr
 	) );
 	?>
 
+	<?php if ( cohf_page_body_is_blocks() ) : cohf_the_page_body(); else : ?>
+
 	<section>
 		<div class="container">
 			<?php if ( ! empty( $audiences ) && ! is_wp_error( $audiences ) ) : ?>
@@ -77,5 +79,6 @@ $audiences = get_terms( array( 'taxonomy' => 'cohf_audience', 'hide_empty' => tr
 	) );
 	?>
 
+	<?php endif; ?>
 </main>
 <?php get_footer();

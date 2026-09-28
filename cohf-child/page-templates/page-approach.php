@@ -18,6 +18,8 @@ get_header();
 	) );
 	?>
 
+	<?php if ( cohf_page_body_is_blocks() ) : cohf_the_page_body(); else : ?>
+
 	<section class="sage">
 		<div class="container">
 			<?php get_template_part( 'template-parts/approach' ); ?>
@@ -45,5 +47,6 @@ get_header();
 
 	<?php get_template_part( 'template-parts/cta' ); ?>
 
+	<?php endif; ?>
 </main>
 <?php get_footer();

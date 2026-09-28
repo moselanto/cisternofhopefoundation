@@ -31,6 +31,8 @@ get_header();
 	) );
 	?>
 
+	<?php if ( cohf_page_body_is_blocks() ) : cohf_the_page_body(); else : ?>
+
 	<section id="message">
 		<div class="container feature">
 			<div>
@@ -144,5 +146,6 @@ get_header();
 		</div>
 	</section>
 
+	<?php endif; ?>
 </main>
 <?php get_footer();

@@ -35,6 +35,8 @@ $resources = cohf_page_url( 'page-templates/page-resources.php' );
 	) );
 	?>
 
+	<?php if ( cohf_page_body_is_blocks() ) : cohf_the_page_body(); else : ?>
+
 	<!-- Four pillars -->
 	<section>
 		<div class="container">
@@ -201,5 +203,6 @@ $resources = cohf_page_url( 'page-templates/page-resources.php' );
 		</div>
 	</section>
 
+	<?php endif; ?>
 </main>
 <?php get_footer();

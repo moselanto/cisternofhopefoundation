@@ -18,6 +18,8 @@ get_header();
 	) );
 	?>
 
+	<?php if ( cohf_page_body_is_blocks() ) : cohf_the_page_body(); else : ?>
+
 	<section class="impact" id="reported">
 		<div class="container">
 			<div class="section-head">
@@ -145,5 +147,6 @@ get_header();
 	) );
 	?>
 
+	<?php endif; ?>
 </main>
 <?php get_footer();

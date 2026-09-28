@@ -41,6 +41,8 @@ wp_reset_postdata();
 	);
 	?>
 
+	<?php if ( cohf_page_body_is_blocks() ) : cohf_the_page_body(); else : ?>
+
 	<section class="leadership">
 		<div class="container">
 
@@ -187,5 +189,6 @@ wp_reset_postdata();
 		</div>
 	</div>
 
+	<?php endif; ?>
 </main>
 <?php get_footer();

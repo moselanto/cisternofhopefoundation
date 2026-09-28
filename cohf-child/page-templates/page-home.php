@@ -24,6 +24,8 @@ $contact = cohf_page_url( 'page-templates/page-contact.php' );
 	get_template_part( 'template-parts/hero' );
 	?>
 
+	<?php if ( cohf_page_body_is_blocks() ) : cohf_the_page_body(); else : ?>
+
 	<!-- Story -->
 	<section>
 		<div class="container story">
@@ -222,5 +224,6 @@ $contact = cohf_page_url( 'page-templates/page-contact.php' );
 	) );
 	?>
 
+	<?php endif; ?>
 </main>
 <?php get_footer();

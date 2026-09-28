@@ -21,6 +21,8 @@ $cta     = cohf_cta_links();
 	) );
 	?>
 
+	<?php if ( cohf_page_body_is_blocks() ) : cohf_the_page_body(); else : ?>
+
 	<section>
 		<div class="container">
 			<div class="grid">
@@ -102,5 +104,6 @@ $cta     = cohf_cta_links();
 		</div>
 	</section>
 
+	<?php endif; ?>
 </main>
 <?php get_footer();
