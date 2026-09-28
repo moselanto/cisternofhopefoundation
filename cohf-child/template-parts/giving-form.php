@@ -22,14 +22,52 @@ $org   = cohf_org();
 ?>
 <div class="give-card">
 
-	<?php if ( $live === false ) : ?>
+	<?php
+	if ( $live === false ) :
+		/*
+		 * Offline does not mean unavailable. The Foundation accepts gifts
+		 * today; what is missing is the card and M-Pesa step, not the
+		 * willingness to receive. The earlier panel apologised and offered
+		 * two bare links, which reads as a dead end on the one page whose
+		 * entire purpose is to accept a donation. This states plainly how
+		 * a gift is made right now and what the donor can expect back.
+		 */
+		$wa        = isset( $org['whatsapp'] ) ? preg_replace( '/[^0-9]/', '', (string) $org['whatsapp'] ) : '';
+		$tel       = preg_replace( '/[^0-9+]/', '', (string) $org['phone'] );
+		$wa_text   = rawurlencode( __( 'Hello, I would like to make a donation to Cistern of Hope Foundation.', 'cohf-child' ) );
+		$mail_subj = rawurlencode( __( 'Donation to Cistern of Hope Foundation', 'cohf-child' ) );
+		?>
 		<div class="give-card__offline">
-			<h3><?php esc_html_e( 'Giving channels are being connected.', 'cohf-child' ); ?></h3>
-			<p><?php esc_html_e( 'Online giving will appear here as soon as the Foundation\'s payment account is live. In the meantime please contact us directly and we will arrange your gift personally.', 'cohf-child' ); ?></p>
-			<div class="buttons">
-				<a class="btn dark" href="mailto:<?php echo esc_attr( $org['email'] ); ?>"><?php esc_html_e( 'Email the Foundation', 'cohf-child' ); ?></a>
-				<a class="btn outline" href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $org['phone'] ) ); ?>"><?php echo esc_html( $org['phone'] ); ?></a>
+			<div class="sec-label">
+				<span class="sec-label__rule"></span>
+				<span class="sec-label__text"><?php esc_html_e( 'Giving directly', 'cohf-child' ); ?></span>
 			</div>
+
+			<h3><?php esc_html_e( 'You can give today.', 'cohf-child' ); ?></h3>
+
+			<p><?php esc_html_e( 'Card and M-Pesa giving through this page is being connected. Until it is live, gifts are arranged directly with the Foundation, and they reach the same programmes in the same way.', 'cohf-child' ); ?></p>
+
+			<ol class="give-offline__steps">
+				<li><?php esc_html_e( 'Tell us the amount and the area of work you want to strengthen.', 'cohf-child' ); ?></li>
+				<li><?php esc_html_e( 'We confirm the payment details and complete the gift with you.', 'cohf-child' ); ?></li>
+				<li><?php esc_html_e( 'You receive a receipt from the Foundation.', 'cohf-child' ); ?></li>
+			</ol>
+
+			<div class="give-offline__actions">
+				<?php if ( '' !== $wa ) : ?>
+					<a class="btn cta" href="https://wa.me/<?php echo esc_attr( $wa ); ?>?text=<?php echo esc_attr( $wa_text ); ?>" target="_blank" rel="noopener noreferrer">
+						<?php esc_html_e( 'Give by WhatsApp', 'cohf-child' ); ?>
+					</a>
+				<?php endif; ?>
+				<a class="btn dark" href="mailto:<?php echo esc_attr( $org['email'] ); ?>?subject=<?php echo esc_attr( $mail_subj ); ?>">
+					<?php esc_html_e( 'Email the Foundation', 'cohf-child' ); ?>
+				</a>
+				<a class="btn outline" href="tel:<?php echo esc_attr( $tel ); ?>">
+					<?php echo esc_html( $org['phone'] ); ?>
+				</a>
+			</div>
+
+			<p class="give__trust"><?php esc_html_e( 'Donations are separate from Hope Market purchases and are receipted separately.', 'cohf-child' ); ?></p>
 		</div>
 	<?php else : ?>
 

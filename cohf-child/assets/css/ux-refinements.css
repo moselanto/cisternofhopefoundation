@@ -2066,6 +2066,200 @@ a.card:focus-visible {
   }
 }
 
+/* 33 ---------------------------------------------------------------
+   Hope Market, and the logo bug it exposed.
+   ------------------------------------------------------------------ */
+
+/* --- 33a. The oversized logo on WooCommerce pages -------------------------
+   WooCommerce's stylesheet carries `.woocommerce-page img { height: auto }`.
+   That selector scores 0-1-1; the theme's `.mark--logo { height: 40px }`
+   scores 0-1-0, so WooCommerce won and the header mark rendered at its
+   natural size - roughly 230px tall, overflowing the header and colliding
+   with the wordmark and the navigation.
+
+   It only ever happened on the shop because `woocommerce-page` is only on
+   the body there, which is why the same header was correct everywhere
+   else. The fix is specificity, not an override war: qualify the logo
+   rules so they outrank a single class plus an element. */
+.brand .mark--logo,
+.brand .custom-logo,
+.woocommerce-page .mark--logo,
+.woocommerce-page .custom-logo {
+  width: auto;
+  height: 40px;
+  max-width: min(320px, 42vw);
+  object-fit: contain;
+}
+
+footer .brand .mark--logo,
+.woocommerce-page footer .mark--logo {
+  height: 44px;
+}
+
+@media (max-width: 1150px) {
+  .brand .mark--logo,
+  .brand .custom-logo,
+  .woocommerce-page .mark--logo,
+  .woocommerce-page .custom-logo {
+    height: 36px;
+  }
+}
+
+@media (max-width: 900px) {
+  .brand .mark--logo,
+  .brand .custom-logo,
+  .woocommerce-page .mark--logo,
+  .woocommerce-page .custom-logo {
+    height: 38px;
+  }
+}
+
+/* --- 33b. The storefront ---------------------------------------------------
+   With the wrapper hooks now firing (see woocommerce.php), the shop gets
+   the theme's hero and container. These style what sits inside it. */
+.shop-main {
+  padding: 58px 0 72px;
+}
+
+.shop-intro {
+  max-width: 760px;
+  margin: 0 auto 38px;
+  text-align: center;
+}
+
+.shop-intro .sec-label {
+  justify-content: center;
+}
+
+.shop-intro .sec-lede {
+  margin: 0;
+}
+
+/* WooCommerce's own notices are unstyled against this theme - a pale blue
+   info bar with a default icon, which is the first thing the page showed. */
+.woocommerce-info,
+.woocommerce-message,
+.woocommerce-error {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--gold);
+  border-radius: 14px;
+  background: #fff;
+  padding: 18px 22px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink);
+  list-style: none;
+}
+
+.woocommerce-info::before,
+.woocommerce-message::before,
+.woocommerce-error::before {
+  display: none;
+}
+
+/* An empty storefront is a real state, not an error. Centre it and give it
+   room rather than leaving one grey sentence adrift on a blank page. */
+.shop-empty {
+  max-width: 620px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 44px 32px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: #fff;
+}
+
+.shop-empty h2 {
+  font-size: 27px;
+  line-height: 1.2;
+  margin: 0 0 12px;
+}
+
+.shop-empty p {
+  color: var(--muted);
+  margin: 0 auto 22px;
+  max-width: 46ch;
+}
+
+.shop-empty .buttons {
+  justify-content: center;
+  margin-top: 0;
+}
+
+/* --- 33c. The giving panel while online giving is being connected ---------
+   The Support Our Work page carries the Foundation's only donation route.
+   Until the Paystack key is entered it shows the direct-giving panel, so
+   that panel has to look like a considered offer rather than an apology. */
+.give-card__offline .sec-label {
+  margin-bottom: 14px;
+}
+
+.give-card__offline h3 {
+  font-size: 25px;
+  line-height: 1.2;
+  margin: 0 0 10px;
+}
+
+.give-offline__steps {
+  counter-reset: give-step;
+  list-style: none;
+  margin: 20px 0 24px;
+  padding: 0;
+  text-align: left;
+}
+
+.give-offline__steps li {
+  counter-increment: give-step;
+  position: relative;
+  padding-left: 38px;
+  margin-bottom: 12px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.give-offline__steps li::before {
+  content: counter(give-step);
+  position: absolute;
+  left: 0;
+  top: -1px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--sage, var(--s));
+  color: var(--forest, var(--g));
+  font: 800 12px/1 var(--font-body);
+}
+
+.give-offline__steps li:last-child {
+  margin-bottom: 0;
+}
+
+.give-offline__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.give-card__offline .give__trust {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+@media (max-width: 600px) {
+  .give-offline__actions .btn {
+    flex: 1 1 100%;
+  }
+
+  .shop-main {
+    padding: 44px 0 56px;
+  }
+}
+
 /* 32 ---------------------------------------------------------------
    Leadership, properly presented.
 

@@ -54,9 +54,25 @@ $thanks = isset( $_GET['giving'] ) && 'thank-you' === $_GET['giving'];
 					<h2 class="sec-statement"><?php esc_html_e( 'Every contribution should have a clear purpose.', 'cohf-child' ); ?></h2>
 					<p class="sec-lede"><?php esc_html_e( 'Choose an amount and the area of work you want it to strengthen. You can give once or, if you prefer, every month.', 'cohf-child' ); ?></p>
 
+					<?php
+					/*
+					 * These assurances describe the Paystack checkout. While the
+					 * key is not configured that checkout does not exist, and
+					 * promising "M-Pesa and card on Paystack's secure step" beside
+					 * a panel explaining that card and M-Pesa are being connected
+					 * contradicts itself on the same screen. State only what is
+					 * true today; the full set returns the moment giving is live.
+					 */
+					$cohf_give_live = function_exists( 'cohf_giving_is_live' ) && cohf_giving_is_live();
+					?>
 					<ul class="give-assure">
-						<li><?php esc_html_e( 'M-Pesa and card, handled on Paystack\'s secure step.', 'cohf-child' ); ?></li>
-						<li><?php esc_html_e( 'No card or M-Pesa details are stored on this website.', 'cohf-child' ); ?></li>
+						<?php if ( $cohf_give_live ) : ?>
+							<li><?php esc_html_e( 'M-Pesa and card, handled on Paystack\'s secure step.', 'cohf-child' ); ?></li>
+							<li><?php esc_html_e( 'No card or M-Pesa details are stored on this website.', 'cohf-child' ); ?></li>
+						<?php else : ?>
+							<li><?php esc_html_e( 'Arranged directly with the Foundation while online giving is connected.', 'cohf-child' ); ?></li>
+							<li><?php esc_html_e( 'No card or M-Pesa details are ever stored on this website.', 'cohf-child' ); ?></li>
+						<?php endif; ?>
 						<li><?php esc_html_e( 'Receipted separately from any Hope Market purchase.', 'cohf-child' ); ?></li>
 						<li><?php esc_html_e( 'Spent against approved budgets and documented.', 'cohf-child' ); ?></li>
 					</ul>

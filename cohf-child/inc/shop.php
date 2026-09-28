@@ -172,6 +172,50 @@ function cohf_shop_button_class( $html ) {
 }
 add_filter( 'woocommerce_loop_add_to_cart_link', 'cohf_shop_button_class' );
 
+/**
+ * A storefront with nothing in it yet.
+ *
+ * WooCommerce's default is a single grey line - "No products were found
+ * matching your selection." - which on an empty shop reads as a broken page
+ * rather than one that has not opened yet. A visitor who arrived wanting to
+ * support the makers should still leave with somewhere to go.
+ */
+remove_action( 'woocommerce_no_products_found', 'wc_no_products_found', 10 );
+
+function cohf_shop_no_products() {
+	$support = function_exists( 'cohf_page_url' ) ? cohf_page_url( 'page-templates/page-support.php' ) : '';
+	$contact = function_exists( 'cohf_page_url' ) ? cohf_page_url( 'page-templates/page-contact.php' ) : '';
+
+	echo '<div class="shop-empty">';
+	echo '<h2>' . esc_html__( 'Hope Market is being stocked.', 'cohf-child' ) . '</h2>';
+	echo '<p>' . esc_html__(
+		'The first crafts from our enterprise programmes are being photographed and listed. Until they are here, you can support the same makers directly.',
+		'cohf-child'
+	) . '</p>';
+
+	if ( '' !== $support || '' !== $contact ) {
+		echo '<div class="buttons">';
+		if ( '' !== $support ) {
+			printf(
+				'<a class="btn cta" href="%1$s">%2$s</a>',
+				esc_url( $support ),
+				esc_html__( 'Support Our Work', 'cohf-child' )
+			);
+		}
+		if ( '' !== $contact ) {
+			printf(
+				'<a class="btn outline" href="%1$s">%2$s</a>',
+				esc_url( $contact ),
+				esc_html__( 'Contact the Foundation', 'cohf-child' )
+			);
+		}
+		echo '</div>';
+	}
+
+	echo '</div>';
+}
+add_action( 'woocommerce_no_products_found', 'cohf_shop_no_products', 10 );
+
 
 /* -------------------------------------------------------------------------
    Product provenance
