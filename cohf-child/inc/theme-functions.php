@@ -509,9 +509,21 @@ function cohf_explore_nav_children() {
  * @return array{source:string,items:array} Navigation source and items.
  */
 function cohf_nav() {
-	// An assigned menu is an explicit act by an administrator, so it is the
-	// default source whenever one exists.
-	$default = has_nav_menu( 'primary' ) ? 'wordpress' : 'theme';
+	/*
+	 * An assigned menu is an explicit act by an administrator, so it is the
+	 * default source - but only once it has the structure to replace what it
+	 * is replacing. The designed header groups pages under About, Programmes
+	 * and Explore as dropdowns, and a flat menu assigned to this location
+	 * silently flattens the whole header. Nobody builds a flat menu in order
+	 * to lose their dropdowns, so a menu with no sub-items reads as "not yet
+	 * structured" rather than as an instruction. One sub-item is enough to
+	 * show intent, and then the menu wins outright.
+	 *
+	 * See inc/nav-structure.php, which explains this on the menus screen and
+	 * offers a one-click import of the grouped structure.
+	 */
+	$structured = ! function_exists( 'cohf_primary_menu_has_children' ) || cohf_primary_menu_has_children();
+	$default    = ( has_nav_menu( 'primary' ) && $structured ) ? 'wordpress' : 'theme';
 
 	$source = get_option( 'cohf_nav_source', $default );
 	$source = apply_filters( 'cohf_nav_source', $source );

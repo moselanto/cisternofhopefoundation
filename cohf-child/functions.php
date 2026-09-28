@@ -29,6 +29,7 @@ function cohf_require( $file ) {
 foreach ( array(
 	'theme-functions',
 	'nav-walker',
+	'nav-structure',
 	'media',
 	'performance',
 	'security',
