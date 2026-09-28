@@ -1357,3 +1357,159 @@ select:user-invalid {
     font-size: 14.5px;
   }
 }
+
+/* --------------------------------------------------------------------------
+   24. Our Impact, drawn in
+
+   Five figures were set across the full 1180px container, roughly 236px
+   apart. Spread that far they stopped reading as one set of results and
+   became five separate statements that happened to share a band - and the
+   eye had to travel the whole page width to collect them. The band then ran
+   on for another 200px below the button with nothing in it.
+
+   Everything here pulls the section inward. Nothing is removed.
+
+   Scoped to the homepage: the Impact page presents the same figures as its
+   subject rather than as a summary, so it keeps the full measure.
+   -------------------------------------------------------------------------- */
+
+/* A summary should be read in one glance, not scanned end to end. At 940px
+   the five figures group as a single block with the heading above them,
+   which is also what makes it read as considered rather than sparse. */
+.home .impact .numbers {
+  max-width: 940px;
+  margin-inline: auto;
+  gap: 10px;
+}
+
+.home .impact .number {
+  padding: 10px 8px;
+}
+
+/* 58px was sized for figures standing alone across a full page. Drawn into
+   a tighter block they no longer need to shout to hold the space. */
+.home .impact .number strong {
+  font-size: clamp(34px, 3vw, 46px);
+  margin-bottom: 8px;
+}
+
+.home .impact .number span {
+  font-size: 12.5px;
+  line-height: 1.45;
+  max-width: 17ch;
+}
+
+/* Explore Impact was the last element in the section still sitting hard
+   left while the label, heading, lede and figures were all centred. One
+   stray alignment is enough to make a composition look unresolved. */
+.home .impact__more {
+  margin-top: 30px;
+  text-align: center;
+}
+
+/* The band carried a full 85px of padding above and below a section that is
+   now much shorter, which is where the empty green came from. */
+.home .impact {
+  padding: 66px 0;
+}
+
+.home .impact .section-head {
+  margin-bottom: 30px;
+}
+
+/* --------------------------------------------------------------------------
+   25. The closing call to action
+
+   Three separate faults had stacked up in this band:
+
+   1. The two buttons were sitting one above the other. .buttons is shared
+      with the hero, where it carries flex-wrap:wrap so slide buttons can
+      drop onto a second line on a narrow screen. In the band the button
+      column is only as wide as what is left over, and once the buttons grew
+      in 9.33.0 the pair no longer fitted - so they wrapped. It looked like
+      a mistake because it was one.
+   2. .buttons also carries margin-top:28px for the hero. In a vertically
+      centred row that margin pushes the buttons below the centre line, so
+      they never quite lined up with the text beside them.
+   3. The panel itself was a flat two-stop gradient across a large area,
+      which reads as a solid slab of brown rather than a considered surface.
+   -------------------------------------------------------------------------- */
+.cta-band {
+  position: relative;
+  padding: 56px 60px;
+  border-radius: 28px;
+  gap: 48px;
+  /* A warm highlight falling from the top left over a deeper three-stop
+     terracotta. Large flat areas need somewhere for the light to come
+     from, or they look printed rather than lit. */
+  background:
+    radial-gradient(75% 120% at 12% 0%, #ffffff21 0%, #ffffff00 62%),
+    linear-gradient(135deg, #c2724f 0%, #a85834 55%, #93492c 100%);
+  box-shadow: 0 18px 44px #17231e21;
+}
+
+.cta-band h2 {
+  max-width: 18ch;
+  line-height: 1.08;
+}
+
+.cta-band p {
+  margin-bottom: 0;
+}
+
+/* Hold the pair on one line and stop the column being squeezed. */
+.cta-band .buttons {
+  flex-wrap: nowrap;
+  flex: 0 0 auto;
+  margin-top: 0;
+  gap: 14px;
+}
+
+.cta-band .btn {
+  white-space: nowrap;
+}
+
+.cta-band .btn.gold {
+  box-shadow: 0 4px 14px #17231e2e;
+}
+
+.cta-band .btn.gold:hover {
+  background: #e7b352;
+}
+
+/* The outline button was a hairline at 60% white on a mid-tone panel, which
+   is close to invisible. A brighter edge over a faint fill gives it enough
+   presence to read as the second of two choices rather than as a caption. */
+.cta-band .btn.light {
+  border: 1.5px solid #ffffffc4;
+  background: #ffffff17;
+}
+
+.cta-band .btn.light:hover {
+  background: #ffffff2b;
+  border-color: #fff;
+}
+
+/* Below 900px the band becomes a single column, so the buttons need their
+   top margin back and should be free to wrap again on a narrow phone. */
+@media (max-width: 900px) {
+  .cta-band {
+    padding: 44px 40px;
+  }
+
+  .cta-band .buttons {
+    flex-wrap: wrap;
+    margin-top: 26px;
+  }
+
+  .cta-band h2 {
+    max-width: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .cta-band {
+    padding: 34px 26px;
+    border-radius: 22px;
+  }
+}
