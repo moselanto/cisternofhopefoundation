@@ -596,20 +596,60 @@ select:user-invalid {
   .cta { flex: 0 0 auto; }
 }
 
-/* Tier 1: a seven-to-eight item menu. */
-@media (min-width: 901px) and (max-width: 1280px) {
-  .links { gap: 0 13px; font-size: 12px; }
-  .navgroup__btn { font-size: 12px; }
+/* Navigation type scale.
+
+   The header ran at 12.5px, shrinking to 11.5px, which is small for a
+   primary navigation and sat noticeably below the brand and the button it
+   shares a row with. That scale was set when the menu was a flat row of ten
+   items and every pixel was needed; the grouped structure carries seven, so
+   the space exists to read comfortably.
+
+   Measured from the live header at 1190px: the links occupied about 470px
+   between a brand ending near 295px and a button starting near 1005px, so
+   roughly 710px was available. At 15px the same labels need about 595px,
+   which clears the button with room to spare.
+
+   The tiers still step the scale down as the row tightens, and below 901px
+   the menu collapses to the toggle, which remains the honest answer when
+   the space genuinely runs out. */
+@media (min-width: 901px) {
+  .links {
+    gap: 0 20px;
+    font-size: 15px;
+  }
+
+  /* font:inherit on the button means this has to be set alongside, or the
+     dropdown parents would stay at the old size while the plain links grew. */
+  .navgroup__btn { font-size: 15px; }
+
+  header .cta { font-size: 13px; }
 }
 
-/* Tier 2: nine or more items, or long labels. Below this the layout is
-   genuinely out of room, and collapsing to the toggle is the honest answer. */
+/* Tier 1: the row is tightening but the full label set still fits. */
+@media (min-width: 901px) and (max-width: 1280px) {
+  .links { gap: 0 16px; font-size: 14px; }
+  .navgroup__btn { font-size: 14px; }
+}
+
+/* Tier 2: genuinely tight. Trim the gaps and the tagline before the type,
+   because legibility is the last thing that should be sacrificed. */
 @media (min-width: 901px) and (max-width: 1080px) {
-  .links { gap: 0 9px; font-size: 11.5px; }
-  .navgroup__btn { font-size: 11.5px; }
+  .links { gap: 0 10px; font-size: 12.5px; }
+  .navgroup__btn { font-size: 12.5px; }
   .nav { gap: 10px; }
   .cta { padding: 10px 14px; font-size: 12px; }
   .brand small { display: none; }
+}
+
+/* The dropdown panels were built against the smaller parent scale, so
+   raising only the top level would leave the panels looking shrunken. */
+.links .navgroup__panel a {
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.navgroup__desc {
+  font-size: 12px;
 }
 
 
