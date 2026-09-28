@@ -1990,3 +1990,69 @@ a.card:focus-visible {
     font-size: 14px;
   }
 }
+
+/* 31 ---------------------------------------------------------------
+   The reported-figures band, contained.
+
+   9.40.0 gave both surfaces the same compact 940px block of figures,
+   but left the green running full bleed from one edge of the window to
+   the other. At 1400px and above that is a very large field of green
+   holding a strip of content less than two-thirds its width, so the
+   band reads as mostly empty colour and the figures look stranded in
+   the middle of it.
+
+   The fix is not to spread the figures back out - that was the fault
+   corrected in 9.35.0. It is to bring the green in to meet them. The
+   band becomes a contained panel, like the terracotta call to action
+   already is, and the figures then run the full width of that panel
+   rather than sitting in a narrow column inside a wide one.
+   ------------------------------------------------------------------ */
+
+.impact {
+  background: transparent;
+  color: var(--ink);
+  padding: 34px 0;
+}
+
+.impact > .container {
+  width: min(1080px, calc(100% - 40px));
+  padding: 52px 56px;
+  border-radius: 28px;
+  background: var(--forest, var(--g));
+  color: #fff;
+  /* Lit from the top left, matching the treatment the CTA band uses, so
+     a large flat area has somewhere for the light to come from. */
+  background-image:
+    radial-gradient(70% 110% at 12% 0%, #ffffff12 0%, #ffffff00 60%);
+  box-shadow: 0 18px 44px #17231e1f;
+}
+
+/* The figures now have a panel sized to them, so they take all of it. */
+.impact .numbers {
+  max-width: none;
+  gap: 8px;
+}
+
+/* The Impact page set its own bottom padding in section 30, which was
+   measured against the full-bleed band and is too much for a panel. */
+.impact-page .impact {
+  padding-block: 34px;
+}
+
+@media (max-width: 900px) {
+  .impact > .container {
+    padding: 42px 32px;
+    border-radius: 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .impact {
+    padding: 22px 0;
+  }
+
+  .impact > .container {
+    padding: 34px 22px;
+    border-radius: 20px;
+  }
+}
