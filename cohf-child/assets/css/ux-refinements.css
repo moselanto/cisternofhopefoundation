@@ -1243,24 +1243,33 @@ select:user-invalid {
   background: transparent;
 }
 
+/* Revised in 9.33.0 after studying dckabeten.org directly. That page states
+   its figures on a flat dark band with nothing around them at all - no
+   panels, no seams, no borders - and lets the gold numerals and a lot of
+   quiet space do the work. Panels were an improvement on hairline seams,
+   but they still framed each figure like a dashboard tile. Taking the frame
+   away entirely is both closer to the reference and simply better. */
 .impact .number {
   display: flex;
   flex-direction: column;
-  padding: 26px 20px 24px;
-  background: #ffffff0f;
-  border: 1px solid #ffffff1f;
-  border-radius: 16px;
+  align-items: center;
+  padding: 18px 14px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  text-align: center;
 }
 
 .impact .number strong {
-  font-size: clamp(38px, 3.4vw, 50px);
+  font-size: clamp(44px, 4vw, 58px);
   line-height: 1;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .impact .number span {
-  font-size: 13px;
-  line-height: 1.45;
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 22ch;
   color: #cfded6;
   /* These labels are full phrases and wrap to two or three lines. Balancing
      stops one word being stranded on the last line of a narrow panel. */
@@ -1287,5 +1296,57 @@ select:user-invalid {
 @media (max-width: 460px) {
   .impact .numbers {
     grid-template-columns: 1fr;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   23. Measured against dckabeten.org
+
+   Both sites already share an architecture - serif display over sans body,
+   a gold accent, centred section introductions, pill buttons, a dark
+   figures band, a photographic hero with centred copy. These are the two
+   places where the reference is doing something measurably better.
+   -------------------------------------------------------------------------- */
+
+/* --- 23a. A lighter hero wash ----------------------------------------------
+   9.28.0 replaced the hero's 90deg ramp with a symmetrical vignette so that
+   centred copy would not sit half on dark and half on bright image. That was
+   right in principle but went too far: at 90% black in the corners the
+   photograph became a texture rather than a picture, and these are
+   photographs of real people the Foundation works with.
+
+   The reference holds its hero image at roughly half strength - clearly a
+   photograph, with the headline still comfortably legible on top. Matching
+   that means easing every stop while keeping the shape: lightest at the
+   centre where the words are, strongest at the bottom where the controls
+   and the section edge need separation. */
+.hero--slider:before {
+  background:
+    linear-gradient(180deg, #0e2d234d 0%, #0e2d2326 45%, #0e2d2394 100%),
+    radial-gradient(130% 100% at 50% 50%, #0e2d231f 0%, #0e2d237a 80%, #0e2d239e 100%);
+}
+
+/* --- 23b. Buttons with presence --------------------------------------------
+   At 12px by 19px the buttons were the least confident element on the page,
+   noticeably smaller than the reference's calls to action and small against
+   our own 46px headings. Growing the padding and the label brings them up to
+   a comfortable 48px tall, which is also the touch target the action bar
+   already uses. */
+.btn {
+  padding: 15px 30px;
+  font-size: 15px;
+}
+
+/* The header button is the one exception: it has to sit inside a 78px nav
+   beside the menu, so it takes the same treatment one step down. */
+.cta {
+  padding: 13px 24px;
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .btn {
+    padding: 14px 24px;
+    font-size: 14.5px;
   }
 }
