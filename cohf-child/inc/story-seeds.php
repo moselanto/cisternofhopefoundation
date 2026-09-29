@@ -234,11 +234,11 @@ function cohf_stories_publish_seeded() {
 			continue;
 		}
 
-		if ( 'draft' \!== $existing->post_status ) {
+		if ( 'draft' !== $existing->post_status ) {
 			continue;
 		}
 
-		if ( '1' \!== (string) get_post_meta( $existing->ID, '_cohf_consent', true ) ) {
+		if ( '1' !== (string) get_post_meta( $existing->ID, '_cohf_consent', true ) ) {
 			continue;
 		}
 
