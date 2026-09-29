@@ -221,6 +221,12 @@ function cohf_run_setup() {
 		}
 	}
 
+	// Impact stories supplied by the Foundation, with consent confirmed for
+	// the photographs. Existing stories are never overwritten.
+	if ( function_exists( 'cohf_seed_stories' ) ) {
+		cohf_seed_stories();
+	}
+
 	// Make the whole bundled image set available in the Media Library so the
 	// Foundation can swap any of it from the admin without editing files.
 	foreach ( array_keys( cohf_image_library() ) as $image_key ) {

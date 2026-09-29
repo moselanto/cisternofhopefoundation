@@ -67,6 +67,12 @@ function cohf_image_library() {
 		'programme-11' => array( 'file' => 'programme-11.jpg', 'alt' => __( 'Young people learning at laptops in a community digital learning space with a trainer.', 'cohf-child' ) ),
 		'programme-12' => array( 'file' => 'programme-12.jpg', 'alt' => __( 'A community planning meeting with elders and young people around a shared table.', 'cohf-child' ) ),
 
+		// Impact story lead images, supplied by the Foundation with consent.
+		'story-01-women-seminar' => array( 'file' => 'story-01-women-seminar.jpg', 'alt' => __( 'Women seated together in discussion at the Foundation women empowerment seminar.', 'cohf-child' ) ),
+		'story-02-dignity-packs' => array( 'file' => 'story-02-dignity-packs.jpg', 'alt' => __( 'Children and Foundation staff together after a sanitary pad distribution at a home for orphaned children.', 'cohf-child' ) ),
+		'story-03-door-to-door' => array( 'file' => 'story-03-door-to-door.jpg', 'alt' => __( 'A Foundation staff member handing a pack of sanitary pads to a girl at her home.', 'cohf-child' ) ),
+		'story-04-back-to-school' => array( 'file' => 'story-04-back-to-school.jpg', 'alt' => __( 'Three boys in school uniform standing with their family outside their home.', 'cohf-child' ) ),
+
 		// Leadership portraits, supplied by the Foundation.
 		'leader-justus-kubai' => array( 'file' => 'leader-justus-kubai.jpg', 'alt' => __( 'Mr. Justus Kubai, Founder and Executive Director.', 'cohf-child' ) ),
 		'leader-henry-onzere' => array( 'file' => 'leader-henry-onzere.jpg', 'alt' => __( 'Henry Onzere, Chairperson of the Board of Directors.', 'cohf-child' ) ),

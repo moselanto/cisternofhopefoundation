@@ -13,7 +13,10 @@ get_header();
 while ( have_posts() ) :
 	the_post();
 	$location   = cohf_field( 'location' );
-	$date       = cohf_field( 'story_date' );
+	$date_raw   = cohf_field( 'story_date' );
+	// Stored as Y-m-d by the date field; shown in the site's date format so
+	// the page reads '25 August 2025' rather than '2025-08-25'.
+	$date       = $date_raw ? date_i18n( get_option( 'date_format' ), strtotime( $date_raw ) ) : '';
 	$challenge  = cohf_field( 'challenge' );
 	$action     = cohf_field( 'intervention' );
 	$change     = cohf_field( 'change' );
