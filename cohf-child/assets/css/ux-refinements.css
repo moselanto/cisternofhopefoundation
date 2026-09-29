@@ -2856,3 +2856,126 @@ footer .brand .mark--logo,
   font-size: 13px;
   color: var(--muted, #66736d);
 }
+
+
+/* --------------------------------------------------------------------------
+   40. The donation form layout
+   prototype.css sets `form { display: grid; grid-template-columns: 1fr 1fr }`
+   for the contact form. The donation form inherited it, and every direct
+   child became a cell in a two-column grid: the amount buttons sat beside
+   the custom-amount box, "Support area" sat beside the name and email pair,
+   the explanatory note sat beside the submit button, and the button itself
+   stretched to fill its cell and rendered as an enormous gold ellipse.
+
+   A donation form is a single vertical decision. It is laid out here as
+   one, and the two-column pairing is applied only where two fields genuinely
+   belong side by side.
+   -------------------------------------------------------------------------- */
+.give {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.give fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.give__legend {
+  padding: 0;
+  margin-bottom: 12px;
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 19px;
+  color: var(--g, #163f32);
+}
+
+/* Amounts: a fixed three-across grid with every tile the same height,
+   rather than tiles that size themselves to whether the label wraps. */
+.give__amount-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.give__amount span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  padding: 10px 8px;
+  white-space: nowrap;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* Name and email pair; everything else runs full width. */
+.give__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.give__details .give__field + .give__field,
+.give__details .give__row + .give__field {
+  margin-top: 16px;
+}
+
+.give__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.give__field label {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.give__field input,
+.give__field select,
+.give__field textarea {
+  width: 100%;
+}
+
+/* The button is the whole point of the page, so it gets the full width and
+   a height it chooses rather than one a grid cell imposes on it. */
+.give__submit {
+  width: 100%;
+  min-height: 56px;
+  font-size: 16px;
+}
+
+.give__note,
+.give__trust {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted, #66736d);
+}
+
+.give__error[hidden] {
+  display: none;
+}
+
+.give__error {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #fdf1ee;
+  color: #8d3a20;
+  font-size: 14px;
+}
+
+@media (max-width: 620px) {
+  .give__amount-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .give__row {
+    grid-template-columns: 1fr;
+  }
+}

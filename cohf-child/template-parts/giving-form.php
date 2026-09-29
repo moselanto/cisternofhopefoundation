@@ -226,34 +226,38 @@ $cohf_result  = $cohf_show_ty ? cohf_giving_verify( $cohf_ref ) : array();
 					placeholder="<?php esc_attr_e( 'Amount in KES', 'cohf-child' ); ?>">
 			</div>
 
+			<fieldset class="give__details">
+				<legend class="give__legend"><?php esc_html_e( 'Your details', 'cohf-child' ); ?></legend>
+
+				<div class="give__row">
+					<div class="give__field">
+						<label for="cohf-give-name"><?php esc_html_e( 'Full name', 'cohf-child' ); ?></label>
+						<input type="text" id="cohf-give-name" name="cohf_name" autocomplete="name" required>
+					</div>
+					<div class="give__field">
+						<label for="cohf-give-email"><?php esc_html_e( 'Email address', 'cohf-child' ); ?></label>
+						<input type="email" id="cohf-give-email" name="cohf_email" autocomplete="email" required>
+					</div>
+				</div>
+
+				<div class="give__field">
+					<label for="cohf-give-phone">
+						<?php esc_html_e( 'Phone number', 'cohf-child' ); ?>
+						<span class="give__optional"><?php esc_html_e( 'for M-Pesa', 'cohf-child' ); ?></span>
+					</label>
+					<input type="tel" id="cohf-give-phone" name="cohf_phone" autocomplete="tel"
+						inputmode="tel"
+						placeholder="<?php esc_attr_e( '07xx xxx xxx', 'cohf-child' ); ?>">
+				</div>
+			</fieldset>
+
 			<div class="give__field">
-				<label for="cohf-give-area"><?php esc_html_e( 'Support area', 'cohf-child' ); ?></label>
+				<label for="cohf-give-area"><?php esc_html_e( 'What would you like to support?', 'cohf-child' ); ?></label>
 				<select id="cohf-give-area" name="cohf_area">
 					<?php foreach ( $areas as $key => $label ) : ?>
 						<option value="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></option>
 					<?php endforeach; ?>
 				</select>
-			</div>
-
-			<div class="give__row">
-				<div class="give__field">
-					<label for="cohf-give-name"><?php esc_html_e( 'Your name', 'cohf-child' ); ?></label>
-					<input type="text" id="cohf-give-name" name="cohf_name" autocomplete="name" required>
-				</div>
-				<div class="give__field">
-					<label for="cohf-give-email"><?php esc_html_e( 'Email for your receipt', 'cohf-child' ); ?></label>
-					<input type="email" id="cohf-give-email" name="cohf_email" autocomplete="email" required>
-				</div>
-			</div>
-
-			<div class="give__field">
-				<label for="cohf-give-phone">
-					<?php esc_html_e( 'Phone number', 'cohf-child' ); ?>
-					<span class="give__optional"><?php esc_html_e( 'for M-Pesa', 'cohf-child' ); ?></span>
-				</label>
-				<input type="tel" id="cohf-give-phone" name="cohf_phone" autocomplete="tel"
-					inputmode="tel"
-					placeholder="<?php esc_attr_e( '07xx xxx xxx', 'cohf-child' ); ?>">
 			</div>
 
 			<div class="give__field">
