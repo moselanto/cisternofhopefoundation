@@ -161,17 +161,40 @@ function cohf_seed_stories() {
 }
 
 /**
+ * How many impact stories exist, in any status.
+ *
+ * Counting drafts and private posts too, because the question being asked is
+ * "did seeding run", not "is anything public".
+ *
+ * @return int
+ */
+function cohf_stories_count() {
+	$ids = get_posts( array(
+		'post_type'        => 'cohf_story',
+		'post_status'      => array( 'publish', 'draft', 'pending', 'private' ),
+		'numberposts'      => -1,
+		'fields'           => 'ids',
+		'suppress_filters' => false,
+	) );
+
+	return count( $ids );
+}
+
+/**
  * Seed the stories once per theme version, without waiting for a button.
  *
- * The stories were previously created only by the manual "Run one-time
- * setup" action. That left the archive live but empty, and the navigation
- * pointing at an empty page, until somebody remembered to press it. Bundled
- * content that the theme guarantees should not depend on that.
+ * This hook runs on admin_init, which means it fires on a wp-admin request
+ * and not on a front-end one. Deploying and then loading the stories page
+ * directly will therefore show an empty archive until any admin page is
+ * opened once. That is expected, and the notice below makes it visible
+ * rather than leaving it to be guessed at.
  *
- * The version option is written before seeding rather than after, so a fatal
- * error or timeout cannot turn this into work repeated on every admin
- * request. The manual setup action still calls cohf_seed_stories() directly
- * and ignores this option, so it remains the retry path if a run is missed.
+ * Retries are bounded rather than absent or infinite. Writing the version
+ * marker only on success would retry a permanent failure on every admin
+ * request and drag the whole dashboard down; writing it before the attempt,
+ * as 9.48.0 did, gives up after a single transient failure and leaves no
+ * automatic way back. A counter does neither: three attempts, then stop and
+ * let the notice offer a manual run.
  */
 function cohf_stories_maybe_seed() {
 	if ( is_admin() === false ) {
@@ -188,8 +211,107 @@ function cohf_stories_maybe_seed() {
 		return;
 	}
 
-	update_option( 'cohf_stories_seeded', COHF_CHILD_VERSION );
+	$attempts = (int) get_option( 'cohf_stories_seed_attempts', 0 );
+
+	if ( $attempts >= 3 ) {
+		return;
+	}
+
+	update_option( 'cohf_stories_seed_attempts', $attempts + 1 );
 
 	cohf_seed_stories();
+
+	// Only record success once the records actually exist.
+	if ( cohf_stories_count() > 0 ) {
+		update_option( 'cohf_stories_seeded', COHF_CHILD_VERSION );
+		delete_option( 'cohf_stories_seed_attempts' );
+	}
 }
 add_action( 'admin_init', 'cohf_stories_maybe_seed' );
+
+/**
+ * Manual run, for when the automatic attempts have been exhausted.
+ */
+function cohf_seed_stories_handler() {
+	check_admin_referer( 'cohf_seed_stories' );
+
+	if ( current_user_can( 'manage_options' ) === false ) {
+		wp_die( esc_html__( 'You do not have permission to do this.', 'cohf-child' ) );
+	}
+
+	delete_option( 'cohf_stories_seed_attempts' );
+
+	$created = cohf_seed_stories();
+
+	if ( cohf_stories_count() > 0 ) {
+		update_option( 'cohf_stories_seeded', COHF_CHILD_VERSION );
+	}
+
+	wp_safe_redirect( add_query_arg(
+		array(
+			'cohf_stories' => 'seeded',
+			'cohf_created' => (int) $created,
+		),
+		admin_url( 'edit.php?post_type=cohf_story' )
+	) );
+	exit;
+}
+add_action( 'admin_post_cohf_seed_stories', 'cohf_seed_stories_handler' );
+
+/**
+ * Say plainly whether the stories exist, and offer to create them.
+ *
+ * The failure this prevents is the one that actually happened: the archive
+ * was live, the navigation pointed at it, and nothing anywhere in the admin
+ * said the stories had not been created.
+ */
+function cohf_stories_notice() {
+	if ( current_user_can( 'manage_options' ) === false ) {
+		return;
+	}
+
+	$screen = get_current_screen();
+
+	if ( empty( $screen ) ) {
+		return;
+	}
+
+	$screens = array( 'dashboard', 'toplevel_page_cohf-home', 'edit-cohf_story' );
+
+	if ( in_array( $screen->id, $screens, true ) === false ) {
+		return;
+	}
+
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only notice.
+	if ( isset( $_GET['cohf_stories'] ) && 'seeded' === $_GET['cohf_stories'] ) {
+		$created = isset( $_GET['cohf_created'] ) ? absint( $_GET['cohf_created'] ) : 0;
+
+		printf(
+			'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
+			esc_html( sprintf(
+				/* translators: %d: number of stories created. */
+				_n( '%d impact story created.', '%d impact stories created.', $created, 'cohf-child' ),
+				$created
+			) )
+		);
+	}
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
+
+	if ( cohf_stories_count() > 0 ) {
+		return;
+	}
+
+	$url = wp_nonce_url(
+		admin_url( 'admin-post.php?action=cohf_seed_stories' ),
+		'cohf_seed_stories'
+	);
+
+	printf(
+		'<div class="notice notice-warning"><p><strong>%1$s</strong> %2$s</p><p><a class="button button-primary" href="%3$s">%4$s</a></p></div>',
+		esc_html__( 'The four impact stories have not been created yet.', 'cohf-child' ),
+		esc_html__( 'The Stories page is in the Impact menu, so visitors can reach it, but it will show an empty state until the stories exist. Nothing already in the admin is changed or overwritten by this.', 'cohf-child' ),
+		esc_url( $url ),
+		esc_html__( 'Create the impact stories now', 'cohf-child' )
+	);
+}
+add_action( 'admin_notices', 'cohf_stories_notice' );
