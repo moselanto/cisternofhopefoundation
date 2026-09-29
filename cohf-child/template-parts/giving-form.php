@@ -36,11 +36,19 @@ $org   = cohf_org();
  * from an external payment provider carries no nonce, and the reference is
  * verified with Paystack rather than trusted.
  */
-$cohf_ref    = isset( $_GET['ref'] ) ? sanitize_text_field( wp_unslash( $_GET['ref'] ) ) : '';
-$cohf_is_ty  = isset( $_GET['giving'] ) && 'thank-you' === sanitize_text_field( wp_unslash( $_GET['giving'] ) );
+$cohf_ref = '';
+
+// Paystack's own redirect uses "reference" and "trxref"; the older in-page
+// callback used "ref". Accept all three rather than depending on which route
+// the donor came back by.
+foreach ( array( 'reference', 'trxref', 'ref' ) as $cohf_param ) {
+	if ( isset( $_GET[ $cohf_param ] ) && '' === $cohf_ref ) {
+		$cohf_ref = sanitize_text_field( wp_unslash( $_GET[ $cohf_param ] ) );
+	}
+}
 // phpcs:enable WordPress.Security.NonceVerification.Recommended
 
-$cohf_show_ty = ( $cohf_is_ty && '' !== $cohf_ref && function_exists( 'cohf_giving_verify' ) );
+$cohf_show_ty = ( '' !== $cohf_ref && function_exists( 'cohf_giving_verify' ) );
 $cohf_result  = $cohf_show_ty ? cohf_giving_verify( $cohf_ref ) : array();
 ?>
 <div class="give-card">
@@ -178,6 +186,8 @@ $cohf_result  = $cohf_show_ty ? cohf_giving_verify( $cohf_ref ) : array();
 			data-currency="<?php echo esc_attr( $cfg['currency'] ); ?>"
 			data-plan="<?php echo esc_attr( $cfg['plan_code'] ); ?>"
 			data-thanks="<?php echo esc_url( add_query_arg( 'giving', 'thank-you', cohf_page_url( 'page-templates/page-support.php' ) ) ); ?>"
+			data-endpoint="<?php echo esc_url( rest_url( 'cohf/v1/initialize' ) ); ?>"
+			data-nonce="<?php echo esc_attr( wp_create_nonce( 'cohf_giving' ) ); ?>"
 			novalidate>
 
 			<?php if ( $recur ) : ?>
@@ -245,6 +255,23 @@ $cohf_result  = $cohf_show_ty ? cohf_giving_verify( $cohf_ref ) : array();
 					inputmode="tel"
 					placeholder="<?php esc_attr_e( '07xx xxx xxx', 'cohf-child' ); ?>">
 			</div>
+
+			<div class="give__field">
+				<label for="cohf-give-note">
+					<?php esc_html_e( 'Message to the Foundation', 'cohf-child' ); ?>
+					<span class="give__optional"><?php esc_html_e( 'optional', 'cohf-child' ); ?></span>
+				</label>
+				<textarea id="cohf-give-note" name="cohf_note" rows="3"
+					placeholder="<?php esc_attr_e( 'Anything you would like us to know', 'cohf-child' ); ?>"></textarea>
+			</div>
+
+			<label class="give__check" for="cohf-give-anon">
+				<input type="checkbox" id="cohf-give-anon" name="cohf_anonymous" value="1">
+				<span><?php esc_html_e( 'Make my donation anonymous', 'cohf-child' ); ?></span>
+			</label>
+			<p class="give__check-hint">
+				<?php esc_html_e( 'Your name is kept off any public acknowledgement. The Foundation still records it, because a gift has to be receipted to somebody.', 'cohf-child' ); ?>
+			</p>
 
 			<p class="give__note">
 				<?php esc_html_e( 'Paystack will offer M-Pesa and card on the secure payment step. Card and M-Pesa details are handled entirely by Paystack and never reach this website; your name, email and phone are recorded here so the Foundation can receipt your gift.', 'cohf-child' ); ?>

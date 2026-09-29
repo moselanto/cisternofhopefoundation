@@ -203,7 +203,7 @@ function cohf_giving_enqueue() {
 
 	wp_enqueue_script(
 		'paystack-inline',
-		'https://js.paystack.co/v1/inline.js',
+		'https://js.paystack.co/v2/inline.js',
 		array(),
 		null,
 		array( 'in_footer' => true )

@@ -2820,3 +2820,39 @@ footer .brand .mark--logo,
   font-size: 12px;
   color: var(--muted, #66736d);
 }
+
+.give textarea {
+  min-height: 0;
+  resize: vertical;
+}
+
+/* The anonymity choice is a decision, not a field, so it is given a row of
+   its own with a real target area rather than a bare tick in a corner. */
+.give__check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+  padding: 12px 14px;
+  border: 1px solid var(--line, #dfe6e1);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.give__check input {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  accent-color: var(--g, #163f32);
+}
+
+.give__check:hover,
+.give__check:focus-within {
+  border-color: var(--g, #163f32);
+}
+
+.give__check-hint {
+  margin: 8px 2px 0;
+  font-size: 13px;
+  color: var(--muted, #66736d);
+}

@@ -1,18 +1,28 @@
 /*
  * COHF - giving form.
  *
- * Hands off to Paystack Inline. No card or M-Pesa detail is ever handled by
- * this site: Paystack collects it inside its own secure iframe.
+ * This script no longer decides what a gift costs.
+ *
+ * It used to hand an amount straight to Paystack Inline, which meant the
+ * price of a donation was set in the donor's own browser. Now it posts the
+ * donor's choices to the site's own endpoint, the server fixes the amount and
+ * initialises the transaction with Paystack, and only an access code comes
+ * back. The browser never states a price again, so there is nothing here for
+ * anyone to tamper with.
+ *
+ * No card or M-Pesa detail is ever handled by this site: Paystack collects it
+ * inside its own secure iframe.
  */
 (function () {
   'use strict';
 
   var form = document.getElementById('cohf-give');
-  if (form === null) return;
+  if (form === null) { return; }
 
   var custom = form.querySelector('#cohf-give-custom');
   var errBox = form.querySelector('.give__error');
   var submit = form.querySelector('.give__submit');
+  var restLabel = submit ? submit.textContent : 'Donate now';
 
   function presets() {
     return Array.prototype.slice.call(form.querySelectorAll('input[name="cohf_amount"]'));
@@ -26,22 +36,33 @@
       }
     });
   }
+
   presets().forEach(function (r) {
     r.addEventListener('change', function () {
-      if (r.checked && custom) custom.value = '';
+      if (r.checked && custom) { custom.value = ''; }
     });
   });
 
   function chosenAmount() {
-    if (custom && custom.value.length > 0) return parseInt(custom.value, 10);
+    if (custom && custom.value.length > 0) { return parseInt(custom.value, 10); }
     var sel = form.querySelector('input[name="cohf_amount"]:checked');
     return sel ? parseInt(sel.value, 10) : 0;
+  }
+
+  function idle() {
+    submit.disabled = false;
+    submit.textContent = restLabel;
   }
 
   function fail(msg) {
     errBox.textContent = msg;
     errBox.hidden = false;
-    errBox.focus();
+    idle();
+  }
+
+  function val(selector) {
+    var el = form.querySelector(selector);
+    return el ? el.value.trim() : '';
   }
 
   form.addEventListener('submit', function (e) {
@@ -49,58 +70,71 @@
     errBox.hidden = true;
 
     var amount = chosenAmount();
-    var name = form.querySelector('#cohf-give-name').value.trim();
-    var email = form.querySelector('#cohf-give-email').value.trim();
-    var area = form.querySelector('#cohf-give-area');
-    var phoneEl = form.querySelector('#cohf-give-phone');
-    var phone = phoneEl ? phoneEl.value.trim() : '';
-    var freqEl = form.querySelector('input[name="cohf_freq"]:checked');
-    var freq = freqEl ? freqEl.value : 'once';
+    var name = val('#cohf-give-name');
+    var email = val('#cohf-give-email');
 
-    if (isNaN(amount) || amount < 50) { fail('Please choose or enter an amount of at least 50 KES.'); return; }
-    if (name.length === 0) { fail('Please enter your name so we can receipt your gift.'); return; }
-    if (email.indexOf('@') < 1) { fail('Please enter a valid email address for your receipt.'); return; }
-    if (typeof window.PaystackPop === 'undefined') {
-      fail('The secure payment library could not be loaded. Please check your connection and try again.');
+    // Checked here only to save a round trip and give an instant answer.
+    // The server validates all of it again and trusts none of it.
+    if (isNaN(amount) || amount < 50) {
+      fail('Please choose or enter an amount of at least KES 50.');
+      return;
+    }
+    if (name.length === 0) {
+      fail('Please enter your name so we can receipt your gift.');
+      return;
+    }
+    if (email.indexOf('@') < 1) {
+      fail('Please enter a valid email address for your receipt.');
       return;
     }
 
+    var areaEl = form.querySelector('#cohf-give-area');
+    var anonEl = form.querySelector('#cohf-give-anon');
+
     submit.disabled = true;
-    submit.textContent = 'Opening secure payment...';
+    submit.textContent = 'Preparing secure payment...';
 
-    var opts = {
-      key: form.dataset.key,
-      email: email,
-      amount: amount * 100,               // Paystack expects the minor unit
-      currency: form.dataset.currency || 'KES',
-      metadata: {
-        custom_fields: [
-          { display_name: 'Donor name', variable_name: 'donor_name', value: name },
-          { display_name: 'Donor phone', variable_name: 'donor_phone', value: phone },
-          { display_name: 'Support area', variable_name: 'support_area', value: area ? area.options[area.selectedIndex].text : 'Where needed most' },
-          { display_name: 'Gift type', variable_name: 'gift_type', value: freq === 'monthly' ? 'Monthly' : 'One-off' },
-          { display_name: 'Source', variable_name: 'source', value: 'Website - Support Our Work' }
-        ]
-      },
-      onClose: function () {
-        submit.disabled = false;
-        submit.textContent = 'Continue to secure giving';
-      },
-      callback: function (response) {
-        window.location.href = form.dataset.thanks
-          ? form.dataset.thanks + '?ref=' + encodeURIComponent(response.reference)
-          : window.location.pathname + '?giving=thank-you&ref=' + encodeURIComponent(response.reference);
+    window.fetch(form.dataset.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nonce: form.dataset.nonce,
+        amount: amount,
+        name: name,
+        email: email,
+        phone: val('#cohf-give-phone'),
+        note: val('#cohf-give-note'),
+        area: areaEl ? areaEl.options[areaEl.selectedIndex].text : '',
+        anonymous: anonEl ? anonEl.checked : false
+      })
+    }).then(function (res) {
+      return res.json().then(function (body) {
+        return { ok: res.ok, body: body };
+      });
+    }).then(function (r) {
+      if (r.ok === false) {
+        fail(r.body && r.body.message ? r.body.message : 'We could not start this payment. Please try again.');
+        return;
       }
-    };
 
-    if (freq === 'monthly' && form.dataset.plan) opts.plan = form.dataset.plan;
+      if (typeof window.PaystackPop === 'undefined') {
+        fail('The secure payment library could not be loaded. Please check your connection and try again.');
+        return;
+      }
 
-    try {
-      window.PaystackPop.setup(opts).openIframe();
-    } catch (err) {
-      submit.disabled = false;
-      submit.textContent = 'Continue to secure giving';
-      fail('We could not open the secure payment window. Please try again or contact the Foundation.');
-    }
+      submit.textContent = 'Opening secure payment...';
+
+      /*
+       * Inline v2, resumed from the access code the server obtained.
+       * Paystack redirects to the callback_url set during initialisation
+       * when payment finishes, so no success callback is relied on here:
+       * an M-Pesa STK push often takes the donor out of the browser
+       * entirely, and a callback that never fires would lose the gift.
+       */
+      var popup = new window.PaystackPop();
+      popup.resumeTransaction(r.body.access_code);
+    }).catch(function () {
+      fail('We could not reach the payment service. Please try again in a moment.');
+    });
   });
 })();

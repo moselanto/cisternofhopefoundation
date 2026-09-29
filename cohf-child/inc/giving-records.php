@@ -288,7 +288,35 @@ function cohf_giving_verify( $reference ) {
 		return $out;
 	}
 
+	/*
+	 * Compare what Paystack actually took against what this site authorised
+	 * in inc/giving-checkout.php. Recording the difference matters more than
+	 * rejecting it: the money has already moved, so the useful action is to
+	 * flag the gift for a human rather than to pretend it did not happen.
+	 */
+	$paid     = isset( $txn['amount'] ) ? absint( $txn['amount'] ) / 100 : 0;
+	$expected = function_exists( 'cohf_giving_expected' ) ? cohf_giving_expected( $reference ) : false;
+	$mismatch = ( is_array( $expected ) && isset( $expected['amount'] ) && abs( (float) $expected['amount'] - (float) $paid ) > 0.009 );
+
 	$record = cohf_record_donation( $txn );
+
+	if ( $record['id'] ) {
+		if ( $mismatch ) {
+			update_post_meta( $record['id'], '_cohf_amount_expected', (float) $expected['amount'] );
+			update_post_meta( $record['id'], '_cohf_amount_mismatch', '1' );
+		}
+
+		// The donor's message and anonymity preference are known to this
+		// site but are not worth sending through Paystack metadata twice.
+		if ( is_array( $expected ) ) {
+			if ( isset( $expected['note'] ) && '' !== $expected['note'] ) {
+				update_post_meta( $record['id'], '_cohf_message', $expected['note'] );
+			}
+			if ( isset( $expected['anon'] ) && $expected['anon'] ) {
+				update_post_meta( $record['id'], '_cohf_anonymous', '1' );
+			}
+		}
+	}
 
 	$out['ok']          = true;
 	$out['donation_id'] = $record['id'];
