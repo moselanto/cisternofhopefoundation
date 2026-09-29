@@ -2410,3 +2410,53 @@ footer .brand .mark--logo,
     -webkit-line-clamp: 4;
   }
 }
+
+
+/* --------------------------------------------------------------------------
+   35. Impact stories archive
+   Four stories in the generic three-up grid stranded the fourth card alone
+   on a second row, and every card sized to its own excerpt so the "Read"
+   links finished at three different heights. Two-up pairs cleanly for an
+   even count, gives the photographs room, and reads as editorial rather
+   than as a directory listing.
+   -------------------------------------------------------------------------- */
+.story-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 36px;
+  max-width: 1020px;
+  margin-inline: auto;
+}
+
+.story-grid .card {
+  display: flex;
+  flex-direction: column;
+}
+
+/* The lead photographs come from phones in portrait and landscape alike, so
+   fix one ratio here instead of letting each card set its own height. */
+.story-grid .card img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.story-grid .card-body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+/* Pin the link to the card floor so every "Read" lines up across a row
+   regardless of how long the excerpt above it runs. */
+.story-grid .card-body .arrow {
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+@media (max-width: 880px) {
+  .story-grid {
+    grid-template-columns: 1fr;
+    max-width: 540px;
+    gap: 28px;
+  }
+}

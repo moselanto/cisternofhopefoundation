@@ -22,21 +22,21 @@ get_header();
 	<section>
 		<div class="container">
 			<?php if ( have_posts() ) : ?>
-				<div class="grid">
+				<?php
+				// Rendered through the shared story card rather than repeating its
+				// markup here. The copy this replaced ended "Read" in a <span>,
+				// and section 13 of ux-refinements.css stretches
+				// .card:has(.arrow) .arrow::after across the whole card to make it
+				// clickable. With a span that overlay covered every card as a dead
+				// element sitting above the title link, so no story on this archive
+				// could be opened at all. The shared part uses a real anchor, which
+				// is what that overlay was written for.
+				?>
+				<div class="grid story-grid">
 					<?php
 					while ( have_posts() ) :
 						the_post();
-						?>
-						<article class="card">
-							<?php if ( has_post_thumbnail() ) { the_post_thumbnail( 'large' ); } ?>
-							<div class="card-body">
-								<div class="kicker"><?php echo esc_html( get_the_date() ); ?></div>
-								<h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
-								<p><?php echo esc_html( wp_trim_words( get_the_excerpt(), 24 ) ); ?></p>
-								<span class="arrow"><?php esc_html_e( 'Read', 'cohf-child' ); ?></span>
-							</div>
-						</article>
-						<?php
+						get_template_part( 'template-parts/story-card' );
 					endwhile;
 					?>
 				</div>
