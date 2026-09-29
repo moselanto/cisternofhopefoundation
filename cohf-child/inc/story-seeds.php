@@ -159,3 +159,37 @@ function cohf_seed_stories() {
 
 	return $created;
 }
+
+/**
+ * Seed the stories once per theme version, without waiting for a button.
+ *
+ * The stories were previously created only by the manual "Run one-time
+ * setup" action. That left the archive live but empty, and the navigation
+ * pointing at an empty page, until somebody remembered to press it. Bundled
+ * content that the theme guarantees should not depend on that.
+ *
+ * The version option is written before seeding rather than after, so a fatal
+ * error or timeout cannot turn this into work repeated on every admin
+ * request. The manual setup action still calls cohf_seed_stories() directly
+ * and ignores this option, so it remains the retry path if a run is missed.
+ */
+function cohf_stories_maybe_seed() {
+	if ( is_admin() === false ) {
+		return;
+	}
+
+	if ( function_exists( 'cohf_seed_stories' ) === false ) {
+		return;
+	}
+
+	$done = get_option( 'cohf_stories_seeded' );
+
+	if ( $done && version_compare( (string) $done, COHF_CHILD_VERSION, '>=' ) ) {
+		return;
+	}
+
+	update_option( 'cohf_stories_seeded', COHF_CHILD_VERSION );
+
+	cohf_seed_stories();
+}
+add_action( 'admin_init', 'cohf_stories_maybe_seed' );

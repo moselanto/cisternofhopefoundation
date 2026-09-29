@@ -2159,7 +2159,8 @@ footer .brand .mark--logo,
 
 /* An empty storefront is a real state, not an error. Centre it and give it
    room rather than leaving one grey sentence adrift on a blank page. */
-.shop-empty {
+.shop-empty,
+.stories-empty {
   max-width: 620px;
   margin: 0 auto;
   text-align: center;
@@ -2169,19 +2170,22 @@ footer .brand .mark--logo,
   background: #fff;
 }
 
-.shop-empty h2 {
+.shop-empty h2,
+.stories-empty h2 {
   font-size: 27px;
   line-height: 1.2;
   margin: 0 0 12px;
 }
 
-.shop-empty p {
+.shop-empty p,
+.stories-empty p {
   color: var(--muted);
   margin: 0 auto 22px;
   max-width: 46ch;
 }
 
-.shop-empty .buttons {
+.shop-empty .buttons,
+.stories-empty .buttons {
   justify-content: center;
   margin-top: 0;
 }

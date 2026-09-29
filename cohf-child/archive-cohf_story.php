@@ -42,7 +42,15 @@ get_header();
 				</div>
 				<div class="pagination"><?php the_posts_pagination( array( 'mid_size' => 1, 'type' => 'list' ) ); ?></div>
 			<?php else : ?>
-				<p class="partner-empty"><?php esc_html_e( 'Nothing has been published here yet.', 'cohf-child' ); ?></p>
+				<div class="stories-empty">
+					<div class="sec-label"><span class="sec-label__rule"></span><span class="sec-label__text"><?php esc_html_e( 'In preparation', 'cohf-child' ); ?></span></div>
+					<h2><?php esc_html_e( 'The first stories are being prepared.', 'cohf-child' ); ?></h2>
+					<p><?php esc_html_e( 'A story is published here only once the people in it have given their consent, so this page fills deliberately rather than quickly. In the meantime you can read what the Foundation has achieved so far, or speak to us directly.', 'cohf-child' ); ?></p>
+					<div class="buttons">
+						<a class="btn dark" href="<?php echo esc_url( cohf_page_url( 'page-templates/page-impact.php' ) ); ?>"><?php esc_html_e( 'See our impact', 'cohf-child' ); ?></a>
+						<a class="btn outline" href="<?php echo esc_url( cohf_page_url( 'page-templates/page-contact.php' ) ); ?>"><?php esc_html_e( 'Contact the Foundation', 'cohf-child' ); ?></a>
+					</div>
+				</div>
 			<?php endif; ?>
 		</div>
 	</section>
