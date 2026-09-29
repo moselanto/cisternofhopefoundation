@@ -24,7 +24,7 @@ function cohf_image_library() {
 	return array(
 		'hero-home' => array(
 			'file' => 'hero-home.jpg',
-			'alt'  => __( 'Schoolchildren sitting outdoors with a mentor, notebooks open, in warm afternoon light.', 'cohf-child' ),
+			'alt'  => __( 'The Executive Director with three boys in their new school uniforms and their grandmother outside the family home.', 'cohf-child' ),
 		),
 		'story-community' => array(
 			'file' => 'story-community.jpg',
@@ -32,7 +32,7 @@ function cohf_image_library() {
 		),
 		'hero-about' => array(
 			'file' => 'hero-about.jpg',
-			'alt'  => __( 'A neighbourhood scene with people of different ages walking and talking among green trees.', 'cohf-child' ),
+			'alt'  => __( 'Women seated together in discussion at a Cistern of Hope Foundation women empowerment seminar.', 'cohf-child' ),
 		),
 		'hero-impact' => array(
 			'file' => 'hero-impact.jpg',
@@ -44,7 +44,7 @@ function cohf_image_library() {
 		),
 		'hero-get-involved' => array(
 			'file' => 'hero-get-involved.jpg',
-			'alt'  => __( 'Volunteers of mixed ages working together outdoors on a community project.', 'cohf-child' ),
+			'alt'  => __( 'Young people seated in a wide circle with a facilitator during a Foundation youth session.', 'cohf-child' ),
 		),
 		'hero-support' => array(
 			'file' => 'hero-support.jpg',
@@ -59,7 +59,7 @@ function cohf_image_library() {
 		'programme-03' => array( 'file' => 'programme-03.jpg', 'alt' => __( 'A woman entrepreneur arranging goods in her market stall, reviewing a notebook with a colleague.', 'cohf-child' ) ),
 		'programme-04' => array( 'file' => 'programme-04.jpg', 'alt' => __( 'Household food and essential supplies delivered to a family at their home.', 'cohf-child' ) ),
 		'programme-05' => array( 'file' => 'programme-05.jpg', 'alt' => __( 'A mentor and a teenager in quiet conversation on a bench in a calm courtyard.', 'cohf-child' ) ),
-		'programme-06' => array( 'file' => 'programme-06.jpg', 'alt' => __( 'Pupils holding packs of sanitary pads after a distribution at their school.', 'cohf-child' ) ),
+		'programme-06' => array( 'file' => 'programme-06.jpg', 'alt' => __( 'Girls receiving packs of sanitary pads from Foundation staff during a door-to-door distribution.', 'cohf-child' ) ),
 		'programme-07' => array( 'file' => 'programme-07.jpg', 'alt' => __( 'Children sharing a hot meal together at a Foundation feeding session.', 'cohf-child' ) ),
 		'programme-08' => array( 'file' => 'programme-08.jpg', 'alt' => __( 'A Foundation representative collecting sacks of food staples from a wholesaler.', 'cohf-child' ) ),
 		'programme-09' => array( 'file' => 'programme-09.jpg', 'alt' => __( 'Young people planting tree seedlings together on a green hillside.', 'cohf-child' ) ),
