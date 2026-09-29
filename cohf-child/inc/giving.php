@@ -83,7 +83,7 @@ function cohf_giving_areas() {
 
 function cohf_giving_settings_menu() {
 	add_submenu_page(
-		'cohf-foundation',
+		'cohf-home',
 		__( 'Giving', 'cohf-child' ),
 		__( 'Giving', 'cohf-child' ),
 		'manage_options',

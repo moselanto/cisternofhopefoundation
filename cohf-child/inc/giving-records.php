@@ -83,7 +83,7 @@ function cohf_register_donation_type() {
 			'publicly_queryable'  => false,
 			'exclude_from_search' => true,
 			'show_ui'             => true,
-			'show_in_menu'        => 'cohf-foundation',
+			'show_in_menu'        => 'cohf-home',
 			'show_in_rest'        => false,
 			'menu_icon'           => 'dashicons-heart',
 			'supports'            => array( 'title' ),
