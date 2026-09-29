@@ -2764,3 +2764,59 @@ footer .brand .mark--logo,
     transition: none;
   }
 }
+
+
+/* --------------------------------------------------------------------------
+   39. Donation thank-you and the phone field
+   A donor returning from Paystack gets the verified outcome of their gift in
+   place of the form. Two states: confirmed, and not-yet-confirmed. The second
+   is styled calmly rather than as an error, because the usual cause is a
+   verification that has not caught up, not a failed payment, and alarming
+   somebody who has just given money would be both wrong and unkind.
+   -------------------------------------------------------------------------- */
+.give-thanks {
+  text-align: left;
+}
+
+.give-thanks h3 {
+  font-size: 27px;
+  line-height: 1.2;
+  margin: 14px 0 6px;
+}
+
+.give-thanks__amount {
+  margin: 0 0 14px;
+  font-family: var(--font-display, Georgia, serif);
+  font-size: 40px;
+  line-height: 1;
+  color: var(--g, #163f32);
+}
+
+.give-thanks--pending .give-thanks__amount {
+  display: none;
+}
+
+.give-thanks__ref {
+  padding: 12px 14px;
+  border: 1px solid var(--line, #dfe6e1);
+  border-radius: 12px;
+  background: var(--c, #f7f3ea);
+  font-size: 14px;
+  word-break: break-all;
+}
+
+.give-thanks__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+/* The phone field is genuinely optional, so the label says so rather than
+   leaving a donor guessing whether the gift needs it. */
+.give__optional {
+  margin-left: 6px;
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--muted, #66736d);
+}

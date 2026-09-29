@@ -96,6 +96,7 @@ add_action( 'admin_menu', 'cohf_giving_settings_menu', 20 );
 function cohf_giving_register_settings() {
 	foreach ( array(
 		'cohf_paystack_public_key' => 'sanitize_text_field',
+		'cohf_paystack_secret_key' => 'sanitize_text_field',
 		'cohf_paystack_plan_code'  => 'sanitize_text_field',
 		'cohf_giving_amounts'      => 'sanitize_text_field',
 		'cohf_giving_default'      => 'absint',
@@ -129,6 +130,34 @@ function cohf_giving_settings_page() {
 						<input name="cohf_paystack_public_key" id="cohf_paystack_public_key" type="text" class="regular-text code"
 							value="<?php echo esc_attr( $cfg['public_key'] ); ?>" placeholder="pk_live_...">
 						<p class="description"><?php esc_html_e( 'From your Paystack dashboard, Settings > API Keys. Use the PUBLIC key only. Never paste a secret key into WordPress.', 'cohf-child' ); ?></p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><label for="cohf_paystack_secret_key"><?php esc_html_e( 'Paystack secret key', 'cohf-child' ); ?></label></th>
+					<td>
+						<?php if ( defined( 'COHF_PAYSTACK_SECRET_KEY' ) ) : ?>
+							<p><strong><?php esc_html_e( 'Set in wp-config.php.', 'cohf-child' ); ?></strong> <?php esc_html_e( 'That is the safer place for it, so this field is ignored.', 'cohf-child' ); ?></p>
+						<?php else : ?>
+							<input name="cohf_paystack_secret_key" id="cohf_paystack_secret_key" type="password" class="regular-text code"
+								value="<?php echo esc_attr( (string) get_option( 'cohf_paystack_secret_key', '' ) ); ?>" placeholder="sk_live_..." autocomplete="off">
+							<p class="description">
+								<?php esc_html_e( 'Required to confirm that a payment really happened, and to receive Paystack webhooks. Without it a donation cannot be verified or recorded.', 'cohf-child' ); ?>
+							</p>
+							<p class="description">
+								<strong><?php esc_html_e( 'Safer option:', 'cohf-child' ); ?></strong>
+								<?php esc_html_e( 'put it in wp-config.php instead, so it never sits in the database or a database backup. Add this line above the "stop editing" comment:', 'cohf-child' ); ?>
+								<code>define( 'COHF_PAYSTACK_SECRET_KEY', 'sk_live_...' );</code>
+							</p>
+						<?php endif; ?>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Webhook URL', 'cohf-child' ); ?></th>
+					<td>
+						<code><?php echo esc_url( rest_url( 'cohf/v1/paystack' ) ); ?></code>
+						<p class="description">
+							<?php esc_html_e( 'Paste this into Paystack: Settings > API Keys & Webhooks > Webhook URL. It records a gift even when the donor closes the browser before returning to the site.', 'cohf-child' ); ?>
+						</p>
 					</td>
 				</tr>
 				<tr>

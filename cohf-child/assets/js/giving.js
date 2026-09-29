@@ -52,6 +52,8 @@
     var name = form.querySelector('#cohf-give-name').value.trim();
     var email = form.querySelector('#cohf-give-email').value.trim();
     var area = form.querySelector('#cohf-give-area');
+    var phoneEl = form.querySelector('#cohf-give-phone');
+    var phone = phoneEl ? phoneEl.value.trim() : '';
     var freqEl = form.querySelector('input[name="cohf_freq"]:checked');
     var freq = freqEl ? freqEl.value : 'once';
 
@@ -74,6 +76,7 @@
       metadata: {
         custom_fields: [
           { display_name: 'Donor name', variable_name: 'donor_name', value: name },
+          { display_name: 'Donor phone', variable_name: 'donor_phone', value: phone },
           { display_name: 'Support area', variable_name: 'support_area', value: area ? area.options[area.selectedIndex].text : 'Where needed most' },
           { display_name: 'Gift type', variable_name: 'gift_type', value: freq === 'monthly' ? 'Monthly' : 'One-off' },
           { display_name: 'Source', variable_name: 'source', value: 'Website - Support Our Work' }

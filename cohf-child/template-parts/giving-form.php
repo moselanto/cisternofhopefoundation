@@ -6,8 +6,15 @@
  * inputs, and a live region for errors. The prototype used unlabelled buttons,
  * which a screen reader cannot report as a choice.
  *
- * Falls back to the Foundation's real contact details when no Paystack key
- * has been configured, rather than showing a payment form that cannot pay.
+ * Three states, in order of precedence:
+ *
+ *   1. Thank you  - the donor has just come back from Paystack. Showing them
+ *                   the donation form again would be absurd, so the form is
+ *                   replaced by the verified outcome of their gift.
+ *   2. Offline    - no Paystack key configured. Falls back to the
+ *                   Foundation's real contact details rather than showing a
+ *                   payment form that cannot take a payment.
+ *   3. Live       - the form itself.
  *
  * @package COHF_Child
  */
@@ -19,18 +26,112 @@ $live  = cohf_giving_is_live();
 $recur = cohf_giving_has_recurring();
 $areas = cohf_giving_areas();
 $org   = cohf_org();
+
+/*
+ * A returning donor arrives with ?giving=thank-you&ref=... on the URL.
+ * That reference is a claim, not proof: anyone can type one. It is checked
+ * against Paystack server-side before a single word of thanks is shown.
+ *
+ * phpcs:disable WordPress.Security.NonceVerification.Recommended -- a return
+ * from an external payment provider carries no nonce, and the reference is
+ * verified with Paystack rather than trusted.
+ */
+$cohf_ref    = isset( $_GET['ref'] ) ? sanitize_text_field( wp_unslash( $_GET['ref'] ) ) : '';
+$cohf_is_ty  = isset( $_GET['giving'] ) && 'thank-you' === sanitize_text_field( wp_unslash( $_GET['giving'] ) );
+// phpcs:enable WordPress.Security.NonceVerification.Recommended
+
+$cohf_show_ty = ( $cohf_is_ty && '' !== $cohf_ref && function_exists( 'cohf_giving_verify' ) );
+$cohf_result  = $cohf_show_ty ? cohf_giving_verify( $cohf_ref ) : array();
 ?>
 <div class="give-card">
 
-	<?php
-	if ( $live === false ) :
+	<?php if ( $cohf_show_ty ) : ?>
+
+		<div class="give-thanks<?php echo empty( $cohf_result['ok'] ) ? ' give-thanks--pending' : ''; ?>">
+			<div class="sec-label">
+				<span class="sec-label__rule"></span>
+				<span class="sec-label__text">
+					<?php
+					echo esc_html(
+						empty( $cohf_result['ok'] )
+							? __( 'Your gift', 'cohf-child' )
+							: __( 'Gift received', 'cohf-child' )
+					);
+					?>
+				</span>
+			</div>
+
+			<?php if ( empty( $cohf_result['ok'] ) === false ) : ?>
+
+				<h3>
+					<?php
+					$cohf_donor = isset( $cohf_result['name'] ) ? (string) $cohf_result['name'] : '';
+					echo esc_html(
+						'' !== $cohf_donor
+							/* translators: %s: donor first name. */
+							? sprintf( __( 'Thank you, %s.', 'cohf-child' ), $cohf_donor )
+							: __( 'Thank you.', 'cohf-child' )
+					);
+					?>
+				</h3>
+
+				<p class="give-thanks__amount">
+					<?php
+					echo esc_html(
+						(string) $cohf_result['currency'] . ' ' . number_format_i18n( (float) $cohf_result['amount'], 0 )
+					);
+					?>
+				</p>
+
+				<p><?php esc_html_e( 'Your gift has been received and confirmed. A receipt is on its way to the email address you gave, and it carries your payment reference.', 'cohf-child' ); ?></p>
+
+				<p class="give-thanks__ref">
+					<?php
+					/* translators: %s: Paystack transaction reference. */
+					printf( esc_html__( 'Reference: %s', 'cohf-child' ), '<strong>' . esc_html( $cohf_ref ) . '</strong>' );
+					?>
+				</p>
+
+				<p><?php esc_html_e( 'This goes directly into the work of restoring dignity, promoting hope and strengthening communities in Kenya. Thank you for standing with us.', 'cohf-child' ); ?></p>
+
+			<?php else : ?>
+
+				<h3><?php esc_html_e( 'We are confirming your gift.', 'cohf-child' ); ?></h3>
+
+				<p>
+					<?php
+					echo esc_html(
+						isset( $cohf_result['message'] ) && '' !== $cohf_result['message']
+							? (string) $cohf_result['message']
+							: __( 'This payment could not be confirmed automatically.', 'cohf-child' )
+					);
+					?>
+				</p>
+
+				<p class="give-thanks__ref">
+					<?php
+					/* translators: %s: Paystack transaction reference. */
+					printf( esc_html__( 'Reference: %s', 'cohf-child' ), '<strong>' . esc_html( $cohf_ref ) . '</strong>' );
+					?>
+				</p>
+
+				<p><?php esc_html_e( 'If money has left your account, it is safe. Quote the reference above and the Foundation will confirm it with you directly.', 'cohf-child' ); ?></p>
+
+			<?php endif; ?>
+
+			<div class="give-thanks__actions">
+				<a class="btn dark" href="<?php echo esc_url( cohf_page_url( 'page-templates/page-impact.php' ) ); ?>"><?php esc_html_e( 'See our impact', 'cohf-child' ); ?></a>
+				<a class="btn outline" href="<?php echo esc_url( cohf_page_url( 'page-templates/page-contact.php' ) ); ?>"><?php esc_html_e( 'Contact the Foundation', 'cohf-child' ); ?></a>
+			</div>
+		</div>
+
+	<?php elseif ( $live === false ) : ?>
+
+		<?php
 		/*
 		 * Offline does not mean unavailable. The Foundation accepts gifts
 		 * today; what is missing is the card and M-Pesa step, not the
-		 * willingness to receive. The earlier panel apologised and offered
-		 * two bare links, which reads as a dead end on the one page whose
-		 * entire purpose is to accept a donation. This states plainly how
-		 * a gift is made right now and what the donor can expect back.
+		 * willingness to receive.
 		 */
 		$wa        = isset( $org['whatsapp'] ) ? preg_replace( '/[^0-9]/', '', (string) $org['whatsapp'] ) : '';
 		$tel       = preg_replace( '/[^0-9+]/', '', (string) $org['phone'] );
@@ -69,12 +170,14 @@ $org   = cohf_org();
 
 			<p class="give__trust"><?php esc_html_e( 'Donations are separate from Hope Market purchases and are receipted separately.', 'cohf-child' ); ?></p>
 		</div>
+
 	<?php else : ?>
 
 		<form class="give" id="cohf-give"
 			data-key="<?php echo esc_attr( $cfg['public_key'] ); ?>"
 			data-currency="<?php echo esc_attr( $cfg['currency'] ); ?>"
 			data-plan="<?php echo esc_attr( $cfg['plan_code'] ); ?>"
+			data-thanks="<?php echo esc_url( add_query_arg( 'giving', 'thank-you', cohf_page_url( 'page-templates/page-support.php' ) ) ); ?>"
 			novalidate>
 
 			<?php if ( $recur ) : ?>
@@ -100,7 +203,7 @@ $org   = cohf_org();
 						<label class="give__amount">
 							<input type="radio" name="cohf_amount" value="<?php echo esc_attr( (string) $amount ); ?>"
 								<?php checked( $amount, $cfg['default'] ); ?>>
-							<span><?php echo esc_html( number_format_i18n( $amount ) . ' ' . $cfg['currency'] ); ?></span>
+							<span><?php echo esc_html( $cfg['currency'] . ' ' . number_format_i18n( $amount ) ); ?></span>
 						</label>
 					<?php endforeach; ?>
 				</div>
@@ -133,8 +236,18 @@ $org   = cohf_org();
 				</div>
 			</div>
 
+			<div class="give__field">
+				<label for="cohf-give-phone">
+					<?php esc_html_e( 'Phone number', 'cohf-child' ); ?>
+					<span class="give__optional"><?php esc_html_e( 'for M-Pesa', 'cohf-child' ); ?></span>
+				</label>
+				<input type="tel" id="cohf-give-phone" name="cohf_phone" autocomplete="tel"
+					inputmode="tel"
+					placeholder="<?php esc_attr_e( '07xx xxx xxx', 'cohf-child' ); ?>">
+			</div>
+
 			<p class="give__note">
-				<?php esc_html_e( 'Paystack will offer M-Pesa and card on the secure payment step. Your details are sent to Paystack, never stored on this website.', 'cohf-child' ); ?>
+				<?php esc_html_e( 'Paystack will offer M-Pesa and card on the secure payment step. Card and M-Pesa details are handled entirely by Paystack and never reach this website; your name, email and phone are recorded here so the Foundation can receipt your gift.', 'cohf-child' ); ?>
 			</p>
 
 			<p class="give__error" role="alert" aria-live="polite" hidden></p>
@@ -144,7 +257,7 @@ $org   = cohf_org();
 			</button>
 
 			<p class="give__trust">
-				<?php esc_html_e( 'Donations are separate from Hope Market purchases and are receipted separately.', 'cohf-child' ); ?>
+				<?php esc_html_e( 'Secure payment powered by Paystack. Donations are separate from Hope Market purchases and are receipted separately.', 'cohf-child' ); ?>
 			</p>
 		</form>
 
