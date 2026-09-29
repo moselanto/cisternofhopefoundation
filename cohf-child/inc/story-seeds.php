@@ -126,9 +126,15 @@ function cohf_seed_stories() {
 			$content .= "<!-- wp:paragraph -->\n<p>" . wp_kses_post( $paragraph ) . "</p>\n<!-- /wp:paragraph -->\n\n";
 		}
 
+		// Deliberately inserted as a draft. cohf_guard_story_consent() forces
+		// any story to draft when consent is not on record at the moment of
+		// writing, and a fresh insert has no post ID yet, so the consent meta
+		// written below cannot exist in time. The story is promoted to publish
+		// after that meta is in place, which satisfies the guard on its own
+		// terms rather than working around it.
 		$story_id = wp_insert_post( array(
 			'post_type'    => 'cohf_story',
-			'post_status'  => 'publish',
+			'post_status'  => 'draft',
 			'post_title'   => $story['title'],
 			'post_name'    => $story['slug'],
 			'post_excerpt' => $story['excerpt'],
@@ -154,6 +160,13 @@ function cohf_seed_stories() {
 			set_post_thumbnail( $story_id, $attachment_id );
 		}
 
+		// Consent is now recorded against a real post ID, so the guard reads
+		// it and allows the story through.
+		wp_update_post( array(
+			'ID'          => $story_id,
+			'post_status' => 'publish',
+		) );
+
 		++$created;
 	}
 
@@ -162,9 +175,6 @@ function cohf_seed_stories() {
 
 /**
  * How many impact stories exist, in any status.
- *
- * Counting drafts and private posts too, because the question being asked is
- * "did seeding run", not "is anything public".
  *
  * @return int
  */
@@ -181,20 +191,80 @@ function cohf_stories_count() {
 }
 
 /**
- * Seed the stories once per theme version, without waiting for a button.
+ * How many impact stories are actually published.
  *
- * This hook runs on admin_init, which means it fires on a wp-admin request
- * and not on a front-end one. Deploying and then loading the stories page
- * directly will therefore show an empty archive until any admin page is
- * opened once. That is expected, and the notice below makes it visible
+ * The distinction matters: four stories sat as drafts on the live site for
+ * several releases while every check that only counted rows reported
+ * success. Published is the only count a visitor can see.
+ *
+ * @return int
+ */
+function cohf_stories_published_count() {
+	$ids = get_posts( array(
+		'post_type'        => 'cohf_story',
+		'post_status'      => 'publish',
+		'numberposts'      => -1,
+		'fields'           => 'ids',
+		'suppress_filters' => false,
+	) );
+
+	return count( $ids );
+}
+
+/**
+ * Publish seeded stories left sitting as drafts with consent on record.
+ *
+ * Repairs sites seeded by 9.46.0 to 9.49.0, where the story was inserted
+ * asking for publish, the consent guard correctly demoted it to draft, and
+ * nothing ever promoted it back.
+ *
+ * Only a draft is touched, and only one carrying recorded consent. A story
+ * an editor has deliberately made private or pending is left exactly as it
+ * is, and a story without consent is never published by this.
+ *
+ * @return int Number promoted.
+ */
+function cohf_stories_publish_seeded() {
+	$published = 0;
+
+	foreach ( cohf_story_seed() as $story ) {
+		$existing = get_page_by_path( $story['slug'], OBJECT, 'cohf_story' );
+
+		if ( empty( $existing ) ) {
+			continue;
+		}
+
+		if ( 'draft' \!== $existing->post_status ) {
+			continue;
+		}
+
+		if ( '1' \!== (string) get_post_meta( $existing->ID, '_cohf_consent', true ) ) {
+			continue;
+		}
+
+		wp_update_post( array(
+			'ID'          => $existing->ID,
+			'post_status' => 'publish',
+		) );
+
+		++$published;
+	}
+
+	return $published;
+}
+
+/**
+ * Seed and repair the stories once per theme version.
+ *
+ * Runs on admin_init, so it fires on a wp-admin request and not a front-end
+ * one. Deploying and then loading the stories page directly will not trigger
+ * it; opening any admin page will. The notice below makes that visible
  * rather than leaving it to be guessed at.
  *
- * Retries are bounded rather than absent or infinite. Writing the version
- * marker only on success would retry a permanent failure on every admin
- * request and drag the whole dashboard down; writing it before the attempt,
- * as 9.48.0 did, gives up after a single transient failure and leaves no
- * automatic way back. A counter does neither: three attempts, then stop and
- * let the notice offer a manual run.
+ * Retries are bounded. Writing the version marker only on success would
+ * retry a permanent failure on every admin request; writing it before the
+ * attempt, as 9.48.0 did, gave up after one transient failure. Three
+ * attempts, then stop and let the notice offer a manual run.
  */
 function cohf_stories_maybe_seed() {
 	if ( is_admin() === false ) {
@@ -220,9 +290,10 @@ function cohf_stories_maybe_seed() {
 	update_option( 'cohf_stories_seed_attempts', $attempts + 1 );
 
 	cohf_seed_stories();
+	cohf_stories_publish_seeded();
 
-	// Only record success once the records actually exist.
-	if ( cohf_stories_count() > 0 ) {
+	// Success is measured by what a visitor can see, not by rows existing.
+	if ( cohf_stories_published_count() > 0 ) {
 		update_option( 'cohf_stories_seeded', COHF_CHILD_VERSION );
 		delete_option( 'cohf_stories_seed_attempts' );
 	}
@@ -241,16 +312,18 @@ function cohf_seed_stories_handler() {
 
 	delete_option( 'cohf_stories_seed_attempts' );
 
-	$created = cohf_seed_stories();
+	$created   = cohf_seed_stories();
+	$published = cohf_stories_publish_seeded();
 
-	if ( cohf_stories_count() > 0 ) {
+	if ( cohf_stories_published_count() > 0 ) {
 		update_option( 'cohf_stories_seeded', COHF_CHILD_VERSION );
 	}
 
 	wp_safe_redirect( add_query_arg(
 		array(
-			'cohf_stories' => 'seeded',
-			'cohf_created' => (int) $created,
+			'cohf_stories'   => 'seeded',
+			'cohf_created'   => (int) $created,
+			'cohf_published' => (int) $published,
 		),
 		admin_url( 'edit.php?post_type=cohf_story' )
 	) );
@@ -259,11 +332,7 @@ function cohf_seed_stories_handler() {
 add_action( 'admin_post_cohf_seed_stories', 'cohf_seed_stories_handler' );
 
 /**
- * Say plainly whether the stories exist, and offer to create them.
- *
- * The failure this prevents is the one that actually happened: the archive
- * was live, the navigation pointed at it, and nothing anywhere in the admin
- * said the stories had not been created.
+ * Say plainly whether the stories are live, and offer to fix it.
  */
 function cohf_stories_notice() {
 	if ( current_user_can( 'manage_options' ) === false ) {
@@ -284,21 +353,35 @@ function cohf_stories_notice() {
 
 	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only notice.
 	if ( isset( $_GET['cohf_stories'] ) && 'seeded' === $_GET['cohf_stories'] ) {
-		$created = isset( $_GET['cohf_created'] ) ? absint( $_GET['cohf_created'] ) : 0;
+		$created   = isset( $_GET['cohf_created'] ) ? absint( $_GET['cohf_created'] ) : 0;
+		$published = isset( $_GET['cohf_published'] ) ? absint( $_GET['cohf_published'] ) : 0;
 
 		printf(
 			'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
 			esc_html( sprintf(
-				/* translators: %d: number of stories created. */
-				_n( '%d impact story created.', '%d impact stories created.', $created, 'cohf-child' ),
-				$created
+				/* translators: 1: stories created, 2: drafts published. */
+				__( 'Impact stories: %1$d created, %2$d published from draft.', 'cohf-child' ),
+				$created,
+				$published
 			) )
 		);
 	}
 	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
-	if ( cohf_stories_count() > 0 ) {
+	if ( cohf_stories_published_count() > 0 ) {
 		return;
+	}
+
+	$total = cohf_stories_count();
+
+	if ( $total > 0 ) {
+		$headline = __( 'The impact stories exist but none of them are published.', 'cohf-child' );
+		$detail   = __( 'A story stays a draft until consent is recorded against it. These have consent recorded, so they can be published safely. Until they are, the Stories page in the Impact menu shows an empty state to visitors.', 'cohf-child' );
+		$button   = __( 'Publish the impact stories', 'cohf-child' );
+	} else {
+		$headline = __( 'The four impact stories have not been created yet.', 'cohf-child' );
+		$detail   = __( 'The Stories page is in the Impact menu, so visitors can reach it, but it will show an empty state until the stories exist. Nothing already in the admin is changed or overwritten by this.', 'cohf-child' );
+		$button   = __( 'Create the impact stories now', 'cohf-child' );
 	}
 
 	$url = wp_nonce_url(
@@ -308,10 +391,10 @@ function cohf_stories_notice() {
 
 	printf(
 		'<div class="notice notice-warning"><p><strong>%1$s</strong> %2$s</p><p><a class="button button-primary" href="%3$s">%4$s</a></p></div>',
-		esc_html__( 'The four impact stories have not been created yet.', 'cohf-child' ),
-		esc_html__( 'The Stories page is in the Impact menu, so visitors can reach it, but it will show an empty state until the stories exist. Nothing already in the admin is changed or overwritten by this.', 'cohf-child' ),
+		esc_html( $headline ),
+		esc_html( $detail ),
 		esc_url( $url ),
-		esc_html__( 'Create the impact stories now', 'cohf-child' )
+		esc_html( $button )
 	);
 }
 add_action( 'admin_notices', 'cohf_stories_notice' );
