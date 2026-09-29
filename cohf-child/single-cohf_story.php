@@ -86,6 +86,40 @@ while ( have_posts() ) :
 			</section>
 		<?php endif; ?>
 
+		<?php
+		// Routes between stories. Until now a reader who finished one had
+		// nowhere to go except the global call to action, so every story was
+		// a cul-de-sac.
+		$cohf_stories_url = get_post_type_archive_link( 'cohf_story' );
+		$cohf_prev_story  = get_previous_post();
+		$cohf_next_story  = get_next_post();
+		?>
+		<?php if ( $cohf_stories_url || $cohf_prev_story || $cohf_next_story ) : ?>
+			<section class="story-nav-section">
+				<div class="container">
+					<nav class="story-nav" aria-label="<?php esc_attr_e( 'More impact stories', 'cohf-child' ); ?>">
+						<?php if ( $cohf_prev_story ) : ?>
+							<a class="story-nav__item story-nav__item--prev" href="<?php echo esc_url( get_permalink( $cohf_prev_story ) ); ?>">
+								<span class="story-nav__label"><?php esc_html_e( 'Previous story', 'cohf-child' ); ?></span>
+								<span class="story-nav__title"><?php echo esc_html( get_the_title( $cohf_prev_story ) ); ?></span>
+							</a>
+						<?php endif; ?>
+
+						<?php if ( $cohf_stories_url ) : ?>
+							<a class="btn outline story-nav__all" href="<?php echo esc_url( $cohf_stories_url ); ?>"><?php esc_html_e( 'All impact stories', 'cohf-child' ); ?></a>
+						<?php endif; ?>
+
+						<?php if ( $cohf_next_story ) : ?>
+							<a class="story-nav__item story-nav__item--next" href="<?php echo esc_url( get_permalink( $cohf_next_story ) ); ?>">
+								<span class="story-nav__label"><?php esc_html_e( 'Next story', 'cohf-child' ); ?></span>
+								<span class="story-nav__title"><?php echo esc_html( get_the_title( $cohf_next_story ) ); ?></span>
+							</a>
+						<?php endif; ?>
+					</nav>
+				</div>
+			</section>
+		<?php endif; ?>
+
 		<?php get_template_part( 'template-parts/cta' ); ?>
 	</main>
 	<?php

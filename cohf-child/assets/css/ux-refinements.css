@@ -2460,3 +2460,106 @@ footer .brand .mark--logo,
     gap: 28px;
   }
 }
+
+
+/* --------------------------------------------------------------------------
+   36. Single impact story
+   Three faults, all inherited from the prototype's .story block, which was
+   written for a short homepage teaser sitting beside a photograph, not for
+   a full article.
+
+   .story-copy p is var(--muted), a light grey. That is fine for two teaser
+   lines and wrong for the entire body of a story, which is the longest
+   continuous reading anywhere on this site. Body copy returns to --ink.
+
+   .story sets align-items:center, so a four-paragraph story left its
+   photograph floating in the middle of the column with dead space above and
+   below. An article aligns to the top.
+
+   .story img is pinned to height:500px, which hard-crops a photograph that
+   was already cropped once to fit this slot.
+   -------------------------------------------------------------------------- */
+.single-cohf_story .story {
+  align-items: start;
+  gap: 48px;
+}
+
+.single-cohf_story .story img {
+  height: auto;
+  aspect-ratio: 4 / 3;
+}
+
+.single-cohf_story .story-copy p {
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.single-cohf_story .story-copy p + p {
+  margin-top: 18px;
+}
+
+/* --- Routes between stories ---------------------------------------------
+   A nav strip does not need a full 85px section band above and below it. */
+.story-nav-section {
+  padding: 52px 0 60px;
+}
+
+.story-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.story-nav__item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-width: 290px;
+}
+
+.story-nav__label {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 11px;
+  font-weight: 900;
+  color: var(--t);
+}
+
+.story-nav__title {
+  font-family: var(--font-display);
+  font-size: 19px;
+  line-height: 1.25;
+  color: var(--g);
+  text-wrap: balance;
+}
+
+.story-nav__item:hover .story-nav__title,
+.story-nav__item:focus-visible .story-nav__title {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Keeps the "all stories" button centred when only one neighbour exists. */
+.story-nav__item--next {
+  text-align: right;
+  margin-left: auto;
+}
+
+@media (max-width: 760px) {
+  .story-nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .story-nav__item--next {
+    text-align: left;
+    margin-left: 0;
+  }
+
+  .story-nav__item {
+    max-width: none;
+  }
+}
