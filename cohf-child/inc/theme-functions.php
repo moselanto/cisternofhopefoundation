@@ -399,7 +399,11 @@ function cohf_default_nav_items() {
 			'url'      => cohf_page_url( 'page-templates/page-programmes.php' ),
 			'children' => cohf_programme_nav_children(),
 		),
-		array( 'label' => __( 'Impact', 'cohf-child' ),         'url' => cohf_page_url( 'page-templates/page-impact.php' ) ),
+		array(
+			'label'    => __( 'Impact', 'cohf-child' ),
+			'url'      => cohf_page_url( 'page-templates/page-impact.php' ),
+			'children' => cohf_impact_nav_children(),
+		),
 		array( 'label' => __( 'Our Approach', 'cohf-child' ),   'url' => cohf_page_url( 'page-templates/page-approach.php' ) ),
 		array( 'label' => __( 'Accountability', 'cohf-child' ), 'url' => cohf_page_url( 'page-templates/page-accountability.php' ) ),
 		array(
@@ -449,6 +453,40 @@ function cohf_programme_nav_children() {
 	return $children;
 }
 
+
+/**
+ * Children of the Impact dropdown.
+ *
+ * The Impact page reports the figures; the stories archive carries the human
+ * accounts behind them. Both belong under one heading. Before this the
+ * archive had no route into the navigation at all, so the only way to reach
+ * it was to know the URL.
+ *
+ * @return array
+ */
+function cohf_impact_nav_children() {
+	$children = array(
+		array(
+			'label' => __( 'Our Impact', 'cohf-child' ),
+			'url'   => cohf_page_url( 'page-templates/page-impact.php' ),
+			'desc'  => __( 'Reported results and how we measure them', 'cohf-child' ),
+		),
+	);
+
+	// Only offered when the post type is registered and has an archive, so
+	// disabling stories can never leave a dead item in the menu.
+	$stories = get_post_type_archive_link( 'cohf_story' );
+
+	if ( $stories ) {
+		$children[] = array(
+			'label' => __( 'Impact Stories', 'cohf-child' ),
+			'url'   => $stories,
+			'desc'  => __( 'Accounts from the people we work alongside', 'cohf-child' ),
+		);
+	}
+
+	return $children;
+}
 
 /**
  * Children of the Explore dropdown.

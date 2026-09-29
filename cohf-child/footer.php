@@ -27,6 +27,10 @@ $acct = cohf_page_url( 'page-templates/page-accountability.php' );
 			<a href="<?php echo esc_url( cohf_page_url( 'page-templates/page-about.php' ) ); ?>"><?php esc_html_e( 'About', 'cohf-child' ); ?></a>
 			<a href="<?php echo esc_url( cohf_page_url( 'page-templates/page-programmes.php' ) ); ?>"><?php esc_html_e( 'Programmes', 'cohf-child' ); ?></a>
 			<a href="<?php echo esc_url( cohf_page_url( 'page-templates/page-impact.php' ) ); ?>"><?php esc_html_e( 'Impact', 'cohf-child' ); ?></a>
+			<?php $cohf_footer_stories = get_post_type_archive_link( 'cohf_story' ); ?>
+			<?php if ( $cohf_footer_stories ) : ?>
+				<a href="<?php echo esc_url( $cohf_footer_stories ); ?>"><?php esc_html_e( 'Impact Stories', 'cohf-child' ); ?></a>
+			<?php endif; ?>
 			<a href="<?php echo esc_url( cohf_page_url( 'page-templates/page-approach.php' ) ); ?>"><?php esc_html_e( 'Our Approach', 'cohf-child' ); ?></a>
 		</div>
 
