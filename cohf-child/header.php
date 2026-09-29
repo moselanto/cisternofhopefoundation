@@ -22,6 +22,7 @@ $support  = cohf_page_url( 'page-templates/page-support.php' );
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
+<?php get_template_part( 'template-parts/loader' ); ?>
 
 <a class="skip-link screen-reader-text" href="#main-content"><?php esc_html_e( 'Skip to main content', 'cohf-child' ); ?></a>
 

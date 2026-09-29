@@ -1,0 +1,49 @@
+# Cistern of Hope Foundation - child theme asset caching.
+#
+# Measured on the live site before this file existed: every theme asset was
+# served with an ETag and a Last-Modified date but with no Cache-Control and
+# no Expires header. A returning visitor therefore revalidated every
+# stylesheet, script, font and photograph on every page view - a network
+# round trip each, roughly 0.4 seconds apiece on this host, before a single
+# cached byte could be reused.
+#
+# Compression was never the gap: the server already sends Brotli, so
+# ux-refinements.css arrives as 21 KB rather than its 76 KB on disk.
+# Caching was the gap.
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css                  "access plus 1 year"
+  ExpiresByType application/javascript     "access plus 1 year"
+  ExpiresByType text/javascript            "access plus 1 year"
+  ExpiresByType font/woff2                 "access plus 1 year"
+  ExpiresByType image/jpeg                 "access plus 30 days"
+  ExpiresByType image/png                  "access plus 30 days"
+  ExpiresByType image/webp                 "access plus 30 days"
+  ExpiresByType image/svg+xml              "access plus 30 days"
+</IfModule>
+
+<IfModule mod_headers.c>
+
+  # Stylesheets, scripts and fonts are cache-busted by a filemtime query
+  # string added in inc/performance.php, so editing one produces a new URL.
+  # They are therefore safe to treat as immutable for a year.
+  <FilesMatch "\.(css|js|woff2)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # Photographs are deliberately given a shorter life and no immutable flag.
+  # They are NOT query-versioned: assets/images/hero-home.jpg keeps the same
+  # filename when the picture behind it is replaced, as seven of them were
+  # in 9.45.0. A year of immutable caching would strand returning visitors
+  # on the old photograph with no way to revalidate.
+  <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+
+</IfModule>
+
+# A theme directory should never be browsable.
+<IfModule mod_autoindex.c>
+  Options -Indexes
+</IfModule>

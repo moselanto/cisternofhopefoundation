@@ -169,6 +169,38 @@ function cohf_resource_hints() {
 add_action( 'wp_head', 'cohf_resource_hints', 1 );
 
 /**
+ * Preload the hero photograph on the front page.
+ *
+ * The hero is a CSS background applied through an inline --hero-img custom
+ * property, which the browser's preload scanner cannot see: it has to fetch
+ * and parse the stylesheet, build the element, resolve the property and only
+ * then start downloading the largest image on the page. Naming the file in
+ * the head lets that download begin immediately.
+ *
+ * Restricted to the front page because it is the only template whose hero
+ * image key is known here without guessing.
+ */
+function cohf_preload_hero() {
+	if ( is_front_page() === false ) {
+		return;
+	}
+
+	if ( function_exists( 'cohf_img_url' ) === false ) {
+		return;
+	}
+
+	$hero = cohf_img_url( 'hero-home' );
+
+	if ( $hero ) {
+		printf(
+			'<link rel="preload" as="image" href="%s" fetchpriority="high">' . "\n",
+			esc_url( $hero )
+		);
+	}
+}
+add_action( 'wp_head', 'cohf_preload_hero', 1 );
+
+/**
  * A tiny critical-CSS shim so the first paint is never unstyled.
  * Full stylesheets still load normally; this only covers above-the-fold shell.
  */
