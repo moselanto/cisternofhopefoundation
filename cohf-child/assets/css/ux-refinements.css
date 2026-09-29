@@ -2563,3 +2563,37 @@ footer .brand .mark--logo,
     max-width: none;
   }
 }
+
+
+/* --------------------------------------------------------------------------
+   37. Homepage stories teaser
+   Three story cards in the homepage's standard three-up grid, sharing the
+   card treatment worked out for the archive in section 35: a fixed image
+   ratio so cards do not set their own heights, and the link pushed to the
+   card floor so all three "Read" links align however long the excerpts run.
+
+   Deliberately not merged into the .story-grid rules, because those also
+   impose a two-up layout and a 1020px cap that belong to the archive and
+   would break the homepage's three-across rhythm with Programmes above it.
+   -------------------------------------------------------------------------- */
+.story-teaser-grid .card {
+  display: flex;
+  flex-direction: column;
+}
+
+.story-teaser-grid .card img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.story-teaser-grid .card-body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.story-teaser-grid .card-body .arrow {
+  margin-top: auto;
+  padding-top: 8px;
+}

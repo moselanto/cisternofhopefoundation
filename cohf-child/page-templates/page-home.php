@@ -145,6 +145,48 @@ $contact = cohf_page_url( 'page-templates/page-contact.php' );
 		</div>
 	</section>
 
+	<?php
+	// Impact stories, immediately after the figures they belong to. The
+	// homepage had no route to them at all, so the Foundation's most
+	// specific evidence - a dated account with a named outcome - sat behind
+	// the Impact menu where most visitors never look.
+	//
+	// The section is skipped entirely when nothing is published, rather than
+	// rendering a heading above an empty band.
+	$cohf_stories_archive = get_post_type_archive_link( 'cohf_story' );
+	$cohf_home_stories    = new WP_Query( array(
+		'post_type'      => 'cohf_story',
+		'post_status'    => 'publish',
+		'posts_per_page' => 3,
+		'no_found_rows'  => true,
+	) );
+	?>
+	<?php if ( $cohf_home_stories->have_posts() ) : ?>
+		<!-- Stories -->
+		<section>
+			<div class="container">
+				<div class="section-head">
+					<div>
+						<div class="sec-label"><span class="sec-label__rule"></span><span class="sec-label__text"><?php esc_html_e( 'Impact stories', 'cohf-child' ); ?></span></div>
+						<h2 class="sec-statement sec-statement--wide"><?php esc_html_e( 'The people behind the figures.', 'cohf-child' ); ?></h2>
+					</div>
+					<?php if ( $cohf_stories_archive ) : ?>
+						<a class="arrow" href="<?php echo esc_url( $cohf_stories_archive ); ?>"><?php esc_html_e( 'Read all stories', 'cohf-child' ); ?></a>
+					<?php endif; ?>
+				</div>
+				<div class="grid story-teaser-grid">
+					<?php
+					while ( $cohf_home_stories->have_posts() ) {
+						$cohf_home_stories->the_post();
+						get_template_part( 'template-parts/story-card' );
+					}
+					wp_reset_postdata();
+					?>
+				</div>
+			</div>
+		</section>
+	<?php endif; ?>
+
 	<!-- The change we seek -->
 	<section class="cream">
 		<div class="container feature">
