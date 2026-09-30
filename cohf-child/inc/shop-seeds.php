@@ -441,6 +441,26 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Handmade from natural banana fibre, so each piece differs slightly.', 'cohf-child' ),
 			'order'    => 40,
 		),
+		'fedora-hat-beadwrap' => array(
+			'name'     => __( 'Fedora Hat with Beaded Band', 'cohf-child' ),
+			'price'    => '2400',
+			'category' => __( 'Accessories', 'cohf-child' ),
+			'image'    => 'fedora-hat-beadwrap.jpg',
+			'alt'      => __( 'A camel felt fedora hat with a wide brim and a hand-beaded band of red, mustard, black and white triangles.', 'cohf-child' ),
+			'short'    => __( 'Camel felt fedora with a wide brim and a fine hand-beaded band in a triangle pattern.', 'cohf-child' ),
+			'long'     => __( 'Beaded band colours vary. Add your head size or S/M/L and colour preference in the order notes and we will confirm before dispatch.', 'cohf-child' ),
+			'order'    => 41,
+		),
+		'ebony-carved-bowl-small' => array(
+			'name'     => __( 'Ebony Carved Bowl - Small (4")', 'cohf-child' ),
+			'price'    => '1000',
+			'category' => __( 'Home and kitchen', 'cohf-child' ),
+			'image'    => 'ebony-carved-bowl-small.jpg',
+			'alt'      => __( 'A small round polished dark wood bowl with a band of carved elephant and leaf designs around the outside.', 'cohf-child' ),
+			'short'    => __( 'Small 4-inch polished dark wood bowl with a hand-carved band around the outside.', 'cohf-child' ),
+			'long'     => __( 'Hand-carved, so grain and carving vary on each bowl. Wipe clean; not dishwasher safe.', 'cohf-child' ),
+			'order'    => 42,
+		),
 	);
 }
 
