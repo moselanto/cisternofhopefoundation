@@ -105,13 +105,14 @@ add_filter( 'loop_shop_per_page', 'cohf_shop_per_page', 20 );
  * storefront does not look bolted on.
  */
 function cohf_shop_hero() {
-	if ( is_shop() === false || is_search() ) {
+	$is_cat = function_exists( 'is_product_category' ) && is_product_category();
+	if ( ( is_shop() === false && $is_cat === false ) || is_search() ) {
 		return;
 	}
 	get_template_part( 'template-parts/page-hero', null, array(
 		'image'   => 'programme-08',
-		'eyebrow' => __( 'Social enterprise', 'cohf-child' ),
-		'title'   => cohf_shop_name(),
+		'eyebrow' => $is_cat ? cohf_shop_name() : __( 'Social enterprise', 'cohf-child' ),
+		'title'   => $is_cat ? single_term_title( '', false ) : cohf_shop_name(),
 		'text'    => __( 'Buy a craft. Support the mission. Every item is made by people in the Foundation\'s enterprise programmes, and every purchase strengthens the livelihood behind it.', 'cohf-child' ),
 	) );
 }
@@ -121,7 +122,7 @@ add_action( 'woocommerce_before_main_content', 'cohf_shop_hero', 5 );
  * A short, honest note under the shop hero explaining where the money goes.
  */
 function cohf_shop_intro() {
-	if ( is_shop() === false || is_search() ) {
+	if ( is_shop() === false || is_search() || is_paged() ) {
 		return;
 	}
 	echo '<div class="shop-intro">';
@@ -154,7 +155,7 @@ add_filter( 'woocommerce_page_title', 'cohf_shop_page_title' );
  * archive heading on the shop landing page.
  */
 function cohf_shop_hide_default_title() {
-	if ( is_shop() ) {
+	if ( is_shop() || ( function_exists( 'is_product_category' ) && is_product_category() ) ) {
 		remove_action( 'woocommerce_archive_description', 'woocommerce_taxonomy_archive_description', 10 );
 		add_filter( 'woocommerce_show_page_title', '__return_false' );
 	}
@@ -325,3 +326,141 @@ function cohf_product_provenance() {
 	echo '</div>';
 }
 add_action( 'woocommerce_single_product_summary', 'cohf_product_provenance', 45 );
+
+
+/* -------------------------------------------------------------------------
+   Storefront presentation (9.85.0)
+   ------------------------------------------------------------------------- */
+
+/**
+ * Storefront stylesheet, on WooCommerce pages only. Loads after the theme's
+ * last layer and after WooCommerce's layout sheet so its grid rules win.
+ */
+function cohf_shop_styles() {
+	if ( cohf_has_shop() === false ) {
+		return;
+	}
+	if ( is_woocommerce() === false && is_cart() === false && is_checkout() === false && is_account_page() === false ) {
+		return;
+	}
+	$path = COHF_CHILD_DIR . '/assets/css/shop.css';
+	$deps = array( 'cohf-ux' );
+	if ( wp_style_is( 'woocommerce-layout', 'registered' ) ) {
+		$deps[] = 'woocommerce-layout';
+	}
+	wp_enqueue_style(
+		'cohf-shop',
+		COHF_CHILD_URI . '/assets/css/shop.css',
+		$deps,
+		file_exists( $path ) ? (string) filemtime( $path ) : COHF_CHILD_VERSION
+	);
+}
+add_action( 'wp_enqueue_scripts', 'cohf_shop_styles', 40 );
+
+/**
+ * Whole shillings. Every price is a round KES figure, and "KSh 1,000.00"
+ * reads as clutter on a small card.
+ *
+ * @return int
+ */
+function cohf_shop_price_decimals() {
+	return 0;
+}
+add_filter( 'wc_get_price_decimals', 'cohf_shop_price_decimals' );
+
+/**
+ * The page hero already carries a breadcrumb, so drop WooCommerce's second
+ * "Home / Shop" line above the grid.
+ */
+remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20 );
+
+/**
+ * Hero breadcrumb read "Archives: Shop". Name the storefront instead.
+ *
+ * @param string $title Archive title.
+ * @return string
+ */
+function cohf_shop_archive_title( $title ) {
+	if ( function_exists( 'is_shop' ) && is_shop() ) {
+		return cohf_shop_name();
+	}
+	if ( function_exists( 'is_product_category' ) && is_product_category() ) {
+		return single_term_title( '', false );
+	}
+	return $title;
+}
+add_filter( 'get_the_archive_title', 'cohf_shop_archive_title', 20 );
+
+/**
+ * Category filter chips and a single toolbar row for the count and sorting.
+ */
+function cohf_shop_toolbar_open() {
+	if ( is_shop() === false && is_product_taxonomy() === false ) {
+		return;
+	}
+
+	$terms = get_terms( array(
+		'taxonomy'   => 'product_cat',
+		'hide_empty' => true,
+		'parent'     => 0,
+		'exclude'    => array( (int) get_option( 'default_product_cat', 0 ) ),
+	) );
+
+	if ( is_array( $terms ) && count( $terms ) > 1 ) {
+		$current = is_product_category() ? (int) get_queried_object_id() : 0;
+		echo '<nav aria-label="' . esc_attr__( 'Shop categories', 'cohf-child' ) . '"><ul class="shop-cats">';
+		printf(
+			'<li><a href="%1$s"%2$s>%3$s</a></li>',
+			esc_url( cohf_shop_url() ),
+			$current ? '' : ' aria-current="page"',
+			esc_html__( 'All', 'cohf-child' )
+		);
+		foreach ( $terms as $term ) {
+			$link = get_term_link( $term );
+			if ( is_wp_error( $link ) ) {
+				continue;
+			}
+			printf(
+				'<li><a href="%1$s"%2$s>%3$s <span class="count">%4$s</span></a></li>',
+				esc_url( $link ),
+				$current === (int) $term->term_id ? ' aria-current="page"' : '',
+				esc_html( $term->name ),
+				esc_html( number_format_i18n( (int) $term->count ) )
+			);
+		}
+		echo '</ul></nav>';
+	}
+
+	echo '<div class="shop-toolbar">';
+}
+add_action( 'woocommerce_before_shop_loop', 'cohf_shop_toolbar_open', 15 );
+
+function cohf_shop_toolbar_close() {
+	if ( is_shop() === false && is_product_taxonomy() === false ) {
+		return;
+	}
+	echo '</div>';
+}
+add_action( 'woocommerce_before_shop_loop', 'cohf_shop_toolbar_close', 35 );
+
+/**
+ * Category label above each product title in the grid.
+ */
+function cohf_shop_loop_category() {
+	global $product;
+	if ( empty( $product ) ) {
+		return;
+	}
+	$terms = get_the_terms( $product->get_id(), 'product_cat' );
+	if ( empty( $terms ) || is_wp_error( $terms ) ) {
+		return;
+	}
+	$default = (int) get_option( 'default_product_cat', 0 );
+	foreach ( $terms as $term ) {
+		if ( (int) $term->term_id !== $default ) {
+			echo '<span class="product-cat">' . esc_html( $term->name ) . '</span>';
+			return;
+		}
+	}
+}
+add_action( 'woocommerce_shop_loop_item_title', 'cohf_shop_loop_category', 5 );
