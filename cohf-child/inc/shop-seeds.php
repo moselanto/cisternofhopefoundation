@@ -561,6 +561,26 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Add your colour choice in the order notes. Please confirm with us whether the matching small purse shown is included.', 'cohf-child' ),
 			'order'    => 52,
 		),
+		'maasai-bead-long-necklace' => array(
+			'name'     => __( 'Maasai Bead Long Necklace', 'cohf-child' ),
+			'price'    => '700',
+			'category' => __( 'Accessories', 'cohf-child' ),
+			'image'    => 'maasai-bead-long-necklace.jpg',
+			'alt'      => __( 'A statement necklace with an engraved brass crescent collar and long cascading strands of yellow beads, shown on a black display bust.', 'cohf-child' ),
+			'short'    => __( 'Statement necklace with an engraved brass crescent collar and long cascading strands of beads.', 'cohf-child' ),
+			'long'     => __( 'Hand-beaded, so strand length and bead colour vary slightly. Ask in the order notes about other colours.', 'cohf-child' ),
+			'order'    => 53,
+		),
+		'maasai-bead-earrings' => array(
+			'name'     => __( 'Maasai Bead Earrings', 'cohf-child' ),
+			'price'    => '200',
+			'category' => __( 'Accessories', 'cohf-child' ),
+			'image'    => 'maasai-bead-earrings.jpg',
+			'alt'      => __( 'A pair of teardrop-shaped Maasai beaded hoop earrings in rings of green, yellow, red, multicolour and black-and-white beads on silver-tone hooks.', 'cohf-child' ),
+			'short'    => __( 'Pair of teardrop Maasai beaded hoop earrings on silver-tone hooks.', 'cohf-child' ),
+			'long'     => __( 'Hand-beaded, so colour sequences vary. Add your preferred colours in the order notes.', 'cohf-child' ),
+			'order'    => 54,
+		),
 	);
 }
 
