@@ -126,25 +126,40 @@ function cohf_gallery_ensure_page() {
 	}
 	update_post_meta( $page_id, '_wp_page_template', 'page-templates/page-gallery.php' );
 
+	// Place Gallery inside the Impact dropdown of the WordPress menu. An
+	// earlier version added it at the top level; that item is moved.
 	$locations = get_theme_mod( 'nav_menu_locations', array() );
-	if ( ! empty( $locations['primary'] ) ) {
-		$menu_id = (int) $locations['primary'];
-		$items   = wp_get_nav_menu_items( $menu_id );
-		$present = false;
-		foreach ( (array) $items as $item ) {
-			if ( (int) $item->object_id === $page_id ) {
-				$present = true;
-				break;
+	if ( empty( $locations['primary'] ) === false ) {
+		$menu_id   = (int) $locations['primary'];
+		$items     = (array) wp_get_nav_menu_items( $menu_id );
+		$parent_id = 0;
+		$existing  = null;
+		foreach ( $items as $item ) {
+			$title = strtolower( trim( wp_strip_all_tags( $item->title ) ) );
+			if ( 0 === (int) $item->menu_item_parent && in_array( $title, array( 'impact', 'our impact' ), true ) ) {
+				$parent_id = (int) $item->ID;
+			}
+			if ( (int) $item->object_id === $page_id && 'page' === $item->object ) {
+				$existing = $item;
 			}
 		}
-		if ( ! $present ) {
-			wp_update_nav_menu_item( $menu_id, 0, array(
-				'menu-item-title'     => __( 'Gallery', 'cohf-child' ),
-				'menu-item-object'    => 'page',
-				'menu-item-object-id' => $page_id,
-				'menu-item-type'      => 'post_type',
-				'menu-item-status'    => 'publish',
-			) );
+		$args = array(
+			'menu-item-title'     => __( 'Photo Gallery', 'cohf-child' ),
+			'menu-item-object'    => 'page',
+			'menu-item-object-id' => $page_id,
+			'menu-item-type'      => 'post_type',
+			'menu-item-status'    => 'publish',
+			'menu-item-parent-id' => $parent_id,
+		);
+		if ( $existing ) {
+			// Only move an item this theme created at the top level; never
+			// disturb a placement an editor chose.
+			if ( 0 === (int) $existing->menu_item_parent && $parent_id ) {
+				$args['menu-item-position'] = (int) $existing->menu_order;
+				wp_update_nav_menu_item( $menu_id, (int) $existing->ID, $args );
+			}
+		} else {
+			wp_update_nav_menu_item( $menu_id, 0, $args );
 		}
 	}
 

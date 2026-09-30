@@ -485,6 +485,15 @@ function cohf_impact_nav_children() {
 		);
 	}
 
+	$gallery = cohf_page_url( 'page-templates/page-gallery.php' );
+	if ( $gallery ) {
+		$children[] = array(
+			'label' => __( 'Photo Gallery', 'cohf-child' ),
+			'url'   => $gallery,
+			'desc'  => __( 'Our work, in pictures', 'cohf-child' ),
+		);
+	}
+
 	return $children;
 }
 
