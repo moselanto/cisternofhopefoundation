@@ -88,6 +88,10 @@ function cohf_image_library() {
 		'gallery-home-visit-child' => array( 'file' => 'gallery-home-visit-child.jpg', 'alt' => __( 'A Foundation representative standing with a young boy in a red school sweater outside his family home.', 'cohf-child' ) ),
 		'gallery-before-school-meeting' => array( 'file' => 'gallery-before-school-meeting.jpg', 'alt' => __( 'A Foundation representative crouching beside a barefoot boy in a torn green school uniform outside his home.', 'cohf-child' ) ),
 		'gallery-school-pads-celebration' => array( 'file' => 'gallery-school-pads-celebration.jpg', 'alt' => __( 'Schoolgirls in uniform raising packs of sanitary pads in celebration with Foundation team members during a school visit.', 'cohf-child' ) ),
+		'gallery-food-staples-purchase' => array( 'file' => 'gallery-food-staples-purchase.jpg', 'alt' => __( 'A Foundation representative at a market with sacks of rice bought for distribution.', 'cohf-child' ) ),
+		'gallery-sanitary-pads-stock' => array( 'file' => 'gallery-sanitary-pads-stock.jpg', 'alt' => __( 'A Foundation representative standing beside a tall stack of sanitary pad boxes on a city street.', 'cohf-child' ) ),
+		'gallery-food-supplies' => array( 'file' => 'gallery-food-supplies.jpg', 'alt' => __( 'Food supplies ready for distribution: cooking oil, bread, flour, drinking water and tissue.', 'cohf-child' ) ),
+		'gallery-shared-meal' => array( 'file' => 'gallery-shared-meal.jpg', 'alt' => __( 'Children seated in a circle sharing a hot meal together with a young woman.', 'cohf-child' ) ),
 		'story-03-door-to-door' => array( 'file' => 'story-03-door-to-door.jpg', 'alt' => __( 'A Foundation staff member handing a pack of sanitary pads to a girl at her home.', 'cohf-child' ) ),
 		'story-04-back-to-school' => array( 'file' => 'story-04-back-to-school.jpg', 'alt' => __( 'Three boys in school uniform standing with their family outside their home.', 'cohf-child' ) ),
 
