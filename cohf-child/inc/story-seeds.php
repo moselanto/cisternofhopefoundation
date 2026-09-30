@@ -50,7 +50,7 @@ function cohf_story_seed() {
 			'title'   => __( 'Fellowship and dignity with orphans in our community', 'cohf-child' ),
 			'slug'    => 'fellowship-with-orphans',
 			'date'    => '2025-12-16',
-			'image'   => 'story-02-dignity-packs',
+			'image'   => 'story-02-fellowship-tshirts',
 			'excerpt' => __( 'Sanitary pads, encouragement and shared joy with orphaned children, and a commitment to return every month with the essentials they need.', 'cohf-child' ),
 			'body'    => array(
 				__( 'The Cistern of Hope Foundation is committed to uplifting the less fortunate in our communities, restoring dignity, hope and a sense of belonging to those who need it most.', 'cohf-child' ),

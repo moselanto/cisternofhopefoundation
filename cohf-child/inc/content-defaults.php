@@ -357,6 +357,34 @@ function cohf_sync_media( &$diag = null ) {
 		}
 	}
 
+	// Impact stories: move a story onto its current lead photograph when the
+	// theme changes it, but never replace an image chosen in the admin.
+	if ( function_exists( 'cohf_story_seed' ) ) {
+		foreach ( cohf_story_seed() as $story ) {
+			if ( empty( $story['image'] ) ) {
+				continue;
+			}
+			$existing = get_page_by_path( $story['slug'], OBJECT, 'cohf_story' );
+			if ( empty( $existing ) ) {
+				continue;
+			}
+			$post_id = (int) $existing->ID;
+			$current = (int) get_post_thumbnail_id( $post_id );
+			if ( $current ) {
+				if ( get_post_meta( $current, '_cohf_image_key', true ) === '' ) {
+					continue;
+				}
+			}
+			$image_id = cohf_import_image( $story['image'] );
+			if ( $image_id ) {
+				if ( ( $image_id === $current ) === false ) {
+					set_post_thumbnail( $post_id, $image_id );
+					$updated += 1;
+				}
+			}
+		}
+	}
+
 	// Keep the whole bundled set available in the Media Library.
 	foreach ( array_keys( cohf_image_library() ) as $image_key ) {
 		cohf_import_image( $image_key );
