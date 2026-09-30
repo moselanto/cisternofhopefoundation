@@ -70,6 +70,7 @@ function cohf_image_library() {
 		// Impact story lead images, supplied by the Foundation with consent.
 		'story-01-women-seminar' => array( 'file' => 'story-01-women-seminar.jpg', 'alt' => __( 'Women seated together in discussion at the Foundation women empowerment seminar.', 'cohf-child' ) ),
 		'story-02-dignity-packs' => array( 'file' => 'story-02-dignity-packs.jpg', 'alt' => __( 'Children and Foundation staff together after a sanitary pad distribution at a home for orphaned children.', 'cohf-child' ) ),
+		'story-02-fellowship-tshirts' => array( 'file' => 'story-02-fellowship-tshirts.jpg', 'alt' => __( 'Foundation team members in Cistern of Hope Foundation branded T-shirts handing out sanitary pads to children at a children\'s home.', 'cohf-child' ) ),
 		'story-03-door-to-door' => array( 'file' => 'story-03-door-to-door.jpg', 'alt' => __( 'A Foundation staff member handing a pack of sanitary pads to a girl at her home.', 'cohf-child' ) ),
 		'story-04-back-to-school' => array( 'file' => 'story-04-back-to-school.jpg', 'alt' => __( 'Three boys in school uniform standing with their family outside their home.', 'cohf-child' ) ),
 
