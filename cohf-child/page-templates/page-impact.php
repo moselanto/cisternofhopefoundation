@@ -58,7 +58,7 @@ get_header();
 	<!-- Women and livelihoods -->
 	<section class="cream" id="women">
 		<div class="container feature">
-			<?php cohf_the_image( 'programme-03', array( 'sizes' => '(max-width: 60em) 100vw, 50vw' ) ); ?>
+			<?php cohf_the_image( 'impact-women-livelihoods', array( 'sizes' => '(max-width: 60em) 100vw, 50vw' ) ); ?>
 			<div>
 				<div class="sec-label">
 					<span class="sec-label__rule"></span>
