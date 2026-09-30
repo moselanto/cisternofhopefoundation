@@ -41,7 +41,7 @@ No page builder is required. No premium plugin is required. No external font or 
 | A team member | **Leadership** |
 | A confirmed partner | **Partners** |
 | Page wording | **Pages** |
-| Phone, email, postal address | **Foundation → Organisation details** |
+| Phone, email, postal address, social media links | **Foundation → Organisation details** |
 | Top menu | **Appearance → Menus** |
 
 **Foundation → Site guide** in the admin repeats this, in plain English, for staff.
@@ -160,11 +160,11 @@ Built to WCAG 2.1 AA intent:
 - [x] Replace placeholder images with the Foundation's own photographs.
 - [x] Add the WOFF2 font files.
 - [x] Privacy Policy, Terms of Use and Donation Policy pages.
-- [ ] Enter the Paystack public key, secret key (in `wp-config.php`) and webhook URL under **Foundation → Giving**.
+- [x] Enter the Paystack keys and webhook URL under **Foundation → Giving**.
 - [ ] Exclude the Support page from page caching (its giving form carries a nonce that expires).
 - [ ] Publish the policies listed on the Accountability page into **Resources** as they are approved.
 - [ ] Confirm the date of the documented community programme (see note below).
-- [ ] Add social media links to the footer, only once accounts are confirmed.
+- [ ] Add social media links under **Foundation → Organisation details → Social media**. Icons appear in the footer only for fields that are filled in.
 - [ ] Set up SMTP so the enquiry form delivers reliably.
 - [ ] Install an SEO plugin and a caching plugin.
 

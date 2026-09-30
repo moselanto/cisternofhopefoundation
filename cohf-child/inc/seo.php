@@ -63,6 +63,13 @@ function cohf_organization_schema() {
 		'nonprofitStatus' => 'NonprofitType',
 	);
 
+	if ( function_exists( 'cohf_social_links' ) ) {
+		$same_as = array_values( wp_list_pluck( cohf_social_links(), 'url' ) );
+		if ( $same_as ) {
+			$data['sameAs'] = $same_as;
+		}
+	}
+
 	$logo = get_theme_mod( 'custom_logo' );
 	if ( $logo ) {
 		$src = wp_get_attachment_image_src( $logo, 'full' );

@@ -135,6 +135,9 @@ function cohf_admin_settings() {
 					case 'email':
 						$value = sanitize_email( $raw );
 						break;
+					case 'url':
+						$value = esc_url_raw( trim( (string) $raw ), array( 'https', 'http' ) );
+						break;
 					case 'textarea':
 						$value = sanitize_textarea_field( $raw );
 						break;
@@ -183,7 +186,7 @@ function cohf_admin_settings() {
 								<?php if ( 'textarea' === $field['type'] ) : ?>
 									<textarea class="large-text" rows="3" id="<?php echo esc_attr( $name ); ?>" name="<?php echo esc_attr( $name ); ?>"><?php echo esc_textarea( isset( $org[ $key ] ) ? $org[ $key ] : '' ); ?></textarea>
 								<?php else : ?>
-									<input type="<?php echo esc_attr( 'email' === $field['type'] ? 'email' : 'text' ); ?>" class="regular-text" id="<?php echo esc_attr( $name ); ?>" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( isset( $org[ $key ] ) ? $org[ $key ] : '' ); ?>">
+									<input type="<?php echo esc_attr( in_array( $field['type'], array( 'email', 'url' ), true ) ? $field['type'] : 'text' ); ?>" class="regular-text" id="<?php echo esc_attr( $name ); ?>" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( isset( $org[ $key ] ) ? $org[ $key ] : '' ); ?>"<?php echo empty( $field['placeholder'] ) ? '' : ' placeholder="' . esc_attr( $field['placeholder'] ) . '"'; ?>>
 								<?php endif; ?>
 								<?php if ( ! empty( $field['hint'] ) ) : ?>
 									<p class="description"><?php echo esc_html( $field['hint'] ); ?></p>
@@ -298,6 +301,47 @@ function cohf_org_field_groups() {
 				'email'   => array(
 					'label' => __( 'Email address', 'cohf-child' ),
 					'type'  => 'email',
+				),
+			),
+		),
+		array(
+			'title'  => __( 'Social media', 'cohf-child' ),
+			'fields' => array(
+				'facebook' => array(
+					'label'       => __( 'Facebook page', 'cohf-child' ),
+					'type'        => 'url',
+					'placeholder' => 'https://www.facebook.com/...',
+					'hint'        => __( 'Paste the full address of the Foundation\'s page, starting with https://. Leave blank to hide this icon.', 'cohf-child' ),
+				),
+				'instagram' => array(
+					'label'       => __( 'Instagram', 'cohf-child' ),
+					'type'        => 'url',
+					'placeholder' => 'https://www.instagram.com/...',
+					'hint'        => __( 'Paste the full address of the Foundation\'s page, starting with https://. Leave blank to hide this icon.', 'cohf-child' ),
+				),
+				'x' => array(
+					'label'       => __( 'X (Twitter)', 'cohf-child' ),
+					'type'        => 'url',
+					'placeholder' => 'https://x.com/...',
+					'hint'        => __( 'Paste the full address of the Foundation\'s page, starting with https://. Leave blank to hide this icon.', 'cohf-child' ),
+				),
+				'linkedin' => array(
+					'label'       => __( 'LinkedIn', 'cohf-child' ),
+					'type'        => 'url',
+					'placeholder' => 'https://www.linkedin.com/company/...',
+					'hint'        => __( 'Paste the full address of the Foundation\'s page, starting with https://. Leave blank to hide this icon.', 'cohf-child' ),
+				),
+				'youtube' => array(
+					'label'       => __( 'YouTube channel', 'cohf-child' ),
+					'type'        => 'url',
+					'placeholder' => 'https://www.youtube.com/@...',
+					'hint'        => __( 'Paste the full address of the Foundation\'s page, starting with https://. Leave blank to hide this icon.', 'cohf-child' ),
+				),
+				'tiktok' => array(
+					'label'       => __( 'TikTok', 'cohf-child' ),
+					'type'        => 'url',
+					'placeholder' => 'https://www.tiktok.com/@...',
+					'hint'        => __( 'Paste the full address of the Foundation\'s page, starting with https://. Leave blank to hide this icon.', 'cohf-child' ),
 				),
 			),
 		),

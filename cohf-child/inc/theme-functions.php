@@ -94,6 +94,14 @@ function cohf_org_defaults() {
 		'phone'        => '+254 110 304 521',
 		'whatsapp'     => '+254 110 304 521',
 		'email'        => 'info@cisternofhopefoundation.org',
+		// Social accounts. Empty until the Foundation confirms each one; an
+		// empty field hides that icon everywhere.
+		'facebook'     => '',
+		'instagram'    => '',
+		'x'            => '',
+		'linkedin'     => '',
+		'youtube'      => '',
+		'tiktok'       => '',
 	);
 }
 
@@ -584,3 +592,35 @@ function cohf_nav() {
 	);
 }
 
+
+
+/**
+ * Confirmed social media accounts, in display order.
+ *
+ * Only networks with a saved URL are returned, so the footer and structured
+ * data show nothing until the Foundation adds a link under
+ * Foundation > Organisation details > Social media.
+ *
+ * @return array<string,array{label:string,url:string}>
+ */
+function cohf_social_links() {
+	$org      = cohf_org();
+	$networks = array(
+		'facebook'  => __( 'Facebook', 'cohf-child' ),
+		'instagram' => __( 'Instagram', 'cohf-child' ),
+		'x'         => __( 'X (Twitter)', 'cohf-child' ),
+		'linkedin'  => __( 'LinkedIn', 'cohf-child' ),
+		'youtube'   => __( 'YouTube', 'cohf-child' ),
+		'tiktok'    => __( 'TikTok', 'cohf-child' ),
+	);
+	$links = array();
+
+	foreach ( $networks as $key => $label ) {
+		$url = isset( $org[ $key ] ) ? esc_url_raw( trim( (string) $org[ $key ] ) ) : '';
+		if ( '' !== $url ) {
+			$links[ $key ] = array( 'label' => $label, 'url' => $url );
+		}
+	}
+
+	return apply_filters( 'cohf_social_links', $links );
+}

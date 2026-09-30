@@ -13,11 +13,15 @@ The findings below are the gaps that remain, most important first.
 
 ### 1. High - Page caching will break the giving form after about a day
 
+Status (30 Sep 2026): Paystack keys are configured, so giving is live and this applies as soon as any page cache is enabled.
+
 `template-parts/giving-form.php` prints `wp_create_nonce( 'cohf_giving' )` into the page, and `/wp-json/cohf/v1/initialize` rejects an expired nonce with "This form has expired". WordPress nonces live 12-24 hours. The README recommends full page caching, so once a caching plugin or CDN is added, every donor who gets a cached copy older than a day is refused at checkout.
 
 Fix: exclude the Support Our Work page from page caching (every caching plugin has a URL exclusion list), or fetch the nonce with a small uncached request when the form loads.
 
-### 2. High - Behind a proxy or CDN, all rate limits collapse into one shared bucket
+### 2. Not applicable today - Behind a proxy or CDN, all rate limits collapse into one shared bucket
+
+Status (30 Sep 2026): the site is not behind Cloudflare or another proxy, so `REMOTE_ADDR` is the real visitor address and no change is needed. Revisit this if a CDN is added later.
 
 `cohf_giving_client_ip()` only trusts `X-Forwarded-For` when `COHF_BEHIND_PROXY` is defined. It is not defined anywhere in the theme. The same function feeds three limits:
 

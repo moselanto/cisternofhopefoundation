@@ -47,6 +47,31 @@ $acct = cohf_page_url( 'page-templates/page-accountability.php' );
 			<a href="<?php echo esc_url( cohf_page_url( 'page-templates/page-contact.php' ) ); ?>"><?php echo esc_html( $org['address'] ); ?></a>
 			<a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $org['phone'] ) ); ?>"><?php echo esc_html( $org['phone'] ); ?></a>
 			<a href="mailto:<?php echo esc_attr( $org['email'] ); ?>"><?php echo esc_html( $org['email'] ); ?></a>
+			<?php
+			// Social links appear only once a URL is saved under
+			// Foundation > Organisation details > Social media.
+			$cohf_social = function_exists( 'cohf_social_links' ) ? cohf_social_links() : array();
+			if ( $cohf_social ) :
+				$cohf_icons = array(
+					'facebook' => '<path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H8v4h2v6h4v-6h3l1-4h-4V8Z"/>',
+					'instagram' => '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/>',
+					'x' => '<path d="M4 4l16 16M20 4 4 20"/>',
+					'linkedin' => '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"/>',
+					'youtube' => '<rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3V9Z"/>',
+					'tiktok' => '<path d="M14 3v11a3 3 0 1 1-3-3M14 3c0 3 2 5 5 5"/>',
+				);
+				?>
+				<ul class="foot-social" aria-label="<?php esc_attr_e( 'Follow the Foundation', 'cohf-child' ); ?>">
+					<?php foreach ( $cohf_social as $cohf_key => $cohf_link ) : ?>
+						<li>
+							<a href="<?php echo esc_url( $cohf_link['url'] ); ?>" target="_blank" rel="noopener noreferrer me">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><?php echo isset( $cohf_icons[ $cohf_key ] ) ? $cohf_icons[ $cohf_key ] : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG paths defined above. ?></svg>
+								<span class="screen-reader-text"><?php echo esc_html( $cohf_link['label'] ); ?></span>
+							</a>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
 		</div>
 	</div>
 
