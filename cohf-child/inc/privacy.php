@@ -98,3 +98,38 @@ function cohf_legal_ensure_pages() {
 	update_option( 'cohf_legal_pages_done', COHF_CHILD_VERSION );
 }
 add_action( 'admin_init', 'cohf_legal_ensure_pages' );
+
+
+/**
+ * Copy the default wording into each legal page that has no content yet,
+ * so every word can be edited in the WordPress editor. Existing content is
+ * never overwritten.
+ */
+function cohf_legal_fill_content() {
+	if ( is_admin() === false || current_user_can( 'manage_options' ) === false || get_option( 'cohf_legal_content_done' ) ) {
+		return;
+	}
+	$map = array(
+		'privacy-policy'  => 'privacy',
+		'terms-of-use'    => 'terms',
+		'donation-policy' => 'donation-policy',
+	);
+	foreach ( $map as $slug => $part ) {
+		$page = get_page_by_path( $slug, OBJECT, 'page' );
+		if ( empty( $page ) || '' !== trim( (string) $page->post_content ) ) {
+			continue;
+		}
+		$file = locate_template( 'template-parts/legal-' . $part . '.php' );
+		if ( '' === $file ) {
+			continue;
+		}
+		ob_start();
+		include $file;
+		$html = trim( (string) ob_get_clean() );
+		if ( '' !== $html ) {
+			wp_update_post( array( 'ID' => $page->ID, 'post_content' => $html ) );
+		}
+	}
+	update_option( 'cohf_legal_content_done', COHF_CHILD_VERSION );
+}
+add_action( 'admin_init', 'cohf_legal_fill_content', 30 );

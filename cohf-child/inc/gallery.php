@@ -19,6 +19,24 @@ defined( 'ABSPATH' ) || exit;
  * @return array<string,string>
  */
 function cohf_gallery_categories() {
+	$cats = cohf_gallery_default_categories();
+	if ( taxonomy_exists( 'cohf_photo_cat' ) ) {
+		$terms = get_terms( array( 'taxonomy' => 'cohf_photo_cat', 'hide_empty' => false ) );
+		if ( is_array( $terms ) ) {
+			foreach ( $terms as $term ) {
+				$cats[ $term->slug ] = $term->name;
+			}
+		}
+	}
+	return $cats;
+}
+
+/**
+ * The gallery's starting categories.
+ *
+ * @return array<string,string>
+ */
+function cohf_gallery_default_categories() {
 	return array(
 		'education'  => __( 'Education', 'cohf-child' ),
 		'dignity'    => __( 'Menstrual dignity', 'cohf-child' ),
@@ -34,6 +52,34 @@ function cohf_gallery_categories() {
  * @return array<int,array<string,string>>
  */
 function cohf_gallery_items() {
+	// Photos managed in the admin (Gallery photos) take over once they exist.
+	if ( function_exists( 'cohf_photo_items' ) ) {
+		$managed = cohf_photo_items();
+		if ( $managed ) {
+			return $managed;
+		}
+	}
+	$items = array();
+	foreach ( cohf_gallery_static_items() as $item ) {
+		$url = cohf_img_url( $item['key'] );
+		if ( '' === $url ) {
+			continue;
+		}
+		$item['url']   = $url;
+		$item['alt']   = cohf_img_alt( $item['key'] );
+		$item['shape'] = cohf_gallery_shape( $item['key'] );
+		$items[]       = $item;
+	}
+	return $items;
+}
+
+/**
+ * The photographs that shipped with the theme. Used to create the Gallery
+ * photos in the admin, and as a fallback until they exist.
+ *
+ * @return array<int,array<string,string>>
+ */
+function cohf_gallery_static_items() {
 	$items = array(
 		array( 'key' => 'story-02-fellowship-tshirts',       'cat' => 'dignity',    'title' => __( 'Children\'s home visit', 'cohf-child' ),              'caption' => __( 'Our team, in Cistern of Hope Foundation T-shirts, sharing sanitary pads and encouragement with children at a children\'s home.', 'cohf-child' ) ),
 		array( 'key' => 'gallery-childrens-home-group',      'cat' => 'dignity',    'title' => __( 'Together at the children\'s home', 'cohf-child' ),   'caption' => __( 'Children and our team together after sharing sanitary pads, encouragement and a lot of laughter.', 'cohf-child' ) ),
@@ -63,17 +109,7 @@ function cohf_gallery_items() {
 		array( 'key' => 'story-04-back-to-school',           'cat' => 'education',  'title' => __( 'A family\'s new start', 'cohf-child' ),               'caption' => __( 'Three boys in school uniform standing with their family outside their home.', 'cohf-child' ) ),
 	);
 
-	/**
-	 * Filter the gallery photographs.
-	 *
-	 * @param array $items Gallery items.
-	 */
-	$items = apply_filters( 'cohf_gallery_items', $items );
-
-	// Only show photographs that actually exist.
-	return array_values( array_filter( $items, function ( $item ) {
-		return function_exists( 'cohf_img_url' ) && cohf_img_url( $item['key'] );
-	} ) );
+	return apply_filters( 'cohf_gallery_items', $items );
 }
 
 /**

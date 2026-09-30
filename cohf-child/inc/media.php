@@ -114,6 +114,14 @@ function cohf_image_library() {
  * @return string URL, or empty string when the file is absent.
  */
 function cohf_img_url( $key ) {
+	// A photograph chosen in Appearance > Customize > Site photographs wins.
+	$override = (int) get_theme_mod( 'cohf_image_' . str_replace( '-', '_', $key ) );
+	if ( $override ) {
+		$src = wp_get_attachment_image_url( $override, 'full' );
+		if ( $src ) {
+			return $src;
+		}
+	}
 	$library = cohf_image_library();
 	if ( empty( $library[ $key ] ) ) {
 		return '';
@@ -132,6 +140,13 @@ function cohf_img_url( $key ) {
  * @return string
  */
 function cohf_img_alt( $key ) {
+	$override = (int) get_theme_mod( 'cohf_image_' . str_replace( '-', '_', $key ) );
+	if ( $override ) {
+		$alt = (string) get_post_meta( $override, '_wp_attachment_image_alt', true );
+		if ( '' !== $alt ) {
+			return $alt;
+		}
+	}
 	$library = cohf_image_library();
 	return isset( $library[ $key ]['alt'] ) ? $library[ $key ]['alt'] : '';
 }

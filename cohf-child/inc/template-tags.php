@@ -63,6 +63,38 @@ function cohf_programme_seed() {
  * @return array<int,array<string,mixed>>
  */
 function cohf_impact_figures() {
+	return cohf_apply_figure_mods( 'impact', cohf_impact_figures_default() );
+}
+
+/**
+ * Apply figures edited in Appearance > Customize > Impact figures.
+ *
+ * An empty field keeps the default, so a figure can never be blanked by
+ * accident.
+ *
+ * @param string $group    'impact' or 'outreach'.
+ * @param array  $defaults Default figures.
+ * @return array
+ */
+function cohf_apply_figure_mods( $group, $defaults ) {
+	foreach ( $defaults as $i => $figure ) {
+		foreach ( array( 'value', 'prefix', 'text', 'label', 'note' ) as $field ) {
+			$mod = get_theme_mod( 'cohf_fig_' . $group . '_' . $i . '_' . $field, '' );
+			if ( '' === trim( (string) $mod ) ) {
+				continue;
+			}
+			$defaults[ $i ][ $field ] = ( 'value' === $field ) ? (float) $mod : (string) $mod;
+		}
+	}
+	return $defaults;
+}
+
+/**
+ * Default reported programme figures.
+ *
+ * @return array
+ */
+function cohf_impact_figures_default() {
 	return array(
 		array(
 			'value'  => 8,
@@ -96,6 +128,15 @@ function cohf_impact_figures() {
  * @return array<int,array<string,mixed>>
  */
 function cohf_outreach_figures() {
+	return cohf_apply_figure_mods( 'outreach', cohf_outreach_figures_default() );
+}
+
+/**
+ * Default outreach figures.
+ *
+ * @return array
+ */
+function cohf_outreach_figures_default() {
 	return array(
 		array( 'value' => 82, 'label' => __( 'children reached', 'cohf-child' ), 'note' => __( 'Documented 19 August 2026 community programme.', 'cohf-child' ) ),
 		array( 'value' => 26, 'label' => __( 'teenagers among those participants', 'cohf-child' ), 'note' => __( 'Same documented programme.', 'cohf-child' ) ),

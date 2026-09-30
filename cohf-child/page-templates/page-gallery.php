@@ -21,13 +21,17 @@ $counts     = array_count_values( wp_list_pluck( $items, 'cat' ) );
 	get_template_part( 'template-parts/page-hero', null, array(
 		'image'   => 'story-02-fellowship-tshirts',
 		'eyebrow' => __( 'Photo gallery', 'cohf-child' ),
+		// Editable: set an Excerpt on the Gallery page to change this line.
 		'title'   => __( 'Hope, captured in the moment.', 'cohf-child' ),
-		'text'    => __( 'Real people, real places, real change. A look at the work of Cistern of Hope Foundation across our communities in Kenya.', 'cohf-child' ),
+		'text'    => has_excerpt() ? get_the_excerpt() : __( 'Real people, real places, real change. A look at the work of Cistern of Hope Foundation across our communities in Kenya.', 'cohf-child' ),
 	) );
 	?>
 
 	<section class="gallery-section">
 		<div class="container">
+			<?php if ( '' !== trim( (string) get_post_field( 'post_content', get_the_ID() ) ) ) : ?>
+				<div class="prose gallery-intro"><?php echo apply_filters( 'the_content', get_post_field( 'post_content', get_the_ID() ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the_content filter. ?></div>
+			<?php endif; ?>
 
 			<div class="gallery-toolbar-wrap">
 			<div class="gallery-toolbar" role="toolbar" aria-label="<?php esc_attr_e( 'Filter photographs', 'cohf-child' ); ?>">
@@ -48,12 +52,12 @@ $counts     = array_count_values( wp_list_pluck( $items, 'cat' ) );
 			<div class="gallery-grid">
 				<?php foreach ( $items as $i => $item ) : ?>
 					<?php
-					$url   = cohf_img_url( $item['key'] );
-					$alt   = cohf_img_alt( $item['key'] );
+					$url   = $item['url'];
+					$alt   = $item['alt'];
 					$label = isset( $categories[ $item['cat'] ] ) ? $categories[ $item['cat'] ] : '';
 					?>
 					<?php
-					$shape   = cohf_gallery_shape( $item['key'] );
+					$shape   = isset( $item['shape'] ) ? $item['shape'] : 'square';
 					$classes = 'gallery-item gallery-item--' . $shape . ( 0 === $i ? ' gallery-item--featured' : '' );
 					?>
 					<figure class="<?php echo esc_attr( $classes ); ?>" data-cat="<?php echo esc_attr( $item['cat'] ); ?>">

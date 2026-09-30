@@ -305,3 +305,5 @@ body.cohf-lightbox-open { overflow: hidden; }
 	.gallery-item.will-reveal { opacity: 1; transform: none; transition: none; }
 	.gallery-item__media img, .lightbox, .lightbox__img { transition: none; }
 }
+
+.gallery-intro { margin: 0 auto 32px; text-align: center; }
