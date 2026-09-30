@@ -68,6 +68,12 @@ function cohf_shop_seed_products() {
 			'short'    => __( 'Hand-woven sisal basket with a red stripe, leather handles and a leather button closure.', 'cohf-child' ),
 			'long'     => __( 'Hand-woven, so each basket differs slightly in weave and shade.', 'cohf-child' ),
 			'order'    => 4,
+			'gallery'  => array(
+				array(
+					'image' => 'sisal-basket-red-stripe-2.jpg',
+					'alt'   => __( 'Front view of the red-stripe sisal basket bag, showing both leather-wrapped handles and the leather button fastening.', 'cohf-child' ),
+				),
+			),
 		),
 		'sisal-tote-beaded-flap' => array(
 			'name'     => __( 'Sisal Tote with Beaded Leather Flap', 'cohf-child' ),
