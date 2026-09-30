@@ -209,8 +209,12 @@ $contact = cohf_page_url( 'page-templates/page-contact.php' );
 		// people to the general contact form was a broken promise and lost
 		// the partnership context the enquiry form would otherwise preselect.
 		'primary_url'   => $cta['partner'],
-		'secondary_label' => __( 'Contact Us', 'cohf-child' ),
-		'secondary_url'   => $contact,
+		// Was Contact Us. The homepage is where most donors arrive, and the
+		// closing band was the only full-width ask on the page, yet it
+		// offered no way to give. Contact stays one tap away in the top bar
+		// and footer.
+		'secondary_label' => __( 'Support Our Work', 'cohf-child' ),
+		'secondary_url'   => $cta['support'],
 	) );
 	?>
 

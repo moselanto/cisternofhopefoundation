@@ -62,45 +62,52 @@ These are not documentation; they are enforced in code.
 ```
 cohf-child/
   style.css                      Theme header + project overrides only
-  functions.php                  Loads /inc modules
-  screenshot.png
+  functions.php                  Loads /inc modules (order matters)
+  .htaccess                      Denies direct access to PHP internals and docs
 
   assets/
-    css/  tokens.css  base.css  components.css  sections.css  editor.css
-    js/   main.js                ~4 KB, no dependencies, fully degradable
-    fonts/  (drop two WOFF2 files here — see README.txt)
-    images/ (see README.txt for photography direction)
+    css/  prototype.css          Approved prototype design layer (loads first)
+          wp-adapt.css           WordPress core classes, admin bar, a11y utilities
+          design-system.css      Shared components
+          ux-refinements.css     Interaction/readability overrides (loads last)
+          gallery.css            Gallery page only
+          editor.css             Block editor styles
+    js/   main.js  navigation.js  leadership.js  gallery.js  giving.js
+    fonts/  Inter + Playfair Display variable WOFF2 (self-hosted)
+    images/ brand/, leaders/ (4:5 portraits used by leader-photos.php),
+            leader-*.jpg (same portraits, used by the media.php library),
+            hero-, programme-, story-, gallery- photographs
 
   inc/
-    theme-functions.php          Setup, header, footer, organisation data
-    custom-post-types.php        8 post types, 6 taxonomies
+    theme-functions.php          Setup, organisation data, CTA links, logo
+    nav-structure.php, nav-walker.php, mobile-actions.php   Navigation
+    media.php, photos.php, leader-photos.php   Bundled photo library + overrides
+    custom-post-types.php        Post types and taxonomies
     custom-fields.php            Native metaboxes (no ACF dependency)
-    accessibility.php            WCAG-conscious defaults
-    performance.php              Asset strategy, fonts, critical CSS, images
-    security.php                 Hardening, escaping helpers, headers
-    seo.php                      Schema, Open Graph, breadcrumbs
-    admin-experience.php         Site guide, settings, content guards
+    customizer.php               Photos and impact figures editable in the Customizer
+    gallery.php                  Gallery post type, import and assets
+    page-body.php, page-seeds.php, story-seeds.php   Editable page and story content
+    block-patterns.php, shortcodes.php   Editor building blocks
     content-defaults.php         One-click setup and seeding
-    forms.php                    Native enquiry handling
-    template-tags.php            All document-sourced content data
+    admin-experience.php         Site guide, settings, content guards
+    forms.php                    Enquiry form (nonce, honeypot, time-trap, rate limit)
+    giving.php                   Paystack settings and asset loading
+    giving-checkout.php          Server-side transaction initialisation (REST)
+    giving-records.php           Verification, webhook, donation records
+    shop.php                     Hope Market (WooCommerce), kept apart from giving
+    accessibility.php, performance.php, security.php, seo.php, privacy.php, redirects.php
+    template-tags.php            Document-sourced figures and content data
 
-  template-parts/
-    hero.php  programme-card.php  impact-card.php  story-card.php
-    leadership-card.php  partner-section.php  cta.php  purpose.php
-    approach.php  timeline.php  theory-of-change.php  enquiry-form.php
-
-  page-templates/
-    page-home.php  page-about.php  page-programmes.php  page-impact.php
-    page-approach.php  page-leadership.php  page-partners.php
-    page-resources.php  page-contact.php  page-get-involved.php
-    page-support.php  page-accountability.php  page-strategy.php
-
-  single-cohf_programme.php  single-cohf_story.php  single-cohf_news.php
-  single-cohf_event.php  single-cohf_report.php  single-cohf_resource.php
-  single-cohf_leader.php
-  archive-cohf_programme.php  archive-cohf_story.php  archive-cohf_news.php
-  archive-cohf_event.php  archive-cohf_report.php  archive-cohf_resource.php
+  template-parts/                Hero, cards, CTA band, forms, legal text, nav
+  page-templates/                One template per page (Home, About, Programmes,
+                                 Impact, Approach, Leadership, Partners, Resources,
+                                 Contact, Get Involved, Support, Accountability,
+                                 Strategy, Gallery, Privacy, Terms, Donation Policy)
+  single-*.php, archive-*.php    Custom post type views
+  docs/SECURITY-AUDIT.md         Findings and fixes, September 2026
 ```
+
+Read `AGENTS.md` at the repository root before changing code.
 
 ## 5. Plugin compatibility
 
@@ -150,9 +157,11 @@ Built to WCAG 2.1 AA intent:
 
 ## 9. Before going live
 
-- [ ] Replace every image marked *placeholder*.
-- [ ] Add the two WOFF2 font files.
-- [ ] Confirm and publish the giving channels on the Support page.
+- [x] Replace placeholder images with the Foundation's own photographs.
+- [x] Add the WOFF2 font files.
+- [x] Privacy Policy, Terms of Use and Donation Policy pages.
+- [ ] Enter the Paystack public key, secret key (in `wp-config.php`) and webhook URL under **Foundation → Giving**.
+- [ ] Exclude the Support page from page caching (its giving form carries a nonce that expires).
 - [ ] Publish the policies listed on the Accountability page into **Resources** as they are approved.
 - [ ] Confirm the date of the documented community programme (see note below).
 - [ ] Add social media links to the footer, only once accounts are confirmed.
