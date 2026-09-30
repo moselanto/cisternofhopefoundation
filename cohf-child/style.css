@@ -5,7 +5,7 @@ Template: cohf
 Author: Cistern of Hope Foundation
 Author URI: https://cisternofhope.org
 Description: Premium, human-centred child theme for Cistern of Hope Foundation (COHF), Kenya. Editorial design system, twelve programme areas, impact and story content structures, accountability and partnership architecture, WCAG-conscious markup and a performance-first asset strategy. Motto: Together for a lasting change.
-Version: 9.59.0
+Version: 9.61.0
 Requires at least: 6.2
 Requires PHP: 8.0
 License: GNU General Public License v2 or later
@@ -23,3 +23,56 @@ Tags: nonprofit, ngo, accessibility-ready, editorial, custom-post-types, transla
  *
  * Add safe project overrides at the bottom of this file only.
  */
+
+
+/* Before-and-after photographs on impact stories. */
+.story-impact__grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 24px;
+	max-width: 900px;
+	margin-inline: auto;
+}
+.story-impact__item {
+	position: relative;
+	margin: 0;
+}
+.story-impact__img,
+.story-impact__item img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 3 / 4;
+	object-fit: cover;
+	object-position: 50% 30%;
+	border-radius: var(--r, 22px);
+}
+.story-impact__label {
+	position: absolute;
+	top: 14px;
+	left: 14px;
+	z-index: 1;
+	padding: 6px 14px;
+	border-radius: 999px;
+	background: var(--g, #163f32);
+	color: #fff;
+	font-size: 12px;
+	font-weight: 800;
+	letter-spacing: .12em;
+	text-transform: uppercase;
+}
+.story-impact__item:last-child .story-impact__label {
+	background: var(--gold, #d9a441);
+	color: var(--ink, #17231e);
+}
+.story-impact__item figcaption {
+	margin-top: 10px;
+	color: var(--muted, #66736d);
+	font-size: 15px;
+	text-align: center;
+}
+@media (max-width: 600px) {
+	.story-impact__grid {
+		grid-template-columns: 1fr;
+	}
+}

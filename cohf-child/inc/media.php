@@ -71,6 +71,15 @@ function cohf_image_library() {
 		'story-01-women-seminar' => array( 'file' => 'story-01-women-seminar.jpg', 'alt' => __( 'Women seated together in discussion at the Foundation women empowerment seminar.', 'cohf-child' ) ),
 		'story-02-dignity-packs' => array( 'file' => 'story-02-dignity-packs.jpg', 'alt' => __( 'Children and Foundation staff together after a sanitary pad distribution at a home for orphaned children.', 'cohf-child' ) ),
 		'story-02-fellowship-tshirts' => array( 'file' => 'story-02-fellowship-tshirts.jpg', 'alt' => __( 'Foundation team members in Cistern of Hope Foundation branded T-shirts handing out sanitary pads to children at a children\'s home.', 'cohf-child' ) ),
+		'story-05-school-pads' => array( 'file' => 'story-05-school-pads.jpg', 'alt' => __( 'A Cistern of Hope Foundation team member handing packs of sanitary pads to schoolgirls in uniform during a monthly school donation.', 'cohf-child' ) ),
+		'story-04-before' => array( 'file' => 'story-04-before.jpg', 'alt' => __( 'Before: one of the boys, photographed from behind, barefoot in a torn school shirt and ripped shorts.', 'cohf-child' ) ),
+		'story-04-after' => array( 'file' => 'story-04-after.jpg', 'alt' => __( 'After: the three boys in new school uniforms, shoes and school bags, standing with a Foundation representative outside their primary school.', 'cohf-child' ) ),
+		// Photo gallery, supplied by the Foundation.
+		'gallery-shoe-donation' => array( 'file' => 'gallery-shoe-donation.jpg', 'alt' => __( 'A young man crouching beside rows of donated children\'s shoes laid out for distribution.', 'cohf-child' ) ),
+		'gallery-enterprise-visit-eggs' => array( 'file' => 'gallery-enterprise-visit-eggs.jpg', 'alt' => __( 'Foundation team members visiting a roadside egg vendor and his food cart.', 'cohf-child' ) ),
+		'gallery-enterprise-visit-potatoes' => array( 'file' => 'gallery-enterprise-visit-potatoes.jpg', 'alt' => __( 'Foundation team members with a trader at his roadside potato stall.', 'cohf-child' ) ),
+		'gallery-womens-enterprise-stall' => array( 'file' => 'gallery-womens-enterprise-stall.jpg', 'alt' => __( 'A woman at her fruit and vegetable stall during a Foundation visit.', 'cohf-child' ) ),
+		'gallery-womens-seminar' => array( 'file' => 'gallery-womens-seminar.jpg', 'alt' => __( 'Women seated in a large circle during a Foundation women empowerment seminar.', 'cohf-child' ) ),
 		'story-03-door-to-door' => array( 'file' => 'story-03-door-to-door.jpg', 'alt' => __( 'A Foundation staff member handing a pack of sanitary pads to a girl at her home.', 'cohf-child' ) ),
 		'story-04-back-to-school' => array( 'file' => 'story-04-back-to-school.jpg', 'alt' => __( 'Three boys in school uniform standing with their family outside their home.', 'cohf-child' ) ),
 

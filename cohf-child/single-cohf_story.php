@@ -51,6 +51,33 @@ while ( have_posts() ) :
 			</div>
 		</section>
 
+		<?php
+		$gallery = function_exists( 'cohf_story_gallery' ) ? cohf_story_gallery( get_post_field( 'post_name' ) ) : array();
+		if ( $gallery ) :
+			?>
+			<section class="story-impact">
+				<div class="container">
+					<div class="section-head">
+						<div>
+							<div class="kicker"><?php esc_html_e( 'The real impact', 'cohf-child' ); ?></div>
+							<h2><?php esc_html_e( 'Before and after.', 'cohf-child' ); ?></h2>
+						</div>
+					</div>
+					<div class="story-impact__grid">
+						<?php foreach ( $gallery as $item ) : ?>
+							<figure class="story-impact__item">
+								<span class="story-impact__label"><?php echo esc_html( $item['label'] ); ?></span>
+								<?php cohf_the_image( $item['key'], array( 'class' => 'story-impact__img', 'sizes' => '(max-width: 700px) 100vw, 50vw' ) ); ?>
+								<?php if ( ! empty( $item['caption'] ) ) : ?>
+									<figcaption><?php echo esc_html( $item['caption'] ); ?></figcaption>
+								<?php endif; ?>
+							</figure>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			</section>
+		<?php endif; ?>
+
 		<?php if ( $challenge || $action || $change ) : ?>
 			<section class="cream">
 				<div class="container">
