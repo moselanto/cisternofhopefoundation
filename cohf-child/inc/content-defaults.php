@@ -90,7 +90,7 @@ function cohf_page_blueprint() {
 		array( 'title' => __( 'Leadership & Governance', 'cohf-child' ),   'slug' => 'leadership-governance',     'tpl' => 'page-templates/page-leadership.php',     'nav' => __( 'Leadership & Governance', 'cohf-child' ) ),
 		array( 'title' => __( 'Our Programmes', 'cohf-child' ),            'slug' => 'programmes-overview',       'tpl' => 'page-templates/page-programmes.php',     'nav' => __( 'Our Programmes', 'cohf-child' ) ),
 		array( 'title' => __( 'Our Impact', 'cohf-child' ),                'slug' => 'impact',                    'tpl' => 'page-templates/page-impact.php',         'nav' => __( 'Our Impact', 'cohf-child' ) ),
-		array( 'title' => __( 'Gallery', 'cohf-child' ),                   'slug' => 'gallery',                   'tpl' => 'page-templates/page-gallery.php',        'nav' => __( 'Gallery', 'cohf-child' ) ),
+		array( 'title' => __( 'Gallery', 'cohf-child' ),                   'slug' => 'gallery',                   'tpl' => 'page-templates/page-gallery.php',        'nav' => '' ),
 		array( 'title' => __( 'Our Approach', 'cohf-child' ),              'slug' => 'approach',                  'tpl' => 'page-templates/page-approach.php',       'nav' => __( 'Our Approach', 'cohf-child' ) ),
 		array( 'title' => __( 'Get Involved', 'cohf-child' ),              'slug' => 'get-involved',              'tpl' => 'page-templates/page-get-involved.php',   'nav' => __( 'Get Involved', 'cohf-child' ) ),
 		array( 'title' => __( 'Partners', 'cohf-child' ),                  'slug' => 'partners-overview',         'tpl' => 'page-templates/page-partners.php',       'nav' => __( 'Partners', 'cohf-child' ) ),
