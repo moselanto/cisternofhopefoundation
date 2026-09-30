@@ -37,7 +37,7 @@
 /* ---- Product grid ---- */
 .woocommerce ul.products,
 .woocommerce-page ul.products{
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;
   margin:0 0 40px;padding:0;list-style:none;
 }
 .woocommerce ul.products::before,.woocommerce ul.products::after,
@@ -121,6 +121,9 @@
 .woocommerce div.product .product_meta{font-size:14px;color:var(--muted)}
 
 /* ---- Responsive ---- */
+@media (max-width:1100px){
+  .woocommerce ul.products,.woocommerce-page ul.products{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
 @media (max-width:1000px){
   .woocommerce ul.products,.woocommerce-page ul.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
 }
@@ -144,4 +147,53 @@
 @media (prefers-reduced-motion:reduce){
   .woocommerce ul.products li.product,.woocommerce ul.products li.product a img{transition:none}
   .woocommerce ul.products li.product:hover,.woocommerce ul.products li.product:hover a img{transform:none}
+}
+
+/* ---- Shop by category tiles (9.97.0) ---- */
+.shop-cat-tiles{margin:0 0 44px}
+.shop-cat-tiles__head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:8px 24px;margin:0 0 18px}
+.shop-cat-tiles__head h2{font-family:var(--font-display);font-size:clamp(26px,3vw,34px);line-height:1.1;margin:0;color:var(--ink)}
+.shop-cat-tiles__head p{margin:0;color:var(--muted);font-size:15px;max-width:46ch}
+.shop-cat-tiles__grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:14px}
+.shop-cat-tiles__grid li{margin:0}
+.shop-cat-tile{position:relative;display:block;aspect-ratio:3/4;border-radius:18px;overflow:hidden;background:var(--cream);color:#fff;isolation:isolate}
+.shop-cat-tile__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s ease;z-index:-2}
+.shop-cat-tile__img--empty{background:linear-gradient(135deg,var(--forest),var(--green))}
+.shop-cat-tile::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(9,38,30,0) 35%,rgba(9,38,30,.82) 100%)}
+.shop-cat-tile__body{position:absolute;left:0;right:0;bottom:0;padding:14px 14px 16px;display:flex;flex-direction:column;gap:2px}
+.shop-cat-tile__name{font-family:var(--font-display);font-size:18px;font-weight:600;line-height:1.15}
+.shop-cat-tile__count{font-size:12px;font-weight:700;letter-spacing:.4px;opacity:.85}
+.shop-cat-tile:hover .shop-cat-tile__img,.shop-cat-tile:focus-visible .shop-cat-tile__img{transform:scale(1.06)}
+.shop-cat-tile:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+/* Category chips: one swipeable row on small screens */
+@media (max-width:760px){
+  .shop-cats{flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:6px;margin-right:-16px;padding-right:16px;scrollbar-width:none}
+  .shop-cats::-webkit-scrollbar{display:none}
+  .shop-cats li{flex:0 0 auto;scroll-snap-align:start}
+}
+
+/* ---- Single product: category label and help strip ---- */
+.woocommerce div.product .product-cat-wrap .product-cat{
+  display:inline-block;margin:0 0 8px;font-size:12px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--terra)
+}
+.product-help{list-style:none;margin:22px 0;padding:18px 20px;border:1px solid var(--line);border-radius:16px;background:var(--cream);display:grid;gap:14px}
+.product-help li{display:flex;gap:12px;align-items:flex-start;margin:0;font-size:14px;line-height:1.5;color:var(--ink)}
+.product-help strong{font-weight:800;margin-right:2px}
+.product-help a{color:var(--forest);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.product-help__icon{flex:0 0 34px;height:34px;border-radius:50%;background:#fff;display:grid;place-items:center;color:var(--forest);border:1px solid var(--line)}
+.product-help__icon svg{width:17px;height:17px}
+
+@media (max-width:1100px){
+  .shop-cat-tiles__grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (max-width:760px){
+  .shop-cat-tiles__grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-right:-16px;padding:0 16px 8px 0;scrollbar-width:none}
+  .shop-cat-tiles__grid::-webkit-scrollbar{display:none}
+  .shop-cat-tiles__grid li{flex:0 0 42%;scroll-snap-align:start}
+  .shop-cat-tile__name{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){
+  .shop-cat-tile__img{transition:none}
+  .shop-cat-tile:hover .shop-cat-tile__img{transform:none}
 }

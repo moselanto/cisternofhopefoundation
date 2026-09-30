@@ -91,12 +91,12 @@ remove_action( 'woocommerce_sidebar', 'woocommerce_get_sidebar', 10 );
  * @return int
  */
 function cohf_shop_columns() {
-	return 3;
+	return 4;
 }
 add_filter( 'loop_shop_columns', 'cohf_shop_columns', 20 );
 
 function cohf_shop_per_page() {
-	return 9;
+	return 24;
 }
 add_filter( 'loop_shop_per_page', 'cohf_shop_per_page', 20 );
 
@@ -113,7 +113,9 @@ function cohf_shop_hero() {
 		'image'   => 'programme-08',
 		'eyebrow' => $is_cat ? cohf_shop_name() : __( 'Social enterprise', 'cohf-child' ),
 		'title'   => $is_cat ? single_term_title( '', false ) : cohf_shop_name(),
-		'text'    => __( 'Buy a craft. Support the mission. Every item is made by people in the Foundation\'s enterprise programmes, and every purchase strengthens the livelihood behind it.', 'cohf-child' ),
+		'text'    => ( $is_cat && function_exists( 'cohf_shop_category_intro' ) && '' !== cohf_shop_category_intro() )
+			? cohf_shop_category_intro()
+			: __( 'Buy a craft. Support the mission. Every item is made by people in the Foundation\'s enterprise programmes, and every purchase strengthens the livelihood behind it.', 'cohf-child' ),
 	) );
 }
 add_action( 'woocommerce_before_main_content', 'cohf_shop_hero', 5 );
@@ -399,14 +401,9 @@ function cohf_shop_toolbar_open() {
 		return;
 	}
 
-	$terms = get_terms( array(
-		'taxonomy'   => 'product_cat',
-		'hide_empty' => true,
-		'parent'     => 0,
-		'exclude'    => array( (int) get_option( 'default_product_cat', 0 ) ),
-	) );
+	$terms = function_exists( 'cohf_shop_visible_categories' ) ? cohf_shop_visible_categories() : array();
 
-	if ( is_array( $terms ) && count( $terms ) > 1 ) {
+	if ( count( $terms ) > 1 ) {
 		$current = is_product_category() ? (int) get_queried_object_id() : 0;
 		echo '<nav aria-label="' . esc_attr__( 'Shop categories', 'cohf-child' ) . '"><ul class="shop-cats">';
 		printf(

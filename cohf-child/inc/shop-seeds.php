@@ -414,7 +414,7 @@ function cohf_shop_seed_products() {
 		'maasai-beaded-flag-wristband' => array(
 			'name'     => __( 'Maasai Beaded Wristband', 'cohf-child' ),
 			'price'    => '250',
-			'category' => __( 'Accessories', 'cohf-child' ),
+			'category' => __( 'Jewellery', 'cohf-child' ),
 			'image'    => 'maasai-beaded-flag-wristband.jpg',
 			'alt'      => __( 'A row of Maasai beaded wristbands in national flag designs, including Kenya, the United States, the United Kingdom and others.', 'cohf-child' ),
 			'short'    => __( 'Hand-beaded Maasai wristband. Available in many national flag designs.', 'cohf-child' ),
@@ -424,7 +424,7 @@ function cohf_shop_seed_products() {
 		'maasai-bead-bangle-multicolour' => array(
 			'name'     => __( 'Maasai Bead Bangle - Multicolour', 'cohf-child' ),
 			'price'    => '2800',
-			'category' => __( 'Accessories', 'cohf-child' ),
+			'category' => __( 'Jewellery', 'cohf-child' ),
 			'image'    => 'maasai-bead-bangle-multicolour.jpg',
 			'alt'      => __( 'Two wide beaded bangles: one solid orange-red outside with a zigzag interior, one in white with bold multicoloured geometric patterns.', 'cohf-child' ),
 			'short'    => __( 'Wide, fully beaded Maasai bangle in bold multicoloured geometric patterns.', 'cohf-child' ),
@@ -544,7 +544,7 @@ function cohf_shop_seed_products() {
 		'maasai-bead-bangle-clasp' => array(
 			'name'     => __( 'Maasai Bead Bangle with Clasp', 'cohf-child' ),
 			'price'    => '250',
-			'category' => __( 'Accessories', 'cohf-child' ),
+			'category' => __( 'Jewellery', 'cohf-child' ),
 			'image'    => 'maasai-bead-bangle-clasp.jpg',
 			'alt'      => __( 'A rope-style beaded bracelet in green with red, white, yellow and blue bands, finished with brass end caps and a hook clasp.', 'cohf-child' ),
 			'short'    => __( 'Rope-style Maasai beaded bracelet with brass end caps and a hook clasp.', 'cohf-child' ),
@@ -564,7 +564,7 @@ function cohf_shop_seed_products() {
 		'maasai-bead-long-necklace' => array(
 			'name'     => __( 'Maasai Bead Long Necklace', 'cohf-child' ),
 			'price'    => '700',
-			'category' => __( 'Accessories', 'cohf-child' ),
+			'category' => __( 'Jewellery', 'cohf-child' ),
 			'image'    => 'maasai-bead-long-necklace.jpg',
 			'alt'      => __( 'A statement necklace with an engraved brass crescent collar and long cascading strands of yellow beads, shown on a black display bust.', 'cohf-child' ),
 			'short'    => __( 'Statement necklace with an engraved brass crescent collar and long cascading strands of beads.', 'cohf-child' ),
@@ -574,7 +574,7 @@ function cohf_shop_seed_products() {
 		'maasai-bead-earrings' => array(
 			'name'     => __( 'Maasai Bead Earrings', 'cohf-child' ),
 			'price'    => '200',
-			'category' => __( 'Accessories', 'cohf-child' ),
+			'category' => __( 'Jewellery', 'cohf-child' ),
 			'image'    => 'maasai-bead-earrings.jpg',
 			'alt'      => __( 'A pair of teardrop-shaped Maasai beaded hoop earrings in rings of green, yellow, red, multicolour and black-and-white beads on silver-tone hooks.', 'cohf-child' ),
 			'short'    => __( 'Pair of teardrop Maasai beaded hoop earrings on silver-tone hooks.', 'cohf-child' ),
