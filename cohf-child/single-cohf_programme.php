@@ -72,16 +72,59 @@ while ( have_posts() ) :
 		<?php endif; ?>
 
 		<?php
-		// Stories linked to this programme through the story's "Related programme" field.
+		// Stories for this programme: those linked through the story's
+		// "Related programme" field, plus seeded stories assigned to it.
+		$seeded     = function_exists( 'cohf_programme_seeded_stories' ) ? cohf_programme_seeded_stories( get_the_title() ) : array();
+		$linked_ids = get_posts( array(
+			'post_type'      => 'cohf_story',
+			'post_status'    => 'publish',
+			'posts_per_page' => 6,
+			'fields'         => 'ids',
+			'meta_key'       => '_cohf_programme_id',
+			'meta_value'     => (string) get_the_ID(),
+		) );
+		$story_ids  = array_values( array_unique( array_merge( wp_list_pluck( $seeded, 'id' ), array_map( 'intval', $linked_ids ) ) ) );
+
+		// Before-and-after photographs from this programme's stories.
+		foreach ( $seeded as $seeded_story ) :
+			if ( empty( $seeded_story['gallery'] ) ) {
+				continue;
+			}
+			?>
+			<section class="story-impact cream">
+				<div class="container">
+					<div class="section-head">
+						<div>
+							<div class="kicker"><?php esc_html_e( 'The real impact', 'cohf-child' ); ?></div>
+							<h2><?php echo esc_html( get_the_title( $seeded_story['id'] ) ); ?></h2>
+						</div>
+					</div>
+					<div class="story-impact__grid">
+						<?php foreach ( $seeded_story['gallery'] as $item ) : ?>
+							<figure class="story-impact__item">
+								<span class="story-impact__label"><?php echo esc_html( $item['label'] ); ?></span>
+								<?php cohf_the_image( $item['key'], array( 'class' => 'story-impact__img', 'sizes' => '(max-width: 700px) 100vw, 50vw' ) ); ?>
+								<?php if ( empty( $item['caption'] ) === false ) : ?>
+									<figcaption><?php echo esc_html( $item['caption'] ); ?></figcaption>
+								<?php endif; ?>
+							</figure>
+						<?php endforeach; ?>
+					</div>
+					<p class="story-impact__more"><a class="btn dark" href="<?php echo esc_url( get_permalink( $seeded_story['id'] ) ); ?>"><?php esc_html_e( 'Read their story', 'cohf-child' ); ?></a></p>
+				</div>
+			</section>
+			<?php
+		endforeach;
+
 		$related = new WP_Query( array(
 			'post_type'      => 'cohf_story',
 			'post_status'    => 'publish',
 			'posts_per_page' => 3,
-			'meta_key'       => '_cohf_programme_id',
-			'meta_value'     => (string) get_the_ID(),
+			'post__in'       => $story_ids ? $story_ids : array( 0 ),
+			'orderby'        => 'date',
 			'no_found_rows'  => true,
 		) );
-		if ( $related->have_posts() ) :
+		if ( $story_ids && $related->have_posts() ) :
 			?>
 			<section>
 				<div class="container">

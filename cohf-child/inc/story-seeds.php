@@ -85,6 +85,7 @@ function cohf_story_seed() {
 			'slug'    => 'three-boys-enrolled-in-school',
 			'date'    => '2026-06-22',
 			'image'   => 'story-04-back-to-school',
+			'programme' => 'Education, Scholarship & Child Development',
 			'gallery' => array(
 				array( 'key' => 'story-04-before', 'label' => __( 'Before', 'cohf-child' ), 'caption' => __( 'Out of school, barefoot and in a torn uniform.', 'cohf-child' ) ),
 				array( 'key' => 'story-04-after',  'label' => __( 'After', 'cohf-child' ),  'caption' => __( 'Back in school, in new uniforms, shoes and school bags.', 'cohf-child' ) ),
@@ -136,6 +137,36 @@ function cohf_story_gallery( $slug ) {
 		}
 	}
 	return array();
+}
+
+/**
+ * Published seeded stories that belong to a programme, matched by title.
+ *
+ * Lets a programme page show its stories even when the story was created
+ * before the "Related programme" field was filled in.
+ *
+ * @param string $programme_title Programme title.
+ * @return array<int,array{id:int,gallery:array}>
+ */
+function cohf_programme_seeded_stories( $programme_title ) {
+	$found = array();
+	$want  = function_exists( 'cohf_normalise_title' ) ? cohf_normalise_title( $programme_title ) : strtolower( $programme_title );
+	foreach ( cohf_story_seed() as $story ) {
+		if ( empty( $story['programme'] ) ) {
+			continue;
+		}
+		$have = function_exists( 'cohf_normalise_title' ) ? cohf_normalise_title( $story['programme'] ) : strtolower( $story['programme'] );
+		if ( $have === $want ) {
+			$post = get_page_by_path( $story['slug'], OBJECT, 'cohf_story' );
+			if ( $post && 'publish' === $post->post_status ) {
+				$found[] = array(
+					'id'      => (int) $post->ID,
+					'gallery' => empty( $story['gallery'] ) ? array() : $story['gallery'],
+				);
+			}
+		}
+	}
+	return $found;
 }
 
 /**
