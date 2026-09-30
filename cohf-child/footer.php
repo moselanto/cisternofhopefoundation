@@ -62,6 +62,13 @@ $acct = cohf_page_url( 'page-templates/page-accountability.php' );
 		<span aria-hidden="true"> &middot; </span>
 		<a href="<?php echo esc_url( function_exists( 'cohf_privacy_url' ) ? cohf_privacy_url() : $acct . '#data-protection' ); ?>"><?php esc_html_e( 'Privacy Policy', 'cohf-child' ); ?></a>
 		<span aria-hidden="true"> &middot; </span>
+		<?php foreach ( array( 'terms-of-use' => __( 'Terms of Use', 'cohf-child' ), 'donation-policy' => __( 'Donation Policy', 'cohf-child' ) ) as $cohf_slug => $cohf_label ) : ?>
+			<?php $cohf_url = function_exists( 'cohf_legal_url' ) ? cohf_legal_url( $cohf_slug ) : ''; ?>
+			<?php if ( $cohf_url ) : ?>
+				<a href="<?php echo esc_url( $cohf_url ); ?>"><?php echo esc_html( $cohf_label ); ?></a>
+				<span aria-hidden="true"> &middot; </span>
+			<?php endif; ?>
+		<?php endforeach; ?>
 		<a href="<?php echo esc_url( $acct ); ?>#safeguarding"><?php esc_html_e( 'Safeguarding', 'cohf-child' ); ?></a>
 		<span aria-hidden="true"> &middot; </span>
 		<a href="<?php echo esc_url( $acct ); ?>#complaints"><?php esc_html_e( 'Complaints &amp; Feedback', 'cohf-child' ); ?></a>
