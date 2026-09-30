@@ -36,15 +36,16 @@ $cohf_conditional = static function ( $for ) use ( $default_type ) {
 
 <form method="post" action="<?php echo esc_url( get_permalink() ); ?>#enquire" novalidate>
 	<?php wp_nonce_field( 'cohf_enquiry', 'cohf_enquiry_nonce' ); ?>
+	<?php cohf_form_ts_field(); ?>
 
 	<div class="field">
 		<label for="cohf-name"><?php esc_html_e( 'Name', 'cohf-child' ); ?> <span class="req" aria-hidden="true">*</span></label>
-		<input type="text" id="cohf-name" name="cohf_name" required autocomplete="name" placeholder="<?php esc_attr_e( 'Your name', 'cohf-child' ); ?>">
+		<input type="text" id="cohf-name" name="cohf_name" required maxlength="100" autocomplete="name" placeholder="<?php esc_attr_e( 'Your name', 'cohf-child' ); ?>">
 	</div>
 
 	<div class="field">
 		<label for="cohf-email"><?php esc_html_e( 'Email', 'cohf-child' ); ?> <span class="req" aria-hidden="true">*</span></label>
-		<input type="email" id="cohf-email" name="cohf_email" required autocomplete="email" placeholder="<?php esc_attr_e( 'you@example.com', 'cohf-child' ); ?>">
+		<input type="email" id="cohf-email" name="cohf_email" required maxlength="150" autocomplete="email" inputmode="email" placeholder="<?php esc_attr_e( 'you@example.com', 'cohf-child' ); ?>">
 	</div>
 
 	<div class="field">
@@ -58,17 +59,17 @@ $cohf_conditional = static function ( $for ) use ( $default_type ) {
 
 	<div class="field">
 		<label for="cohf-phone"><?php esc_html_e( 'Phone', 'cohf-child' ); ?></label>
-		<input type="tel" id="cohf-phone" name="cohf_phone" autocomplete="tel" placeholder="+254">
+		<input type="tel" id="cohf-phone" name="cohf_phone" maxlength="30" autocomplete="tel" inputmode="tel" placeholder="+254">
 	</div>
 
 	<div class="field full" data-enquiry-for="partnership media support"<?php echo $cohf_conditional( 'partnership media support' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- returns a fixed literal. ?>>
 		<label for="cohf-organisation"><?php esc_html_e( 'Organisation', 'cohf-child' ); ?></label>
-		<input type="text" id="cohf-organisation" name="cohf_organisation" autocomplete="organization">
+		<input type="text" id="cohf-organisation" name="cohf_organisation" maxlength="150" autocomplete="organization">
 	</div>
 
 	<div class="field full">
 		<label for="cohf-message"><?php esc_html_e( 'Message', 'cohf-child' ); ?> <span class="req" aria-hidden="true">*</span></label>
-		<textarea id="cohf-message" name="cohf_message" required placeholder="<?php esc_attr_e( 'Tell us how we can work together...', 'cohf-child' ); ?>"></textarea>
+		<textarea id="cohf-message" name="cohf_message" required maxlength="5000" rows="6" placeholder="<?php esc_attr_e( 'Tell us how we can work together...', 'cohf-child' ); ?>"></textarea>
 		<span class="field__hint" data-enquiry-for="volunteer"<?php echo $cohf_conditional( 'volunteer' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- returns a fixed literal. ?>><?php esc_html_e( 'Please tell us about your skills, availability and the kind of role you are interested in.', 'cohf-child' ); ?></span>
 		<span class="field__hint" data-enquiry-for="partnership"<?php echo $cohf_conditional( 'partnership' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- returns a fixed literal. ?>><?php esc_html_e( 'Please tell us about your organisation and the kind of partnership you are considering.', 'cohf-child' ); ?></span>
 		<span class="field__hint" data-enquiry-for="complaint"<?php echo $cohf_conditional( 'complaint' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- returns a fixed literal. ?>><?php esc_html_e( 'Complaints and feedback are treated seriously and confidentially. You may also raise a concern anonymously by telephone.', 'cohf-child' ); ?></span>

@@ -47,3 +47,18 @@
 <IfModule mod_autoindex.c>
   Options -Indexes
 </IfModule>
+
+# Nothing in the theme's code folders is meant to be opened directly in a
+# browser; WordPress loads these files itself. Documentation and notes are
+# never served either.
+<FilesMatch "\.(md|txt|log|sh|json|lock|dist)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^(inc|template-parts|page-templates|docs)/ - [F,L]
+  RewriteRule ^(?\!index)[^/]+\.php$ - [F,L]
+</IfModule>

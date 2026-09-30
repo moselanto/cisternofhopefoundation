@@ -51,11 +51,27 @@ function cohf_handle_enquiry() {
 		return;
 	}
 
-	// Simple rate limit, keyed by hashed IP. No personal data is retained.
-	$ip_raw = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
-	$key    = 'cohf_rl_' . md5( $ip_raw . wp_salt() );
-	if ( get_transient( $key ) ) {
-		cohf_set_form_result( 'error', __( 'Please wait a moment before sending another message.', 'cohf-child' ) );
+	// Time trap: the form carries a signed timestamp. Bots post instantly or
+	// replay an old page; people take a few seconds and send within a day.
+	$ts_raw = isset( $_POST['cohf_ts'] ) ? sanitize_text_field( wp_unslash( $_POST['cohf_ts'] ) ) : '';
+	$parts  = explode( '.', $ts_raw );
+	$ts     = isset( $parts[0] ) ? (int) $parts[0] : 0;
+	$sig    = isset( $parts[1] ) ? $parts[1] : '';
+	$age    = time() - $ts;
+	if ( ( $ts > 0 && hash_equals( cohf_form_ts_sig( $ts ), $sig ) ) === false || $age < 3 || $age > DAY_IN_SECONDS ) {
+		cohf_set_form_result( 'error', __( 'Please take a moment to complete the form, then send it again.', 'cohf-child' ) );
+		return;
+	}
+
+	// Rate limits, keyed by a hashed IP. No personal data is retained:
+	// one message per 45 seconds and at most five per hour.
+	$ip_raw   = function_exists( 'cohf_giving_client_ip' ) ? cohf_giving_client_ip() : ( isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '' );
+	$ip_hash  = md5( $ip_raw . wp_salt() );
+	$key      = 'cohf_rl_' . $ip_hash;
+	$hour_key = 'cohf_rlh_' . $ip_hash;
+	$hourly   = (int) get_transient( $hour_key );
+	if ( get_transient( $key ) || $hourly >= 5 ) {
+		cohf_set_form_result( 'error', __( 'Please wait a little while before sending another message.', 'cohf-child' ) );
 		return;
 	}
 
@@ -76,6 +92,21 @@ function cohf_handle_enquiry() {
 		cohf_set_form_result( 'error', __( 'Please provide your name, a valid email address and a message.', 'cohf-child' ) );
 		return;
 	}
+	// Length limits and content checks against link spam and injection.
+	if ( mb_strlen( $name ) > 100 || mb_strlen( $email ) > 150 || mb_strlen( $org ) > 150 || mb_strlen( $phone ) > 30 || mb_strlen( $message ) > 5000 ) {
+		cohf_set_form_result( 'error', __( 'One of the fields is too long. Please shorten your message and try again.', 'cohf-child' ) );
+		return;
+	}
+	if ( '' !== $phone && preg_match( '/^[0-9+()\s.-]{6,30}$/', $phone ) === 0 ) {
+		cohf_set_form_result( 'error', __( 'Please enter a valid phone number, or leave it blank.', 'cohf-child' ) );
+		return;
+	}
+	$links = preg_match_all( '#(https?://|www\.|\[url|<a\s)#i', $message . ' ' . $name . ' ' . $org );
+	if ( $links > 2 || preg_match( '#https?://|www\.#i', $name ) ) {
+		cohf_set_form_result( 'error', __( 'Please remove the web links from your message and try again, or email us directly.', 'cohf-child' ) );
+		return;
+	}
+
 	if ( ! $consent ) {
 		cohf_set_form_result( 'error', __( 'Please confirm you are happy for us to reply to your message.', 'cohf-child' ) );
 		return;
@@ -108,6 +139,7 @@ function cohf_handle_enquiry() {
 	$sent = wp_mail( $to, $subject, implode( "\n", $body_lines ), $headers );
 
 	set_transient( $key, 1, 45 );
+	set_transient( $hour_key, $hourly + 1, HOUR_IN_SECONDS );
 
 	if ( $sent ) {
 		cohf_set_form_result( 'success', __( 'Thank you. Your message has been sent and a member of the team will respond.', 'cohf-child' ) );
@@ -123,6 +155,24 @@ function cohf_handle_enquiry() {
 	}
 }
 add_action( 'template_redirect', 'cohf_handle_enquiry' );
+
+/**
+ * Signature for the form timestamp, so it cannot be forged.
+ *
+ * @param int $ts Unix timestamp.
+ * @return string
+ */
+function cohf_form_ts_sig( $ts ) {
+	return substr( hash_hmac( 'sha256', 'cohf_form|' . (int) $ts, wp_salt( 'nonce' ) ), 0, 20 );
+}
+
+/**
+ * Hidden signed timestamp field for public forms.
+ */
+function cohf_form_ts_field() {
+	$ts = time();
+	printf( '<input type="hidden" name="cohf_ts" value="%s">', esc_attr( $ts . '.' . cohf_form_ts_sig( $ts ) ) );
+}
 
 /**
  * Store and read the form result for this request.

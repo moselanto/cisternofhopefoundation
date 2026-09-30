@@ -100,3 +100,116 @@ function cohf_sanitize_multiline( $value ) {
 function cohf_user_can_manage_content() {
 	return current_user_can( 'edit_others_posts' );
 }
+
+
+/* --------------------------------------------------------------------------
+   Hardening added in 9.78.0
+   -------------------------------------------------------------------------- */
+
+/**
+ * HSTS, clickjacking and cross-origin isolation headers.
+ *
+ * HSTS is only sent over HTTPS so a misconfigured host can never lock
+ * visitors out. COOP allows popups so the Paystack checkout still works.
+ */
+add_filter( 'wp_headers', function ( $headers ) {
+	if ( is_ssl() ) {
+		$headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains';
+	}
+	$headers['Cross-Origin-Opener-Policy'] = 'same-origin-allow-popups';
+	$headers['Content-Security-Policy']    = "frame-ancestors 'self'; base-uri 'self'; object-src 'none'";
+	return $headers;
+}, 20 );
+
+/**
+ * XML-RPC is not used by this site and is the most common route for
+ * password-guessing and pingback abuse. Turn it off entirely.
+ */
+add_filter( 'xmlrpc_enabled', '__return_false' );
+add_filter( 'wp_headers', function ( $headers ) {
+	unset( $headers['X-Pingback'] );
+	return $headers;
+}, 30 );
+
+/**
+ * Remove the WordPress version and other fingerprints from page source.
+ */
+remove_action( 'wp_head', 'wp_generator' );
+remove_action( 'wp_head', 'rsd_link' );
+remove_action( 'wp_head', 'wlwmanifest_link' );
+add_filter( 'the_generator', '__return_empty_string' );
+
+/**
+ * Stop username discovery.
+ *
+ * ?author=1 redirects to /author/username/, and the public REST users
+ * endpoint lists every account. Both hand an attacker half of a login.
+ */
+add_action( 'template_redirect', function () {
+	if ( is_user_logged_in() ) {
+		return;
+	}
+	if ( is_author() || isset( $_GET['author'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only check.
+		wp_safe_redirect( home_url( '/' ), 301 );
+		exit;
+	}
+}, 1 );
+add_filter( 'rest_endpoints', function ( $endpoints ) {
+	if ( is_user_logged_in() ) {
+		return $endpoints;
+	}
+	foreach ( array_keys( $endpoints ) as $route ) {
+		if ( 0 === strpos( $route, '/wp/v2/users' ) ) {
+			unset( $endpoints[ $route ] );
+		}
+	}
+	return $endpoints;
+} );
+add_filter( 'oembed_response_data', function ( $data ) {
+	unset( $data['author_name'], $data['author_url'] );
+	return $data;
+} );
+
+/**
+ * Comments are not part of this site. Closing them everywhere removes the
+ * single biggest source of spam on small WordPress sites.
+ */
+add_filter( 'comments_open', '__return_false', 20 );
+add_filter( 'pings_open', '__return_false', 20 );
+add_filter( 'comments_array', '__return_empty_array', 10 );
+add_action( 'init', function () {
+	foreach ( get_post_types() as $type ) {
+		if ( post_type_supports( $type, 'comments' ) ) {
+			remove_post_type_support( $type, 'comments' );
+			remove_post_type_support( $type, 'trackbacks' );
+		}
+	}
+}, 100 );
+add_action( 'admin_menu', function () {
+	remove_menu_page( 'edit-comments.php' );
+} );
+
+/**
+ * Login throttling.
+ *
+ * Five failed attempts from one address locks that address out for fifteen
+ * minutes. Keyed on a hashed IP; nothing personal is stored. A security
+ * plugin can replace this, but the site is no longer defenceless without one.
+ */
+function cohf_login_ip_key() {
+	$ip = function_exists( 'cohf_giving_client_ip' ) ? cohf_giving_client_ip() : ( isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '' );
+	return 'cohf_login_' . md5( $ip . wp_salt() );
+}
+add_filter( 'authenticate', function ( $user ) {
+	if ( (int) get_transient( cohf_login_ip_key() ) >= 5 ) {
+		return new WP_Error( 'cohf_locked', __( 'Too many failed login attempts. Please try again in 15 minutes.', 'cohf-child' ) );
+	}
+	return $user;
+}, 1 );
+add_action( 'wp_login_failed', function () {
+	$key = cohf_login_ip_key();
+	set_transient( $key, (int) get_transient( $key ) + 1, 15 * MINUTE_IN_SECONDS );
+} );
+add_action( 'wp_login', function () {
+	delete_transient( cohf_login_ip_key() );
+} );

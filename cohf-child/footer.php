@@ -60,7 +60,7 @@ $acct = cohf_page_url( 'page-templates/page-accountability.php' );
 		);
 		?>
 		<span aria-hidden="true"> &middot; </span>
-		<a href="<?php echo esc_url( $acct ); ?>#data-protection"><?php esc_html_e( 'Privacy Policy', 'cohf-child' ); ?></a>
+		<a href="<?php echo esc_url( function_exists( 'cohf_privacy_url' ) ? cohf_privacy_url() : $acct . '#data-protection' ); ?>"><?php esc_html_e( 'Privacy Policy', 'cohf-child' ); ?></a>
 		<span aria-hidden="true"> &middot; </span>
 		<a href="<?php echo esc_url( $acct ); ?>#safeguarding"><?php esc_html_e( 'Safeguarding', 'cohf-child' ); ?></a>
 		<span aria-hidden="true"> &middot; </span>

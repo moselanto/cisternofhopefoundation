@@ -5,7 +5,7 @@ Template: cohf
 Author: Cistern of Hope Foundation
 Author URI: https://cisternofhope.org
 Description: Premium, human-centred child theme for Cistern of Hope Foundation (COHF), Kenya. Editorial design system, twelve programme areas, impact and story content structures, accountability and partnership architecture, WCAG-conscious markup and a performance-first asset strategy. Motto: Together for a lasting change.
-Version: 9.77.0
+Version: 9.78.0
 Requires at least: 6.2
 Requires PHP: 8.0
 License: GNU General Public License v2 or later
@@ -80,4 +80,55 @@ Tags: nonprofit, ngo, accessibility-ready, editorial, custom-post-types, transla
 .story-impact__more {
 	margin-top: 28px;
 	text-align: center;
+}
+
+
+/* ==========================================================================
+   9.78.0 - Cross-device polish
+   ========================================================================== */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { overflow-x: clip; }
+img, video, iframe { max-width: 100%; }
+img { height: auto; }
+
+/* Clear, consistent keyboard focus everywhere. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+	outline: 3px solid var(--gold, #d9a441);
+	outline-offset: 3px;
+	border-radius: 6px;
+}
+
+/* Comfortable tap targets on touch screens. */
+@media (pointer: coarse) {
+	.btn, .cta, button, .arrow { min-height: 44px; }
+	.btn, .cta { display: inline-flex; align-items: center; justify-content: center; }
+}
+
+/* Forms: 16px text stops iOS zooming in, and fields are easy to hit. */
+input, select, textarea { font-size: 16px; max-width: 100%; }
+input[type="text"], input[type="email"], input[type="tel"], input[type="number"], select, textarea { min-height: 48px; }
+textarea { resize: vertical; }
+input:focus, select:focus, textarea:focus { border-color: var(--g, #163f32); box-shadow: 0 0 0 3px rgba(22, 63, 50, .12); outline: none; }
+.honeypot { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.form-notice { padding: 14px 18px; border-radius: 12px; margin-bottom: 18px; font-weight: 600; }
+.form-notice--success { background: #e7f3ec; color: #14532d; }
+.form-notice--error { background: #fdf1ee; color: #8d3a20; }
+
+/* Headings never overflow on small phones. */
+h1, h2, h3 { overflow-wrap: anywhere; hyphens: auto; text-wrap: balance; }
+@media (max-width: 420px) {
+	.page-hero h1 { font-size: 34px; line-height: 1.1; }
+	.section-head h2, .story-copy h2, .feature h2 { font-size: 30px; }
+	.container { width: calc(100% - 32px); }
+}
+
+/* Privacy policy reading layout. */
+.privacy { max-width: 760px; }
+.privacy h2 { font-size: clamp(22px, 3vw, 28px); margin-top: 1.8em; }
+.privacy ul { padding-left: 1.2em; }
+.privacy li + li { margin-top: .5em; }
+
+/* Respect reduced motion across the site. */
+@media (prefers-reduced-motion: reduce) {
+	*, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
