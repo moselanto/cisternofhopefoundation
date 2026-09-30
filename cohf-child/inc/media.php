@@ -80,6 +80,10 @@ function cohf_image_library() {
 		'gallery-enterprise-visit-potatoes' => array( 'file' => 'gallery-enterprise-visit-potatoes.jpg', 'alt' => __( 'Foundation team members with a trader at his roadside potato stall.', 'cohf-child' ) ),
 		'gallery-womens-enterprise-stall' => array( 'file' => 'gallery-womens-enterprise-stall.jpg', 'alt' => __( 'A woman at her fruit and vegetable stall during a Foundation visit.', 'cohf-child' ) ),
 		'gallery-womens-seminar' => array( 'file' => 'gallery-womens-seminar.jpg', 'alt' => __( 'Women seated in a large circle during a Foundation women empowerment seminar.', 'cohf-child' ) ),
+		'gallery-childrens-home-group' => array( 'file' => 'gallery-childrens-home-group.jpg', 'alt' => __( 'Children at a children\'s home holding packs of sanitary pads, gathered with the Foundation team for a group photograph.', 'cohf-child' ) ),
+		'gallery-childrens-home-welcome' => array( 'file' => 'gallery-childrens-home-welcome.jpg', 'alt' => __( 'A Foundation team member in a branded shirt warmly holding hands with a girl at a children\'s home.', 'cohf-child' ) ),
+		'gallery-door-to-door-girls' => array( 'file' => 'gallery-door-to-door-girls.jpg', 'alt' => __( 'A Foundation team member in a Cistern of Hope Foundation T-shirt speaking with girls holding sanitary pad packs outside a home.', 'cohf-child' ) ),
+		'gallery-door-to-door-pads' => array( 'file' => 'gallery-door-to-door-pads.jpg', 'alt' => __( 'A Foundation team member handing a bundle of sanitary pads to a young woman at her doorstep.', 'cohf-child' ) ),
 		'story-03-door-to-door' => array( 'file' => 'story-03-door-to-door.jpg', 'alt' => __( 'A Foundation staff member handing a pack of sanitary pads to a girl at her home.', 'cohf-child' ) ),
 		'story-04-back-to-school' => array( 'file' => 'story-04-back-to-school.jpg', 'alt' => __( 'Three boys in school uniform standing with their family outside their home.', 'cohf-child' ) ),
 
