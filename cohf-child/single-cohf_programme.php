@@ -72,6 +72,39 @@ while ( have_posts() ) :
 		<?php endif; ?>
 
 		<?php
+		// Stories linked to this programme through the story's "Related programme" field.
+		$related = new WP_Query( array(
+			'post_type'      => 'cohf_story',
+			'post_status'    => 'publish',
+			'posts_per_page' => 3,
+			'meta_key'       => '_cohf_programme_id',
+			'meta_value'     => (string) get_the_ID(),
+			'no_found_rows'  => true,
+		) );
+		if ( $related->have_posts() ) :
+			?>
+			<section>
+				<div class="container">
+					<div class="section-head">
+						<div>
+							<div class="kicker"><?php esc_html_e( 'Stories from this programme', 'cohf-child' ); ?></div>
+							<h2><?php esc_html_e( 'This work in action.', 'cohf-child' ); ?></h2>
+						</div>
+					</div>
+					<div class="grid story-grid">
+						<?php
+						while ( $related->have_posts() ) {
+							$related->the_post();
+							get_template_part( 'template-parts/story-card' );
+						}
+						?>
+					</div>
+				</div>
+			</section>
+			<?php
+			wp_reset_postdata();
+		endif;
+
 		get_template_part( 'template-parts/cta', null, array(
 			'title'         => __( 'Support this programme.', 'cohf-child' ),
 			'text'          => __( 'We welcome programme grants, technical assistance, equipment, market linkages and co-funding.', 'cohf-child' ),

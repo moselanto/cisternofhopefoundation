@@ -85,6 +85,10 @@ function cohf_story_seed() {
 			'slug'    => 'three-boys-enrolled-in-school',
 			'date'    => '2026-06-22',
 			'image'   => 'story-04-back-to-school',
+			'gallery' => array(
+				array( 'key' => 'story-04-before', 'label' => __( 'Before', 'cohf-child' ), 'caption' => __( 'Out of school, barefoot and in a torn uniform.', 'cohf-child' ) ),
+				array( 'key' => 'story-04-after',  'label' => __( 'After', 'cohf-child' ),  'caption' => __( 'Back in school, in new uniforms, shoes and school bags.', 'cohf-child' ) ),
+			),
 			'excerpt' => __( 'In June 2026 the Foundation took three boys from the streets and enrolled them in school, and continues to follow their progress.', 'cohf-child' ),
 			'body'    => array(
 				__( 'True love and genuine transformation in society are expressed through acts of compassion and commitment. At Cistern of Hope Foundation, we remain dedicated to our mission of fighting poverty and creating opportunities that will empower the current generation and many generations to come.', 'cohf-child' ),
@@ -96,7 +100,42 @@ function cohf_story_seed() {
 			'intervention' => __( 'With the support of a few individuals who believe in the Foundation\'s vision, the boys were taken from the streets and enrolled in school.', 'cohf-child' ),
 			'change'       => __( 'The three boys are enrolled and in uniform, and the Foundation is following up on their progress and on the support they need to stay in education.', 'cohf-child' ),
 		),
+		array(
+			'title'     => __( 'Keeping girls in class: our monthly sanitary pad donations in schools', 'cohf-child' ),
+			'slug'      => 'monthly-school-sanitary-pad-donations',
+			'date'      => '2026-09-30',
+			'image'     => 'story-05-school-pads',
+			'programme' => 'Menstrual Health, Hygiene & Dignity',
+			'excerpt'   => __( 'Every month the Foundation visits schools to give sanitary pads to girls, so that a period is never the reason a girl misses a day of learning.', 'cohf-child' ),
+			'body'      => array(
+				__( 'For many girls in our community, a monthly period can mean missed lessons, discomfort and quiet embarrassment. When sanitary pads are out of reach, girls stay at home, fall behind in class and lose confidence in themselves.', 'cohf-child' ),
+				__( 'Through our Menstrual Health, Hygiene and Dignity programme, the Cistern of Hope Foundation visits schools every month to distribute sanitary pads directly to girls. Each visit is also a moment of encouragement, reminding every girl that she belongs in the classroom and that her dignity matters.', 'cohf-child' ),
+				__( 'Every month we provide sanitary pads to more than 200 girls. This steady, reliable support helps reduce absenteeism, discomfort and stigma, and supports girls to continue participating fully in school and community life.', 'cohf-child' ),
+				__( 'The need remains great, and we want to reach more schools and more girls. We warmly invite individuals, organisations and well-wishers to partner with us in keeping girls in school, month after month.', 'cohf-child' ),
+			),
+			'challenge'    => __( 'Girls without access to sanitary pads miss school during their periods, falling behind in class and facing discomfort and stigma.', 'cohf-child' ),
+			'intervention' => __( 'Every month the Foundation visits schools and distributes sanitary pads directly to girls, alongside encouragement about menstrual dignity.', 'cohf-child' ),
+			'change'       => __( 'More than 200 girls receive sanitary pads each month, supporting continued attendance and participation in school and community life.', 'cohf-child' ),
+		),
 	);
+}
+
+/**
+ * Before-and-after photographs for a story, looked up by slug.
+ *
+ * Read from the seed at render time, so stories that already exist on the
+ * site show their photographs without being recreated or edited.
+ *
+ * @param string $slug Story slug.
+ * @return array<int,array<string,string>>
+ */
+function cohf_story_gallery( $slug ) {
+	foreach ( cohf_story_seed() as $story ) {
+		if ( $story['slug'] === $slug && \! empty( $story['gallery'] ) ) {
+			return $story['gallery'];
+		}
+	}
+	return array();
 }
 
 /**
@@ -154,6 +193,14 @@ function cohf_seed_stories() {
 		update_post_meta( $story_id, '_cohf_challenge', $story['challenge'] );
 		update_post_meta( $story_id, '_cohf_intervention', $story['intervention'] );
 		update_post_meta( $story_id, '_cohf_change', $story['change'] );
+
+		// Link the story to its programme so it appears on that programme's page.
+		if ( \! empty( $story['programme'] ) && function_exists( 'cohf_find_by_title' ) ) {
+			$programme_id = cohf_find_by_title( $story['programme'], 'cohf_programme' );
+			if ( $programme_id ) {
+				update_post_meta( $story_id, '_cohf_programme_id', (string) $programme_id );
+			}
+		}
 
 		$attachment_id = cohf_import_image( $story['image'] );
 		if ( $attachment_id ) {
