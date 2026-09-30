@@ -118,6 +118,83 @@ function cohf_story_seed() {
 			'intervention' => __( 'Every month the Foundation visits schools and distributes sanitary pads directly to girls, alongside encouragement about menstrual dignity.', 'cohf-child' ),
 			'change'       => __( 'More than 200 girls receive sanitary pads each month, supporting continued attendance and participation in school and community life.', 'cohf-child' ),
 		),
+		/*
+		 * Enterprise stories. Holding copy written around the photographs
+		 * while the Foundation gathers each person's own account. It names
+		 * no one and states no figures. Replace the text in the admin
+		 * (Stories) once the real details are in hand.
+		 */
+		array(
+			'title'     => __( 'Breakfast on wheels: a roadside egg business finds its feet', 'cohf-child' ),
+			'slug'      => 'enterprise-roadside-egg-business',
+			'date'      => '2026-09-30',
+			'image'     => 'gallery-enterprise-visit-eggs',
+			'programme' => 'Youth Skills, Enterprise & Employability',
+			'excerpt'   => __( 'A small food cart, a busy roadside and a steady trade in eggs. A look at one of the small businesses the Foundation walks alongside.', 'cohf-child' ),
+			'body'      => array(
+				__( 'Every morning, commuters, students and workers pass along this busy road. For the young entrepreneur behind this food cart, each of them is a potential customer, and a cart of freshly prepared eggs and snacks has become a way to earn a living with dignity.', 'cohf-child' ),
+				__( 'Through our enterprise and livelihoods work, the Cistern of Hope Foundation supports young people and women to start and grow small businesses that can outlast any single season of support. That means encouragement and mentorship as much as materials: thinking through costs, customers, pricing and how to keep going on slow days.', 'cohf-child' ),
+				__( 'Our team visits the businesses we support to see how they are doing, listen to the challenges and celebrate the progress. A small cart on a roadside may look modest, but it can mean food on the table, school fees paid and the confidence that comes from building something of your own.', 'cohf-child' ),
+				__( 'Would you like to help another young person start a business? Partner with us, and together we can turn small beginnings into lasting livelihoods.', 'cohf-child' ),
+			),
+			'challenge'    => __( 'Young people in our community often have the energy and ideas to earn a living but lack the start-up support, guidance and encouragement to begin.', 'cohf-child' ),
+			'intervention' => __( 'The Foundation walks alongside young entrepreneurs with support, mentorship and follow-up visits as they establish small businesses.', 'cohf-child' ),
+			'change'       => __( 'A roadside food business serving customers every day, and a young entrepreneur working toward self-reliance.', 'cohf-child' ),
+		),
+
+		array(
+			'title'     => __( 'Stepping forward: a young man builds a shoe business', 'cohf-child' ),
+			'slug'      => 'enterprise-shoe-business',
+			'date'      => '2026-09-30',
+			'image'     => 'gallery-shoe-donation',
+			'programme' => 'Youth Skills, Enterprise & Employability',
+			'excerpt'   => __( 'Rows of shoes, carefully laid out and ready for customers. A young man taking his first steps in business.', 'cohf-child' ),
+			'body'      => array(
+				__( 'Shoes are something every family needs, from school shoes for children to everyday pairs for work. For this young man, that everyday need has become an opportunity to build a small business of his own.', 'cohf-child' ),
+				__( 'The Cistern of Hope Foundation supports young people to move from waiting for opportunity to creating it. Through encouragement, mentorship and practical support, we help them identify a viable business, get started and keep growing.', 'cohf-child' ),
+				__( 'Starting small is not a weakness. A carefully chosen stock of shoes, a clear sense of what customers want and the discipline to reinvest earnings can grow into a stable source of income and a foundation for the future.', 'cohf-child' ),
+				__( 'We believe every young person deserves a pathway to self-reliance. Partner with us to help more young people take that first step.', 'cohf-child' ),
+			),
+			'challenge'    => __( 'Many young people want to work but struggle to find employment or the means to start something of their own.', 'cohf-child' ),
+			'intervention' => __( 'The Foundation supports young people to choose, start and sustain small businesses, with encouragement and follow-up along the way.', 'cohf-child' ),
+			'change'       => __( 'A young man running his own shoe business and building a path toward a steady income.', 'cohf-child' ),
+		),
+
+		array(
+			'title'     => __( 'Rooted in the market: growing a roadside potato trade', 'cohf-child' ),
+			'slug'      => 'enterprise-roadside-potato-trade',
+			'date'      => '2026-09-30',
+			'image'     => 'gallery-enterprise-visit-potatoes',
+			'programme' => 'Youth Skills, Enterprise & Employability',
+			'excerpt'   => __( 'Buckets of potatoes, a roadside stall and a trader building a livelihood one sale at a time.', 'cohf-child' ),
+			'body'      => array(
+				__( 'Potatoes are a staple in almost every Kenyan kitchen, and a well-placed roadside stall can serve a steady stream of households every day. For this trader, a simple stall has become a source of income and independence.', 'cohf-child' ),
+				__( 'As part of our enterprise and livelihoods work, the Cistern of Hope Foundation walks alongside small traders as they establish and grow their businesses. Our team makes regular visits to listen, encourage and understand what support will help most.', 'cohf-child' ),
+				__( 'Market trade is not easy. Prices change, weather affects supply and some days are slow. Yet with persistence, good relationships with customers and careful management of stock, small traders like this one build businesses that support their families.', 'cohf-child' ),
+				__( 'Help us support more traders to build lasting livelihoods. Partner with us today.', 'cohf-child' ),
+			),
+			'challenge'    => __( 'Small traders often have little capital to buy stock and few people to turn to for advice as their business grows.', 'cohf-child' ),
+			'intervention' => __( 'The Foundation supports and visits small traders, offering encouragement and guidance as they grow their businesses.', 'cohf-child' ),
+			'change'       => __( 'A roadside potato business serving local households and supporting a family.', 'cohf-child' ),
+		),
+
+		array(
+			'title'     => __( 'Fresh from her stall: a woman\'s fruit and vegetable business', 'cohf-child' ),
+			'slug'      => 'enterprise-womens-vegetable-stall',
+			'date'      => '2026-09-30',
+			'image'     => 'gallery-womens-enterprise-stall',
+			'programme' => 'Women\'s Enterprise & Economic Empowerment',
+			'excerpt'   => __( 'Avocados, tomatoes, greens and eggs, neatly displayed. A woman building income, confidence and dignity through her own stall.', 'cohf-child' ),
+			'body'      => array(
+				__( 'Behind a wooden stall of fresh avocados, tomatoes, greens and eggs is a woman building something of her own. For many women in our community, a small business like this means income, independence and the ability to provide for their families.', 'cohf-child' ),
+				__( 'Women\'s economic empowerment is at the heart of the Cistern of Hope Foundation\'s work. We support women to establish and grow viable businesses through encouragement, mentorship, practical support and regular follow-up.', 'cohf-child' ),
+				__( 'When a woman earns, the benefits reach far beyond her stall. Children stay in school, households eat better and women gain a stronger voice in their families and communities.', 'cohf-child' ),
+				__( 'Stand with women building their own futures. Partner with us to support more women in enterprise.', 'cohf-child' ),
+			),
+			'challenge'    => __( 'Many women in our community carry the responsibility of providing for their families without a reliable source of income.', 'cohf-child' ),
+			'intervention' => __( 'The Foundation supports women to establish and grow small businesses, with mentorship and follow-up visits.', 'cohf-child' ),
+			'change'       => __( 'A woman running her own fruit and vegetable stall, earning an income and growing in confidence.', 'cohf-child' ),
+		),
 	);
 }
 
