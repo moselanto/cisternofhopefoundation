@@ -86,6 +86,8 @@ function cohf_image_library() {
 		'gallery-door-to-door-pads' => array( 'file' => 'gallery-door-to-door-pads.jpg', 'alt' => __( 'A Foundation team member handing a bundle of sanitary pads to a young woman at her doorstep.', 'cohf-child' ) ),
 		'gallery-three-boys-at-school' => array( 'file' => 'gallery-three-boys-at-school.jpg', 'alt' => __( 'Three boys in new blue school uniforms, woolly hats, shoes and school bags standing in front of their primary school.', 'cohf-child' ) ),
 		'gallery-home-visit-child' => array( 'file' => 'gallery-home-visit-child.jpg', 'alt' => __( 'A Foundation representative standing with a young boy in a red school sweater outside his family home.', 'cohf-child' ) ),
+		'gallery-before-school-meeting' => array( 'file' => 'gallery-before-school-meeting.jpg', 'alt' => __( 'A Foundation representative crouching beside a barefoot boy in a torn green school uniform outside his home.', 'cohf-child' ) ),
+		'gallery-school-pads-celebration' => array( 'file' => 'gallery-school-pads-celebration.jpg', 'alt' => __( 'Schoolgirls in uniform raising packs of sanitary pads in celebration with Foundation team members during a school visit.', 'cohf-child' ) ),
 		'story-03-door-to-door' => array( 'file' => 'story-03-door-to-door.jpg', 'alt' => __( 'A Foundation staff member handing a pack of sanitary pads to a girl at her home.', 'cohf-child' ) ),
 		'story-04-back-to-school' => array( 'file' => 'story-04-back-to-school.jpg', 'alt' => __( 'Three boys in school uniform standing with their family outside their home.', 'cohf-child' ) ),
 
