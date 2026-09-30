@@ -356,6 +356,18 @@ function cohf_shop_styles() {
 		$deps,
 		file_exists( $path ) ? (string) filemtime( $path ) : COHF_CHILD_VERSION
 	);
+
+	// Arrow buttons and scroll bar for the sideways-scrolling category rows.
+	if ( is_shop() || is_product_taxonomy() ) {
+		$js = COHF_CHILD_DIR . '/assets/js/shop.js';
+		wp_enqueue_script(
+			'cohf-shop',
+			COHF_CHILD_URI . '/assets/js/shop.js',
+			array(),
+			file_exists( $js ) ? (string) filemtime( $js ) : COHF_CHILD_VERSION,
+			array( 'in_footer' => true, 'strategy' => 'defer' )
+		);
+	}
 }
 add_action( 'wp_enqueue_scripts', 'cohf_shop_styles', 40 );
 

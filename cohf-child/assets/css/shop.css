@@ -197,3 +197,43 @@
   .shop-cat-tile__img{transition:none}
   .shop-cat-tile:hover .shop-cat-tile__img{transform:none}
 }
+
+/* ---- Visible sideways scrolling (9.98.0) ---- */
+/* The theme gives every <section> 60-85px of padding; the tiles block sits
+   inside the shop layout and must not inherit that. This was the large gap
+   above and below "Shop by category". */
+.shop-main .shop-cat-tiles{padding:0}
+
+.hscroll{position:relative}
+.hscroll__btn{
+  display:none;position:absolute;top:calc(50% - 9px);transform:translateY(-50%);z-index:3;
+  width:44px;height:44px;padding:0;border-radius:50%;cursor:pointer;
+  background:#fff;border:1px solid var(--line);box-shadow:0 6px 18px rgba(18,58,45,.18);
+  color:var(--forest);place-items:center;transition:opacity .2s,background .2s,color .2s;
+}
+.hscroll__btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.hscroll__btn:hover,.hscroll__btn:focus-visible{background:var(--forest);color:#fff;border-color:var(--forest)}
+.hscroll__btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.hscroll__btn--prev{left:4px}
+.hscroll__btn--next{right:4px}
+.hscroll.is-overflowing .hscroll__btn{display:grid}
+.hscroll__btn[disabled]{opacity:0;pointer-events:none}
+
+.hscroll__bar{display:none;position:relative;height:6px;margin:12px 4px 0;border-radius:999px;background:var(--line);overflow:hidden}
+.hscroll__bar span{position:absolute;top:0;bottom:0;left:0;width:30%;border-radius:999px;background:var(--forest)}
+.hscroll.is-overflowing .hscroll__bar{display:block}
+
+/* Chips row: smaller arrows, centred on the chips */
+.hscroll:has(> .shop-cats) .hscroll__btn{width:38px;height:38px;top:calc(50% - 12px)}
+.hscroll:has(> .shop-cats) .hscroll__bar{height:4px;margin-top:8px}
+.shop-cats{margin-bottom:0}
+nav .hscroll{margin-bottom:20px}
+
+@media (max-width:760px){
+  /* Keep the rows inside the screen so the arrows are not cut off */
+  .shop-cat-tiles__grid,.shop-cats{margin-right:0;padding-right:0}
+  .shop-cat-tiles{margin-bottom:28px}
+}
+@media (prefers-reduced-motion:reduce){
+  .hscroll__btn{transition:none}
+}
