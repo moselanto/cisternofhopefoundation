@@ -127,7 +127,7 @@ function cohf_story_seed() {
 		array(
 			'title'     => __( 'Breakfast on wheels: a roadside egg business finds its feet', 'cohf-child' ),
 			'slug'      => 'enterprise-roadside-egg-business',
-			'date'      => '2026-09-30',
+			'date'      => '2025-08-07',
 			'image'     => 'gallery-enterprise-visit-eggs',
 			'programme' => 'Youth Skills, Enterprise & Employability',
 			'excerpt'   => __( 'A small food cart, a busy roadside and a steady trade in eggs. A look at one of the small businesses the Foundation walks alongside.', 'cohf-child' ),
@@ -145,7 +145,7 @@ function cohf_story_seed() {
 		array(
 			'title'     => __( 'Stepping forward: a young man builds a shoe business', 'cohf-child' ),
 			'slug'      => 'enterprise-shoe-business',
-			'date'      => '2026-09-30',
+			'date'      => '2025-08-07',
 			'image'     => 'gallery-shoe-donation',
 			'programme' => 'Youth Skills, Enterprise & Employability',
 			'excerpt'   => __( 'Rows of shoes, carefully laid out and ready for customers. A young man taking his first steps in business.', 'cohf-child' ),
@@ -163,7 +163,7 @@ function cohf_story_seed() {
 		array(
 			'title'     => __( 'Rooted in the market: growing a roadside potato trade', 'cohf-child' ),
 			'slug'      => 'enterprise-roadside-potato-trade',
-			'date'      => '2026-09-30',
+			'date'      => '2025-08-07',
 			'image'     => 'gallery-enterprise-visit-potatoes',
 			'programme' => 'Youth Skills, Enterprise & Employability',
 			'excerpt'   => __( 'Buckets of potatoes, a roadside stall and a trader building a livelihood one sale at a time.', 'cohf-child' ),
@@ -181,7 +181,7 @@ function cohf_story_seed() {
 		array(
 			'title'     => __( 'Fresh from her stall: a woman\'s fruit and vegetable business', 'cohf-child' ),
 			'slug'      => 'enterprise-womens-vegetable-stall',
-			'date'      => '2026-09-30',
+			'date'      => '2025-08-07',
 			'image'     => 'gallery-womens-enterprise-stall',
 			'programme' => 'Women\'s Enterprise & Economic Empowerment',
 			'excerpt'   => __( 'Avocados, tomatoes, greens and eggs, neatly displayed. A woman building income, confidence and dignity through her own stall.', 'cohf-child' ),
@@ -553,3 +553,40 @@ function cohf_stories_notice() {
 	);
 }
 add_action( 'admin_notices', 'cohf_stories_notice' );
+
+/**
+ * Correct the dates of the four enterprise stories.
+ *
+ * 9.71.0 seeded them dated 30 September 2026; the work took place in August
+ * 2025. Only a story still carrying the wrong date is touched, so a date set
+ * by an editor in the admin is left alone.
+ */
+function cohf_fix_enterprise_story_dates() {
+	if ( is_admin() === false || get_option( 'cohf_enterprise_dates_fixed' ) ) {
+		return;
+	}
+	$slugs = array(
+		'enterprise-roadside-egg-business',
+		'enterprise-shoe-business',
+		'enterprise-roadside-potato-trade',
+		'enterprise-womens-vegetable-stall',
+	);
+	foreach ( $slugs as $slug ) {
+		$post = get_page_by_path( $slug, OBJECT, 'cohf_story' );
+		if ( empty( $post ) ) {
+			continue;
+		}
+		if ( 0 === strpos( $post->post_date, '2026-09-30' ) ) {
+			wp_update_post( array(
+				'ID'            => $post->ID,
+				'post_date'     => '2025-08-07 09:00:00',
+				'post_date_gmt' => get_gmt_from_date( '2025-08-07 09:00:00' ),
+			) );
+		}
+		if ( '2026-09-30' === get_post_meta( $post->ID, '_cohf_story_date', true ) ) {
+			update_post_meta( $post->ID, '_cohf_story_date', '2025-08-07' );
+		}
+	}
+	update_option( 'cohf_enterprise_dates_fixed', COHF_CHILD_VERSION );
+}
+add_action( 'admin_init', 'cohf_fix_enterprise_story_dates', 20 );
