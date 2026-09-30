@@ -2979,3 +2979,47 @@ footer .brand .mark--logo,
     grid-template-columns: 1fr;
   }
 }
+
+/* --------------------------------------------------------------------------
+   36. Leadership portraits - keep heads in frame
+   On phones the portrait box was losing its 4:5 shape (the desktop
+   height:100% rule for senior cards survived into the narrow layout, and
+   the media box could shrink inside the flex card), so the photograph was
+   cropped to a landscape strip and the 50% 22% focal point cut off the top
+   of people's heads. The box now always holds 4:5 and never shrinks, and
+   every portrait is anchored to the top so the head is the last thing to
+   be cropped.
+   -------------------------------------------------------------------------- */
+.leader-card__media {
+  flex: 0 0 auto;
+  aspect-ratio: 4 / 5;
+}
+
+.leader-card__media img,
+.leader-card__img,
+.leader-panel__img {
+  object-position: 50% 0%;
+}
+
+@media (max-width: 720px) {
+  .leader-grid > .leader-card .leader-card__media,
+  .leader-grid--feature > .leader-card .leader-card__media,
+  .leader-grid--board > .leader-card .leader-card__media {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+  }
+
+  .leader-grid > .leader-card .leader-card__img {
+    height: 100%;
+    object-position: 50% 0%;
+  }
+}
+
+/* The profile panel shows the portrait in a 16:10 strip on smaller
+   screens; give it a taller frame so the face fits comfortably. */
+@media (max-width: 820px) {
+  .leader-panel__media {
+    aspect-ratio: 4 / 3;
+  }
+}
