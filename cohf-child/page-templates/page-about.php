@@ -27,7 +27,7 @@ $org        = cohf_org();
 	<!-- Why we exist -->
 	<section>
 		<div class="container story">
-			<?php cohf_the_image( 'programme-02', array( 'sizes' => '(max-width: 60em) 100vw, 50vw' ) ); ?>
+			<?php cohf_the_image( 'gallery-childrens-home-group', array( 'sizes' => '(max-width: 60em) 100vw, 50vw' ) ); ?>
 			<div class="story-copy">
 				<div class="kicker"><?php esc_html_e( 'Why we exist', 'cohf-child' ); ?></div>
 				<h2><?php esc_html_e( 'Poverty should not define a person\'s future.', 'cohf-child' ); ?></h2>
@@ -104,7 +104,7 @@ $org        = cohf_org();
 				</div>
 				<a class="btn outline" href="<?php echo esc_url( $leadership ); ?>"><?php esc_html_e( 'Leadership &amp; Governance', 'cohf-child' ); ?></a>
 			</div>
-			<?php cohf_the_image( 'programme-12', array( 'sizes' => '(max-width: 60em) 100vw, 50vw' ) ); ?>
+			<?php cohf_the_image( 'gallery-womens-seminar', array( 'sizes' => '(max-width: 60em) 100vw, 50vw' ) ); ?>
 		</div>
 	</section>
 
