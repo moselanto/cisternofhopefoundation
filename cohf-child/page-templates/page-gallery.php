@@ -29,6 +29,7 @@ $counts     = array_count_values( wp_list_pluck( $items, 'cat' ) );
 	<section class="gallery-section">
 		<div class="container">
 
+			<div class="gallery-toolbar-wrap">
 			<div class="gallery-toolbar" role="toolbar" aria-label="<?php esc_attr_e( 'Filter photographs', 'cohf-child' ); ?>">
 				<button type="button" class="gallery-filter is-active" data-filter="all" aria-pressed="true">
 					<?php esc_html_e( 'All', 'cohf-child' ); ?> <span class="gallery-filter__count"><?php echo (int) count( $items ); ?></span>
@@ -40,6 +41,7 @@ $counts     = array_count_values( wp_list_pluck( $items, 'cat' ) );
 					</button>
 				<?php endforeach; ?>
 			</div>
+			</div>
 
 			<p class="gallery-status screen-reader-text" aria-live="polite"></p>
 
@@ -50,7 +52,11 @@ $counts     = array_count_values( wp_list_pluck( $items, 'cat' ) );
 					$alt   = cohf_img_alt( $item['key'] );
 					$label = isset( $categories[ $item['cat'] ] ) ? $categories[ $item['cat'] ] : '';
 					?>
-					<figure class="gallery-item" data-cat="<?php echo esc_attr( $item['cat'] ); ?>">
+					<?php
+					$shape   = cohf_gallery_shape( $item['key'] );
+					$classes = 'gallery-item gallery-item--' . $shape . ( 0 === $i ? ' gallery-item--featured' : '' );
+					?>
+					<figure class="<?php echo esc_attr( $classes ); ?>" data-cat="<?php echo esc_attr( $item['cat'] ); ?>">
 						<a class="gallery-item__link"
 							href="<?php echo esc_url( $url ); ?>"
 							data-index="<?php echo (int) $i; ?>"
@@ -58,13 +64,15 @@ $counts     = array_count_values( wp_list_pluck( $items, 'cat' ) );
 							data-caption="<?php echo esc_attr( $item['caption'] ); ?>"
 							data-category="<?php echo esc_attr( $label ); ?>"
 							aria-label="<?php echo esc_attr( sprintf( /* translators: %s: photo title. */ __( 'Open photo: %s', 'cohf-child' ), $item['title'] ) ); ?>">
-							<img src="<?php echo esc_url( $url ); ?>" alt="<?php echo esc_attr( $alt ); ?>" loading="<?php echo $i < 6 ? 'eager' : 'lazy'; ?>" decoding="async">
-							<span class="gallery-item__overlay" aria-hidden="true">
-								<span class="gallery-item__cat"><?php echo esc_html( $label ); ?></span>
-								<span class="gallery-item__title"><?php echo esc_html( $item['title'] ); ?></span>
-								<span class="gallery-item__zoom">
+							<span class="gallery-item__media">
+								<img src="<?php echo esc_url( $url ); ?>" alt="<?php echo esc_attr( $alt ); ?>" loading="<?php echo $i < 4 ? 'eager' : 'lazy'; ?>" decoding="async">
+								<span class="gallery-item__zoom" aria-hidden="true">
 									<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
 								</span>
+							</span>
+							<span class="gallery-item__meta" aria-hidden="true">
+								<span class="gallery-item__cat"><?php echo esc_html( $label ); ?></span>
+								<span class="gallery-item__title"><?php echo esc_html( $item['title'] ); ?></span>
 							</span>
 						</a>
 					</figure>

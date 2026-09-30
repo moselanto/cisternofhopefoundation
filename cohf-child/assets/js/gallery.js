@@ -40,8 +40,29 @@
 				if (show) { visible.push(a); }
 			});
 			if (status) { status.textContent = visible.length + ' photographs shown'; }
+			centreChip(btn);
 		});
 	});
+
+	/* ---- Filter bar: keep the chosen chip in view, show scroll hints ---- */
+	var bar = document.querySelector('.gallery-toolbar');
+	var wrap = document.querySelector('.gallery-toolbar-wrap');
+	function centreChip(btn) {
+		if (!bar || bar.scrollWidth <= bar.clientWidth) { return; }
+		var left = btn.offsetLeft - (bar.clientWidth - btn.offsetWidth) / 2;
+		bar.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
+	}
+	function edges() {
+		if (!bar || !wrap) { return; }
+		var max = bar.scrollWidth - bar.clientWidth;
+		wrap.classList.toggle('has-more-left', bar.scrollLeft > 4);
+		wrap.classList.toggle('has-more-right', bar.scrollLeft < max - 4);
+	}
+	if (bar) {
+		bar.addEventListener('scroll', edges, { passive: true });
+		window.addEventListener('resize', edges);
+		edges();
+	}
 
 	/* ---- Reveal on scroll ---- */
 	if ('IntersectionObserver' in window) {

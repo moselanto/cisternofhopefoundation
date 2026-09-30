@@ -77,6 +77,35 @@ function cohf_gallery_items() {
 }
 
 /**
+ * Layout shape for a gallery photograph, from its real proportions.
+ *
+ * Wide photographs span two columns and tall ones two rows, so group shots
+ * are not squeezed into slivers and portraits are not cropped at the head.
+ *
+ * @param string $key Image key.
+ * @return string 'wide', 'tall' or 'square'.
+ */
+function cohf_gallery_shape( $key ) {
+	$library = cohf_image_library();
+	if ( empty( $library[ $key ]['file'] ) ) {
+		return 'square';
+	}
+	$path = COHF_CHILD_DIR . '/assets/images/' . $library[ $key ]['file'];
+	$size = file_exists( $path ) ? getimagesize( $path ) : false;
+	if ( empty( $size[0] ) || empty( $size[1] ) ) {
+		return 'square';
+	}
+	$ratio = $size[0] / $size[1];
+	if ( $ratio >= 1.3 ) {
+		return 'wide';
+	}
+	if ( $ratio <= 0.85 ) {
+		return 'tall';
+	}
+	return 'square';
+}
+
+/**
  * Load the gallery script and styles on the gallery page only.
  */
 function cohf_gallery_assets() {
