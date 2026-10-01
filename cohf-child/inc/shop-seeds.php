@@ -907,6 +907,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Strung by hand, so bead shapes and spacing vary slightly from the photo. Price is for one necklace.', 'cohf-child' ),
 			'order'    => 82,
 		),
+		'maasai-beaded-collar-round' => array(
+			'name'     => __( 'Maasai Beaded Collar Necklace - Round Multi-Ring', 'cohf-child' ),
+			'price'    => '4000',
+			'category' => __( 'Jewellery', 'cohf-child' ),
+			'image'    => 'maasai-beaded-collar-round.jpg',
+			'alt'      => __( 'A large round Maasai beaded collar made of many concentric rings of orange, blue, red, green, white and black beads, held by beaded spacer bars, with a small beaded pendant at the front.', 'cohf-child' ),
+			'short'    => __( 'A traditional round Maasai collar of layered bead rings in bright orange and blue, a true statement piece for celebrations.', 'cohf-child' ),
+			'long'     => __( 'Made by Maasai artisans from rows of beads strung on wire and held flat by beaded spacers, in the style worn at weddings and ceremonies. Each collar is unique, so colours vary slightly from the photo. Price is for one collar.', 'cohf-child' ),
+			'order'    => 83,
+		),
 	);
 }
 
