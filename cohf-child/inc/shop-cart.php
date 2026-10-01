@@ -72,53 +72,88 @@ function cohf_shop_wa_order_url( $product_id = 0 ) {
  * @param array $lines Each: array( name, qty, unit, url ).
  * @return string
  */
-function cohf_shop_wa_message( $lines ) {
+function cohf_shop_wa_message( $lines, $details = array() ) {
 	$ref = 'HM-' . wp_date( 'ymd' ) . '-' . strtoupper( substr( wp_generate_password( 8, false, false ), 0, 4 ) );
 
 	$out   = array();
-	$out[] = __( 'Hello Hope Market team,', 'cohf-child' );
-	$out[] = '';
-	$out[] = __( 'I would like to place the following order from your website.', 'cohf-child' );
+	$out[] = __( 'Hello Hope Market team, I would like to order:', 'cohf-child' );
 	$out[] = '';
 	/* translators: %s: order reference. */
-	$out[] = sprintf( __( '*Order reference:* %s', 'cohf-child' ), $ref );
+	$out[] = sprintf( __( '*Order %s*', 'cohf-child' ), $ref );
 	$out[] = '';
-	$out[] = __( '*Order details*', 'cohf-child' );
 
 	$total = 0;
+	$count = 0;
 	$n     = 0;
 	foreach ( $lines as $line ) {
 		++$n;
 		$sub    = $line['unit'] * $line['qty'];
 		$total += $sub;
+		$count += $line['qty'];
 		$out[]  = sprintf( '%1$d. %2$s', $n, $line['name'] );
 		$out[]  = sprintf(
 			/* translators: 1: quantity, 2: unit price, 3: line total. */
-			__( '    Qty %1$d x %2$s = %3$s', 'cohf-child' ),
+			__( '   %1$d x %2$s = *%3$s*', 'cohf-child' ),
 			$line['qty'],
 			cohf_shop_plain_price( $line['unit'] ),
 			cohf_shop_plain_price( $sub )
 		);
 		if ( '' !== $line['url'] ) {
-			$out[] = '    ' . $line['url'];
+			$out[] = '   ' . $line['url'];
 		}
 	}
 
 	$out[] = '';
-	/* translators: %s: order total. */
-	$out[] = sprintf( __( '*Order total: %s*', 'cohf-child' ), cohf_shop_plain_price( $total ) );
-	$out[] = __( '(excluding delivery)', 'cohf-child' );
+	/* translators: 1: number of items, 2: total. */
+	$out[] = sprintf( _n( '*Items total (%1$d item): %2$s*', '*Items total (%1$d items): %2$s*', $count, 'cohf-child' ), $count, cohf_shop_plain_price( $total ) );
+	$out[] = __( 'Delivery fee: to be confirmed', 'cohf-child' );
 	$out[] = '';
-	$out[] = __( '*My details*', 'cohf-child' );
-	$out[] = __( 'Full name: ', 'cohf-child' );
-	$out[] = __( 'Phone number: ', 'cohf-child' );
-	$out[] = __( 'Delivery location: ', 'cohf-child' );
-	$out[] = __( 'Preferred delivery date: ', 'cohf-child' );
-	$out[] = __( 'Payment method (M-Pesa / Cash on delivery): ', 'cohf-child' );
+	$out[] = __( '*Delivery details*', 'cohf-child' );
+
+	$rows = array(
+		'name'  => __( 'Name', 'cohf-child' ),
+		'phone' => __( 'Phone', 'cohf-child' ),
+		'area'  => __( 'Location', 'cohf-child' ),
+		'date'  => __( 'Delivery date', 'cohf-child' ),
+		'pay'   => __( 'Payment', 'cohf-child' ),
+	);
+	foreach ( $rows as $key => $label ) {
+		$val = isset( $details[ $key ] ) ? $details[ $key ] : '';
+		if ( '' === $val && 'pay' === $key ) {
+			$val = __( 'M-Pesa / Cash on delivery', 'cohf-child' );
+		}
+		if ( '' === $val && 'date' === $key && ! empty( $details['name'] ) ) {
+			$val = __( 'Any day', 'cohf-child' );
+		}
+		$out[] = $label . ': ' . $val;
+	}
+	if ( ! empty( $details['note'] ) ) {
+		$out[] = __( 'Note', 'cohf-child' ) . ': ' . $details['note'];
+	}
+
 	$out[] = '';
-	$out[] = __( 'Kindly confirm availability, the delivery fee and payment details. Thank you.', 'cohf-child' );
+	$out[] = __( 'Please confirm availability and the delivery fee. Thank you.', 'cohf-child' );
 
 	return implode( "\n", $out );
+}
+
+/**
+ * Customer details passed from the "Order on WhatsApp" form (all optional).
+ *
+ * @return array
+ */
+function cohf_shop_wa_details() {
+	$keys = array( 'name' => 60, 'phone' => 20, 'area' => 80, 'date' => 40, 'pay' => 30, 'note' => 160 );
+	$out  = array();
+	foreach ( $keys as $key => $max ) {
+		$raw = isset( $_GET[ 'wa_' . $key ] ) ? sanitize_text_field( wp_unslash( $_GET[ 'wa_' . $key ] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- builds a chat message only.
+		$raw = trim( preg_replace( '/[*_~`]+/', '', $raw ) ); // No WhatsApp formatting tricks.
+		$out[ $key ] = function_exists( 'mb_substr' ) ? mb_substr( $raw, 0, $max ) : substr( $raw, 0, $max );
+	}
+	if ( '' !== $out['phone'] ) {
+		$out['phone'] = preg_replace( '/[^0-9+ ]/', '', $out['phone'] );
+	}
+	return $out;
 }
 
 /**
@@ -142,7 +177,7 @@ function cohf_shop_wa_order_redirect() {
 				'name' => $product->get_name(),
 				'qty'  => $qty,
 				'unit' => (float) wc_get_price_to_display( $product ),
-				'url'  => $product->get_permalink(),
+				'url'  => home_url( '/?p=' . $product->get_id() ),
 			);
 		}
 	} elseif ( function_exists( 'WC' ) && WC()->cart ) {
@@ -155,7 +190,7 @@ function cohf_shop_wa_order_redirect() {
 				'name' => $product->get_name(),
 				'qty'  => (int) $item['quantity'],
 				'unit' => (float) wc_get_price_to_display( $product ),
-				'url'  => $product->is_visible() ? $product->get_permalink() : '',
+				'url'  => $product->is_visible() ? home_url( '/?p=' . ( $product->get_parent_id() ? $product->get_parent_id() : $product->get_id() ) ) : '',
 			);
 		}
 	}
@@ -167,7 +202,7 @@ function cohf_shop_wa_order_redirect() {
 
 	$text = empty( $lines )
 		? __( "Hello Hope Market team,\n\nI would like to place an order from your website. Kindly share the available items and payment details. Thank you.", 'cohf-child' )
-		: cohf_shop_wa_message( $lines );
+		: cohf_shop_wa_message( $lines, cohf_shop_wa_details() );
 
 	wp_redirect( 'https://wa.me/' . $digits . '?text=' . rawurlencode( $text ) ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- WhatsApp is the intended destination.
 	exit;

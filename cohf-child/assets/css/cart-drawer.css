@@ -103,3 +103,22 @@ html.cart-drawer-open{overflow:hidden}
   .cart-drawer__panel,.cart-drawer__overlay{transition:none}
   .header-cart__count.is-bump{animation:none}
 }
+
+/* WhatsApp order details form (12.5.0) */
+.wa-form{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:16px}
+.wa-form[hidden]{display:none}
+.wa-form__backdrop{position:absolute;inset:0;background:rgba(12,32,25,.55)}
+.wa-form__panel{position:relative;width:min(460px,100%);max-height:calc(100dvh - 32px);overflow:auto;display:flex;flex-direction:column;gap:12px;margin:0;padding:26px 24px 20px;background:#fff;border-radius:22px;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+.wa-form__panel h2{margin:0;font-size:24px;color:var(--forest,#123a2d)}
+.wa-form__lead{margin:0 0 4px;color:#5b6863;font-size:14.5px}
+.wa-form__x{position:absolute;top:10px;right:12px;width:40px;height:40px;min-height:0;border:0;border-radius:50%;background:#f2f0ea;font-size:24px;line-height:1;cursor:pointer;color:#33443d}
+.wa-form label{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:14px;color:#22332c}
+.wa-form label span{font-weight:500;color:#7a857f}
+.wa-form input,.wa-form select{width:100%;min-height:50px;padding:12px 14px;border:1.5px solid #dcd5c8;border-radius:12px;background:#fcfbf8;font:inherit;font-weight:500;font-size:16px;color:#17231e}
+.wa-form input:focus,.wa-form select:focus{outline:none;border-color:var(--forest,#123a2d);background:#fff;box-shadow:0 0 0 4px rgba(18,58,45,.12)}
+.wa-form__row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.wa-form__err{margin:0;padding:10px 12px;border-radius:10px;background:#fdf0ea;color:#a3360a;font-size:14px;font-weight:600}
+.wa-form__send{width:100%;justify-content:center;margin-top:4px}
+.wa-form__skip{min-height:40px;border:0;background:none;color:#5b6863;font-size:14px;text-decoration:underline;cursor:pointer}
+html.wa-form-open{overflow:hidden}
+@media (max-width:480px){.wa-form{align-items:flex-end;padding:0}.wa-form__panel{border-radius:22px 22px 0 0;max-height:92dvh}.wa-form__row{grid-template-columns:1fr}}

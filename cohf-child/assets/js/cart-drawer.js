@@ -285,3 +285,107 @@
 		refresh().catch(function () {});
 	}
 }());
+
+/**
+ * "Order on WhatsApp" details form (12.5.0).
+ * Before opening WhatsApp, ask for name, phone, location, date and payment
+ * so the team receives a complete order instead of blank fields. Details are
+ * remembered on this device for next time. "Skip" still sends the order.
+ */
+(function () {
+	'use strict';
+	var KEY = 'cohfWaDetails';
+	var modal = null;
+	var pendingHref = '';
+
+	function saved() {
+		try { return JSON.parse(window.localStorage.getItem(KEY) || '{}') || {}; } catch (e) { return {}; }
+	}
+	function save(d) {
+		try { window.localStorage.setItem(KEY, JSON.stringify({ name: d.name, phone: d.phone, area: d.area, pay: d.pay })); } catch (e) {}
+	}
+	function el(html) {
+		var w = document.createElement('div');
+		w.innerHTML = html;
+		return w.firstElementChild;
+	}
+	function build() {
+		modal = el(
+			'<div class="wa-form" role="dialog" aria-modal="true" aria-labelledby="wa-form-title" hidden>' +
+			'<div class="wa-form__backdrop" data-wa-close></div>' +
+			'<form class="wa-form__panel" novalidate>' +
+			'<button type="button" class="wa-form__x" data-wa-close aria-label="Close">&times;</button>' +
+			'<h2 id="wa-form-title">Your delivery details</h2>' +
+			'<p class="wa-form__lead">We add these to your WhatsApp message so we can confirm your order quickly.</p>' +
+			'<label>Full name<input name="name" autocomplete="name" maxlength="60" required></label>' +
+			'<label>Phone number<input name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="07XX XXX XXX" required></label>' +
+			'<label>Delivery location<input name="area" autocomplete="address-level2" maxlength="80" placeholder="e.g. Kilimani, Nairobi" required></label>' +
+			'<div class="wa-form__row">' +
+			'<label>Delivery date <span>(optional)</span><input name="date" type="date"></label>' +
+			'<label>Payment<select name="pay"><option>M-Pesa</option><option>Cash on delivery</option><option>Not sure yet</option></select></label>' +
+			'</div>' +
+			'<label>Note <span>(optional)</span><input name="note" maxlength="160" placeholder="Colour, gift wrap, landmark..."></label>' +
+			'<p class="wa-form__err" role="alert" hidden>Please add your name, phone number and delivery location.</p>' +
+			'<button type="submit" class="cart-btn cart-btn--wa wa-form__send">Continue to WhatsApp</button>' +
+			'<button type="button" class="wa-form__skip" data-wa-skip>Skip and send order only</button>' +
+			'</form></div>'
+		);
+		document.body.appendChild(modal);
+		var form = modal.querySelector('form');
+		modal.addEventListener('click', function (e) {
+			if (e.target.closest('[data-wa-close]')) { close(); }
+			if (e.target.closest('[data-wa-skip]')) { go({}); }
+		});
+		document.addEventListener('keydown', function (e) {
+			if (e.key === 'Escape' && modal && !modal.hidden) { close(); }
+		});
+		form.addEventListener('submit', function (e) {
+			e.preventDefault();
+			var d = {};
+			['name', 'phone', 'area', 'date', 'pay', 'note'].forEach(function (k) { d[k] = (form.elements[k].value || '').trim(); });
+			var phoneOk = d.phone.replace(/[^0-9]/g, '').length >= 9;
+			var err = modal.querySelector('.wa-form__err');
+			if (!d.name || !phoneOk || !d.area) {
+				err.hidden = false;
+				(!d.name ? form.elements.name : (!phoneOk ? form.elements.phone : form.elements.area)).focus();
+				return;
+			}
+			err.hidden = true;
+			if (d.date) {
+				var dt = new Date(d.date + 'T12:00:00');
+				if (!isNaN(dt)) { d.date = dt.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }); }
+			}
+			save(d);
+			go(d);
+		});
+	}
+	function open(href) {
+		if (!modal) { build(); }
+		pendingHref = href;
+		var form = modal.querySelector('form');
+		var s = saved();
+		['name', 'phone', 'area', 'pay'].forEach(function (k) { if (s[k] && !form.elements[k].value) { form.elements[k].value = s[k]; } });
+		var dateIn = form.elements.date;
+		dateIn.min = new Date().toISOString().slice(0, 10);
+		modal.hidden = false;
+		document.documentElement.classList.add('wa-form-open');
+		setTimeout(function () { (form.elements.name.value ? form.elements.area : form.elements.name).focus(); }, 30);
+	}
+	function close() {
+		modal.hidden = true;
+		document.documentElement.classList.remove('wa-form-open');
+	}
+	function go(d) {
+		var url = new URL(pendingHref, window.location.href);
+		Object.keys(d).forEach(function (k) { if (d[k]) { url.searchParams.set('wa_' + k, d[k]); } });
+		close();
+		var w = window.open(url.toString(), '_blank', 'noopener');
+		if (!w) { window.location.href = url.toString(); }
+	}
+	document.addEventListener('click', function (e) {
+		var a = e.target.closest && e.target.closest('a[href*="cohf-wa-order="]');
+		if (!a || e.ctrlKey || e.metaKey || e.shiftKey) { return; }
+		e.preventDefault();
+		open(a.href);
+	}, true);
+})();
