@@ -7,8 +7,9 @@
  * number and address were in the footer. A visitor who wanted to give, or
  * simply to call, had to open the menu and scroll to find out how.
  *
- * This puts the four actions that matter on screen permanently: call, email,
- * partner, and give. It is the mobile equivalent of the header's Support Our
+ * This puts the four actions that matter on screen permanently: home, call,
+ * WhatsApp, and give. (Partner left the bar in 13.29.0; it stays in the
+ * menu and on Support Our Work.) It is the mobile equivalent of the header's Support Our
  * Work button, which is hidden below 900px to make room for the toggle.
  *
  * Rendered through wp_footer so no parent template has to be overridden.
@@ -50,18 +51,21 @@ function cohf_mobile_actions() {
 		? 'https://wa.me/' . $wa_number . '?text=' . rawurlencode( $wa_message )
 		: '';
 
-	$partner = isset( $links['partner'] ) ? $links['partner'] : '';
 	$support = isset( $links['support'] ) ? $links['support'] : '';
 
 	if ( ! $support && function_exists( 'cohf_page_url' ) ) {
 		$support = cohf_page_url( 'page-templates/page-support.php' );
 	}
 
-	if ( ! $partner && function_exists( 'cohf_page_url' ) ) {
-		$partner = cohf_page_url( 'page-templates/page-partners.php' );
-	}
-
 	$actions = array(
+		// Home comes first, where thumbs and habit expect it. Visitors who land
+		// deep in the site from search or WhatsApp had no obvious way back.
+		array(
+			'key'   => 'home',
+			'url'   => home_url( '/' ),
+			'label' => __( 'Home', 'cohf-child' ),
+			'icon'  => '<path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9v11h13V9"/><path d="M10 20v-5.5h4V20"/>',
+		),
 		array(
 			'key'   => 'call',
 			'url'   => $phone ? 'tel:' . $phone : '',
@@ -76,12 +80,6 @@ function cohf_mobile_actions() {
 			// a solid glyph, so it renders filled rather than stroked.
 			'fill'  => true,
 			'icon'  => '<path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.87 9.87 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.25 8.24a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.26-4.38c0-4.54 3.7-8.25 8.25-8.25zm-3.6 4.1c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.23.9 2.42 1.02 2.59.13.16 1.76 2.7 4.28 3.78.6.26 1.06.41 1.42.53.6.19 1.14.16 1.57.1.48-.07 1.48-.6 1.69-1.19.2-.59.2-1.09.15-1.2-.06-.1-.23-.16-.48-.29-.25-.12-1.48-.73-1.71-.81-.23-.09-.4-.13-.56.12-.17.25-.65.81-.79.98-.15.16-.29.19-.54.06-.25-.12-1.06-.39-2.01-1.24-.74-.66-1.25-1.48-1.39-1.73-.15-.25-.02-.38.1-.51.12-.11.25-.29.38-.44.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.48-.4-.42-.56-.42h-.2z"/>',
-		),
-		array(
-			'key'   => 'partner',
-			'url'   => $partner,
-			'label' => __( 'Partner', 'cohf-child' ),
-			'icon'  => '<path d="M16 19v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1"/><circle cx="9" cy="7" r="3.2"/><path d="M22 19v-1a4 4 0 0 0-3-3.8"/><path d="M16.5 3.9a4 4 0 0 1 0 6.2"/>',
 		),
 		array(
 			'key'   => 'support',

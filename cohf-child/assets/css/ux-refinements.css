@@ -3332,3 +3332,27 @@ html { scroll-padding-top: 110px; }
   .help-ways__band .btn.dark { width: 100%; justify-content: center; }
 }
 @media (prefers-reduced-motion: reduce) { .help-way, .help-way:hover { transition: none; transform: none; } }
+
+/* 13.29.0: Home replaces Partner on the mobile bar. The current page's item
+   gets a clear active state (tinted pill plus a gold bar above the icon) so
+   visitors always know where they are and how to get back. */
+@media (max-width: 900px) {
+  .cohf-actionbar { padding-left: 6px; padding-right: 6px; padding-top: 6px; gap: 4px; }
+  .cohf-actionbar__item { position: relative; margin-bottom: 6px; }
+  .cohf-actionbar__item[aria-current]:not(.cohf-actionbar__item--support) {
+    color: var(--forest, var(--g));
+    background: #163f3214;
+  }
+  .cohf-actionbar__item[aria-current]:not(.cohf-actionbar__item--support)::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    width: 26px;
+    height: 3px;
+    margin-left: -13px;
+    border-radius: 0 0 3px 3px;
+    background: var(--gold);
+  }
+  .cohf-actionbar__item[aria-current] .cohf-actionbar__label { font-weight: 800; }
+}
