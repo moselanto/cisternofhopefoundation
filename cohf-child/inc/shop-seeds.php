@@ -937,6 +937,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Carved from a single piece of wood and painted by hand, so stripes and shape vary slightly from the photo. Price is for one zebra.', 'cohf-child' ),
 			'order'    => 85,
 		),
+		'maasai-beaded-sandals-gold-lace-up' => array(
+			'name'     => __( 'Maasai Beaded Leather Sandals - Gold Lace-Up', 'cohf-child' ),
+			'price'    => '2500',
+			'category' => __( 'Sandals', 'cohf-child' ),
+			'image'    => 'maasai-beaded-sandals-gold-lace-up.jpg',
+			'alt'      => __( 'A pair of brown leather thong sandals with a high upper covered in fine bronze and gold beadwork in a chevron pattern, tied at the ankle with brown laces.', 'cohf-child' ),
+			'short'    => __( 'Brown leather thong sandals with a high, lace-up upper of fine bronze and gold Maasai beadwork. Elegant enough for an evening out.', 'cohf-child' ),
+			'long'     => __( 'Hand-beaded on genuine leather, so beadwork varies slightly from pair to pair. Add your shoe size (EU or UK) in the order notes and we will confirm fit before dispatch. Price is for one pair.', 'cohf-child' ),
+			'order'    => 86,
+		),
 	);
 }
 
