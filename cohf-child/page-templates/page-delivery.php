@@ -1,8 +1,8 @@
 <?php
 /**
- * Template Name: Donation and Fundraising Policy
+ * Template Name: Delivery and Shipping
  *
- * Donation, receipting and refund terms for online giving through Paystack.
+ * Where we deliver, what it costs, how long it takes and how to collect.
  *
  * @package COHF_Child
  */
@@ -15,9 +15,9 @@ $phone = cohf_org_get( 'phone' );
 <main id="main-content" tabindex="-1">
 	<?php
 	get_template_part( 'template-parts/page-hero', null, array(
-		'eyebrow' => __( 'Giving with confidence', 'cohf-child' ),
-		'title'   => __( 'Donation and Fundraising Policy', 'cohf-child' ),
-		'text'    => __( 'How we receive, use, receipt and, where appropriate, refund your gifts.', 'cohf-child' ),
+		'eyebrow' => __( 'Getting your order to you', 'cohf-child' ),
+		'title'   => __( 'Delivery and Shipping Information', 'cohf-child' ),
+		'text'    => __( 'Where we deliver, what it costs, how long it takes and how to collect.', 'cohf-child' ),
 	) );
 	?>
 	<section>
@@ -29,7 +29,7 @@ $phone = cohf_org_get( 'phone' );
 					the_content();
 				}
 			} else {
-				get_template_part( 'template-parts/legal-donation-policy' );
+				get_template_part( 'template-parts/legal-delivery' );
 			}
 			?>
 		</div>

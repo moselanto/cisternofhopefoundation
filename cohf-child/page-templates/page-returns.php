@@ -1,8 +1,8 @@
 <?php
 /**
- * Template Name: Donation and Fundraising Policy
+ * Template Name: Refund and Returns Policy
  *
- * Donation, receipting and refund terms for online giving through Paystack.
+ * How returns, exchanges and refunds work for Hope Market purchases.
  *
  * @package COHF_Child
  */
@@ -15,9 +15,9 @@ $phone = cohf_org_get( 'phone' );
 <main id="main-content" tabindex="-1">
 	<?php
 	get_template_part( 'template-parts/page-hero', null, array(
-		'eyebrow' => __( 'Giving with confidence', 'cohf-child' ),
-		'title'   => __( 'Donation and Fundraising Policy', 'cohf-child' ),
-		'text'    => __( 'How we receive, use, receipt and, where appropriate, refund your gifts.', 'cohf-child' ),
+		'eyebrow' => __( 'Shopping with confidence', 'cohf-child' ),
+		'title'   => __( 'Refund and Returns Policy', 'cohf-child' ),
+		'text'    => __( 'How returns, exchanges and refunds work for Hope Market purchases.', 'cohf-child' ),
 	) );
 	?>
 	<section>
@@ -29,7 +29,7 @@ $phone = cohf_org_get( 'phone' );
 					the_content();
 				}
 			} else {
-				get_template_part( 'template-parts/legal-donation-policy' );
+				get_template_part( 'template-parts/legal-returns' );
 			}
 			?>
 		</div>

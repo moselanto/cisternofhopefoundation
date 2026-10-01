@@ -27,6 +27,17 @@ $updated = '30 September 2026';
 			<p><?php esc_html_e( 'We understand that mistakes happen. If you gave the wrong amount, gave twice by accident, or did not authorise a payment, contact us within 30 days of the gift with your reference and we will review your request and, where appropriate, refund it to the original payment method.', 'cohf-child' ); ?></p>
 			<p><?php esc_html_e( 'Because gifts are put to work quickly, we cannot usually refund a gift after 30 days, or once it has been spent on programme activity, except where the law requires it.', 'cohf-child' ); ?></p>
 			<p><?php esc_html_e( 'Approved refunds are processed through Paystack. The time it takes to reach you depends on your bank or mobile money provider.', 'cohf-child' ); ?></p>
+			<h2><?php esc_html_e( 'Fundraising on our behalf', 'cohf-child' ); ?></h2>
+			<p><?php esc_html_e( 'We welcome individuals, schools, churches and companies who want to raise money for our work. Please contact us before you start, so we can agree how the money will be collected, which programme it will support, and how you may use our name and logo.', 'cohf-child' ); ?></p>
+			<p><?php esc_html_e( 'Funds raised for us should be paid directly to the Foundation, through our website or our official payment details confirmed by our team. Never collect money in our name in cash or through personal accounts without our written agreement.', 'cohf-child' ); ?></p>
+			<h2><?php esc_html_e( 'Our fundraising standards', 'cohf-child' ); ?></h2>
+			<ul>
+				<li><?php esc_html_e( 'We tell donors honestly what their gift will do and report back on our work.', 'cohf-child' ); ?></li>
+				<li><?php esc_html_e( 'We never pressure anyone to give, and we respect a request to stop contacting you.', 'cohf-child' ); ?></li>
+				<li><?php esc_html_e( 'We do not sell or share donor details.', 'cohf-child' ); ?></li>
+				<li><?php esc_html_e( 'We use photographs and stories only with consent, and protect the dignity of the people in them.', 'cohf-child' ); ?></li>
+				<li><?php esc_html_e( 'Our accounts are audited each year, as our Constitution requires.', 'cohf-child' ); ?></li>
+			</ul>
 			<h2><?php esc_html_e( 'Anonymous gifts', 'cohf-child' ); ?></h2>
 			<p><?php esc_html_e( 'If you choose to give anonymously, we do not publish your name. We still keep a private record so that your gift can be accounted for and, if needed, refunded.', 'cohf-child' ); ?></p>
 			<h2><?php esc_html_e( 'Fraud and security', 'cohf-child' ); ?></h2>

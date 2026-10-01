@@ -29,6 +29,9 @@ $updated = '30 September 2026';
 			<p><?php esc_html_e( 'We may block access for anyone who misuses the website.', 'cohf-child' ); ?></p>
 			<h2><?php esc_html_e( 'Accuracy of information', 'cohf-child' ); ?></h2>
 			<p><?php esc_html_e( 'We work hard to keep the information on this website accurate and up to date, including the figures we report about our work. Figures are updated as new information is confirmed and may change. If you notice something that is wrong, please tell us.', 'cohf-child' ); ?></p>
+			<h2><?php esc_html_e( 'Buying from Hope Market', 'cohf-child' ); ?></h2>
+			<p><?php esc_html_e( 'Hope Market is the shop of Cistern of Hope Foundation. When you place an order, you are buying handmade goods from the Foundation. Prices are in Kenya shillings (KSh) and include any applicable taxes. Delivery fees are shown or confirmed before you pay.', 'cohf-child' ); ?></p>
+			<p><?php esc_html_e( 'Your order is accepted when we confirm it by email or WhatsApp. If an item is unexpectedly unavailable, we will tell you and offer an alternative or a full refund. Our Delivery and Shipping Information and our Refund and Returns Policy form part of these terms for every purchase.', 'cohf-child' ); ?></p>
 			<h2><?php esc_html_e( 'Donations', 'cohf-child' ); ?></h2>
 			<p><?php esc_html_e( 'Online gifts are processed securely by our payment provider, Paystack. Our Donation and Refund Policy explains how gifts are used, receipted and, where appropriate, refunded.', 'cohf-child' ); ?></p>
 			<h2><?php esc_html_e( 'Links to other websites', 'cohf-child' ); ?></h2>

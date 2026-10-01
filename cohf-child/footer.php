@@ -92,7 +92,7 @@ $acct = cohf_page_url( 'page-templates/page-accountability.php' );
 	<div class="container copyright">
 		<ul class="foot-legal">
 			<li><a href="<?php echo esc_url( function_exists( 'cohf_privacy_url' ) ? cohf_privacy_url() : $acct . '#data-protection' ); ?>"><?php esc_html_e( 'Privacy Policy', 'cohf-child' ); ?></a></li>
-			<?php foreach ( array( 'terms-of-use' => __( 'Terms of Use', 'cohf-child' ), 'donation-policy' => __( 'Donation Policy', 'cohf-child' ) ) as $cohf_slug => $cohf_label ) : ?>
+			<?php foreach ( array( 'terms-of-use' => __( 'Terms and Conditions', 'cohf-child' ), 'refund-returns' => __( 'Refunds and Returns', 'cohf-child' ), 'delivery' => __( 'Delivery', 'cohf-child' ), 'donation-policy' => __( 'Donation and Fundraising', 'cohf-child' ) ) as $cohf_slug => $cohf_label ) : ?>
 				<?php $cohf_url = function_exists( 'cohf_legal_url' ) ? cohf_legal_url( $cohf_slug ) : ''; ?>
 				<?php if ( $cohf_url ) : ?>
 					<li><a href="<?php echo esc_url( $cohf_url ); ?>"><?php echo esc_html( $cohf_label ); ?></a></li>
