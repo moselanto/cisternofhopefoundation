@@ -386,8 +386,10 @@ function cohf_hero_slides() {
  */
 function cohf_default_nav_items() {
 	$items = array(
-		// Home is reached from the logo; dropping the separate link lets the
-		// header fit on laptop screens without squeezing.
+		array(
+			'label' => __( 'Home', 'cohf-child' ),
+			'url'   => home_url( '/' ),
+		),
 		array(
 			'label'    => __( 'About', 'cohf-child' ),
 			'url'      => cohf_page_url( 'page-templates/page-about.php' ),

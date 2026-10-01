@@ -3279,3 +3279,27 @@ html { scroll-padding-top: 110px; }
   .brand > span { font-size: 11px; max-width: 150px; }
   header .nav { gap: 8px; }
 }
+
+/* --------------------------------------------------------------------------
+   13.25.0 Bigger, clearer header menu (Home restored)
+   Six links: Home, About, Programmes, Impact, Our Approach, Explore.
+   Larger type that still fits: on small laptops the logo shows without the
+   wordmark to make room; the full name returns from 1180px.
+   -------------------------------------------------------------------------- */
+@media (min-width: 901px) {
+  .links { gap: 0 clamp(14px, 1.5vw, 26px); font-size: clamp(14.5px, 1.2vw, 16.5px); font-weight: 700; }
+  .navgroup__btn { font-size: clamp(14.5px, 1.2vw, 16.5px); font-weight: 700; }
+  header .cta { font-size: clamp(13.5px, 1.05vw, 15px); padding: clamp(10px, .9vw, 13px) clamp(16px, 1.4vw, 22px); }
+  .brand > span { font-size: clamp(12.5px, 1.05vw, 14.5px); max-width: 200px; }
+}
+@media (min-width: 901px) and (max-width: 1179px) {
+  .brand > span { display: none; }
+  .links { gap: 0 clamp(10px, 1.2vw, 16px); font-size: clamp(14px, 1.45vw, 15.5px); }
+  .navgroup__btn { font-size: clamp(14px, 1.45vw, 15.5px); }
+  header .cta { font-size: 13.5px; padding: 10px 14px; }
+}
+@media (min-width: 901px) and (max-width: 999px) {
+  .links { gap: 0 9px; font-size: 13.5px; }
+  .navgroup__btn { font-size: 13.5px; }
+  header .cta { font-size: 12.5px; padding: 9px 12px; }
+}
