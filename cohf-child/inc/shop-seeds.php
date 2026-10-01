@@ -631,6 +631,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Shaped by hand, so each beetle differs slightly. Works on a shelf or desk, or as a wall accent. Price is for one sculpture.', 'cohf-child' ),
 			'order'    => 59,
 		),
+		'ceramic-chameleon-sculpture' => array(
+			'name'     => __( 'Ceramic Chameleon Sculpture', 'cohf-child' ),
+			'price'    => '8000',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'ceramic-chameleon-sculpture.jpg',
+			'alt'      => __( 'A handmade stone-grey ceramic chameleon with a crested back, dotted skin and a tightly curled tail, perched on a dark round stand.', 'cohf-child' ),
+			'short'    => __( 'Handmade ceramic chameleon with a crested back, textured dotted skin and a spiral tail.', 'cohf-child' ),
+			'long'     => __( 'Sculpted by hand, so no two are alike. A striking statement piece for a shelf, sideboard or desk. Price is for one sculpture.', 'cohf-child' ),
+			'order'    => 60,
+		),
 	);
 }
 
