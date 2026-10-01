@@ -837,6 +837,16 @@ function cohf_shop_seed_products() {
 				),
 			),
 		),
+		'elephant-baby-sitting-statue' => array(
+			'name'     => __( 'Elephant Baby Sitting with Trunk Up Statue', 'cohf-child' ),
+			'price'    => '9500',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'elephant-baby-sitting-statue.jpg',
+			'alt'      => __( 'A grey statue of a baby elephant sitting on its haunches with large ears spread wide and its trunk curled upwards, with finely detailed wrinkled skin.', 'cohf-child' ),
+			'short'    => __( 'A charming statue of a baby elephant sitting with its trunk raised, a symbol of good luck. Finely detailed skin texture and big, friendly ears.', 'cohf-child' ),
+			'long'     => __( 'A raised trunk is a traditional sign of good fortune, making this a thoughtful gift for a new home or office. Finished by hand, so shading and details vary slightly from the photo. Price is for one statue.', 'cohf-child' ),
+			'order'    => 76,
+		),
 	);
 }
 
