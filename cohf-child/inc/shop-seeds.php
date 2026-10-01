@@ -957,6 +957,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Beaded by hand on genuine leather by Maasai artisans, with two snap positions so it fits most wrists. Colour order varies slightly from piece to piece. Price is for one bracelet.', 'cohf-child' ),
 			'order'    => 87,
 		),
+		'maasai-beaded-choker-set' => array(
+			'name'     => __( 'Maasai Beaded Choker, Wristband and Finger Ring Set', 'cohf-child' ),
+			'price'    => '5000',
+			'category' => __( 'Jewellery', 'cohf-child' ),
+			'image'    => 'maasai-beaded-choker-set.jpg',
+			'alt'      => __( 'A woman wearing a matching Maasai beaded set: a choker in bands of blue, red, yellow and white, and a hand piece joining a beaded wristband to a beaded finger ring.', 'cohf-child' ),
+			'short'    => __( 'A matching three-piece Maasai beaded set: choker necklace, wristband and finger ring joined by a beaded chain.', 'cohf-child' ),
+			'long'     => __( 'Beaded by hand by Maasai artisans in coordinated colours, so the pieces match each other while colours vary slightly from the photo. Price is for the full three-piece set.', 'cohf-child' ),
+			'order'    => 88,
+		),
 	);
 }
 
