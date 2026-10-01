@@ -797,6 +797,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Shaped from terracotta clay, with the mural sculpted in relief and painted by hand, so colours and details vary slightly from the photo. Also available in a medium size. Price is for one large vase.', 'cohf-child' ),
 			'order'    => 72,
 		),
+		'terracotta-3d-flower-vase' => array(
+			'name'     => __( 'Handcrafted 3D Terracotta Clay Flower Vase', 'cohf-child' ),
+			'price'    => '8000',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'terracotta-3d-flower-vase.jpg',
+			'alt'      => __( 'A glossy terracotta-red clay vase decorated with raised, hand-sculpted red roses, orange sunflowers, green leaves and a trailing vine of yellow buds.', 'cohf-child' ),
+			'short'    => __( 'A terracotta clay vase with hand-sculpted 3D roses, sunflowers and leaves in bold colour. A striking centrepiece with or without flowers.', 'cohf-child' ),
+			'long'     => __( 'Each flower and leaf is shaped by hand from clay and painted, so details vary slightly from the photo. Price is for one vase.', 'cohf-child' ),
+			'order'    => 73,
+		),
 	);
 }
 
