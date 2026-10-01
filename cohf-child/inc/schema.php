@@ -87,12 +87,36 @@ function cohf_schema_org_node() {
 			array( '@type' => 'ContactPoint', 'contactType' => 'donations', 'url' => home_url( '/support-our-work/' ), 'email' => $org['email'] ),
 		),
 	);
-	if ( function_exists( 'cohf_social_links' ) ) {
-		$same = array_values( wp_list_pluck( cohf_social_links(), 'url' ) );
-		if ( $same ) {
-			$node['sameAs'] = $same;
-		}
+	$map_url             = 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( 'Deliverance Church Kabete N Market' );
+	$node['hasMap']      = $map_url;
+	$node['location']    = array(
+		'@type'   => 'Place',
+		'name'    => $org['name'] . ' office, Kabete',
+		'hasMap'  => $map_url,
+		'address' => $node['address'][0],
+	);
+	$node['areaServed']  = array(
+		array( '@type' => 'Country', 'name' => 'Kenya' ),
+		array( '@type' => 'City', 'name' => 'Nairobi' ),
+		array( '@type' => 'AdministrativeArea', 'name' => 'Kiambu County' ),
+	);
+	$node['founder']     = array( '@type' => 'Person', 'name' => 'Justus Kubai', 'jobTitle' => 'Founder and Executive Director' );
+	$node['keywords']    = 'NGO in Kenya, NGO in Nairobi, charity in Kenya, donate to children in Kenya, sanitary pads for girls Kenya, school fees support Kenya, women empowerment Kenya, youth empowerment Kenya, street children Kenya';
+	$acct                = cohf_page_url( 'page-templates/page-accountability.php' );
+	if ( $acct ) {
+		$node['ethicsPolicy']             = $acct;
+		$node['actionableFeedbackPolicy'] = $acct . '#complaints';
 	}
+	$node['potentialAction'] = array(
+		'@type'  => 'DonateAction',
+		'name'   => 'Donate to Cistern of Hope Foundation',
+		'target' => home_url( '/support-our-work/' ),
+	);
+	$same = function_exists( 'cohf_social_links' ) ? array_values( wp_list_pluck( cohf_social_links(), 'url' ) ) : array();
+	if ( empty( $same ) ) {
+		$same = array( 'https://www.facebook.com/people/Cistern-of-Hope-Foundation/61571155324672/' );
+	}
+	$node['sameAs'] = $same;
 	return $node;
 }
 
@@ -383,22 +407,22 @@ function cohf_seo_titles( $parts ) {
 	}
 	$name = 'Cistern of Hope Foundation';
 	if ( is_front_page() ) {
-		return array( 'title' => $name . ' | Kenyan NGO Ending Poverty Through Community Empowerment' );
+		return array( 'title' => $name . ' | NGO in Nairobi, Kenya for Children, Women and Youth' );
 	}
 	$map = array(
 		'about'                 => 'About Us: Our Story, Vision and Mission',
-		'programmes-overview'   => 'Our Programmes: Education, Women, Youth, Health and WASH in Kenya',
+		'programmes-overview'   => 'Our Programmes in Kenya: Education, Sanitary Pads, Youth and Women',
 		'impact'                => 'Our Impact in Kenya: Children, Women and Communities',
 		'approach'              => 'Our Approach: From Support to Self-Reliance',
-		'get-involved'          => 'Get Involved: Volunteer, Partner or Give in Kenya',
-		'partners-overview'     => 'Partner With a Kenyan NGO',
+		'get-involved'          => 'Volunteer, Partner or Donate in Nairobi, Kenya',
+		'partners-overview'     => 'Partner With an NGO in Kenya',
 		'resources-overview'    => 'Reports, Policies and Resources',
-		'contact'               => 'Contact Us: Kabete, Kenya',
+		'contact'               => 'Contact Us: NGO Office in Kabete, Nairobi',
 		'leadership-governance' => 'Leadership and Governance',
 		'accountability'        => 'Accountability and Safeguarding',
-		'support-our-work'      => 'Donate: Support Our Work in Kenya (Card or M-Pesa)',
+		'support-our-work'      => 'Donate to a Kenyan Charity by M-Pesa or Card',
 		'strategic-journey'     => 'Strategic Plan 2026-2030',
-		'gallery'               => 'Photo Gallery',
+		'gallery'               => 'Photo Gallery: Our Work in Kenya',
 	);
 	if ( is_page() ) {
 		$slug = get_post_field( 'post_name', get_queried_object_id() );

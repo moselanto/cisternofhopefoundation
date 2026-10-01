@@ -120,7 +120,7 @@ function cohf_social_meta() {
 	}
 
 	if ( is_front_page() ) {
-		$title = get_bloginfo( 'name' );
+		$title = __( 'Cistern of Hope Foundation | NGO in Nairobi, Kenya', 'cohf-child' );
 		$url   = home_url( '/' );
 	} elseif ( is_singular() ) {
 		$title = wp_strip_all_tags( get_the_title() );
@@ -132,7 +132,7 @@ function cohf_social_meta() {
 
 	$image = is_singular() && has_post_thumbnail()
 		? get_the_post_thumbnail_url( null, 'cohf-wide' )
-		: '';
+		: COHF_CHILD_URI . '/assets/images/hero-home.jpg';
 
 	$tags = array(
 		'og:site_name'   => get_bloginfo( 'name' ),
@@ -140,9 +140,9 @@ function cohf_social_meta() {
 		'og:description' => wp_trim_words( $desc, 34 ),
 		'og:type'        => is_front_page() ? 'website' : 'article',
 		'og:url'         => $url,
-		'og:locale'      => get_locale(),
+		'og:locale'      => 'en_KE',
 	);
-	if ( $image ) {
+	if ( $image && is_singular() && has_post_thumbnail() ) {
 		$tags['og:image'] = $image;
 	}
 
@@ -155,6 +155,24 @@ function cohf_social_meta() {
 	printf( '<meta name="twitter:description" content="%s">' . "\n", esc_attr( wp_trim_words( $desc, 34 ) ) );
 }
 add_action( 'wp_head', 'cohf_social_meta', 5 );
+
+/**
+ * Tell search engines the site is written for Kenya and based in Nairobi.
+ */
+function cohf_geo_meta() {
+	if ( is_404() ) {
+		return;
+	}
+	$url = is_singular() ? get_permalink() : home_url( add_query_arg( array() ) );
+	if ( is_front_page() ) {
+		$url = home_url( '/' );
+	}
+	printf( '<link rel="alternate" hreflang="en-KE" href="%s">' . "\n", esc_url( $url ) );
+	printf( '<link rel="alternate" hreflang="x-default" href="%s">' . "\n", esc_url( $url ) );
+	echo '<meta name="geo.region" content="KE-30">' . "\n";
+	echo '<meta name="geo.placename" content="Nairobi, Kenya">' . "\n";
+}
+add_action( 'wp_head', 'cohf_geo_meta', 4 );
 
 /**
  * Breadcrumbs.
@@ -232,7 +250,7 @@ add_filter( 'wp_sitemaps_post_types', function ( $post_types ) {
 function cohf_seo_description() {
 	$text = '';
 	if ( is_front_page() ) {
-		$text = (string) cohf_org_get( 'mission' );
+		$text = __( 'Registered NGO in Nairobi, Kenya helping vulnerable children, women and youth: school fees, monthly sanitary pads, food support and small business start-ups.', 'cohf-child' );
 	} elseif ( function_exists( 'is_shop' ) && is_shop() ) {
 		$text = __( 'Hope Market: handmade African crafts, jewellery, baskets, sandals and home decor from Kenya. Every purchase supports the Cistern of Hope Foundation.', 'cohf-child' );
 	} elseif ( is_singular() ) {
@@ -370,19 +388,19 @@ add_filter( 'wp_sitemaps_taxonomies', function ( $taxonomies ) {
  */
 function cohf_seo_page_descriptions() {
 	return array(
-		'about'                 => __( 'Our story: how Cistern of Hope Foundation grew from a heart for people into a Kenyan movement of hope. Our vision, mission, values and direction.', 'cohf-child' ),
-		'programmes-overview'   => __( 'Twelve integrated programmes, one mission: education, youth skills, women\'s enterprise, health, water, livelihoods and more, all aimed at ending poverty.', 'cohf-child' ),
-		'impact'                => __( 'See the difference our work makes in Kenya: children kept in school, new small businesses and stronger households. Real stories and progress so far.', 'cohf-child' ),
+		'about'                 => __( 'About Cistern of Hope Foundation, a registered Kenyan NGO founded in Uthiru, Nairobi in 2021. Our story, vision, mission, values and leadership.', 'cohf-child' ),
+		'programmes-overview'   => __( 'Our programmes in Kenya: school fees and scholarships, sanitary pads for girls, youth skills, women\'s enterprise, food support, health and WASH.', 'cohf-child' ),
+		'impact'                => __( 'Our impact in Kenya: children back in school, around 200 girls receiving sanitary pads every month, and women and youth running small businesses.', 'cohf-child' ),
 		'approach'              => __( 'From support to self-reliance: how we combine compassion with practical action and treat communities as partners, not recipients.', 'cohf-child' ),
-		'get-involved'          => __( 'Volunteer, partner, give or spread the word. Find the way to take part in Cistern of Hope Foundation\'s work that suits you.', 'cohf-child' ),
+		'get-involved'          => __( 'Volunteer in Nairobi, partner with us or donate to a Kenyan charity. Find the way to support vulnerable children, women and youth that suits you.', 'cohf-child' ),
 		'partners-overview'     => __( 'Partner with a young, determined Kenyan organisation. The partners we welcome, what we ask partners to contribute and where we need support.', 'cohf-child' ),
 		'resources-overview'    => __( 'Reports, strategies, policies and updates from Cistern of Hope Foundation. Search the library or request a document.', 'cohf-child' ),
-		'contact'               => __( 'Contact Cistern of Hope Foundation in Nairobi to partner, support, volunteer or ask a question. Call, WhatsApp, email or send us a message.', 'cohf-child' ),
+		'contact'               => __( 'Contact Cistern of Hope Foundation, an NGO in Nairobi, Kenya. Visit our Kabete office, call or WhatsApp +254 110 304 521, or send us a message.', 'cohf-child' ),
 		'leadership-governance' => __( 'Meet the board and team accountable for Cistern of Hope Foundation, and how the Foundation is governed and overseen.', 'cohf-child' ),
 		'accountability'        => __( 'How we steward resources, safeguard the people we serve, protect privacy and handle concerns. Raise a concern safely.', 'cohf-child' ),
-		'support-our-work'      => __( 'Give to Cistern of Hope Foundation securely by card or M-Pesa. See what your support makes possible and the other ways you can help.', 'cohf-child' ),
+		'support-our-work'      => __( 'Donate to a Kenyan NGO by M-Pesa or card. Your gift pays school fees, sanitary pads and food for vulnerable children and families in Nairobi.', 'cohf-child' ),
 		'strategic-journey'     => __( 'Our Strategic Journey 2026-2030: a five-year plan to establish, consolidate, scale, deepen and sustain our work, with eight connected objectives.', 'cohf-child' ),
-		'gallery'               => __( 'Photos from our programmes and communities in Kenya: real people, real places and real change, captured in the moment.', 'cohf-child' ),
+		'gallery'               => __( 'Photos of our work in Kenya: sanitary pad donations in schools, children\'s home visits, street children back in school and women\'s small businesses.', 'cohf-child' ),
 		'privacy-policy'        => __( 'How Cistern of Hope Foundation collects, uses and protects your personal information, and the choices you have.', 'cohf-child' ),
 		'terms-of-use'          => __( 'The terms that apply when you use the Cistern of Hope Foundation website, Hope Market shop and online giving.', 'cohf-child' ),
 		'donation-policy'       => __( 'How we receive, use and acknowledge donations, and how to ask for a refund if a gift was made in error.', 'cohf-child' ),

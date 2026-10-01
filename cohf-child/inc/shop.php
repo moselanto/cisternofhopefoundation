@@ -110,7 +110,7 @@ function cohf_shop_hero() {
 		return;
 	}
 	get_template_part( 'template-parts/page-hero', null, array(
-		'image'   => 'programme-08',
+		'image'   => $is_cat ? 'programme-08' : 'shop-hero',
 		'eyebrow' => $is_cat ? cohf_shop_name() : __( 'Social enterprise', 'cohf-child' ),
 		'title'   => $is_cat ? single_term_title( '', false ) : cohf_shop_name(),
 		'text'    => ( $is_cat && function_exists( 'cohf_shop_category_intro' ) && '' !== cohf_shop_category_intro() )

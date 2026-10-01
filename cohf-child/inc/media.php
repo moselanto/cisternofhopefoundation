@@ -93,6 +93,7 @@ function cohf_image_library() {
 		'gallery-food-supplies' => array( 'file' => 'gallery-food-supplies.jpg', 'alt' => __( 'Food supplies ready for distribution: cooking oil, bread, flour, drinking water and tissue.', 'cohf-child' ) ),
 		'gallery-shared-meal' => array( 'file' => 'gallery-shared-meal.jpg', 'alt' => __( 'Children seated in a circle sharing a hot meal together with a young woman.', 'cohf-child' ) ),
 		'impact-women-livelihoods' => array( 'file' => 'impact-women-livelihoods.jpg', 'alt' => __( 'A woman at her fruit and vegetable stall of avocados, tomatoes, greens and eggs, with a Foundation team member beside her.', 'cohf-child' ) ),
+		'shop-hero' => array( 'file' => 'shop-hero.jpg', 'alt' => __( 'Handmade pieces from Hope Market: a Maasai beaded collar, a sisal tote, beaded sandals, a copper Africa clock, a clay mural and beaded placemats.', 'cohf-child' ) ),
 		'story-03-door-to-door' => array( 'file' => 'story-03-door-to-door.jpg', 'alt' => __( 'A Foundation staff member handing a pack of sanitary pads to a girl at her home.', 'cohf-child' ) ),
 		'story-04-back-to-school' => array( 'file' => 'story-04-back-to-school.jpg', 'alt' => __( 'Three boys in school uniform standing with their family outside their home.', 'cohf-child' ) ),
 
