@@ -215,7 +215,7 @@ function cohf_shop_visible_categories() {
  * search applied).
  */
 function cohf_shop_category_tiles() {
-	if ( is_shop() === false || is_paged() || is_search() || isset( $_GET['orderby'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only.
+	if ( is_shop() === false || is_paged() || is_search() || isset( $_GET['orderby'] ) || isset( $_GET['min_price'] ) || isset( $_GET['max_price'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only.
 		return;
 	}
 	$terms = cohf_shop_visible_categories();

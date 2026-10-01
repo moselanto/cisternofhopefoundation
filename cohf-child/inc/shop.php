@@ -186,6 +186,9 @@ add_filter( 'woocommerce_loop_add_to_cart_link', 'cohf_shop_button_class' );
 remove_action( 'woocommerce_no_products_found', 'wc_no_products_found', 10 );
 
 function cohf_shop_no_products() {
+	if ( function_exists( 'cohf_search_no_results' ) && cohf_search_no_results() ) {
+		return;
+	}
 	$support = function_exists( 'cohf_page_url' ) ? cohf_page_url( 'page-templates/page-support.php' ) : '';
 	$contact = function_exists( 'cohf_page_url' ) ? cohf_page_url( 'page-templates/page-contact.php' ) : '';
 
