@@ -65,26 +65,59 @@ function cohf_shop_wa_order_url( $product_id = 0 ) {
 /**
  * WhatsApp order message for a list of lines.
  *
+ * Laid out as a short, professional order form. WhatsApp renders *text* as
+ * bold, so headings and the total stand out in the chat. Each order carries a
+ * reference (HM-YYMMDD-XXXX) so the team can quote it when replying.
+ *
  * @param array $lines Each: array( name, qty, unit, url ).
  * @return string
  */
 function cohf_shop_wa_message( $lines ) {
-	$out   = array( __( 'Hello Cistern of Hope Foundation, I would like to order from Hope Market:', 'cohf-child' ), '' );
+	$ref = 'HM-' . wp_date( 'ymd' ) . '-' . strtoupper( substr( wp_generate_password( 8, false, false ), 0, 4 ) );
+
+	$out   = array();
+	$out[] = __( 'Hello Hope Market team,', 'cohf-child' );
+	$out[] = '';
+	$out[] = __( 'I would like to place the following order from your website.', 'cohf-child' );
+	$out[] = '';
+	/* translators: %s: order reference. */
+	$out[] = sprintf( __( '*Order reference:* %s', 'cohf-child' ), $ref );
+	$out[] = '';
+	$out[] = __( '*Order details*', 'cohf-child' );
+
 	$total = 0;
+	$n     = 0;
 	foreach ( $lines as $line ) {
+		++$n;
 		$sub    = $line['unit'] * $line['qty'];
 		$total += $sub;
-		$out[]  = sprintf( '%1$d x %2$s - %3$s', $line['qty'], $line['name'], cohf_shop_plain_price( $sub ) );
+		$out[]  = sprintf( '%1$d. %2$s', $n, $line['name'] );
+		$out[]  = sprintf(
+			/* translators: 1: quantity, 2: unit price, 3: line total. */
+			__( '    Qty %1$d x %2$s = %3$s', 'cohf-child' ),
+			$line['qty'],
+			cohf_shop_plain_price( $line['unit'] ),
+			cohf_shop_plain_price( $sub )
+		);
 		if ( '' !== $line['url'] ) {
-			$out[] = $line['url'];
+			$out[] = '    ' . $line['url'];
 		}
 	}
+
 	$out[] = '';
 	/* translators: %s: order total. */
-	$out[] = sprintf( __( 'Total: %s', 'cohf-child' ), cohf_shop_plain_price( $total ) );
+	$out[] = sprintf( __( '*Order total: %s*', 'cohf-child' ), cohf_shop_plain_price( $total ) );
+	$out[] = __( '(excluding delivery)', 'cohf-child' );
 	$out[] = '';
-	$out[] = __( 'My name:', 'cohf-child' );
-	$out[] = __( 'Delivery location:', 'cohf-child' );
+	$out[] = __( '*My details*', 'cohf-child' );
+	$out[] = __( 'Full name: ', 'cohf-child' );
+	$out[] = __( 'Phone number: ', 'cohf-child' );
+	$out[] = __( 'Delivery location: ', 'cohf-child' );
+	$out[] = __( 'Preferred delivery date: ', 'cohf-child' );
+	$out[] = __( 'Payment method (M-Pesa / Cash on delivery): ', 'cohf-child' );
+	$out[] = '';
+	$out[] = __( 'Kindly confirm availability, the delivery fee and payment details. Thank you.', 'cohf-child' );
+
 	return implode( "\n", $out );
 }
 
@@ -122,7 +155,7 @@ function cohf_shop_wa_order_redirect() {
 				'name' => $product->get_name(),
 				'qty'  => (int) $item['quantity'],
 				'unit' => (float) wc_get_price_to_display( $product ),
-				'url'  => '',
+				'url'  => $product->is_visible() ? $product->get_permalink() : '',
 			);
 		}
 	}
@@ -133,7 +166,7 @@ function cohf_shop_wa_order_redirect() {
 	}
 
 	$text = empty( $lines )
-		? __( 'Hello Cistern of Hope Foundation, I would like to order from Hope Market.', 'cohf-child' )
+		? __( "Hello Hope Market team,\n\nI would like to place an order from your website. Kindly share the available items and payment details. Thank you.", 'cohf-child' )
 		: cohf_shop_wa_message( $lines );
 
 	wp_redirect( 'https://wa.me/' . $digits . '?text=' . rawurlencode( $text ) ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- WhatsApp is the intended destination.
