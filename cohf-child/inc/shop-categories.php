@@ -306,3 +306,25 @@ function cohf_shop_single_category() {
 	}
 }
 add_action( 'woocommerce_single_product_summary', 'cohf_shop_single_category', 4 );
+
+/**
+ * Options note above Add to cart (12.8.0).
+ * Products whose description asks for a size, design or colour "in the order
+ * notes" now say so before the button, not only in the Description tab.
+ */
+function cohf_shop_options_note() {
+	global $product;
+	if ( ! $product ) {
+		return;
+	}
+	$text = wp_strip_all_tags( $product->get_description() . ' ' . $product->get_short_description() );
+	if ( ! preg_match( '/[^.]*\border notes\b[^.]*\./i', $text, $m ) ) {
+		return;
+	}
+	printf(
+		'<p class="product-options-note"><strong>%1$s</strong> %2$s</p>',
+		esc_html__( 'Choose your option:', 'cohf-child' ),
+		esc_html( trim( $m[0] ) )
+	);
+}
+add_action( 'woocommerce_single_product_summary', 'cohf_shop_options_note', 25 );

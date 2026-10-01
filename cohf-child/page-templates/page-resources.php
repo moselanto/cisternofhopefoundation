@@ -76,8 +76,9 @@ $library = new WP_Query( $query_args );
 			<div class="section-head">
 				<div>
 					<div class="kicker"><?php esc_html_e( 'Document library', 'cohf-child' ); ?></div>
-					<h2><?php esc_html_e( 'Search the library.', 'cohf-child' ); ?></h2>
+					<h2><?php echo ( $library->have_posts() || '' !== $search ) ? esc_html__( 'Search the library.', 'cohf-child' ) : esc_html__( 'Documents on the way.', 'cohf-child' ); ?></h2>
 				</div>
+				<?php if ( $library->have_posts() || '' !== $search ) : ?>
 				<form class="search-form" method="get" action="<?php echo esc_url( get_permalink() ); ?>">
 					<label class="search-form__label" for="resource-search"><?php esc_html_e( 'Search resources', 'cohf-child' ); ?></label>
 					<div class="search-form__row">
@@ -85,6 +86,9 @@ $library = new WP_Query( $query_args );
 						<button class="btn dark" type="submit"><?php esc_html_e( 'Search', 'cohf-child' ); ?></button>
 					</div>
 				</form>
+				<?php else : ?>
+				<a class="btn dark" href="<?php echo esc_url( home_url( '/contact/#enquire' ) ); ?>"><?php esc_html_e( 'Request a document', 'cohf-child' ); ?></a>
+				<?php endif; ?>
 			</div>
 
 			<?php if ( ! empty( $types ) && ! is_wp_error( $types ) ) : ?>

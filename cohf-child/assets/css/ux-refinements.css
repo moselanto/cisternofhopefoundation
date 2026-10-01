@@ -3224,3 +3224,33 @@ a.contact-card:focus-visible { outline: 3px solid var(--gold); outline-offset: 2
    -------------------------------------------------------------------------- */
 .hero--slider h2.hero__h{font-family:var(--font-display);font-size:clamp(27px,3.5vw,46px);font-weight:500;line-height:1.07;letter-spacing:-0.021em;margin:10px auto;max-width:20ch;color:inherit}
 @media(max-height:620px){.hero--slider h2.hero__h{font-size:clamp(24px,3vw,34px)}}
+
+/* --------------------------------------------------------------------------
+   12.8.0 Final polish
+   -------------------------------------------------------------------------- */
+/* Header on laptops: the wordmark wraps onto two short lines instead of
+   being cut off ("CISTERN OF HOPE FOUNDA..."), the tagline steps aside and
+   the links tighten, so Explore no longer crowds the Support button. */
+@media (min-width: 901px) and (max-width: 1366px) {
+  .brand > span { white-space: normal; overflow: visible; text-overflow: clip; max-width: 165px; font-size: 12.5px; line-height: 1.15; }
+  .brand > span small { display: none; }
+  .links { gap: 0 12px; font-size: 13.5px; }
+  .navgroup__btn { font-size: 13.5px; }
+  header .cta { padding: 10px 14px; font-size: 12.5px; white-space: nowrap; }
+}
+@media (min-width: 901px) and (max-width: 1080px) {
+  .links { gap: 0 9px; font-size: 12.5px; }
+  .navgroup__btn { font-size: 12.5px; }
+}
+/* Sticky header never hides the top of a section reached by a link. */
+html { scroll-padding-top: 110px; }
+
+/* "All programmes" / "All impact stories" link at the top of detail pages. */
+.page-hero .back-link { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 14px; color: #d6e3dc; font-size: 14px; font-weight: 700; text-decoration: none; }
+.page-hero .back-link:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+
+/* About: the "12 programme areas" fact is now a link. */
+.fact span a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Resources: request button sits where the empty search used to be. */
+.section-head > .btn.dark { align-self: end; }

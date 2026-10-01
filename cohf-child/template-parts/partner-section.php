@@ -10,6 +10,9 @@
 defined( 'ABSPATH' ) || exit;
 
 $partners = function_exists( 'cohf_confirmed_partners' ) ? cohf_confirmed_partners() : array();
+if ( empty( $partners ) ) {
+	return; // Nothing to showcase yet: no empty section in the middle of the page.
+}
 ?>
 <section class="cream" id="our-partners">
 	<div class="container">

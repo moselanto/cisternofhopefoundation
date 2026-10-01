@@ -67,7 +67,7 @@ if ( $bundled ) {
 		<?php endif; ?>
 
 		<?php if ( empty( $bio ) ) : ?>
-			<p class="leader-card__bio leader-card__bio--pending"><?php esc_html_e( 'Full profile to follow.', 'cohf-child' ); ?></p>
+			<?php /* No "profile to follow" placeholder: name and role stand on their own. */ ?>
 		<?php else : ?>
 			<p class="leader-card__bio"><?php echo esc_html( $bio ); ?></p>
 			<button type="button"

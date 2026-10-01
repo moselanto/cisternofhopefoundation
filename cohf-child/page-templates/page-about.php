@@ -99,7 +99,7 @@ $org        = cohf_org();
 					</div>
 					<div class="fact">
 						<strong><?php esc_html_e( '12', 'cohf-child' ); ?></strong>
-						<span><?php esc_html_e( 'Connected programme areas', 'cohf-child' ); ?></span>
+						<span><a href="<?php echo esc_url( home_url( '/programmes-overview/' ) ); ?>"><?php esc_html_e( 'Connected programme areas', 'cohf-child' ); ?> &rarr;</a></span>
 					</div>
 				</div>
 				<a class="btn outline" href="<?php echo esc_url( $leadership ); ?>"><?php esc_html_e( 'Leadership &amp; Governance', 'cohf-child' ); ?></a>

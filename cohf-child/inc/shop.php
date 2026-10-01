@@ -418,7 +418,7 @@ function cohf_shop_toolbar_open() {
 
 	$terms = function_exists( 'cohf_shop_visible_categories' ) ? cohf_shop_visible_categories() : array();
 
-	if ( count( $terms ) > 1 ) {
+	if ( count( $terms ) > 1 && ! is_shop() ) { // Shop page already has category tiles.
 		$current = is_product_category() ? (int) get_queried_object_id() : 0;
 		echo '<nav class="shop-cats-nav" aria-label="' . esc_attr__( 'Shop categories', 'cohf-child' ) . '"><ul class="shop-cats">';
 		printf(

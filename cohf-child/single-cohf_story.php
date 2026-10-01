@@ -28,6 +28,7 @@ while ( have_posts() ) :
 
 		<section class="page-hero">
 			<div class="container">
+				<a class="back-link" href="<?php echo esc_url( get_post_type_archive_link( 'cohf_story' ) ? get_post_type_archive_link( 'cohf_story' ) : home_url( '/impact/' ) ); ?>">&larr; <?php esc_html_e( 'All impact stories', 'cohf-child' ); ?></a>
 				<div class="eyebrow"><?php esc_html_e( 'Impact story', 'cohf-child' ); ?></div>
 				<h1><?php the_title(); ?></h1>
 				<?php if ( $location || $date ) : ?>

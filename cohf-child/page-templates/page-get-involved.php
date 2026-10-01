@@ -28,9 +28,9 @@ $cta     = cohf_cta_links();
 			<div class="grid">
 				<?php
 				$routes = array(
-					array( '01', __( 'Partner With Us', 'cohf-child' ),    __( 'Explore programme, technical, market, research and institutional partnerships.', 'cohf-child' ), $cta['partner'] ),
-					array( '02', __( 'Support Our Work', 'cohf-child' ),   __( 'Support programmes and strengthen pathways toward self-reliance.', 'cohf-child' ), $cta['support'] ),
-					array( '03', __( 'Volunteer &amp; Mentor', 'cohf-child' ), __( 'Bring your time, skills, relationships or professional expertise.', 'cohf-child' ), $contact . '#enquire' ),
+					array( '01', __( 'Partner With Us', 'cohf-child' ),    __( 'Explore programme, technical, market, research and institutional partnerships.', 'cohf-child' ), $cta['partner'], __( 'Explore partnerships', 'cohf-child' ) ),
+					array( '02', __( 'Support Our Work', 'cohf-child' ),   __( 'Support programmes and strengthen pathways toward self-reliance.', 'cohf-child' ), $cta['support'], __( 'Give now', 'cohf-child' ) ),
+					array( '03', __( 'Volunteer &amp; Mentor', 'cohf-child' ), __( 'Bring your time, skills, relationships or professional expertise.', 'cohf-child' ), $contact . '#enquire', __( 'Volunteer with us', 'cohf-child' ) ),
 				);
 				foreach ( $routes as $route ) :
 					?>
@@ -39,7 +39,7 @@ $cta     = cohf_cta_links();
 							<div class="kicker"><?php echo esc_html( $route[0] ); ?></div>
 							<h3><?php echo esc_html( wp_strip_all_tags( $route[1] ) ); ?></h3>
 							<p><?php echo esc_html( $route[2] ); ?></p>
-							<a class="arrow" href="<?php echo esc_url( $route[3] ); ?>"><?php esc_html_e( 'Start a conversation', 'cohf-child' ); ?></a>
+							<a class="arrow" href="<?php echo esc_url( $route[3] ); ?>"><?php echo esc_html( $route[4] ); ?></a>
 						</div>
 					</article>
 					<?php

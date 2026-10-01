@@ -664,3 +664,11 @@ form.wc-block-components-totals-coupon__form{display:flex;gap:10px}
 
 /* 12.3.2: postcode field is hidden in PHP; this is a belt-and-braces hide. */
 .wc-block-components-address-form__postcode,.cohf-hidden-postcode{display:none !important}
+
+/* 12.8.0: options note above Add to cart; tighter gap before Related. */
+.product-options-note{margin:0 0 16px;padding:12px 14px;border-left:3px solid var(--gold,#d9a441);border-radius:10px;background:#fbf6ea;color:#3d4a44;font-size:14.5px;line-height:1.5}
+.product-options-note strong{color:var(--forest,#123a2d)}
+.woocommerce div.product .woocommerce-tabs{margin-bottom:24px}
+.woocommerce div.product .woocommerce-tabs .panel{margin-bottom:0}
+.woocommerce div.product .related,.woocommerce div.product .upsells{margin-top:24px;padding-top:0}
+.woocommerce div.product .summary{margin-bottom:24px}

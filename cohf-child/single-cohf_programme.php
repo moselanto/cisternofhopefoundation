@@ -20,6 +20,7 @@ while ( have_posts() ) :
 
 		<section class="page-hero">
 			<div class="container">
+				<a class="back-link" href="<?php echo esc_url( home_url( '/programmes-overview/' ) ); ?>">&larr; <?php esc_html_e( 'All programmes', 'cohf-child' ); ?></a>
 				<div class="eyebrow">
 					<?php
 					echo $number
@@ -39,7 +40,17 @@ while ( have_posts() ) :
 				<div>
 					<div class="kicker"><?php esc_html_e( 'About this programme', 'cohf-child' ); ?></div>
 					<h2><?php esc_html_e( 'What this work involves.', 'cohf-child' ); ?></h2>
-					<div class="prose"><?php the_content(); ?></div>
+					<div class="prose">
+						<?php
+						if ( '' !== trim( wp_strip_all_tags( get_the_content() ) ) ) {
+							the_content();
+						} elseif ( has_excerpt() ) {
+							echo '<p>' . esc_html( get_the_excerpt() ) . '</p>';
+						} elseif ( $purpose ) {
+							echo '<p>' . esc_html( $purpose ) . '</p>';
+						}
+						?>
+					</div>
 				</div>
 				<?php
 				if ( $image ) {

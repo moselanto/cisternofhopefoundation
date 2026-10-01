@@ -52,7 +52,7 @@ $thanks = isset( $_GET['giving'] ) && 'thank-you' === $_GET['giving'];
 						<span class="sec-label__text"><?php esc_html_e( 'Give', 'cohf-child' ); ?></span>
 					</div>
 					<h2 class="sec-statement"><?php esc_html_e( 'Every contribution should have a clear purpose.', 'cohf-child' ); ?></h2>
-					<p class="sec-lede"><?php esc_html_e( 'Choose an amount and the area of work you want it to strengthen. You can give once or, if you prefer, every month.', 'cohf-child' ); ?></p>
+					<p class="sec-lede"><?php esc_html_e( 'Choose an amount and the area of work you want it to strengthen. Every gift, large or small, goes to the work you choose.', 'cohf-child' ); ?></p>
 
 					<?php
 					/*

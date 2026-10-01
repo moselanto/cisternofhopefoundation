@@ -1518,7 +1518,7 @@ function cohf_seed_support() {
 	$give_copy = cohf_seed_group(
 		$sec_label( __( 'Give', 'cohf-child' ) )
 		. cohf_seed_h( __( 'Every contribution should have a clear purpose.', 'cohf-child' ), 2, 'sec-statement' )
-		. cohf_seed_p( __( 'Choose an amount and the area of work you want it to strengthen. You can give once or, if you prefer, every month.', 'cohf-child' ), 'sec-lede' )
+		. cohf_seed_p( __( 'Choose an amount and the area of work you want it to strengthen. Every gift, large or small, goes to the work you choose.', 'cohf-child' ), 'sec-lede' )
 		. cohf_seed_checklist( $assurances, 'give-assure' )
 		. $arrow( __( 'How we account for what we receive', 'cohf-child' ), $accountability ),
 		'give-layout__copy'
