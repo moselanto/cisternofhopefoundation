@@ -807,6 +807,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Each flower and leaf is shaped by hand from clay and painted, so details vary slightly from the photo. Price is for one vase.', 'cohf-child' ),
 			'order'    => 73,
 		),
+		'clay-mural-dancing-couple' => array(
+			'name'     => __( '3D Clay Mural Relief Wall Art - Dancing Tribal Couple', 'cohf-child' ),
+			'price'    => '6000',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'clay-mural-dancing-couple.jpg',
+			'alt'      => __( 'A framed 3D clay relief of two tall tribal dancers in bronze and silver tones, one dancing and one holding a drum, on a dark textured background in a brown wooden frame.', 'cohf-child' ),
+			'short'    => __( 'Framed 3D clay relief of a dancing tribal couple with a drum, finished in bronze and silver tones. A striking piece for a living room or entrance.', 'cohf-child' ),
+			'long'     => __( 'The figures are sculpted by hand in clay, raised from the background and finished with metallic paints, so details vary slightly from the photo. Mounted in a wooden frame, ready to hang. Price is for one framed mural.', 'cohf-child' ),
+			'order'    => 74,
+		),
 	);
 }
 
