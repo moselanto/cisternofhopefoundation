@@ -10,7 +10,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'COHF_CHILD_VERSION', '12.9.0' );
+define( 'COHF_CHILD_VERSION', '13.0.0' );
 define( 'COHF_CHILD_DIR', get_stylesheet_directory() );
 define( 'COHF_CHILD_URI', get_stylesheet_directory_uri() );
 
@@ -38,6 +38,7 @@ foreach ( array(
 	'anti-spam',
 	'accessibility',
 	'seo',
+	'schema',
 	'redirects',
 	'page-body',
 	'block-patterns',
