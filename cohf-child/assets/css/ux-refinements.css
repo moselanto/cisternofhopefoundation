@@ -3231,7 +3231,9 @@ a.contact-card:focus-visible { outline: 3px solid var(--gold); outline-offset: 2
 /* Header on laptops: the wordmark wraps onto two short lines instead of
    being cut off ("CISTERN OF HOPE FOUNDA..."), the tagline steps aside and
    the links tighten, so Explore no longer crowds the Support button. */
-@media (min-width: 901px) and (max-width: 1366px) {
+/* 12.8.2: applies at every desktop width. The header container caps at
+   1180px, so a wide screen has the same squeeze as a laptop. */
+@media (min-width: 901px) {
   .brand > span { white-space: normal; overflow: visible; text-overflow: clip; max-width: 165px; font-size: 12.5px; line-height: 1.15; }
   .brand > span small { display: none; }
   .links { gap: 0 12px; font-size: 13.5px; }
