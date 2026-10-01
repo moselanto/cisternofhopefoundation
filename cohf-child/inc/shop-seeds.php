@@ -947,6 +947,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Hand-beaded on genuine leather, so beadwork varies slightly from pair to pair. Add your shoe size (EU or UK) in the order notes and we will confirm fit before dispatch. Price is for one pair.', 'cohf-child' ),
 			'order'    => 86,
 		),
+		'maasai-beaded-leather-bracelet' => array(
+			'name'     => __( 'Maasai Beaded Leather Bracelet', 'cohf-child' ),
+			'price'    => '850',
+			'category' => __( 'Jewellery', 'cohf-child' ),
+			'image'    => 'maasai-beaded-leather-bracelets.jpg',
+			'alt'      => __( 'A row of black leather cuff bracelets with snap fasteners, each beaded in bands of blue, red, orange and green with a round beaded medallion in the centre.', 'cohf-child' ),
+			'short'    => __( 'A black leather cuff with bold Maasai beadwork and a round beaded medallion, fastened with adjustable snap buttons.', 'cohf-child' ),
+			'long'     => __( 'Beaded by hand on genuine leather by Maasai artisans, with two snap positions so it fits most wrists. Colour order varies slightly from piece to piece. Price is for one bracelet.', 'cohf-child' ),
+			'order'    => 87,
+		),
 	);
 }
 
