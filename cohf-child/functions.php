@@ -10,7 +10,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'COHF_CHILD_VERSION', '12.3.2' );
+define( 'COHF_CHILD_VERSION', '12.4.0' );
 define( 'COHF_CHILD_DIR', get_stylesheet_directory() );
 define( 'COHF_CHILD_URI', get_stylesheet_directory_uri() );
 
@@ -60,6 +60,7 @@ foreach ( array(
 	'shop-seeds',
 	'shop-categories',
 	'shop-cart',
+	'shop-checkout',
 	'shop-search',
 	'shop-premium',
 	'template-tags',
