@@ -671,6 +671,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Made by hand from natural clay, so shape, texture and colour vary slightly. The handles make it easy to carry from stove to table. Price is for one pot with its lid.', 'cohf-child' ),
 			'order'    => 63,
 		),
+		'traditional-clay-pot-dark-brown' => array(
+			'name'     => __( 'Traditional Clay Pot - Dark Brown', 'cohf-child' ),
+			'price'    => '2500',
+			'category' => __( 'Home and kitchen', 'cohf-child' ),
+			'image'    => 'traditional-clay-pot-dark-brown.jpg',
+			'alt'      => __( 'A round dark brown clay pot with a flared rim and a woven-texture band around its body, on a white background.', 'cohf-child' ),
+			'short'    => __( 'Handmade dark brown clay pot with a flared rim and a woven-texture band, for serving, storage or kitchen decor.', 'cohf-child' ),
+			'long'     => __( 'Made by hand from natural clay, so shape, texture and colour vary slightly from pot to pot. Price is for one pot.', 'cohf-child' ),
+			'order'    => 64,
+		),
 	);
 }
 
