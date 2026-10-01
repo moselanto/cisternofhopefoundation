@@ -3054,3 +3054,67 @@ footer .brand .mark--logo,
   border-radius: 50%;
 }
 .hero__dot:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+
+
+/* --------------------------------------------------------------------------
+   24. Footer redesign (11.3.0)
+   Desktop keeps its four columns. On phones the footer was one long column
+   of links ~95px apart (44px tap targets plus inherited margins), with the
+   contact details as plain links and a legal line ending in a stray dot.
+   Now: brand block with two calls to action, Explore and Get involved side
+   by side, contact details as tappable cards with icons, social icons, and
+   a tidy legal row above the copyright line.
+   -------------------------------------------------------------------------- */
+.foot-descriptor { max-width: 340px; }
+.foot-cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.foot .foot-cta a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; margin: 0; padding: 10px 18px; border-radius: 999px; font-weight: 800; font-size: 14px; text-decoration: none; transition: background .2s, color .2s, border-color .2s; }
+.foot .foot-cta__give { background: var(--gold); color: #102d24; }
+.foot .foot-cta__give:hover { background: #e8b84a; color: #102d24; }
+.foot .foot-cta__partner { border: 1px solid #ffffff4d; color: #fff; }
+.foot .foot-cta__partner:hover { border-color: var(--gold); color: var(--gold); }
+
+.foot-contact { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.foot-contact li { margin: 0; }
+.foot .foot-contact a { display: flex; align-items: center; gap: 12px; margin: 0; padding: 6px 0; color: #d6e1db; text-decoration: none; line-height: 1.35; }
+.foot .foot-contact a:hover { color: #fff; }
+.foot-contact__icon { flex: 0 0 34px; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; background: #ffffff12; color: var(--gold); }
+.foot-contact__icon svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.foot-contact small { display: block; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #8fa89c; }
+
+.copyright { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 24px; }
+.foot-legal { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.foot-legal li { margin: 0; }
+.foot-legal a { color: #b9c9c1; text-decoration: none; }
+.foot-legal a:hover { color: #fff; text-decoration: underline; }
+.copyright__line { margin: 0; }
+
+@media (max-width: 760px) {
+  footer { padding: 48px 0 20px; }
+  .foot { grid-template-columns: 1fr 1fr; gap: 34px 20px; }
+  .foot > div:first-child,
+  .foot-col--contact { grid-column: 1 / -1; }
+
+  footer .brand { gap: 12px; }
+  .foot-descriptor { margin: 14px 0 0; font-size: 15px; line-height: 1.6; color: #c3d3cb; }
+  .foot-cta { margin-top: 20px; }
+  .foot .foot-cta a { flex: 1 1 0; min-width: 0; padding: 12px 10px; font-size: 14px; }
+
+  .foot h3 { margin: 0 0 10px; font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
+  .foot-col--explore,
+  .foot-col--involved { padding-top: 26px; border-top: 1px solid #ffffff1a; }
+  .foot .foot-col--explore a,
+  .foot .foot-col--involved a { min-height: 40px; margin: 0; padding: 0; font-size: 15px; color: #d6e1db; }
+
+  .foot-col--contact { padding-top: 26px; border-top: 1px solid #ffffff1a; }
+  .foot-contact { gap: 10px; }
+  .foot .foot-contact a { min-height: 0; padding: 12px 14px; border: 1px solid #ffffff14; border-radius: 14px; background: #ffffff08; font-size: 15px; word-break: break-word; }
+  .foot .foot-contact a:active { background: #ffffff14; }
+  .foot-social { margin-top: 18px; gap: 10px; }
+
+  .copyright { margin-top: 32px; padding-top: 22px; flex-direction: column; align-items: center; text-align: center; gap: 14px; }
+  .foot-legal { justify-content: center; gap: 0; }
+  .foot-legal li + li:before { content: ""; display: inline-block; width: 3px; height: 3px; margin: 0 10px; border-radius: 50%; background: #6f877c; vertical-align: middle; }
+  .foot-legal li { display: inline-flex; align-items: center; }
+  .copyright .foot-legal a { min-height: 36px; display: inline-flex; align-items: center; font-size: 13px; }
+  .copyright__line { font-size: 12.5px; color: #8fa89c; line-height: 1.5; max-width: 300px; }
+}

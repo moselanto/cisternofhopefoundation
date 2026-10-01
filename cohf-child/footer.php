@@ -19,10 +19,14 @@ $acct = cohf_page_url( 'page-templates/page-accountability.php' );
 				<?php cohf_logo_mark( 44 ); ?>
 				<span><?php echo esc_html( strtoupper( $org['name'] ) ); ?><small><?php echo esc_html( strtoupper( rtrim( $org['motto'], '.' ) ) ); ?></small></span>
 			</div>
-			<p><?php echo esc_html( $org['descriptor'] ); ?></p>
+			<p class="foot-descriptor"><?php echo esc_html( $org['descriptor'] ); ?></p>
+			<div class="foot-cta">
+				<a class="foot-cta__give" href="<?php echo esc_url( cohf_page_url( 'page-templates/page-support.php' ) ); ?>"><?php esc_html_e( 'Support Our Work', 'cohf-child' ); ?></a>
+				<a class="foot-cta__partner" href="<?php echo esc_url( cohf_page_url( 'page-templates/page-partners.php' ) ); ?>"><?php esc_html_e( 'Partner With Us', 'cohf-child' ); ?></a>
+			</div>
 		</div>
 
-		<div>
+		<div class="foot-col foot-col--explore">
 			<h3><?php esc_html_e( 'Explore', 'cohf-child' ); ?></h3>
 			<a href="<?php echo esc_url( cohf_page_url( 'page-templates/page-about.php' ) ); ?>"><?php esc_html_e( 'About', 'cohf-child' ); ?></a>
 			<a href="<?php echo esc_url( cohf_page_url( 'page-templates/page-programmes.php' ) ); ?>"><?php esc_html_e( 'Programmes', 'cohf-child' ); ?></a>
@@ -34,7 +38,7 @@ $acct = cohf_page_url( 'page-templates/page-accountability.php' );
 			<a href="<?php echo esc_url( cohf_page_url( 'page-templates/page-approach.php' ) ); ?>"><?php esc_html_e( 'Our Approach', 'cohf-child' ); ?></a>
 		</div>
 
-		<div>
+		<div class="foot-col foot-col--involved">
 			<h3><?php esc_html_e( 'Get involved', 'cohf-child' ); ?></h3>
 			<a href="<?php echo esc_url( cohf_page_url( 'page-templates/page-support.php' ) ); ?>"><?php esc_html_e( 'Support Our Work', 'cohf-child' ); ?></a>
 			<a href="<?php echo esc_url( cohf_page_url( 'page-templates/page-partners.php' ) ); ?>"><?php esc_html_e( 'Partner With Us', 'cohf-child' ); ?></a>
@@ -42,11 +46,20 @@ $acct = cohf_page_url( 'page-templates/page-accountability.php' );
 			<a href="<?php echo esc_url( cohf_page_url( 'page-templates/page-resources.php' ) ); ?>"><?php esc_html_e( 'Resources', 'cohf-child' ); ?></a>
 		</div>
 
-		<div>
+		<div class="foot-col foot-col--contact">
 			<h3><?php esc_html_e( 'Contact', 'cohf-child' ); ?></h3>
-			<a href="<?php echo esc_url( cohf_page_url( 'page-templates/page-contact.php' ) ); ?>"><?php echo esc_html( $org['address'] ); ?></a>
-			<a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $org['phone'] ) ); ?>"><?php echo esc_html( $org['phone'] ); ?></a>
-			<a href="mailto:<?php echo esc_attr( $org['email'] ); ?>"><?php echo esc_html( $org['email'] ); ?></a>
+			<?php
+			$cohf_wa_src    = ! empty( $org['whatsapp'] ) ? $org['whatsapp'] : $org['phone'];
+			$cohf_wa_digits = preg_replace( '/[^0-9]/', '', (string) $cohf_wa_src );
+			?>
+			<ul class="foot-contact">
+				<li><a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $org['phone'] ) ); ?>"><span class="foot-contact__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg></span><span><small><?php esc_html_e( 'Call us', 'cohf-child' ); ?></small><?php echo esc_html( $org['phone'] ); ?></span></a></li>
+				<?php if ( $cohf_wa_digits ) : ?>
+				<li><a href="<?php echo esc_url( 'https://wa.me/' . $cohf_wa_digits ); ?>" target="_blank" rel="noopener"><span class="foot-contact__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-13.4 7.8L3 21l1.2-4.4A9 9 0 1 1 21 12Z"/></svg></span><span><small><?php esc_html_e( 'WhatsApp', 'cohf-child' ); ?></small><?php esc_html_e( 'Chat with us', 'cohf-child' ); ?></span></a></li>
+				<?php endif; ?>
+				<li><a href="mailto:<?php echo esc_attr( $org['email'] ); ?>"><span class="foot-contact__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><span><small><?php esc_html_e( 'Email', 'cohf-child' ); ?></small><?php echo esc_html( $org['email'] ); ?></span></a></li>
+				<li><a href="<?php echo esc_url( cohf_page_url( 'page-templates/page-contact.php' ) ); ?>"><span class="foot-contact__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span><span><small><?php esc_html_e( 'Postal address', 'cohf-child' ); ?></small><?php echo esc_html( $org['address'] ); ?></span></a></li>
+			</ul>
 			<?php
 			// Social links appear only once a URL is saved under
 			// Foundation > Organisation details > Social media.
@@ -76,27 +89,27 @@ $acct = cohf_page_url( 'page-templates/page-accountability.php' );
 	</div>
 
 	<div class="container copyright">
-		<?php
-		printf(
-			/* translators: 1: year, 2: organisation name. */
-			esc_html__( '%1$s %2$s. Together for a lasting change.', 'cohf-child' ),
-			esc_html( html_entity_decode( '&copy;', ENT_QUOTES, 'UTF-8' ) . ' ' . gmdate( 'Y' ) ),
-			esc_html( $org['name'] )
-		);
-		?>
-		<span aria-hidden="true"> &middot; </span>
-		<a href="<?php echo esc_url( function_exists( 'cohf_privacy_url' ) ? cohf_privacy_url() : $acct . '#data-protection' ); ?>"><?php esc_html_e( 'Privacy Policy', 'cohf-child' ); ?></a>
-		<span aria-hidden="true"> &middot; </span>
-		<?php foreach ( array( 'terms-of-use' => __( 'Terms of Use', 'cohf-child' ), 'donation-policy' => __( 'Donation Policy', 'cohf-child' ) ) as $cohf_slug => $cohf_label ) : ?>
-			<?php $cohf_url = function_exists( 'cohf_legal_url' ) ? cohf_legal_url( $cohf_slug ) : ''; ?>
-			<?php if ( $cohf_url ) : ?>
-				<a href="<?php echo esc_url( $cohf_url ); ?>"><?php echo esc_html( $cohf_label ); ?></a>
-				<span aria-hidden="true"> &middot; </span>
-			<?php endif; ?>
-		<?php endforeach; ?>
-		<a href="<?php echo esc_url( $acct ); ?>#safeguarding"><?php esc_html_e( 'Safeguarding', 'cohf-child' ); ?></a>
-		<span aria-hidden="true"> &middot; </span>
-		<a href="<?php echo esc_url( $acct ); ?>#complaints"><?php esc_html_e( 'Complaints &amp; Feedback', 'cohf-child' ); ?></a>
+		<ul class="foot-legal">
+			<li><a href="<?php echo esc_url( function_exists( 'cohf_privacy_url' ) ? cohf_privacy_url() : $acct . '#data-protection' ); ?>"><?php esc_html_e( 'Privacy Policy', 'cohf-child' ); ?></a></li>
+			<?php foreach ( array( 'terms-of-use' => __( 'Terms of Use', 'cohf-child' ), 'donation-policy' => __( 'Donation Policy', 'cohf-child' ) ) as $cohf_slug => $cohf_label ) : ?>
+				<?php $cohf_url = function_exists( 'cohf_legal_url' ) ? cohf_legal_url( $cohf_slug ) : ''; ?>
+				<?php if ( $cohf_url ) : ?>
+					<li><a href="<?php echo esc_url( $cohf_url ); ?>"><?php echo esc_html( $cohf_label ); ?></a></li>
+				<?php endif; ?>
+			<?php endforeach; ?>
+			<li><a href="<?php echo esc_url( $acct ); ?>#safeguarding"><?php esc_html_e( 'Safeguarding', 'cohf-child' ); ?></a></li>
+			<li><a href="<?php echo esc_url( $acct ); ?>#complaints"><?php esc_html_e( 'Complaints &amp; Feedback', 'cohf-child' ); ?></a></li>
+		</ul>
+		<p class="copyright__line">
+			<?php
+			printf(
+				/* translators: 1: year, 2: organisation name. */
+				esc_html__( '%1$s %2$s. Together for a lasting change.', 'cohf-child' ),
+				esc_html( html_entity_decode( '&copy;', ENT_QUOTES, 'UTF-8' ) . ' ' . gmdate( 'Y' ) ),
+				esc_html( $org['name'] )
+			);
+			?>
+		</p>
 	</div>
 </footer>
 <?php wp_footer(); ?>
