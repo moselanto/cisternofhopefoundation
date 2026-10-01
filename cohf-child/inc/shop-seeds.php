@@ -857,6 +857,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Beaded by hand on a firm wire frame by Maasai artisans, so every band is unique and patterns vary from the photo. Tell us your preferred colours or pattern in the order notes and we will pick the closest match. Price is for one bracelet or wristband.', 'cohf-child' ),
 			'order'    => 77,
 		),
+		'maasai-beaded-collar-necklace' => array(
+			'name'     => __( 'Maasai Beaded Collar Necklace', 'cohf-child' ),
+			'price'    => '4000',
+			'category' => __( 'Jewellery', 'cohf-child' ),
+			'image'    => 'maasai-beaded-collar-necklace.jpg',
+			'alt'      => __( 'A round Maasai beaded collar necklace with a bold triangle pattern in red, white, blue, green, yellow and black, a beaded front panel and long multicoloured bead fringes, fastened with a hook clasp.', 'cohf-child' ),
+			'short'    => __( 'A statement Maasai collar necklace, hand-beaded in bold triangle patterns with a front panel and long colourful bead fringes.', 'cohf-child' ),
+			'long'     => __( 'Beaded by hand by Maasai artisans on a flat, flexible collar, with a hook-and-chain clasp at the back. Each collar is unique, so colours and pattern vary slightly from the photo. Price is for one necklace.', 'cohf-child' ),
+			'order'    => 78,
+		),
 	);
 }
 
