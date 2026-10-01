@@ -722,3 +722,33 @@ form.wc-block-components-totals-coupon__form{display:flex;gap:10px}
 @media (max-width:360px){
   .woocommerce ul.products,.woocommerce-page ul.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 }
+
+/* ==========================================================================
+   13.26.0 Hope Market toolbar and page polish (CSS only, no markup changes)
+   ========================================================================== */
+/* Toolbar as one clean card: price filter left, count and sort right. */
+@media (min-width:761px){
+  .woocommerce .shop-toolbar{background:#fff;border:1px solid var(--line) ;border-radius:18px;padding:14px 18px;box-shadow:0 1px 2px rgba(23,35,30,.04);gap:12px 20px}
+}
+/* Price filter: a segmented control instead of loose links. */
+.shop-prices{gap:6px}
+.shop-prices__label{display:inline-flex;align-items:center;gap:6px;margin-right:6px;padding:0;color:var(--forest,#163f32);font-size:11.5px;letter-spacing:.12em}
+.shop-prices__label::before{content:"";width:16px;height:16px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z'/%3E%3Ccircle cx='7.5' cy='7.5' r='1.5'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z'/%3E%3Ccircle cx='7.5' cy='7.5' r='1.5'/%3E%3C/svg%3E") center/contain no-repeat}
+.shop-price-chip{min-height:36px;padding:6px 14px;border-color:transparent;background:#f4f1ea;color:#3b4842;font-size:13.5px;font-weight:700;transition:background .2s ease,color .2s ease,box-shadow .2s ease}
+.shop-price-chip:hover{background:#e8e2d4;border-color:transparent;color:var(--ink)}
+.shop-price-chip[aria-current="true"]{background:var(--forest,#163f32);color:#fff;box-shadow:0 4px 12px rgba(22,63,50,.22)}
+.shop-price-chip:focus-visible{outline:3px solid var(--gold,#d9a441);outline-offset:2px}
+/* Result count and sort. */
+.woocommerce .shop-toolbar .woocommerce-result-count{color:#6b7771;font-weight:600}
+.woocommerce .woocommerce-ordering select{min-height:40px;padding:8px 38px 8px 14px;border:1px solid var(--line);border-radius:999px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23163f32' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center/16px;-webkit-appearance:none;appearance:none;font-size:14px}
+.woocommerce .woocommerce-ordering select:hover{border-color:var(--forest,#163f32)}
+/* Active filter chips sit neatly above the grid. */
+.shop-active__chip{background:#fbefd0}
+/* Category tiles: gentle lift and clearer labels. */
+.shop-cat-tile{transition:transform .25s ease,box-shadow .25s ease}
+.shop-cat-tile:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(23,35,30,.12)}
+.shop-cat-tile__name{font-weight:800}
+/* Load more and help band. */
+.shop-loadmore__btn{min-height:48px;padding:12px 28px;border-radius:999px;font-weight:800}
+.shop-help{border-radius:22px}
+@media (prefers-reduced-motion:reduce){.shop-cat-tile,.shop-cat-tile:hover,.shop-price-chip{transition:none;transform:none}}
