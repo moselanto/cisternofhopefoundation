@@ -238,6 +238,17 @@ function cohf_seo_description() {
 	} elseif ( is_singular() ) {
 		$post = get_queried_object();
 		if ( $post instanceof WP_Post ) {
+			$pages = cohf_seo_page_descriptions();
+			if ( 'page' === $post->post_type && isset( $pages[ $post->post_name ] ) && ! has_excerpt( $post ) ) {
+				return $pages[ $post->post_name ];
+			}
+			if ( 'cohf_leader' === $post->post_type && ! has_excerpt( $post ) ) {
+				$role = (string) get_post_meta( $post->ID, '_cohf_role', true );
+				/* translators: 1: person, 2: role. */
+				return $role
+					? sprintf( __( 'Meet %1$s, %2$s at Cistern of Hope Foundation, a Kenyan organisation working to eradicate poverty through community-led programmes.', 'cohf-child' ), get_the_title( $post ), $role )
+					: sprintf( __( 'Meet %s of the Cistern of Hope Foundation leadership team, working to eradicate poverty through community-led programmes in Kenya.', 'cohf-child' ), get_the_title( $post ) );
+			}
 			if ( has_excerpt( $post ) ) {
 				$text = $post->post_excerpt;
 			}
@@ -350,3 +361,33 @@ add_filter( 'wp_sitemaps_taxonomies', function ( $taxonomies ) {
 	unset( $taxonomies['category'] ); // Only "Uncategorized" exists; the site uses Stories instead of posts.
 	return $taxonomies;
 } );
+
+/**
+ * Hand-written descriptions for the main pages (keyed by page slug).
+ * A page excerpt set in wp-admin overrides these.
+ *
+ * @return array
+ */
+function cohf_seo_page_descriptions() {
+	return array(
+		'about'                 => __( 'Our story: how Cistern of Hope Foundation grew from a heart for people into a Kenyan movement of hope. Our vision, mission, values and direction.', 'cohf-child' ),
+		'programmes-overview'   => __( 'Twelve integrated programmes, one mission: education, youth skills, women\'s enterprise, health, water, livelihoods and more, all aimed at ending poverty.', 'cohf-child' ),
+		'impact'                => __( 'See the difference our work makes in Kenya: children kept in school, new small businesses and stronger households. Real stories and progress so far.', 'cohf-child' ),
+		'approach'              => __( 'From support to self-reliance: how we combine compassion with practical action and treat communities as partners, not recipients.', 'cohf-child' ),
+		'get-involved'          => __( 'Volunteer, partner, give or spread the word. Find the way to take part in Cistern of Hope Foundation\'s work that suits you.', 'cohf-child' ),
+		'partners-overview'     => __( 'Partner with a young, determined Kenyan organisation. The partners we welcome, what we ask partners to contribute and where we need support.', 'cohf-child' ),
+		'resources-overview'    => __( 'Reports, strategies, policies and updates from Cistern of Hope Foundation. Search the library or request a document.', 'cohf-child' ),
+		'contact'               => __( 'Contact Cistern of Hope Foundation in Nairobi to partner, support, volunteer or ask a question. Call, WhatsApp, email or send us a message.', 'cohf-child' ),
+		'leadership-governance' => __( 'Meet the board and team accountable for Cistern of Hope Foundation, and how the Foundation is governed and overseen.', 'cohf-child' ),
+		'accountability'        => __( 'How we steward resources, safeguard the people we serve, protect privacy and handle concerns. Raise a concern safely.', 'cohf-child' ),
+		'support-our-work'      => __( 'Give to Cistern of Hope Foundation securely by card or M-Pesa. See what your support makes possible and the other ways you can help.', 'cohf-child' ),
+		'strategic-journey'     => __( 'Our Strategic Journey 2026-2030: a five-year plan to establish, consolidate, scale, deepen and sustain our work, with eight connected objectives.', 'cohf-child' ),
+		'gallery'               => __( 'Photos from our programmes and communities in Kenya: real people, real places and real change, captured in the moment.', 'cohf-child' ),
+		'privacy-policy'        => __( 'How Cistern of Hope Foundation collects, uses and protects your personal information, and the choices you have.', 'cohf-child' ),
+		'terms-of-use'          => __( 'The terms that apply when you use the Cistern of Hope Foundation website, Hope Market shop and online giving.', 'cohf-child' ),
+		'donation-policy'       => __( 'How we receive, use and acknowledge donations, and how to ask for a refund if a gift was made in error.', 'cohf-child' ),
+		'cart'                  => __( 'Your Hope Market cart. Review your handmade items, then check out securely or send your order on WhatsApp.', 'cohf-child' ),
+		'checkout'              => __( 'Secure checkout for Hope Market. Pay by card through Paystack or arrange payment on delivery.', 'cohf-child' ),
+		'my-account'            => __( 'Sign in to your Hope Market account to see your orders and saved details.', 'cohf-child' ),
+	);
+}
