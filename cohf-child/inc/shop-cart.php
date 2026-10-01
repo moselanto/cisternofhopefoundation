@@ -557,3 +557,68 @@ function cohf_shop_checkout_trust( $content ) {
 }
 add_filter( 'render_block_woocommerce/checkout', 'cohf_shop_checkout_trust', 30 );
 add_filter( 'render_block_woocommerce/cart', 'cohf_shop_checkout_trust', 30 );
+
+/* -------------------------------------------------------------------------
+   No postcode at checkout (12.3.2)
+   Kenyan deliveries are arranged by town and street, so the Postcode / ZIP
+   field is hidden, never required and never validated, for every country.
+   Works for both the block checkout and the classic checkout.
+   ------------------------------------------------------------------------- */
+
+/**
+ * Default address fields: postcode optional and hidden.
+ *
+ * @param array $fields Address fields.
+ * @return array
+ */
+function cohf_shop_no_postcode_default( $fields ) {
+	if ( isset( $fields['postcode'] ) ) {
+		$fields['postcode']['required'] = false;
+		$fields['postcode']['hidden']   = true;
+		$fields['postcode']['class']    = array( 'form-row-wide', 'cohf-hidden-postcode' );
+	}
+	return $fields;
+}
+add_filter( 'woocommerce_default_address_fields', 'cohf_shop_no_postcode_default', 99 );
+
+/**
+ * Country locales override the defaults, so hide the postcode there too.
+ *
+ * @param array $locale Country locale settings.
+ * @return array
+ */
+function cohf_shop_no_postcode_locale( $locale ) {
+	if ( ! isset( $locale['KE'] ) ) {
+		$locale['KE'] = array();
+	}
+	foreach ( $locale as $country => $fields ) {
+		$locale[ $country ]['postcode'] = array(
+			'required' => false,
+			'hidden'   => true,
+		);
+	}
+	return $locale;
+}
+add_filter( 'woocommerce_get_country_locale', 'cohf_shop_no_postcode_locale', 99 );
+
+/**
+ * Never reject an order over the postcode format.
+ *
+ * @return bool
+ */
+function cohf_shop_postcode_always_valid() {
+	return true;
+}
+add_filter( 'woocommerce_validate_postcode', 'cohf_shop_postcode_always_valid', 99 );
+
+/**
+ * Classic checkout fallback: drop the field entirely.
+ *
+ * @param array $fields Checkout fields.
+ * @return array
+ */
+function cohf_shop_no_postcode_checkout( $fields ) {
+	unset( $fields['billing']['billing_postcode'], $fields['shipping']['shipping_postcode'] );
+	return $fields;
+}
+add_filter( 'woocommerce_checkout_fields', 'cohf_shop_no_postcode_checkout', 99 );

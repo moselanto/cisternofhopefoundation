@@ -654,3 +654,6 @@ form.wc-block-components-totals-coupon__form{display:flex;gap:10px}
 .wc-block-checkout__actions_row{display:flex;flex-wrap:wrap;justify-content:space-between}
 .wc-block-components-checkout-place-order-button{flex:1 1 260px;max-width:none}
 @media (max-width:760px){.wc-block-components-checkout-place-order-button{width:100%}}
+
+/* 12.3.2: postcode field is hidden in PHP; this is a belt-and-braces hide. */
+.wc-block-components-address-form__postcode,.cohf-hidden-postcode{display:none !important}
