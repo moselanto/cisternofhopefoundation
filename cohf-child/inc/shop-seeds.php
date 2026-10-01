@@ -601,6 +601,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Sculpted and painted by hand, so each mouse is slightly different. Price is for one mouse.', 'cohf-child' ),
 			'order'    => 56,
 		),
+		'ceramic-toad-lidded-jar' => array(
+			'name'     => __( 'Handmade Ceramic Toad Lidded Jar', 'cohf-child' ),
+			'price'    => '22500',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'ceramic-toad-lidded-jar.jpg',
+			'alt'      => __( 'A round stoneware jar with a hand-carved crosshatch texture and a lid topped by a detailed sculpted toad.', 'cohf-child' ),
+			'short'    => __( 'Round stoneware jar with a hand-carved crosshatch body and a lid crowned by a lifelike sculpted toad.', 'cohf-child' ),
+			'long'     => __( 'Thrown, carved and sculpted by hand, so no two are alike. A one-of-a-kind statement piece for a shelf, table or desk.', 'cohf-child' ),
+			'order'    => 57,
+		),
 	);
 }
 
