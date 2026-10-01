@@ -847,6 +847,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'A raised trunk is a traditional sign of good fortune, making this a thoughtful gift for a new home or office. Finished by hand, so shading and details vary slightly from the photo. Price is for one statue.', 'cohf-child' ),
 			'order'    => 76,
 		),
+		'maasai-beaded-bracelets-assorted' => array(
+			'name'     => __( 'Maasai Beaded Bracelets and Wristbands', 'cohf-child' ),
+			'price'    => '600',
+			'category' => __( 'Jewellery', 'cohf-child' ),
+			'image'    => 'maasai-beaded-bracelets-assorted.jpg',
+			'alt'      => __( 'An assortment of flat Maasai beaded wristbands and a cuff bracelet in bold red, blue, orange, green, black and white patterns, including a white band with a row of coloured diamonds.', 'cohf-child' ),
+			'short'    => __( 'Flat Maasai beaded wristbands and cuffs in bold traditional colours and patterns. Each one handmade, each one different.', 'cohf-child' ),
+			'long'     => __( 'Beaded by hand on a firm wire frame by Maasai artisans, so every band is unique and patterns vary from the photo. Tell us your preferred colours or pattern in the order notes and we will pick the closest match. Price is for one bracelet or wristband.', 'cohf-child' ),
+			'order'    => 77,
+		),
 	);
 }
 
