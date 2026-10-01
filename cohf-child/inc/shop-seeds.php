@@ -927,6 +927,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Each bone piece is carved and batik-dyed by hand and strung on strong elastic, so patterns vary from the photo. Styles include chunky black and white pieces and multi-row patterned tubes: tell us your preferred style in the order notes and we will pick the closest match. Price is for one bracelet.', 'cohf-child' ),
 			'order'    => 84,
 		),
+		'wooden-zebra-carving' => array(
+			'name'     => __( 'Hand-Carved Wooden Zebra', 'cohf-child' ),
+			'price'    => '6000',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'wooden-zebra-carving.jpg',
+			'alt'      => __( 'A hand-carved wooden zebra standing in profile, painted with bold black and white stripes, a black mane and black hooves.', 'cohf-child' ),
+			'short'    => __( 'A hand-carved and hand-painted wooden zebra with bold black and white stripes. A classic Kenyan safari piece for a shelf or table.', 'cohf-child' ),
+			'long'     => __( 'Carved from a single piece of wood and painted by hand, so stripes and shape vary slightly from the photo. Price is for one zebra.', 'cohf-child' ),
+			'order'    => 85,
+		),
 	);
 }
 
