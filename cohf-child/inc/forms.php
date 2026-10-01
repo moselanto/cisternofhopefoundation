@@ -107,6 +107,25 @@ function cohf_handle_enquiry() {
 		return;
 	}
 
+	// The same message sent again within a day is a replay or a bulk run:
+	// report success so a bot learns nothing, but send nothing.
+	$fingerprint = 'cohf_msg_' . md5( strtolower( preg_replace( '/\s+/', ' ', $message ) ) );
+	if ( get_transient( $fingerprint ) ) {
+		cohf_set_form_result( 'success', __( 'Thank you. Your message has been received.', 'cohf-child' ) );
+		return;
+	}
+
+	// Site-wide ceiling, so a botnet using many addresses still cannot turn
+	// the form into a mail cannon.
+	if ( function_exists( 'cohf_spam_over_limit' ) && cohf_spam_over_limit( 'enquiry_site', 30, HOUR_IN_SECONDS, false ) ) {
+		cohf_set_form_result( 'error', sprintf(
+			/* translators: %s: email address. */
+			__( 'The form is very busy right now. Please email us directly at %s.', 'cohf-child' ),
+			cohf_org_get( 'email' )
+		) );
+		return;
+	}
+
 	if ( ! $consent ) {
 		cohf_set_form_result( 'error', __( 'Please confirm you are happy for us to reply to your message.', 'cohf-child' ) );
 		return;
@@ -140,6 +159,10 @@ function cohf_handle_enquiry() {
 
 	set_transient( $key, 1, 45 );
 	set_transient( $hour_key, $hourly + 1, HOUR_IN_SECONDS );
+	set_transient( $fingerprint, 1, DAY_IN_SECONDS );
+	if ( function_exists( 'cohf_spam_over_limit' ) ) {
+		cohf_spam_over_limit( 'enquiry_site', 30, HOUR_IN_SECONDS );
+	}
 
 	if ( $sent ) {
 		cohf_set_form_result( 'success', __( 'Thank you. Your message has been sent and a member of the team will respond.', 'cohf-child' ) );

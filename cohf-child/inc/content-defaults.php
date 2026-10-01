@@ -413,7 +413,7 @@ function cohf_run_sync_media() {
 		(int) $diag['progs_found'], (int) $diag['progs_total'] );
 
 	wp_safe_redirect( admin_url( 'admin.php?page=cohf-home&cohf_media=' . (int) $updated
-		. '&cohf_links=' . (int) $links . '&cohf_dbg=' . rawurlencode( $dbg ) ) );
+		. '&cohf_links=' . (int) $links ) );
 	exit;
 }
 add_action( 'admin_post_cohf_sync_media', 'cohf_run_sync_media' );
@@ -436,14 +436,6 @@ add_action( 'admin_notices', function () {
 			)
 		)
 	);
-
-	if ( isset( $_GET['cohf_dbg'] ) ) {
-		printf(
-			'<div class="notice notice-info is-dismissible"><p><strong>%s</strong> %s</p></div>',
-			esc_html__( 'Image sync diagnostics:', 'cohf-child' ),
-			esc_html( sanitize_text_field( wp_unslash( $_GET['cohf_dbg'] ) ) . '  (L = leadership records matched, P = programme records matched)' )
-		);
-	}
 
 	$links = isset( $_GET['cohf_links'] ) ? (int) $_GET['cohf_links'] : 0;
 	if ( $links ) {

@@ -62,3 +62,61 @@ Fix: add a GitHub Action that runs `php -l` over all `.php` files on every push 
 - `.htaccess` denies direct access to `inc/`, `template-parts/`, `page-templates/`, `docs/` and non-web file types.
 - Comments and pingbacks are closed site-wide; `DISALLOW_FILE_EDIT` is set.
 - No API key, credential or hard-coded third-party secret was found in the repository.
+
+---
+
+## Update 12.1.0 (1 October 2026): anti-spam and abuse hardening
+
+Re-audit of every public entry point after the shop, cart, search and
+WhatsApp ordering work (11.x-12.0). New module: `inc/anti-spam.php`.
+
+### Entry points reviewed
+
+| Entry point | Protection now in place |
+|---|---|
+| Contact form (`inc/forms.php`) | Nonce, honeypot, signed time trap (3 s to 24 h), 1 per 45 s and 5 per hour per visitor, length limits, phone format check, max 2 links, **new:** identical message within 24 h silently dropped, **new:** site-wide ceiling of 30 enquiries per hour |
+| Giving `cohf/v1/giving/initialize` | Nonce, 5 per 5 min per visitor, server-side amount validation; donor receipts only after Paystack verification (costs money to abuse) |
+| Paystack webhook | HMAC-SHA512 signature check against the secret key |
+| Shop checkout (classic and block / Store API) | **New:** 5 orders per visitor per hour; Store API write calls capped at 120 per 5 min per visitor |
+| Cart quantity endpoint `wc-ajax=cohf_cart_qty` | Nonce (fresh via fragments), quantity capped at 99 |
+| Live search `wc-ajax=cohf_search` | Input capped at 80 chars, **new:** 90 requests per minute per visitor |
+| WhatsApp order redirect `?cohf-wa-order=` | Destination fixed to `wa.me/<site number>`; not an open redirect; quantity capped at 99 |
+| WordPress and WooCommerce registration | **New:** honeypot, signed time trap, 3 accounts per visitor per hour |
+| Password reset | **New:** 3 requests per visitor per 15 min and 3 per account per hour (stops inbox flooding) |
+| Login | 5 failures lock the visitor out for 15 min; generic error message |
+| Comments, pingbacks, XML-RPC | Disabled |
+| User enumeration | `?author=` and public REST users endpoint blocked |
+
+### Outgoing mail circuit breaker
+
+`pre_wp_mail` guard on every email sent from a public (non-admin) request,
+whichever plugin or form triggers it:
+
+- at most 5 recipients and 2 Cc/Bcc headers per message;
+- at most 60 emails per hour site-wide (filter `cohf_mail_hourly_limit`);
+- when tripped, further mail is held for the rest of the hour, the admin
+  email is told once a day, and wp-admin shows a warning for 24 hours.
+
+Administrators, shop managers and WP-CLI are exempt.
+
+### Clean-up
+
+- Removed the image-sync debug notice (`cohf_dbg` query parameter) from
+  `inc/content-defaults.php`.
+- Placeholder sweep across `cohf/` and `cohf-child/`: no lorem ipsum, TODO,
+  FIXME, dummy contact details, `console.log`, `var_dump` or `error_log`
+  left in code. The only placeholder is the intended phone-format hint
+  `07xx xxx xxx` on the giving form.
+
+### Still open (server or admin side)
+
+1. Exclude the Support page from page caching so the giving nonce never
+   goes stale.
+2. Move the Paystack secret key into `wp-config.php` as
+   `COHF_PAYSTACK_SECRET_KEY`, then clear the field in Foundation > Giving.
+3. If the site is ever put behind Cloudflare or another proxy, define
+   `COHF_BEHIND_PROXY` so the per-visitor limits see real visitor IPs.
+4. Set up SPF, DKIM and DMARC for cisternofhopefoundation.org so mail sent
+   through WP Mail SMTP is trusted and spoofing is harder.
+5. Use strong unique passwords and two-factor login for every
+   administrator account (for example with the Two Factor plugin).
