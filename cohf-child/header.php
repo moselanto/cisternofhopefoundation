@@ -72,5 +72,7 @@ $support  = cohf_page_url( 'page-templates/page-support.php' );
 		<?php get_template_part( 'template-parts/site-nav' ); ?>
 
 		<a class="cta" href="<?php echo esc_url( $support ); ?>"><?php esc_html_e( 'Support Our Work', 'cohf-child' ); ?></a>
+
+		<?php if ( function_exists( 'cohf_shop_header_cart' ) ) { cohf_shop_header_cart(); } ?>
 	</div>
 </header>

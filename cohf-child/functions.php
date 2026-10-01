@@ -10,7 +10,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'COHF_CHILD_VERSION', '10.2.0' );
+define( 'COHF_CHILD_VERSION', '11.0.0' );
 define( 'COHF_CHILD_DIR', get_stylesheet_directory() );
 define( 'COHF_CHILD_URI', get_stylesheet_directory_uri() );
 
@@ -58,6 +58,7 @@ foreach ( array(
 	'shop',
 	'shop-seeds',
 	'shop-categories',
+	'shop-cart',
 	'template-tags',
 ) as $cohf_module ) {
 	cohf_require( $cohf_module );

@@ -237,3 +237,28 @@ nav .hscroll{margin-bottom:20px}
 @media (prefers-reduced-motion:reduce){
   .hscroll__btn{transition:none}
 }
+
+/* ---- Cart & checkout blocks: readable buttons and fields (11.0.0) ----
+   The theme's link colour (dark green, underlined) was applied to the
+   block cart's "Proceed to Checkout" link on its dark button, so the text
+   was invisible. */
+.wc-block-components-button:not(.is-link),
+.wc-block-cart__submit-button,
+.wc-block-components-checkout-place-order-button,
+a.wc-block-components-button:not(.is-link){
+  background:var(--forest) !important;color:#fff !important;border:0 !important;border-radius:999px !important;
+  min-height:52px;padding:14px 22px !important;font-weight:800 !important;font-size:16px !important;text-decoration:none !important;box-shadow:none !important;
+}
+.wc-block-components-button:not(.is-link):hover,
+.wc-block-cart__submit-button:hover,
+.wc-block-components-checkout-place-order-button:hover{background:var(--forest2,#09261e) !important;color:#fff !important}
+.wc-block-components-button:not(.is-link) .wc-block-components-button__text,
+.wc-block-cart__submit-button *{color:inherit !important;text-decoration:none !important}
+.wc-block-components-button:not(.is-link):focus-visible{outline:3px solid var(--gold) !important;outline-offset:2px;box-shadow:none !important}
+.wc-block-components-quantity-selector{border-radius:999px !important;overflow:hidden}
+.wc-block-components-quantity-selector input.wc-block-components-quantity-selector__input,
+.wc-block-components-quantity-selector .wc-block-components-quantity-selector__input{background:transparent !important;border:0 !important;min-height:0 !important;box-shadow:none !important;color:var(--ink) !important;font-weight:700}
+.wc-block-components-quantity-selector__button{min-height:0 !important;color:var(--forest) !important}
+.wc-block-cart-item__product .wc-block-components-product-name{color:var(--ink) !important;font-weight:700;text-decoration:none !important}
+.wc-block-components-totals-footer-item .wc-block-components-totals-item__value{color:var(--forest)}
+.wc-block-components-text-input input,.wc-block-components-textarea,.wc-block-components-combobox .components-combobox-control__input{min-height:50px !important;border-radius:12px !important}
