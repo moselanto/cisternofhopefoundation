@@ -76,6 +76,15 @@ function cohf_enqueue_assets() {
 		)
 	);
 
+	$forms_js = $dir . 'js/forms.js';
+	wp_enqueue_script(
+		'cohf-forms',
+		$uri . 'js/forms.js',
+		array(),
+		file_exists( $forms_js ) ? (string) filemtime( $forms_js ) : COHF_CHILD_VERSION,
+		array( 'strategy' => 'defer', 'in_footer' => true )
+	);
+
 	// The leadership profile panel is only needed on that one page.
 	if ( is_page_template( 'page-templates/page-leadership.php' ) ) {
 		$lead = $dir . 'js/leadership.js';

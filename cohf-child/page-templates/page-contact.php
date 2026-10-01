@@ -27,29 +27,31 @@ $org = cohf_org();
 				<div class="kicker"><?php esc_html_e( 'Contact details', 'cohf-child' ); ?></div>
 				<h2><?php esc_html_e( 'Let\'s build lasting change together.', 'cohf-child' ); ?></h2>
 
-				<p><b><?php echo esc_html( strtoupper( $org['name'] ) ); ?></b></p>
+				<p class="contact-lede"><?php esc_html_e( 'Reach us whichever way suits you. For anything urgent, a call or WhatsApp is quickest.', 'cohf-child' ); ?></p>
+				<?php
+				$cohf_wa_src = ( isset( $org['whatsapp'] ) && '' !== $org['whatsapp'] ) ? $org['whatsapp'] : $org['phone'];
+				$cohf_wa     = preg_replace( '/[^0-9]/', '', (string) $cohf_wa_src );
+				$cohf_cards  = array(
+					array( 'tel:' . preg_replace( '/[^0-9+]/', '', $org['phone'] ), __( 'Call us', 'cohf-child' ), $org['phone'], '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/>', '' ),
+					array( $cohf_wa ? 'https://wa.me/' . $cohf_wa : '', __( 'WhatsApp', 'cohf-child' ), __( 'Chat with us', 'cohf-child' ), '<path d="M21 12a9 9 0 0 1-13.4 7.8L3 21l1.2-4.4A9 9 0 1 1 21 12Z"/>', 'wa' ),
+					array( 'mailto:' . $org['email'], __( 'Email', 'cohf-child' ), $org['email'], '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>', '' ),
+					array( '', __( 'Postal address', 'cohf-child' ), $org['address'], '<path d="M4 7h16v12H4z"/><path d="M4 7l8 6 8-6"/>', '' ),
+					array( '', __( 'Where we work', 'cohf-child' ), __( 'Uthiru, Nairobi, and communities across Kenya.', 'cohf-child' ), '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/>', '' ),
+				);
+				?>
+				<ul class="contact-cards">
+					<?php foreach ( $cohf_cards as $cohf_card ) : ?>
+						<?php $cohf_tag = '' !== $cohf_card[0] ? 'a' : 'div'; ?>
+						<li>
+							<<?php echo esc_html( $cohf_tag ); ?> class="contact-card<?php echo 'wa' === $cohf_card[4] ? ' contact-card--wa' : ''; ?>"<?php if ( 'a' === $cohf_tag ) : ?> href="<?php echo esc_url( $cohf_card[0] ); ?>"<?php echo 'wa' === $cohf_card[4] ? ' target="_blank" rel="noopener"' : ''; ?><?php endif; ?>>
+								<span class="contact-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><?php echo $cohf_card[3]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG paths. ?></svg></span>
+								<span class="contact-card__body"><small><?php echo esc_html( $cohf_card[1] ); ?></small><strong><?php echo esc_html( $cohf_card[2] ); ?></strong></span>
+							</<?php echo esc_html( $cohf_tag ); ?>>
+						</li>
+					<?php endforeach; ?>
+				</ul>
 
-				<p>
-					<b><?php esc_html_e( 'Postal address', 'cohf-child' ); ?></b><br>
-					<?php echo esc_html( $org['address'] ); ?>
-				</p>
-
-				<p>
-					<b><?php esc_html_e( 'Phone', 'cohf-child' ); ?></b><br>
-					<a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $org['phone'] ) ); ?>"><?php echo esc_html( $org['phone'] ); ?></a>
-				</p>
-
-				<p>
-					<b><?php esc_html_e( 'Email', 'cohf-child' ); ?></b><br>
-					<a href="mailto:<?php echo esc_attr( $org['email'] ); ?>"><?php echo esc_html( $org['email'] ); ?></a>
-				</p>
-
-				<p>
-					<b><?php esc_html_e( 'Where we work', 'cohf-child' ); ?></b><br>
-					<?php esc_html_e( 'Uthiru, Nairobi, and communities across Kenya.', 'cohf-child' ); ?>
-				</p>
-
-				<p class="callout stack-md">
+				<p class="callout stack-md contact-concern">
 					<b><?php esc_html_e( 'Raising a concern', 'cohf-child' ); ?></b><br>
 					<?php esc_html_e( 'To raise a safeguarding concern or make a complaint, select "Complaint or feedback" in the form. Concerns are treated seriously and confidentially.', 'cohf-child' ); ?>
 				</p>

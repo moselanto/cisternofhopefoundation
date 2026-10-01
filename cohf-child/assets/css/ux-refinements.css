@@ -3118,3 +3118,102 @@ footer .brand .mark--logo,
   .copyright .foot-legal a { min-height: 36px; display: inline-flex; align-items: center; font-size: 13px; }
   .copyright__line { font-size: 12.5px; color: #8fa89c; line-height: 1.5; max-width: 300px; }
 }
+
+/* --------------------------------------------------------------------------
+   25. Forms and contact redesign (12.2.0)
+   One look for every form: enquiry (Contact, Partners, Get Involved), giving
+   and shop checkout fields. Card container, larger fields with a clear focus
+   ring, inline errors, a custom consent tick, a confident submit button, and
+   contact details as tappable cards.
+   -------------------------------------------------------------------------- */
+.cohf-form-card { background: #fff; border: 1px solid #e8e2d6; border-radius: 24px; padding: 30px; box-shadow: 0 18px 50px rgba(18, 58, 45, .08); }
+.cohf-form-card__head { margin: 0 0 22px; padding: 0 0 18px; border-bottom: 1px solid #efe9de; }
+.cohf-form-card__head h3 { margin: 0 0 6px; font-size: 26px; line-height: 1.15; color: var(--forest, var(--g)); }
+.cohf-form-card__head p { margin: 0; font-size: 14px; color: #6b7771; }
+
+form.cohf-form { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 16px; }
+.cohf-form .field { gap: 7px; min-width: 0; }
+.cohf-form .field > label { font: 700 13.5px/1.35 var(--font-body); letter-spacing: .01em; color: var(--ink, #1c1b19); }
+.cohf-form .field .req { color: #b4532a; }
+.cohf-form input:not([type="checkbox"]):not([type="radio"]),
+.cohf-form select,
+.cohf-form textarea,
+.give__field input,
+.give__field select,
+.give__field textarea {
+  width: 100%; min-height: 52px; padding: 13px 16px; border: 1.5px solid #dcd5c8; border-radius: 14px; background: #fcfbf8;
+  font: 400 16px/1.4 var(--font-body); color: var(--ink, #1c1b19); box-shadow: none; transition: border-color .2s, box-shadow .2s, background .2s; -webkit-appearance: none; appearance: none;
+}
+.cohf-form textarea, .give__field textarea { min-height: 150px; resize: vertical; line-height: 1.55; }
+.cohf-form select, .give__field select {
+  padding-right: 44px; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23123a2d' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 16px center; background-size: 16px;
+}
+.cohf-form input::placeholder, .cohf-form textarea::placeholder, .give__field input::placeholder, .give__field textarea::placeholder { color: #9aa29e; }
+.cohf-form input:hover, .cohf-form select:hover, .cohf-form textarea:hover,
+.give__field input:hover, .give__field select:hover, .give__field textarea:hover { border-color: #b9c4bd; }
+.cohf-form input:focus, .cohf-form select:focus, .cohf-form textarea:focus,
+.give__field input:focus, .give__field select:focus, .give__field textarea:focus {
+  outline: none; border-color: var(--forest, var(--g)); background: #fff; box-shadow: 0 0 0 4px rgba(18, 58, 45, .12);
+}
+.cohf-form .field.has-error input, .cohf-form .field.has-error select, .cohf-form .field.has-error textarea,
+.cohf-form [aria-invalid="true"] { border-color: #c2410c; background: #fffaf7; box-shadow: 0 0 0 4px rgba(194, 65, 12, .1); }
+.field__error { display: block; font-size: 13px; font-weight: 600; color: #b23a0a; }
+.field__error:empty { display: none; }
+.cohf-form .field__hint { font-size: 12.5px; color: #6b7771; line-height: 1.45; }
+.field__count { align-self: flex-end; margin-top: -2px; font-size: 12px; color: #8a948f; }
+.field__count.is-near { color: #b23a0a; font-weight: 700; }
+
+/* Consent tick */
+.field--check { gap: 6px; }
+.cohf-check { position: relative; display: flex; align-items: flex-start; gap: 12px; cursor: pointer; font: 500 14.5px/1.5 var(--font-body) !important; color: var(--ink, #1c1b19) !important; letter-spacing: 0 !important; }
+.cohf-check input { position: absolute; opacity: 0; width: 22px; height: 22px; margin: 0; }
+.cohf-check__box { flex: 0 0 22px; width: 22px; height: 22px; margin-top: 1px; border: 1.5px solid #b9c4bd; border-radius: 7px; background: #fff; transition: background .15s, border-color .15s; }
+.cohf-check input:checked + .cohf-check__box { background: var(--forest, var(--g)) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center / 14px no-repeat; border-color: var(--forest, var(--g)); }
+.cohf-check input:focus-visible + .cohf-check__box { box-shadow: 0 0 0 4px rgba(18, 58, 45, .18); }
+.field--check.has-error .cohf-check__box { border-color: #c2410c; }
+
+/* Submit */
+.cohf-submit { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 56px; padding: 14px 28px; border: 0; border-radius: 999px; background: var(--forest, var(--g)); color: #fff; font: 800 16px/1.2 var(--font-body); cursor: pointer; transition: background .2s, transform .1s; }
+.cohf-submit svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; transition: transform .2s; }
+.cohf-submit:hover { background: var(--forest2, #09261e); }
+.cohf-submit:hover svg { transform: translateX(3px); }
+.cohf-submit:active { transform: scale(.99); }
+.cohf-submit:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.cohf-submit.is-loading { opacity: .75; pointer-events: none; }
+.cohf-submit.is-loading svg { display: none; }
+.cohf-form__secure { display: flex; align-items: center; justify-content: center; gap: 7px; margin: 12px 0 0; font-size: 12.5px; color: #6b7771; }
+.cohf-form__secure svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; }
+
+/* Result notice */
+.form-notice { display: flex; align-items: flex-start; gap: 12px; margin: 0 0 20px; padding: 14px 16px; border-radius: 14px; font-size: 15px; font-weight: 600; line-height: 1.45; outline: none; }
+.form-notice__icon { flex: 0 0 22px; width: 22px; height: 22px; border-radius: 50%; background-position: center; background-repeat: no-repeat; background-size: 13px; }
+.form-notice--success { background: #e9f6ee; color: #14532d; border: 1px solid #bfe3cc; }
+.form-notice--success .form-notice__icon { background-color: #16a34a; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E"); }
+.form-notice--error { background: #fdf0ea; color: #8a2c08; border: 1px solid #f3cdb9; }
+.form-notice--error .form-notice__icon { background-color: #c2410c; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.5' stroke-linecap='round'%3E%3Cpath d='M12 7v6M12 17h.01'/%3E%3C/svg%3E"); }
+
+/* Contact details as cards */
+.contact-lede { margin: 6px 0 20px; color: #5b6863; font-size: 16px; }
+.contact-cards { list-style: none; margin: 0 0 22px; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.contact-cards li { margin: 0; }
+.contact-cards li:nth-child(n+4) { grid-column: 1 / -1; }
+.contact-card { display: flex; align-items: center; gap: 14px; height: 100%; padding: 16px; border: 1px solid #e8e2d6; border-radius: 18px; background: #fff; color: var(--ink, #1c1b19); text-decoration: none; transition: border-color .2s, box-shadow .2s, transform .2s; }
+a.contact-card:hover { border-color: var(--forest, var(--g)); box-shadow: 0 10px 28px rgba(18, 58, 45, .1); transform: translateY(-2px); }
+a.contact-card:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.contact-card__icon { flex: 0 0 44px; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 14px; background: #eef4f0; color: var(--forest, var(--g)); }
+.contact-card--wa .contact-card__icon { background: #e3f8eb; color: #128c4a; }
+.contact-card__icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.contact-card__body { display: flex; flex-direction: column; min-width: 0; }
+.contact-card__body small { font-size: 11.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #8a948f; }
+.contact-card__body strong { font-size: 15px; font-weight: 700; line-height: 1.35; overflow-wrap: anywhere; }
+.contact-concern { padding: 16px 18px; border-left: 4px solid var(--gold); border-radius: 0 14px 14px 0; background: #fbf6ea; font-size: 14.5px; }
+
+@media (max-width: 760px) {
+  .cohf-form-card { padding: 22px 18px; border-radius: 20px; }
+  .cohf-form-card__head h3 { font-size: 22px; }
+  form.cohf-form { grid-template-columns: 1fr; gap: 16px; }
+  form.cohf-form .field { grid-column: auto; }
+  .contact-cards { grid-template-columns: 1fr; }
+}

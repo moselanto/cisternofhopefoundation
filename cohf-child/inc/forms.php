@@ -221,8 +221,9 @@ function cohf_form_result_notice() {
 		return;
 	}
 	printf(
-		'<div class="form-notice form-notice--%1$s" role="status" tabindex="-1">%2$s</div>',
+		'<div class="form-notice form-notice--%1$s" role="%3$s" tabindex="-1"><span class="form-notice__icon" aria-hidden="true"></span><span>%2$s</span></div>',
 		esc_attr( $result['status'] ),
-		esc_html( $result['message'] )
+		esc_html( $result['message'] ),
+		'error' === $result['status'] ? 'alert' : 'status'
 	);
 }
