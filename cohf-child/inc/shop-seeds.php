@@ -777,6 +777,26 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Every bead is threaded by hand, so each bag is slightly unique. Want it personalised, for example with a name or different colours? Describe what you would like in the order notes and we will confirm the details, price and timing with you before we make it. Price is for one bag in the design shown.', 'cohf-child' ),
 			'order'    => 70,
 		),
+		'terracotta-radha-krishna-vase-medium' => array(
+			'name'     => __( 'Terracotta Radha Krishna Mural Vase - Medium', 'cohf-child' ),
+			'price'    => '7500',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'terracotta-radha-krishna-vase.jpg',
+			'alt'      => __( 'A tall hand-painted terracotta vase in green with a raised figure of Radha in blue, wearing a gold flower headdress, bangles and jewellery, beside painted yellow flowers.', 'cohf-child' ),
+			'short'    => __( 'A handmade terracotta designer pot with a raised, hand-painted Radha Krishna mural. Use it as a statement flower vase or floor piece. Medium size.', 'cohf-child' ),
+			'long'     => __( 'Shaped from terracotta clay, with the mural sculpted in relief and painted by hand, so colours and details vary slightly from the photo. Also available in a large size. Price is for one medium vase.', 'cohf-child' ),
+			'order'    => 71,
+		),
+		'terracotta-radha-krishna-vase-large' => array(
+			'name'     => __( 'Terracotta Radha Krishna Mural Vase - Large', 'cohf-child' ),
+			'price'    => '16500',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'terracotta-radha-krishna-vase.jpg',
+			'alt'      => __( 'A tall hand-painted terracotta vase in green with a raised figure of Radha in blue, wearing a gold flower headdress, bangles and jewellery, beside painted yellow flowers.', 'cohf-child' ),
+			'short'    => __( 'A handmade terracotta designer pot with a raised, hand-painted Radha Krishna mural. Use it as a statement flower vase or floor piece. Large size.', 'cohf-child' ),
+			'long'     => __( 'Shaped from terracotta clay, with the mural sculpted in relief and painted by hand, so colours and details vary slightly from the photo. Also available in a medium size. Price is for one large vase.', 'cohf-child' ),
+			'order'    => 72,
+		),
 	);
 }
 
