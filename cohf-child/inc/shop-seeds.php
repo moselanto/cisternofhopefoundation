@@ -897,6 +897,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Each bone bead is carved and batik-dyed by hand, so patterns and shades vary slightly from the photo. Price is for one necklace.', 'cohf-child' ),
 			'order'    => 81,
 		),
+		'chunky-beaded-necklace' => array(
+			'name'     => __( 'Handmade African Chunky Beaded Necklace', 'cohf-child' ),
+			'price'    => '2500',
+			'category' => __( 'Jewellery', 'cohf-child' ),
+			'image'    => 'chunky-beaded-necklace-black-white.jpg',
+			'alt'      => __( 'Two handmade chunky necklaces of alternating black and white rectangular beads on black cords, laid out on a light cloth.', 'cohf-child' ),
+			'short'    => __( 'A bold handmade necklace of chunky black and white beads on a black cord. Simple, striking and easy to wear every day.', 'cohf-child' ),
+			'long'     => __( 'Strung by hand, so bead shapes and spacing vary slightly from the photo. Price is for one necklace.', 'cohf-child' ),
+			'order'    => 82,
+		),
 	);
 }
 
