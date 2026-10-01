@@ -363,20 +363,6 @@ function cohf_trim_shop_assets() {
 }
 add_action( 'wp_enqueue_scripts', 'cohf_trim_shop_assets', 99 );
 
-/**
- * Start downloading the homepage hero photo straight away. It is the largest
- * thing on screen, so fetching it early makes the page feel loaded sooner.
- */
-function cohf_preload_hero() {
-	if ( is_front_page() === false || function_exists( 'cohf_img_url' ) === false ) {
-		return;
-	}
-	$url = cohf_img_url( 'hero-home' );
-	if ( $url ) {
-		printf( '<link rel="preload" as="image" href="%s" fetchpriority="high">' . "\n", esc_url( $url ) );
-	}
-}
-add_action( 'wp_head', 'cohf_preload_hero', 1 );
 
 /**
  * Lazy-load and decode images off the main thread by default.
