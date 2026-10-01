@@ -83,7 +83,12 @@ $multi    = count( $slides ) > 1;
 					<div class="eyebrow"><?php echo esc_html( $slide['eyebrow'] ); ?></div>
 				<?php endif; ?>
 
-				<h1><?php echo esc_html( $slide['title'] ); ?></h1>
+				<?php /* One H1 per page: the first slide is the page heading, the others are H2s styled the same. */ ?>
+				<?php if ( 0 === $i ) : ?>
+					<h1 class="hero__h"><?php echo esc_html( $slide['title'] ); ?></h1>
+				<?php else : ?>
+					<h2 class="hero__h"><?php echo esc_html( $slide['title'] ); ?></h2>
+				<?php endif; ?>
 
 				<?php if ( ! empty( $slide['text'] ) ) : ?>
 					<p><?php echo esc_html( $slide['text'] ); ?></p>

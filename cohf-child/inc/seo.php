@@ -121,15 +121,14 @@ function cohf_social_meta() {
 
 	if ( is_front_page() ) {
 		$title = get_bloginfo( 'name' );
-		$desc  = cohf_org_get( 'mission' );
 		$url   = home_url( '/' );
 	} elseif ( is_singular() ) {
 		$title = wp_strip_all_tags( get_the_title() );
-		$desc  = wp_strip_all_tags( get_the_excerpt() );
 		$url   = get_permalink();
 	} else {
 		return;
 	}
+	$desc = cohf_seo_description();
 
 	$image = is_singular() && has_post_thumbnail()
 		? get_the_post_thumbnail_url( null, 'cohf-wide' )
@@ -214,5 +213,140 @@ function cohf_breadcrumbs() {
  * and Rank Math/Yoast sitemaps pick them up because they are public.
  */
 add_filter( 'wp_sitemaps_post_types', function ( $post_types ) {
+	// MailPoet's subscription and captcha screens are not content.
+	unset( $post_types['mailpoet_page'] );
 	return $post_types;
+} );
+
+/* -------------------------------------------------------------------------
+   Site audit fixes (12.6.0)
+   ------------------------------------------------------------------------- */
+
+/**
+ * One meta description for every page: the excerpt or product summary,
+ * then the page's own opening text, then the term description, then the
+ * Foundation's mission. 155 characters, cut on a word.
+ *
+ * @return string
+ */
+function cohf_seo_description() {
+	$text = '';
+	if ( is_front_page() ) {
+		$text = (string) cohf_org_get( 'mission' );
+	} elseif ( function_exists( 'is_shop' ) && is_shop() ) {
+		$text = __( 'Hope Market: handmade African crafts, jewellery, baskets, sandals and home decor from Kenya. Every purchase supports the Cistern of Hope Foundation.', 'cohf-child' );
+	} elseif ( is_singular() ) {
+		$post = get_queried_object();
+		if ( $post instanceof WP_Post ) {
+			if ( has_excerpt( $post ) ) {
+				$text = $post->post_excerpt;
+			}
+			if ( '' === trim( $text ) && 'product' === $post->post_type && function_exists( 'wc_get_product' ) ) {
+				$product = wc_get_product( $post->ID );
+				if ( $product ) {
+					$text = $product->get_short_description() ? $product->get_short_description() : $product->get_description();
+				}
+			}
+			if ( '' === trim( wp_strip_all_tags( $text ) ) ) {
+				$text = strip_shortcodes( excerpt_remove_blocks( $post->post_content ) );
+			}
+			if ( '' === trim( wp_strip_all_tags( $text ) ) && function_exists( 'cohf_page_intro' ) ) {
+				$text = (string) cohf_page_intro( $post->ID );
+			}
+		}
+	} elseif ( is_category() || is_tax() || is_tag() ) {
+		$text = term_description();
+		if ( '' === trim( wp_strip_all_tags( (string) $text ) ) && is_tax( 'product_cat' ) ) {
+			/* translators: %s: category name. */
+			$text = sprintf( __( 'Shop handmade %s at Hope Market. Every purchase supports the Cistern of Hope Foundation in Kenya.', 'cohf-child' ), strtolower( single_term_title( '', false ) ) );
+		}
+	} elseif ( is_post_type_archive() ) {
+		$type = get_queried_object();
+		$text = ( $type && ! empty( $type->description ) ) ? $type->description : '';
+	}
+	$text = trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( (string) $text ) ) );
+	if ( '' === $text ) {
+		$text = (string) cohf_org_get( 'mission' );
+	}
+	if ( strlen( $text ) > 155 ) {
+		$text = rtrim( substr( $text, 0, 155 ) );
+		$text = preg_replace( '/\s+\S*$/', '', $text ) . '...';
+	}
+	return $text;
+}
+
+/**
+ * Print the meta description (an SEO plugin takes over when active).
+ */
+function cohf_meta_description() {
+	if ( cohf_seo_plugin_active() || is_404() || is_search() ) {
+		return;
+	}
+	$desc = cohf_seo_description();
+	if ( '' !== $desc ) {
+		printf( '<meta name="description" content="%s">' . "\n", esc_attr( $desc ) );
+	}
+}
+add_action( 'wp_head', 'cohf_meta_description', 1 );
+
+/**
+ * Correct capitalisation of the organisation name wherever WordPress prints
+ * the site title (Settings > General has "Cistern of hope Foundation").
+ *
+ * @param string $name Site title.
+ * @return string
+ */
+function cohf_fix_site_name( $name ) {
+	return ( 0 === strcasecmp( trim( (string) $name ), 'Cistern of Hope Foundation' ) ) ? 'Cistern of Hope Foundation' : $name;
+}
+add_filter( 'option_blogname', 'cohf_fix_site_name' );
+
+/**
+ * Author archives showed a copy of the homepage and revealed the admin
+ * login name in the URL (/author/moses/). Send them to the homepage and
+ * keep users out of the sitemap.
+ */
+function cohf_no_author_archives() {
+	if ( is_author() ) {
+		wp_safe_redirect( home_url( '/' ), 301 );
+		exit;
+	}
+}
+add_action( 'template_redirect', 'cohf_no_author_archives', 2 );
+add_filter( 'wp_sitemaps_add_provider', function ( $provider, $name ) {
+	return 'users' === $name ? false : $provider;
+}, 10, 2 );
+
+/**
+ * WordPress starter content (Hello world, Sample Page, Uncategorized) is
+ * kept out of search engines until it is deleted in wp-admin.
+ */
+function cohf_noindex_starter_content( $robots ) {
+	if ( is_single( 'hello-world' ) || is_page( 'sample-page' ) || is_category( 'uncategorized' ) ) {
+		$robots['noindex'] = true;
+		$robots['follow']  = true;
+	}
+	return $robots;
+}
+add_filter( 'wp_robots', 'cohf_noindex_starter_content' );
+add_filter( 'wp_sitemaps_posts_query_args', function ( $args, $post_type ) {
+	if ( in_array( $post_type, array( 'post', 'page' ), true ) ) {
+		$exclude = array();
+		foreach ( array( 'hello-world' => 'post', 'sample-page' => 'page' ) as $slug => $type ) {
+			if ( $type === $post_type ) {
+				$p = get_page_by_path( $slug, OBJECT, $type );
+				if ( $p ) {
+					$exclude[] = $p->ID;
+				}
+			}
+		}
+		if ( $exclude ) {
+			$args['post__not_in'] = array_merge( isset( $args['post__not_in'] ) ? (array) $args['post__not_in'] : array(), $exclude );
+		}
+	}
+	return $args;
+}, 10, 2 );
+add_filter( 'wp_sitemaps_taxonomies', function ( $taxonomies ) {
+	unset( $taxonomies['category'] ); // Only "Uncategorized" exists; the site uses Stories instead of posts.
+	return $taxonomies;
 } );
