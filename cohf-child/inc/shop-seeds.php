@@ -887,6 +887,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Beaded by hand by Maasai artisans and finished with leather ties at the back, so it can be adjusted to fit. Each choker is unique, so colours and pattern vary slightly from the photo. Price is for one choker.', 'cohf-child' ),
 			'order'    => 80,
 		),
+		'batik-bone-bead-necklace' => array(
+			'name'     => __( 'African Batik Bone Bead Necklace', 'cohf-child' ),
+			'price'    => '3500',
+			'category' => __( 'Jewellery', 'cohf-child' ),
+			'image'    => 'batik-bone-bead-necklace.jpg',
+			'alt'      => __( 'A chunky necklace of cream and black batik bone beads with dotted and swirl patterns, large carved square beads and a round brass bead at the centre, shown on a display bust.', 'cohf-child' ),
+			'short'    => __( 'A chunky statement necklace of hand-dyed batik bone beads in cream and black, finished with a round brass centre bead.', 'cohf-child' ),
+			'long'     => __( 'Each bone bead is carved and batik-dyed by hand, so patterns and shades vary slightly from the photo. Price is for one necklace.', 'cohf-child' ),
+			'order'    => 81,
+		),
 	);
 }
 
