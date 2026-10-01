@@ -581,15 +581,25 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Hand-beaded, so colour sequences vary. Add your preferred colours in the order notes.', 'cohf-child' ),
 			'order'    => 54,
 		),
-		'polymer-clay-mouse' => array(
+		'handmade-clay-mouse' => array(
+			'name'     => __( 'Handmade Clay Mouse', 'cohf-child' ),
+			'price'    => '2000',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'handmade-clay-mouse.jpg',
+			'alt'      => __( 'A handmade grey clay mouse sitting upright with its paws together and a long curled tail, shown from six angles.', 'cohf-child' ),
+			'short'    => __( 'Handmade grey clay mouse sitting upright, paws folded, with a long curling tail.', 'cohf-child' ),
+			'long'     => __( 'Shaped by hand, so each mouse differs slightly in pose and finish. Price is for one mouse.', 'cohf-child' ),
+			'order'    => 55,
+		),
+		'polymer-clay-mouse-white' => array(
 			'name'     => __( 'Polymer Clay Mouse', 'cohf-child' ),
 			'price'    => '3500',
 			'category' => __( 'Home decor', 'cohf-child' ),
-			'image'    => 'polymer-clay-mouse.jpg',
-			'alt'      => __( 'A handmade grey polymer clay mouse sitting upright with its paws together and a long curled tail, shown from six angles.', 'cohf-child' ),
-			'short'    => __( 'Handmade polymer clay mouse sitting upright, paws folded, with a long curling tail.', 'cohf-child' ),
-			'long'     => __( 'Shaped by hand, so each mouse differs slightly in pose and finish. Price is for one mouse.', 'cohf-child' ),
-			'order'    => 55,
+			'image'    => 'polymer-clay-mouse-white.jpg',
+			'alt'      => __( 'A handmade white polymer clay mouse sitting up with dark eyes, pink ears and a long pink tail curled around its body.', 'cohf-child' ),
+			'short'    => __( 'Lifelike white polymer clay mouse with pink ears and a long pink tail.', 'cohf-child' ),
+			'long'     => __( 'Sculpted and painted by hand, so each mouse is slightly different. Price is for one mouse.', 'cohf-child' ),
+			'order'    => 56,
 		),
 	);
 }
@@ -696,6 +706,60 @@ function cohf_shop_seed() {
 	}
 }
 add_action( 'admin_init', 'cohf_shop_seed', 30 );
+
+/**
+ * One-time correction (10.0.0): version 9.99.0 seeded the grey clay mouse as
+ * "Polymer Clay Mouse" at KSh 3,500. That piece is the Handmade Clay Mouse at
+ * KSh 2,000. If the wrong product was created and is still unedited, turn it
+ * into the Handmade Clay Mouse and mark that seed done so it is not created
+ * twice. The white Polymer Clay Mouse is then seeded as a new product.
+ */
+function cohf_shop_fix_clay_mouse() {
+	if ( cohf_has_shop() === false || function_exists( 'wc_get_product' ) === false ) {
+		return;
+	}
+	if ( current_user_can( 'manage_woocommerce' ) === false ) {
+		return;
+	}
+	if ( get_option( 'cohf_shop_fix_clay_mouse' ) ) {
+		return;
+	}
+	update_option( 'cohf_shop_fix_clay_mouse', 1, false );
+
+	$found = get_posts( array(
+		'post_type'      => 'product',
+		'post_status'    => 'any',
+		'posts_per_page' => 1,
+		'fields'         => 'ids',
+		'meta_key'       => '_cohf_seed_key',
+		'meta_value'     => 'polymer-clay-mouse',
+		'no_found_rows'  => true,
+	) );
+	if ( empty( $found ) ) {
+		return;
+	}
+
+	$product = wc_get_product( (int) $found[0] );
+	if ( empty( $product ) || 'Polymer Clay Mouse' !== $product->get_name() ) {
+		return;
+	}
+
+	$seeds = cohf_shop_seed_products();
+	$seed  = $seeds['handmade-clay-mouse'];
+
+	$product->set_name( $seed['name'] );
+	$product->set_slug( 'handmade-clay-mouse' );
+	$product->set_regular_price( $seed['price'] );
+	$product->set_short_description( $seed['short'] );
+	$product->set_description( $seed['long'] );
+	$product->save();
+	update_post_meta( $product->get_id(), '_cohf_seed_key', 'handmade-clay-mouse' );
+
+	$done   = (array) get_option( 'cohf_shop_seeded', array() );
+	$done[] = 'handmade-clay-mouse';
+	update_option( 'cohf_shop_seeded', array_values( array_unique( $done ) ), false );
+}
+add_action( 'admin_init', 'cohf_shop_fix_clay_mouse', 25 );
 
 /**
  * Import the extra photos listed for a seed product.
