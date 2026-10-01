@@ -767,6 +767,16 @@ function cohf_shop_seed_products() {
 				),
 			),
 		),
+		'beaded-bag-kenyan-flag' => array(
+			'name'     => __( 'Beaded Kenyan Flag Handbag', 'cohf-child' ),
+			'price'    => '3000',
+			'category' => __( 'Bags and baskets', 'cohf-child' ),
+			'image'    => 'beaded-bag-kenyan-flag.jpg',
+			'alt'      => __( 'A handbag made entirely of black, red, green and white beads in the Kenyan flag design, with the Maasai shield and crossed spears in the centre and two black handles.', 'cohf-child' ),
+			'short'    => __( 'A hand-beaded handbag in the colours of the Kenyan flag, with the Maasai shield and spears at its centre. Can be customised.', 'cohf-child' ),
+			'long'     => __( 'Every bead is threaded by hand, so each bag is slightly unique. Want it personalised, for example with a name or different colours? Describe what you would like in the order notes and we will confirm the details, price and timing with you before we make it. Price is for one bag in the design shown.', 'cohf-child' ),
+			'order'    => 70,
+		),
 	);
 }
 
