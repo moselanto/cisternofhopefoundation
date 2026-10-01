@@ -661,6 +661,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Made by hand from natural clay, so shape and colour vary slightly from pot to pot. Unglazed earthenware holds heat well for slow cooking and keeps food warm at the table. Price is for one pot with its lid.', 'cohf-child' ),
 			'order'    => 62,
 		),
+		'traditional-clay-pot-handles' => array(
+			'name'     => __( 'Traditional Clay Pot with Handles and Lid', 'cohf-child' ),
+			'price'    => '3500',
+			'category' => __( 'Home and kitchen', 'cohf-child' ),
+			'image'    => 'traditional-clay-pot-handles.jpg',
+			'alt'      => __( 'A round terracotta clay pot with two loop handles, a woven-texture body, a patterned rim band and a fitted lid with a knob handle.', 'cohf-child' ),
+			'short'    => __( 'Handmade terracotta pot with two handles, a woven-texture body and a fitted lid, for cooking, serving or kitchen decor.', 'cohf-child' ),
+			'long'     => __( 'Made by hand from natural clay, so shape, texture and colour vary slightly. The handles make it easy to carry from stove to table. Price is for one pot with its lid.', 'cohf-child' ),
+			'order'    => 63,
+		),
 	);
 }
 
