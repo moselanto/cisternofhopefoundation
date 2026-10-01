@@ -88,3 +88,112 @@
 		init();
 	}
 }());
+
+/**
+ * Hope Market premium layer (12.0.0): Filter & sort sheet on phones and
+ * "Load more" on listing pages.
+ */
+(function () {
+	'use strict';
+
+	/* ---- Filter & sort sheet ---- */
+	var sheet = document.getElementById('cohf-shop-sheet');
+	var opener = document.querySelector('[data-sheet-open]');
+	var lastFocus = null;
+
+	function onKey(e) {
+		if (e.key === 'Escape') { closeSheet(); }
+	}
+
+	function openSheet() {
+		if (sheet === null) { return; }
+		lastFocus = document.activeElement;
+		sheet.hidden = false;
+		window.requestAnimationFrame(function () { sheet.classList.add('is-open'); });
+		document.documentElement.classList.add('shop-sheet-open');
+		if (opener) { opener.setAttribute('aria-expanded', 'true'); }
+		document.addEventListener('keydown', onKey);
+		var panel = sheet.querySelector('.shop-sheet__panel');
+		if (panel) { panel.focus({ preventScroll: true }); }
+	}
+
+	function closeSheet() {
+		if (sheet === null || sheet.hidden) { return; }
+		sheet.classList.remove('is-open');
+		document.documentElement.classList.remove('shop-sheet-open');
+		if (opener) { opener.setAttribute('aria-expanded', 'false'); }
+		document.removeEventListener('keydown', onKey);
+		window.setTimeout(function () { sheet.hidden = true; }, 260);
+		if (lastFocus && typeof lastFocus.focus === 'function') { lastFocus.focus({ preventScroll: true }); }
+	}
+
+	document.addEventListener('click', function (e) {
+		if (e.target.closest('[data-sheet-open]')) {
+			e.preventDefault();
+			openSheet();
+			return;
+		}
+		if (e.target.closest('[data-sheet-close]')) {
+			e.preventDefault();
+			closeSheet();
+		}
+	});
+
+	/* ---- Load more ---- */
+	var box = document.querySelector('[data-shop-loadmore]');
+	if (box === null || typeof window.fetch !== 'function' || typeof window.DOMParser !== 'function') {
+		return;
+	}
+	var grid = document.querySelector('ul.products');
+	var pagination = document.querySelector('.woocommerce-pagination');
+	var btn = box.querySelector('.shop-loadmore__btn');
+	if (btn && pagination) { pagination.hidden = true; }
+	if (btn === null || grid === null) { return; }
+
+	var total = parseInt(box.getAttribute('data-total'), 10) || 0;
+	var shownEl = box.querySelector('[data-shown]');
+	var bar = box.querySelector('.shop-loadmore__bar span');
+
+	btn.addEventListener('click', function (e) {
+		e.preventDefault();
+		var next = btn.getAttribute('data-next');
+		if (next === null || btn.classList.contains('is-loading')) { return; }
+		btn.classList.add('is-loading');
+		btn.setAttribute('aria-busy', 'true');
+		fetch(next, { credentials: 'same-origin' })
+			.then(function (r) { return r.text(); })
+			.then(function (html) {
+				var doc = new DOMParser().parseFromString(html, 'text/html');
+				var items = doc.querySelectorAll('ul.products > li');
+				var first = null;
+				Array.prototype.forEach.call(items, function (li) {
+					var node = document.importNode(li, true);
+					node.classList.add('is-new-load');
+					grid.appendChild(node);
+					if (first === null) { first = node; }
+				});
+				var count = grid.querySelectorAll(':scope > li').length;
+				if (shownEl) { shownEl.textContent = count.toLocaleString(); }
+				if (bar && total) { bar.style.width = Math.min(100, (count / total) * 100) + '%'; }
+				var nextBtn = doc.querySelector('[data-shop-loadmore] .shop-loadmore__btn');
+				if (nextBtn) {
+					btn.setAttribute('data-next', nextBtn.getAttribute('data-next'));
+					btn.href = nextBtn.getAttribute('data-next');
+				} else {
+					btn.remove();
+				}
+				if (window.history && typeof window.history.replaceState === 'function') {
+					window.history.replaceState(null, '', next);
+				}
+				if (first) {
+					var link = first.querySelector('a');
+					if (link) { link.focus({ preventScroll: true }); }
+				}
+			})
+			.catch(function () { window.location.href = next; })
+			.then(function () {
+				btn.classList.remove('is-loading');
+				btn.removeAttribute('aria-busy');
+			});
+	});
+}());

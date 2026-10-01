@@ -420,7 +420,7 @@ function cohf_shop_toolbar_open() {
 
 	if ( count( $terms ) > 1 ) {
 		$current = is_product_category() ? (int) get_queried_object_id() : 0;
-		echo '<nav aria-label="' . esc_attr__( 'Shop categories', 'cohf-child' ) . '"><ul class="shop-cats">';
+		echo '<nav class="shop-cats-nav" aria-label="' . esc_attr__( 'Shop categories', 'cohf-child' ) . '"><ul class="shop-cats">';
 		printf(
 			'<li><a href="%1$s"%2$s>%3$s</a></li>',
 			esc_url( cohf_shop_url() ),
