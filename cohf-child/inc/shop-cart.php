@@ -486,3 +486,74 @@ function cohf_shop_checkout_items( $content ) {
 	return ob_get_clean() . $content;
 }
 add_filter( 'render_block_woocommerce/checkout', 'cohf_shop_checkout_items', 5 );
+
+/* -------------------------------------------------------------------------
+   Cart and checkout: progress steps and reassurance (12.3.0)
+   ------------------------------------------------------------------------- */
+
+/**
+ * Three-step progress bar: Cart, Details and payment, Confirmation.
+ *
+ * @param int $current Active step (1-3).
+ * @return string
+ */
+function cohf_shop_steps( $current ) {
+	$steps = array(
+		1 => array( __( 'Cart', 'cohf-child' ), function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : '' ),
+		2 => array( __( 'Details & payment', 'cohf-child' ), '' ),
+		3 => array( __( 'Confirmation', 'cohf-child' ), '' ),
+	);
+	$out = '<nav class="checkout-steps" aria-label="' . esc_attr__( 'Checkout progress', 'cohf-child' ) . '"><ol>';
+	foreach ( $steps as $n => $step ) {
+		$state = $n < $current ? 'is-done' : ( $n === $current ? 'is-current' : '' );
+		$label = '<span class="checkout-steps__num" aria-hidden="true">' . (int) $n . '</span><span class="checkout-steps__label">' . esc_html( $step[0] ) . '</span>';
+		if ( $n < $current && '' !== $step[1] ) {
+			$label = '<a href="' . esc_url( $step[1] ) . '">' . $label . '</a>';
+		}
+		$out .= '<li class="' . esc_attr( $state ) . '"' . ( $n === $current ? ' aria-current="step"' : '' ) . '>' . $label . '</li>';
+	}
+	return $out . '</ol></nav>';
+}
+
+/**
+ * Steps above the cart block.
+ *
+ * @param string $content Block HTML.
+ * @return string
+ */
+function cohf_shop_cart_steps( $content ) {
+	return cohf_shop_steps( 1 ) . $content;
+}
+add_filter( 'render_block_woocommerce/cart', 'cohf_shop_cart_steps', 1 );
+
+/**
+ * Steps above the checkout block (runs last so it sits above "Your order").
+ *
+ * @param string $content Block HTML.
+ * @return string
+ */
+function cohf_shop_checkout_steps( $content ) {
+	return cohf_shop_steps( 2 ) . $content;
+}
+add_filter( 'render_block_woocommerce/checkout', 'cohf_shop_checkout_steps', 20 );
+
+/**
+ * Reassurance row under the checkout and cart blocks.
+ *
+ * @param string $content Block HTML.
+ * @return string
+ */
+function cohf_shop_checkout_trust( $content ) {
+	$items = array(
+		array( '<rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>', __( 'Secure payment', 'cohf-child' ), __( 'Card payments are processed by Paystack.', 'cohf-child' ) ),
+		array( '<path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10Z"/>', __( 'Handmade in Kenya', 'cohf-child' ), __( 'Each piece is made by hand.', 'cohf-child' ) ),
+		array( '<path d="M21 12a9 9 0 0 1-13.4 7.8L3 21l1.2-4.4A9 9 0 1 1 21 12Z"/>', __( 'Here to help', 'cohf-child' ), __( 'Questions? Chat with us on WhatsApp.', 'cohf-child' ) ),
+	);
+	$out = '<ul class="checkout-trust">';
+	foreach ( $items as $it ) {
+		$out .= '<li><span class="checkout-trust__icon" aria-hidden="true"><svg viewBox="0 0 24 24">' . $it[0] . '</svg></span><span><strong>' . esc_html( $it[1] ) . '</strong><small>' . esc_html( $it[2] ) . '</small></span></li>';
+	}
+	return $content . $out . '</ul>';
+}
+add_filter( 'render_block_woocommerce/checkout', 'cohf_shop_checkout_trust', 30 );
+add_filter( 'render_block_woocommerce/cart', 'cohf_shop_checkout_trust', 30 );
