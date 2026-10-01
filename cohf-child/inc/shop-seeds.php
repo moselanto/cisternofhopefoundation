@@ -711,6 +711,34 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Hand-beaded on leather, so colour placement varies slightly from pair to pair. Add your shoe size (EU or UK) in the order notes.', 'cohf-child' ),
 			'order'    => 67,
 		),
+		'tribal-clay-mural-wall-painting' => array(
+			'name'     => __( 'Tribal Clay Mural Wall Painting', 'cohf-child' ),
+			'price'    => '2800',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'tribal-clay-mural-water-carriers.jpg',
+			'alt'      => __( 'Design 1: two women carrying water pots, raised clay figures in red, orange and green on a red and black painted background in a black frame.', 'cohf-child' ),
+			'short'    => __( 'Framed wall art with raised, hand-sculpted clay figures painted in bold colours. Available in five designs.', 'cohf-child' ),
+			'long'     => __( 'Each mural is sculpted and painted by hand, so details vary slightly from the photos. Five designs are shown in the gallery: 1 Water carriers, 2 Drummer and dancer, 3 Dancers under the moon, 4 Market women, 5 The swing. Add the design number you want in the order notes. Price is for one framed mural.', 'cohf-child' ),
+			'order'    => 68,
+			'gallery'  => array(
+				array(
+					'image' => 'tribal-clay-mural-drummers.jpg',
+					'alt'   => __( 'Design 2: a drummer and a kneeling woman with a cymbal, raised clay figures on a deep red background in a black frame.', 'cohf-child' ),
+				),
+				array(
+					'image' => 'tribal-clay-mural-dancers.jpg',
+					'alt'   => __( 'Design 3: two dancers beneath a flowering branch and full moon, raised clay figures on black with a dotted border, in a black frame.', 'cohf-child' ),
+				),
+				array(
+					'image' => 'tribal-clay-mural-market-women.jpg',
+					'alt'   => __( 'Design 4: a standing woman holding a basket aloft and a seated woman balancing a pot on her head, raised figures on an orange background.', 'cohf-child' ),
+				),
+				array(
+					'image' => 'tribal-clay-mural-swing.jpg',
+					'alt'   => __( 'Design 5: a figure on a swing hanging from a leafy branch, raised clay work on a red-orange canvas.', 'cohf-child' ),
+				),
+			),
+		),
 	);
 }
 
