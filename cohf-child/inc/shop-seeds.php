@@ -651,6 +651,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Sculpted by hand, so every piece is unique and details vary from the photo. A conversation piece for a shelf, table or garden corner under cover. Price is for one sculpture.', 'cohf-child' ),
 			'order'    => 61,
 		),
+		'clay-traditional-cooking-pot' => array(
+			'name'     => __( 'Clay Traditional Cooking Pot', 'cohf-child' ),
+			'price'    => '3000',
+			'category' => __( 'Home and kitchen', 'cohf-child' ),
+			'image'    => 'clay-traditional-cooking-pot.jpg',
+			'alt'      => __( 'Handmade unglazed terracotta cooking pots with rounded bodies and matching lids with knob handles, set on a blue cloth.', 'cohf-child' ),
+			'short'    => __( 'Handmade unglazed earthenware pot with lid, for slow cooking, serving stews and soups, or traditional kitchen decor.', 'cohf-child' ),
+			'long'     => __( 'Made by hand from natural clay, so shape and colour vary slightly from pot to pot. Unglazed earthenware holds heat well for slow cooking and keeps food warm at the table. Price is for one pot with its lid.', 'cohf-child' ),
+			'order'    => 62,
+		),
 	);
 }
 
