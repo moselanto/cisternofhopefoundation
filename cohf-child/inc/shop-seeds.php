@@ -917,6 +917,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Made by Maasai artisans from rows of beads strung on wire and held flat by beaded spacers, in the style worn at weddings and ceremonies. Each collar is unique, so colours vary slightly from the photo. Price is for one collar.', 'cohf-child' ),
 			'order'    => 83,
 		),
+		'batik-bone-stretch-bracelet' => array(
+			'name'     => __( 'Kenyan Cow Bone Batik Stretch Bracelet', 'cohf-child' ),
+			'price'    => '1000',
+			'category' => __( 'Jewellery', 'cohf-child' ),
+			'image'    => 'batik-bone-stretch-bracelets.jpg',
+			'alt'      => __( 'Handcrafted stretch bracelets held in a hand: one of chunky white and dark brown cow bone pieces, and several multi-row bracelets of black and white batik-patterned bone tubes with black beads.', 'cohf-child' ),
+			'short'    => __( 'Handcrafted stretch bracelets of carved, batik-dyed Kenyan cow bone. Slips on easily and fits most wrists.', 'cohf-child' ),
+			'long'     => __( 'Each bone piece is carved and batik-dyed by hand and strung on strong elastic, so patterns vary from the photo. Styles include chunky black and white pieces and multi-row patterned tubes: tell us your preferred style in the order notes and we will pick the closest match. Price is for one bracelet.', 'cohf-child' ),
+			'order'    => 84,
+		),
 	);
 }
 
