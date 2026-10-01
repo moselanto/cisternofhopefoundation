@@ -691,6 +691,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Use it for a small plant, succulents or dried flowers, or on its own as a decorative piece. Handmade, so glaze texture varies slightly. Price is for one planter.', 'cohf-child' ),
 			'order'    => 65,
 		),
+		'ceramic-praying-frog-tea-pet' => array(
+			'name'     => __( 'Ceramic Praying Frog Tea Pet', 'cohf-child' ),
+			'price'    => '3500',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'ceramic-praying-frog-tea-pet.jpg',
+			'alt'      => __( 'A small cream ceramic frog sitting cross-legged with its hands pressed together as if praying or meditating, with dark glossy eyes and red painted stripes on its hands and feet.', 'cohf-child' ),
+			'short'    => __( 'Small cream ceramic frog seated in a praying, meditating pose, made as a tea pet or a calming desk companion.', 'cohf-child' ),
+			'long'     => __( 'A tea pet is a little clay figure kept on the tea tray and rinsed with leftover tea, slowly deepening its colour over time. Just as happy on a desk, shelf or windowsill. Price is for one frog.', 'cohf-child' ),
+			'order'    => 66,
+		),
 	);
 }
 
