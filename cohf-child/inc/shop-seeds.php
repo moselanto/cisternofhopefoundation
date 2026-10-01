@@ -867,6 +867,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Beaded by hand by Maasai artisans on a flat, flexible collar, with a hook-and-chain clasp at the back. Each collar is unique, so colours and pattern vary slightly from the photo. Price is for one necklace.', 'cohf-child' ),
 			'order'    => 78,
 		),
+		'maasai-beaded-drop-necklace' => array(
+			'name'     => __( 'Maasai Beaded Necklace', 'cohf-child' ),
+			'price'    => '3500',
+			'category' => __( 'Jewellery', 'cohf-child' ),
+			'image'    => 'maasai-beaded-drop-necklace.jpg',
+			'alt'      => __( 'A Maasai beaded necklace worn at the neck: a close-fitting band of white beads with red, orange, blue, green and purple triangles, a long beaded drop panel in the same pattern, and multicoloured bead strands ending in silver discs.', 'cohf-child' ),
+			'short'    => __( 'A close-fitting Maasai beaded necklace with a long drop panel of bold triangles and colourful bead strands finished with silver discs.', 'cohf-child' ),
+			'long'     => __( 'Beaded by hand by Maasai artisans, so colours and pattern vary slightly from the photo. The silver discs at the ends of the strands move and catch the light as you wear it. Price is for one necklace.', 'cohf-child' ),
+			'order'    => 79,
+		),
 	);
 }
 
