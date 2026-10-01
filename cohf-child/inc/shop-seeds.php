@@ -681,6 +681,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Made by hand from natural clay, so shape, texture and colour vary slightly from pot to pot. Price is for one pot.', 'cohf-child' ),
 			'order'    => 64,
 		),
+		'swan-planter-matte-white' => array(
+			'name'     => __( 'Matte White Spatter Glaze Swan Planter', 'cohf-child' ),
+			'price'    => '6500',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'swan-planter-matte-white.jpg',
+			'alt'      => __( 'A ceramic swan planter in a textured matte white spatter glaze, with a long curved neck, sculpted feathered wings and a smooth glazed hollow for plants.', 'cohf-child' ),
+			'short'    => __( 'Ceramic swan planter in a textured matte white spatter glaze, with a graceful curved neck and sculpted wings.', 'cohf-child' ),
+			'long'     => __( 'Use it for a small plant, succulents or dried flowers, or on its own as a decorative piece. Handmade, so glaze texture varies slightly. Price is for one planter.', 'cohf-child' ),
+			'order'    => 65,
+		),
 	);
 }
 
