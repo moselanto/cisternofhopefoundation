@@ -817,6 +817,26 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'The figures are sculpted by hand in clay, raised from the background and finished with metallic paints, so details vary slightly from the photo. Mounted in a wooden frame, ready to hang. Price is for one framed mural.', 'cohf-child' ),
 			'order'    => 74,
 		),
+		'batik-bone-brass-cuff-bracelet' => array(
+			'name'     => __( 'African Batik Cow Bone and Brass Cuff Bracelet', 'cohf-child' ),
+			'price'    => '4500',
+			'category' => __( 'Jewellery', 'cohf-child' ),
+			'image'    => 'brass-cuff-batik-bone.jpg',
+			'alt'      => __( 'Design 1: a brass hand bracelet worn on the wrist, with a round black batik cow bone disc dotted in white on the back of the hand, joined to a brass ring with a matching oval bone top.', 'cohf-child' ),
+			'short'    => __( 'Handmade brass jewellery set with black batik cow bone dotted in white. Three designs shown, including brass and cowrie shell styles.', 'cohf-child' ),
+			'long'     => __( 'Made by hand from brass and batik-dyed cow bone, so the dot pattern and finish vary slightly from piece to piece. Three designs are shown in the gallery: 1 Batik bone hand bracelet with ring, 2 Brass bangle with cowrie shell chain and ring, 3 Hammered brass cuff with cowrie shell. Add the design number you want in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
+			'order'    => 75,
+			'gallery'  => array(
+				array(
+					'image' => 'brass-cuff-cowrie-chain.jpg',
+					'alt'   => __( 'Design 2: a brass bangle worn on the wrist with a chain of white cowrie shells running to a brass ring set with a cowrie shell.', 'cohf-child' ),
+				),
+				array(
+					'image' => 'brass-cuff-hammered-cowrie.jpg',
+					'alt'   => __( 'Design 3: a wide hammered brass cuff worn on the forearm with a cut-out set with a white cowrie shell.', 'cohf-child' ),
+				),
+			),
+		),
 	);
 }
 
