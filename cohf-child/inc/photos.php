@@ -144,3 +144,32 @@ function cohf_photo_items() {
 add_action( 'init', function () {
 	add_post_type_support( 'page', 'excerpt' );
 } );
+
+/**
+ * One-time correction (12.8.1): the donated-shoes photo was captioned
+ * "A shoe business". Gallery photos live in the database once seeded, so the
+ * theme text change alone did not reach the live page. Only touches the
+ * photo if its title is still the old one, so admin edits are respected.
+ */
+function cohf_photos_fix_shoe_caption() {
+	if ( get_option( 'cohf_photo_fix_shoes' ) ) {
+		return;
+	}
+	$ids = get_posts( array(
+		'post_type'   => 'cohf_photo',
+		'post_status' => 'any',
+		'meta_key'    => '_cohf_photo_key',
+		'meta_value'  => 'gallery-shoe-donation',
+		'fields'      => 'ids',
+		'numberposts' => 1,
+	) );
+	if ( $ids && 'A shoe business' === get_the_title( $ids[0] ) ) {
+		wp_update_post( array(
+			'ID'           => $ids[0],
+			'post_title'   => __( 'Shoes for children', 'cohf-child' ),
+			'post_excerpt' => __( 'Donated shoes laid out and ready to be given to children in the community.', 'cohf-child' ),
+		) );
+	}
+	update_option( 'cohf_photo_fix_shoes', 1, false );
+}
+add_action( 'admin_init', 'cohf_photos_fix_shoe_caption', 41 );
