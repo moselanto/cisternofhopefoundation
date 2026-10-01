@@ -877,6 +877,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Beaded by hand by Maasai artisans, so colours and pattern vary slightly from the photo. The silver discs at the ends of the strands move and catch the light as you wear it. Price is for one necklace.', 'cohf-child' ),
 			'order'    => 79,
 		),
+		'maasai-beaded-choker-necklace' => array(
+			'name'     => __( 'Maasai Beaded Choker Necklace', 'cohf-child' ),
+			'price'    => '4000',
+			'category' => __( 'Jewellery', 'cohf-child' ),
+			'image'    => 'maasai-beaded-choker-necklace.jpg',
+			'alt'      => __( 'A Maasai beaded choker in bands of orange, yellow, blue, red, white and black beads, with a deep fringe of silver chains and dangling silver discs, tied at the back with leather cords.', 'cohf-child' ),
+			'short'    => __( 'A bold Maasai beaded choker with a fringe of silver chains and coin-like discs that shimmer and chime as you move.', 'cohf-child' ),
+			'long'     => __( 'Beaded by hand by Maasai artisans and finished with leather ties at the back, so it can be adjusted to fit. Each choker is unique, so colours and pattern vary slightly from the photo. Price is for one choker.', 'cohf-child' ),
+			'order'    => 80,
+		),
 	);
 }
 
