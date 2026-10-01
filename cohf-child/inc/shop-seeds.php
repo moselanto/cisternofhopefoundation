@@ -967,6 +967,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Beaded by hand by Maasai artisans in coordinated colours, so the pieces match each other while colours vary slightly from the photo. Price is for the full three-piece set.', 'cohf-child' ),
 			'order'    => 88,
 		),
+		'maasai-beaded-placemat-coaster-set' => array(
+			'name'     => __( 'Maasai Beaded Leather Placemat and Coaster Set', 'cohf-child' ),
+			'price'    => '4500',
+			'category' => __( 'Home and kitchen', 'cohf-child' ),
+			'image'    => 'maasai-beaded-placemat-coaster-set.jpg',
+			'alt'      => __( 'Round beaded placemats and matching coasters in pale blue-white beads with a gold beaded pattern, each edged with braided brown leather.', 'cohf-child' ),
+			'short'    => __( 'Round hand-beaded placemats with matching coasters, finished with a braided leather edge. Elegant table settings made in Kenya.', 'cohf-child' ),
+			'long'     => __( 'Each piece is beaded by hand by Maasai artisans and edged with braided leather, so patterns vary slightly from the photo. Wipe clean with a damp cloth. Price is for one set of placemats with matching coasters.', 'cohf-child' ),
+			'order'    => 89,
+		),
 	);
 }
 
