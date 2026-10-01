@@ -611,6 +611,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Thrown, carved and sculpted by hand, so no two are alike. A one-of-a-kind statement piece for a shelf, table or desk.', 'cohf-child' ),
 			'order'    => 57,
 		),
+		'modern-thinker-man' => array(
+			'name'     => __( 'Modern Thinker Man Figurine', 'cohf-child' ),
+			'price'    => '1650',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'modern-thinker-man.jpg',
+			'alt'      => __( 'Three abstract seated thinker figurines, two in glossy gold and one in matte white, each resting its head in its hands.', 'cohf-child' ),
+			'short'    => __( 'Abstract seated thinker figurine in gold or white, a modern accent for a shelf, desk or bookcase.', 'cohf-child' ),
+			'long'     => __( 'Price is for one figurine. Poses and colours vary; add your preferred colour (gold or white) and pose in the order notes.', 'cohf-child' ),
+			'order'    => 58,
+		),
 	);
 }
 
