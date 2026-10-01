@@ -621,6 +621,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Price is for one figurine. Poses and colours vary; add your preferred colour (gold or white) and pose in the order notes.', 'cohf-child' ),
 			'order'    => 58,
 		),
+		'beetle-sculpture' => array(
+			'name'     => __( 'Beetle Sculpture', 'cohf-child' ),
+			'price'    => '2200',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'beetle-sculpture.jpg',
+			'alt'      => __( 'A white sculpted beetle with a smooth domed shell and finely detailed jointed legs and antennae, lying on a wooden surface.', 'cohf-child' ),
+			'short'    => __( 'Handmade white beetle sculpture with a smooth domed shell and finely detailed legs.', 'cohf-child' ),
+			'long'     => __( 'Shaped by hand, so each beetle differs slightly. Works on a shelf or desk, or as a wall accent. Price is for one sculpture.', 'cohf-child' ),
+			'order'    => 59,
+		),
 	);
 }
 
