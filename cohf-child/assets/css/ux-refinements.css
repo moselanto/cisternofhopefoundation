@@ -3023,3 +3023,34 @@ footer .brand .mark--logo,
     aspect-ratio: 4 / 3;
   }
 }
+
+/* --------------------------------------------------------------------------
+   23. Homepage slider dots (10.2.0)
+   On phones, the global touch-target rule in style.css
+   (button { min-height: 44px }) stretched the 11px slide dots into tall
+   ovals. Keep the dots their drawn size and give each one an invisible
+   44px tap area instead, so they stay easy to tap without changing shape.
+   -------------------------------------------------------------------------- */
+.hero__dots { gap: 12px; }
+.hero__dot {
+  position: relative;
+  flex: 0 0 auto;
+  width: 11px;
+  height: 11px;
+  min-height: 0;
+  min-width: 0;
+  line-height: 0;
+  box-sizing: border-box;
+}
+.hero__dot.is-active { width: 26px; }
+.hero__dot::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+.hero__dot:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
