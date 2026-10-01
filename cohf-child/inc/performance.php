@@ -351,7 +351,7 @@ function cohf_trim_shop_assets() {
 		wp_dequeue_script( 'wc-order-attribution' );
 		wp_dequeue_script( 'sourcebuster-js' );
 	}
-	if ( cohf_is_shop_context() || is_front_page() ) {
+	if ( cohf_is_shop_context() ) {
 		return;
 	}
 	foreach ( array( 'woocommerce-layout', 'woocommerce-smallscreen', 'woocommerce-general', 'wc-blocks-style', 'wc-blocks-vendors-style' ) as $style ) {
