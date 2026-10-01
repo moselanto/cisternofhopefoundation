@@ -652,8 +652,15 @@ form.wc-block-components-totals-coupon__form{display:flex;gap:10px}
 
 /* Actions row: Place Order full width of the form column */
 .wc-block-checkout__actions_row{display:flex;flex-wrap:wrap;justify-content:space-between}
-.wc-block-components-checkout-place-order-button{flex:1 1 260px;max-width:none}
-@media (max-width:760px){.wc-block-components-checkout-place-order-button{width:100%}}
+/* 12.4.1: no flex-basis here. On phones WooCommerce stacks this row as a
+   column, where a 260px basis became the button's HEIGHT and the 999px
+   radius turned it into a giant oval. */
+.wc-block-components-checkout-place-order-button{flex:1 1 auto;max-width:none;height:auto !important;max-height:64px}
+@media (max-width:760px){
+  .wc-block-checkout__actions_row{flex-direction:column;align-items:stretch}
+  .wc-block-components-checkout-place-order-button{flex:0 0 auto !important;width:100%;min-height:56px !important;height:56px !important}
+  .wc-block-components-checkout-return-to-cart-button{align-self:center}
+}
 
 /* 12.3.2: postcode field is hidden in PHP; this is a belt-and-braces hide. */
 .wc-block-components-address-form__postcode,.cohf-hidden-postcode{display:none !important}
