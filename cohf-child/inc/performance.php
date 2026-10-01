@@ -317,3 +317,73 @@ function cohf_heartbeat( $settings ) {
 	return $settings;
 }
 add_filter( 'heartbeat_settings', 'cohf_heartbeat' );
+
+
+/* --------------------------------------------------------------------------
+   13.21.0 Speed: load only what each page needs
+   -------------------------------------------------------------------------- */
+
+/**
+ * Is this a shop page that needs WooCommerce's own scripts and styles?
+ *
+ * @return bool
+ */
+function cohf_is_shop_context() {
+	if ( function_exists( 'is_woocommerce' ) === false ) {
+		return false;
+	}
+	return is_woocommerce() || is_cart() || is_checkout() || is_account_page();
+}
+
+/**
+ * Drop WooCommerce assets from the foundation pages (About, Impact, Gallery,
+ * stories and so on). Those pages never show a product, so the shop's
+ * jQuery-based scripts and three stylesheets were pure dead weight. The
+ * header cart and cart drawer use the theme's own lightweight code and keep
+ * working everywhere.
+ */
+function cohf_trim_shop_assets() {
+	if ( is_admin() || function_exists( 'is_woocommerce' ) === false ) {
+		return;
+	}
+	// Marketing attribution is only useful at checkout.
+	if ( is_checkout() === false ) {
+		wp_dequeue_script( 'wc-order-attribution' );
+		wp_dequeue_script( 'sourcebuster-js' );
+	}
+	if ( cohf_is_shop_context() || is_front_page() ) {
+		return;
+	}
+	foreach ( array( 'woocommerce-layout', 'woocommerce-smallscreen', 'woocommerce-general', 'wc-blocks-style', 'wc-blocks-vendors-style' ) as $style ) {
+		wp_dequeue_style( $style );
+	}
+	foreach ( array( 'wc-add-to-cart', 'woocommerce', 'wc-cart-fragments', 'jquery-blockui', 'js-cookie' ) as $script ) {
+		wp_dequeue_script( $script );
+	}
+}
+add_action( 'wp_enqueue_scripts', 'cohf_trim_shop_assets', 99 );
+
+/**
+ * Start downloading the homepage hero photo straight away. It is the largest
+ * thing on screen, so fetching it early makes the page feel loaded sooner.
+ */
+function cohf_preload_hero() {
+	if ( is_front_page() === false || function_exists( 'cohf_img_url' ) === false ) {
+		return;
+	}
+	$url = cohf_img_url( 'hero-home' );
+	if ( $url ) {
+		printf( '<link rel="preload" as="image" href="%s" fetchpriority="high">' . "\n", esc_url( $url ) );
+	}
+}
+add_action( 'wp_head', 'cohf_preload_hero', 1 );
+
+/**
+ * Lazy-load and decode images off the main thread by default.
+ */
+add_filter( 'wp_get_attachment_image_attributes', function ( $attr ) {
+	if ( empty( $attr['decoding'] ) ) {
+		$attr['decoding'] = 'async';
+	}
+	return $attr;
+} );

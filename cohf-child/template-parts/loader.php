@@ -60,13 +60,14 @@ defined( 'ABSPATH' ) || exit;
 		/* Private mode or storage disabled: fall through and just show it. */
 	}
 
-	if (document.readyState === 'complete') {
+	/* Leave as soon as the page can be read, not after every photo loads. */
+	if (document.readyState !== 'loading') {
 		dismiss();
 	} else {
-		window.addEventListener('load', dismiss);
+		document.addEventListener('DOMContentLoaded', dismiss);
 	}
 
-	/* Backstop, in case a slow third-party asset delays the load event. */
-	window.setTimeout(dismiss, 2400);
+	/* Backstop. */
+	window.setTimeout(dismiss, 900);
 }());
 </script>

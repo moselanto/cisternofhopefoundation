@@ -386,12 +386,8 @@ function cohf_hero_slides() {
  */
 function cohf_default_nav_items() {
 	$items = array(
-		// Home was previously absent here and ignored when added in the admin,
-		// so there was no way to get it into the header at all.
-		array(
-			'label' => __( 'Home', 'cohf-child' ),
-			'url'   => home_url( '/' ),
-		),
+		// Home is reached from the logo; dropping the separate link lets the
+		// header fit on laptop screens without squeezing.
 		array(
 			'label'    => __( 'About', 'cohf-child' ),
 			'url'      => cohf_page_url( 'page-templates/page-about.php' ),
@@ -400,6 +396,7 @@ function cohf_default_nav_items() {
 				array( 'label' => __( 'Leadership & Governance', 'cohf-child' ), 'url' => cohf_page_url( 'page-templates/page-leadership.php' ),     'desc' => __( 'The people entrusted with the work', 'cohf-child' ) ),
 				array( 'label' => __( 'Our Strategic Journey', 'cohf-child' ),   'url' => cohf_page_url( 'page-templates/page-strategy.php' ),       'desc' => __( 'Where we are going, 2026 to 2030', 'cohf-child' ) ),
 				array( 'label' => __( 'Partners', 'cohf-child' ),                'url' => cohf_page_url( 'page-templates/page-partners.php' ),       'desc' => __( 'Who we work alongside', 'cohf-child' ) ),
+				array( 'label' => __( 'Accountability', 'cohf-child' ),          'url' => cohf_page_url( 'page-templates/page-accountability.php' ), 'desc' => __( 'Safeguarding, finance and complaints', 'cohf-child' ) ),
 			),
 		),
 		array(
@@ -413,7 +410,6 @@ function cohf_default_nav_items() {
 			'children' => cohf_impact_nav_children(),
 		),
 		array( 'label' => __( 'Our Approach', 'cohf-child' ),   'url' => cohf_page_url( 'page-templates/page-approach.php' ) ),
-		array( 'label' => __( 'Accountability', 'cohf-child' ), 'url' => cohf_page_url( 'page-templates/page-accountability.php' ) ),
 		array(
 			'label'    => __( 'Explore', 'cohf-child' ),
 			'url'      => '',

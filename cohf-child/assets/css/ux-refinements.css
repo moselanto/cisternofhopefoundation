@@ -2621,7 +2621,7 @@ footer .brand .mark--logo,
   justify-content: center;
   background: #163f32;
   color: #fff;
-  animation: cohf-loader-out 600ms ease 2200ms forwards;
+  animation: cohf-loader-out 400ms ease 900ms forwards;
 }
 
 .cohf-loader.is-done {
@@ -3256,3 +3256,26 @@ html { scroll-padding-top: 110px; }
 
 /* Resources: request button sits where the empty search used to be. */
 .section-head > .btn.dark { align-self: end; }
+
+/* --------------------------------------------------------------------------
+   13.21.0 Header that fits at every width
+   Fewer top-level items (Home is the logo, Accountability sits under About),
+   and sizes that scale smoothly with the screen instead of jumping.
+   -------------------------------------------------------------------------- */
+@media (min-width: 901px) {
+  header .nav { gap: clamp(10px, 1.4vw, 24px); }
+  .brand > span { max-width: clamp(130px, 13vw, 190px); font-size: clamp(11.5px, 1vw, 13.5px); }
+  .brand img, .brand svg { width: clamp(34px, 3vw, 44px); height: auto; }
+  .links { gap: 0 clamp(8px, 1.3vw, 22px); font-size: clamp(12.5px, 1.05vw, 15px); }
+  .navgroup__btn { font-size: clamp(12.5px, 1.05vw, 15px); }
+  .links > a, .navgroup__btn { white-space: nowrap; padding-block: 10px; }
+  header .cta { padding: clamp(8px, .8vw, 12px) clamp(12px, 1.2vw, 20px); font-size: clamp(12px, .95vw, 14px); white-space: nowrap; }
+}
+@media (min-width: 1280px) {
+  .brand > span small { display: block; font-size: 9px; letter-spacing: .14em; opacity: .75; }
+}
+/* Small phones: keep the logo, menu button and cart on one tidy row. */
+@media (max-width: 380px) {
+  .brand > span { font-size: 11px; max-width: 150px; }
+  header .nav { gap: 8px; }
+}
