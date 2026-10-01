@@ -508,8 +508,11 @@ a.wc-block-components-button:not(.is-link){
 
 /* Layout: form left, sticky summary card right */
 .wc-block-checkout.wc-block-components-sidebar-layout,
-.wc-block-cart.wc-block-components-sidebar-layout{gap:36px;margin-bottom:10px}
-.wc-block-components-sidebar-layout .wc-block-components-main{padding-right:0}
+.wc-block-cart.wc-block-components-sidebar-layout{margin-bottom:10px}
+/* No flex gap here: WooCommerce sizes main/sidebar at 65%/35%, so any gap
+   pushes the sidebar onto a new line (12.3.0 bug). Space with padding. */
+.is-large.wc-block-components-sidebar-layout .wc-block-components-main{padding-right:36px;box-sizing:border-box}
+.is-large.wc-block-components-sidebar-layout .wc-block-components-sidebar{padding-left:0;box-sizing:border-box}
 .is-large .wc-block-components-sidebar{position:sticky;top:110px;align-self:flex-start}
 .wc-block-components-sidebar .wc-block-components-order-summary,
 .wp-block-woocommerce-checkout-order-summary-block,
@@ -615,3 +618,39 @@ a.wc-block-components-button:not(.is-link){
 .woocommerce .shop-toolbar .shop-results-head,.woocommerce .shop-toolbar .shop-active{padding-bottom:4px}
 @media (max-width:1100px) and (min-width:761px){.woocommerce .shop-toolbar .shop-prices{flex-basis:100%}}
 @media (max-width:760px){.woocommerce .shop-toolbar{background:none;border:0 !important;padding:0 !important}}
+
+/* =========================================================================
+   12.3.1 checkout fixes
+   1. prototype.css sets `form{display:grid;grid-template-columns:1fr 1fr}`
+      for the contact form. The checkout form inherited it, so every section
+      became a cell in a two-column grid (contact top right, address left,
+      delivery right, payment left, note beside payment).
+   2. prototype.css gives every input 14px padding, which inflated the radio
+      buttons into large dark circles sitting over their labels.
+   ========================================================================= */
+form.wc-block-checkout__form,
+.wc-block-checkout form.wc-block-components-form,
+.wc-block-cart form,
+.wc-block-components-totals-coupon form,
+form.wc-block-components-totals-coupon__form{display:block;grid-template-columns:none}
+form.wc-block-components-totals-coupon__form{display:flex;gap:10px}
+.wc-block-checkout__form > *{width:100%}
+
+.wc-block-components-radio-control__input,
+.wc-block-components-checkbox__input,
+.wc-block-checkout input[type=radio],
+.wc-block-checkout input[type=checkbox],
+.wc-block-cart input[type=checkbox]{padding:0 !important;margin:0}
+.wc-block-components-radio-control__input{width:20px !important;height:20px !important;min-width:20px;border:2px solid #9fb0a6 !important;border-radius:50% !important;background:#fff !important;top:50% !important;transform:translateY(-50%);box-sizing:border-box}
+.wc-block-components-radio-control__input:checked{border:6px solid var(--forest) !important;background:#fff !important}
+.wc-block-components-radio-control-accordion-option .wc-block-components-radio-control__option{border:0 !important;margin:0 !important;background:transparent !important;box-shadow:none !important}
+.wc-block-components-radio-control__option-layout{gap:12px}
+.wc-block-components-radio-control__label-group{align-items:center}
+.wc-block-components-payment-method-icons{margin:0 !important}
+.wc-block-components-checkbox{margin-top:10px}
+.wc-block-components-checkbox label{align-items:center;gap:12px}
+
+/* Actions row: Place Order full width of the form column */
+.wc-block-checkout__actions_row{display:flex;flex-wrap:wrap;justify-content:space-between}
+.wc-block-components-checkout-place-order-button{flex:1 1 260px;max-width:none}
+@media (max-width:760px){.wc-block-components-checkout-place-order-button{width:100%}}
