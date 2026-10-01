@@ -641,6 +641,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Sculpted by hand, so no two are alike. A striking statement piece for a shelf, sideboard or desk. Price is for one sculpture.', 'cohf-child' ),
 			'order'    => 60,
 		),
+		'clay-frog-sculpture' => array(
+			'name'     => __( 'Clay Frog Sculpture', 'cohf-child' ),
+			'price'    => '3500',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'clay-frog-sculpture.jpg',
+			'alt'      => __( 'A natural clay sculpture of a round globe covered in finely detailed frogs climbing over one another, photographed in a pottery studio.', 'cohf-child' ),
+			'short'    => __( 'Handmade natural clay sculpture of frogs climbing over a round globe, each one finely detailed.', 'cohf-child' ),
+			'long'     => __( 'Sculpted by hand, so every piece is unique and details vary from the photo. A conversation piece for a shelf, table or garden corner under cover. Price is for one sculpture.', 'cohf-child' ),
+			'order'    => 61,
+		),
 	);
 }
 
