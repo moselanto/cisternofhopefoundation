@@ -581,6 +581,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Hand-beaded, so colour sequences vary. Add your preferred colours in the order notes.', 'cohf-child' ),
 			'order'    => 54,
 		),
+		'polymer-clay-mouse' => array(
+			'name'     => __( 'Polymer Clay Mouse', 'cohf-child' ),
+			'price'    => '3500',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'polymer-clay-mouse.jpg',
+			'alt'      => __( 'A handmade grey polymer clay mouse sitting upright with its paws together and a long curled tail, shown from six angles.', 'cohf-child' ),
+			'short'    => __( 'Handmade polymer clay mouse sitting upright, paws folded, with a long curling tail.', 'cohf-child' ),
+			'long'     => __( 'Shaped by hand, so each mouse differs slightly in pose and finish. Price is for one mouse.', 'cohf-child' ),
+			'order'    => 55,
+		),
 	);
 }
 
