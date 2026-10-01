@@ -739,6 +739,34 @@ function cohf_shop_seed_products() {
 				),
 			),
 		),
+		'mens-leather-sandals' => array(
+			'name'     => __( 'Men\'s Handmade Leather Sandals', 'cohf-child' ),
+			'price'    => '3500',
+			'category' => __( 'Sandals', 'cohf-child' ),
+			'image'    => 'mens-leather-sandals-brown.jpg',
+			'alt'      => __( 'Design 1: a pair of brown leather men\'s slide sandals with two wide crossover straps and stitched soles.', 'cohf-child' ),
+			'short'    => __( 'Handmade men\'s leather sandals with stitched soles, available in five designs in black or brown leather.', 'cohf-child' ),
+			'long'     => __( 'Each pair is cut and stitched by hand from genuine leather. Five designs are shown in the gallery: 1 Brown double strap, 2 Black cross strap, 3 Black toe ring, 4 Black with carved tan overlay, 5 Black toe loop. Add the design number and your shoe size (EU or UK) in the order notes and we will confirm with you before dispatch. Price is for one pair.', 'cohf-child' ),
+			'order'    => 69,
+			'gallery'  => array(
+				array(
+					'image' => 'mens-leather-sandals-black-cross.jpg',
+					'alt'   => __( 'Design 2: black leather men\'s slide sandals with two wide straps crossing over the foot.', 'cohf-child' ),
+				),
+				array(
+					'image' => 'mens-leather-sandals-toe-ring.jpg',
+					'alt'   => __( 'Design 3: black leather men\'s sandals with a single wide strap and a toe ring.', 'cohf-child' ),
+				),
+				array(
+					'image' => 'mens-leather-sandals-carved-overlay.jpg',
+					'alt'   => __( 'Design 4: black leather men\'s sandals with a tan leather strap carved with a chevron pattern and a toe loop.', 'cohf-child' ),
+				),
+				array(
+					'image' => 'mens-leather-sandals-toe-loop.jpg',
+					'alt'   => __( 'Design 5: black leather men\'s toe-loop sandals, one pair worn on the feet.', 'cohf-child' ),
+				),
+			),
+		),
 	);
 }
 
