@@ -701,6 +701,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'A tea pet is a little clay figure kept on the tea tray and rinsed with leftover tea, slowly deepening its colour over time. Just as happy on a desk, shelf or windowsill. Price is for one frog.', 'cohf-child' ),
 			'order'    => 66,
 		),
+		'beaded-gladiator-sandals' => array(
+			'name'     => __( 'Beaded Gladiator Sandals', 'cohf-child' ),
+			'price'    => '3500',
+			'category' => __( 'Sandals', 'cohf-child' ),
+			'image'    => 'beaded-gladiator-sandals.jpg',
+			'alt'      => __( 'A pair of tan leather thong sandals with a high beaded ankle cuff in blocks of blue, yellow, orange and green and a cascading teardrop pattern of colourful beadwork down the foot.', 'cohf-child' ),
+			'short'    => __( 'Tan leather gladiator sandals with a beaded ankle cuff and cascading teardrop beadwork in bright Maasai colours.', 'cohf-child' ),
+			'long'     => __( 'Hand-beaded on leather, so colour placement varies slightly from pair to pair. Add your shoe size (EU or UK) in the order notes.', 'cohf-child' ),
+			'order'    => 67,
+		),
 	);
 }
 
