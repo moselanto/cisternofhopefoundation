@@ -1347,6 +1347,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Price is per keychain. Pictured is a selection of the designs available. Add your preferred design in the order notes and we will confirm availability before dispatch.', 'cohf-child' ),
 			'order'    => 126,
 		),
+		'beaded-table-mat-gold-star' => array(
+			'name'     => __( 'Beaded Table Mat - Gold Star', 'cohf-child' ),
+			'price'    => '1000',
+			'category' => __( 'Home and kitchen', 'cohf-child' ),
+			'image'    => 'beaded-table-mat-gold-star.jpg',
+			'alt'      => __( 'Round table mats made entirely of gold beads, each with an open star-shaped cut-out between the centre and the outer ring.', 'cohf-child' ),
+			'short'    => __( 'A round table mat beaded entirely in gold, with an open star pattern between the centre and the outer ring.', 'cohf-child' ),
+			'long'     => __( 'Price is per mat. Each mat is beaded by hand, so it varies slightly from the photo. Wipe clean with a damp cloth.', 'cohf-child' ),
+			'order'    => 127,
+		),
 	);
 }
 
