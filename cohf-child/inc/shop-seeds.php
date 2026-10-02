@@ -1247,6 +1247,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Each pair is beaded by hand, so patterns vary slightly from the photo. Add your shoe size in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
 			'order'    => 116,
 		),
+		'beaded-straw-sun-hat-sandals-set' => array(
+			'name'     => __( 'Beaded Straw Sun Hat and Leather Sandals Set', 'cohf-child' ),
+			'price'    => '5500',
+			'category' => __( 'Accessories', 'cohf-child' ),
+			'image'    => 'beaded-straw-sun-hat-sandals-set.jpg',
+			'alt'      => __( 'A wide-brimmed natural straw sun hat with colourful triangle beadwork around the crown and brim edge, beside a pair of brown leather toe-loop sandals with a matching beaded strap.', 'cohf-child' ),
+			'short'    => __( 'A matching set: wide-brimmed straw sun hat with colourful Maasai beadwork, and brown leather sandals with a beaded strap.', 'cohf-child' ),
+			'long'     => __( 'Price is for the hat and sandals together. Beadwork is done by hand, so patterns vary slightly from the photo. Add your shoe size in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
+			'order'    => 117,
+		),
 	);
 }
 
