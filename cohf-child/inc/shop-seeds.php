@@ -1107,6 +1107,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Price is per visor. Beadwork is done by hand, so patterns vary slightly from the photo. Add your preferred colour in the order notes and we will confirm availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 102,
 		),
+		'maasai-jewellery-set-cuff-necklace' => array(
+			'name'     => __( 'Maasai Jewellery Set', 'cohf-child' ),
+			'price'    => '4500',
+			'category' => __( 'Jewellery', 'cohf-child' ),
+			'image'    => 'maasai-jewellery-set-cuff-necklace.jpg',
+			'alt'      => __( 'A Maasai jewellery set: a beaded choker with hanging silver chains and discs, a long pendant of round multicolour beaded medallions with chain fringe, and a matching black leather cuff with a large beaded medallion.', 'cohf-child' ),
+			'short'    => __( 'A matching Maasai set: a beaded choker with silver chains and a long medallion pendant, plus a leather cuff with a beaded medallion.', 'cohf-child' ),
+			'long'     => __( 'Beaded by hand, so colours vary slightly from the photo. Price is for the set as pictured: necklace and cuff.', 'cohf-child' ),
+			'order'    => 103,
+		),
 	);
 }
 
