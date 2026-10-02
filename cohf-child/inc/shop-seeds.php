@@ -1187,6 +1187,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your size in the order notes and we will confirm details, including which pieces are included, before dispatch.', 'cohf-child' ),
 			'order'    => 110,
 		),
+		'maasai-dress-white-shuka-cape' => array(
+			'name'     => __( 'Maasai Dress - White with Shuka Cape', 'cohf-child' ),
+			'price'    => '8500',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'maasai-dress-white-shuka-cape.jpg',
+			'alt'      => __( 'A woman wearing a long fitted white dress with a colourful Maasai beaded strip down the front and small beaded details on the skirt, styled with a pink and red checked Maasai shuka cape and beaded cuffs.', 'cohf-child' ),
+			'short'    => __( 'A long fitted white dress with a colourful Maasai beaded strip and small beaded details, pictured with a checked shuka cape and beaded cuffs.', 'cohf-child' ),
+			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your size in the order notes and we will confirm details, including which pieces are included, before dispatch.', 'cohf-child' ),
+			'order'    => 111,
+		),
 	);
 }
 
