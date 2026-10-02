@@ -125,6 +125,28 @@ function cohf_story_seed() {
 		 * (Stories) once the real details are in hand.
 		 */
 		array(
+			'title'     => __( 'From one machine at home to a growing tailoring business', 'cohf-child' ),
+			'slug'      => 'enterprise-tailoring-mr-owino',
+			'date'      => '2026-10-02',
+			'image'     => 'story-06-tailoring-owino',
+			'programme' => 'Youth Skills, Enterprise & Employability',
+			'gallery'   => array(
+				array( 'key' => 'story-06-tailoring-owino',    'label' => __( 'Mr Owino', 'cohf-child' ),  'caption' => __( 'Mr Owino in his tailoring workshop.', 'cohf-child' ) ),
+				array( 'key' => 'story-06-tailoring-workshop', 'label' => __( 'The workshop', 'cohf-child' ), 'caption' => __( 'The business that began with one machine at home, now growing.', 'cohf-child' ) ),
+			),
+			'excerpt'   => __( 'Mr Owino began with only one sewing machine in his house. With tailoring support from the Foundation, his business is now growing.', 'cohf-child' ),
+			'body'      => array(
+				__( 'Mr Owino began his tailoring business with only one sewing machine in his house.', 'cohf-child' ),
+				__( 'Through our business support work, the Cistern of Hope Foundation has walked alongside him with tailoring support, and today his business is growing.', 'cohf-child' ),
+				__( 'His journey shows what our enterprise work is about: small beginnings, the right support and the determination to keep going can grow into a livelihood that lasts.', 'cohf-child' ),
+				__( 'Would you like to help another entrepreneur grow from a small beginning? Partner with us, and together we can turn small beginnings into lasting livelihoods.', 'cohf-child' ),
+			),
+			'challenge'    => __( 'Mr Owino started his tailoring business with only one sewing machine in his house.', 'cohf-child' ),
+			'intervention' => __( 'The Foundation provided tailoring support as part of its business support work.', 'cohf-child' ),
+			'change'       => __( 'Mr Owino\'s tailoring business is growing.', 'cohf-child' ),
+		),
+
+		array(
 			'title'     => __( 'Breakfast on wheels: a roadside egg business finds its feet', 'cohf-child' ),
 			'slug'      => 'enterprise-roadside-egg-business',
 			'date'      => '2025-08-07',
