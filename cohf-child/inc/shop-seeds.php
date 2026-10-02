@@ -1077,6 +1077,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your preferred colour and size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 99,
 		),
+		'maasai-beaded-complete-set' => array(
+			'name'     => __( 'Maasai Beaded Complete Set', 'cohf-child' ),
+			'price'    => '5000',
+			'category' => __( 'Jewellery', 'cohf-child' ),
+			'image'    => 'maasai-beaded-complete-set.jpg',
+			'alt'      => __( 'A matching Maasai beaded set: a beaded collar necklace with silver chains and a long beaded pendant, a pair of three-tier beaded drop earrings, and black sandals with two beaded straps in orange, green, red, white and black.', 'cohf-child' ),
+			'short'    => __( 'A complete matching Maasai beaded set: collar necklace with silver chains, drop earrings and beaded flat sandals.', 'cohf-child' ),
+			'long'     => __( 'Each piece is beaded by hand, so colours and patterns vary slightly from the photo. Price is for the complete set as pictured. Add your shoe size in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
+			'order'    => 100,
+		),
 	);
 }
 
