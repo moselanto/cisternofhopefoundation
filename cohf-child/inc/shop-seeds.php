@@ -1117,6 +1117,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Beaded by hand, so colours vary slightly from the photo. Price is for the set as pictured: necklace and cuff.', 'cohf-child' ),
 			'order'    => 103,
 		),
+		'beaded-felt-cap-wide-brim' => array(
+			'name'     => __( 'Beaded Cap', 'cohf-child' ),
+			'price'    => '4500',
+			'category' => __( 'Accessories', 'cohf-child' ),
+			'image'    => 'beaded-felt-cap-wide-brim.jpg',
+			'alt'      => __( 'Wide-brimmed felt hats in red and camel, each with a colourful Maasai beaded band around the crown and beadwork wrapped around the edge of the brim.', 'cohf-child' ),
+			'short'    => __( 'A wide-brimmed felt hat with a Maasai beaded band and a beaded brim edge. Pictured in red and camel.', 'cohf-child' ),
+			'long'     => __( 'Price is per hat. Beadwork is done by hand, so patterns vary slightly from the photo. Add your preferred colour in the order notes and we will confirm availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 104,
+		),
 	);
 }
 
