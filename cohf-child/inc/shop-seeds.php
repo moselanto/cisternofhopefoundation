@@ -1167,6 +1167,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Made to order. Beadwork is done by hand, so it varies slightly from the photo. Add your size or measurements in the order notes and we will confirm details with you before we begin.', 'cohf-child' ),
 			'order'    => 108,
 		),
+		'maasai-beaded-dress' => array(
+			'name'     => __( 'Maasai Beaded Dress', 'cohf-child' ),
+			'price'    => '8500',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'maasai-beaded-dress.jpg',
+			'alt'      => __( 'Three fitted sleeveless dresses on mannequins, in white, maroon and white with a beaded diamond pattern, each styled with a Maasai beaded choker and a long pendant of round multicolour beaded medallions with silver chain fringe.', 'cohf-child' ),
+			'short'    => __( 'A fitted sleeveless dress styled with Maasai beadwork. Pictured in white, maroon, and white with a beaded diamond pattern.', 'cohf-child' ),
+			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your preferred colour and size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 109,
+		),
 	);
 }
 
