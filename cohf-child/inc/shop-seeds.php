@@ -1287,6 +1287,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Beaded by hand, so patterns vary slightly from the photo. Add your waist size in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
 			'order'    => 120,
 		),
+		'maasai-beaded-mermaid-dress-royal-blue' => array(
+			'name'     => __( 'Maasai Beaded Mermaid Dress - Royal Blue', 'cohf-child' ),
+			'price'    => '6500',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'maasai-beaded-mermaid-dress-royal-blue.jpg',
+			'alt'      => __( 'A woman wearing a long royal blue mermaid dress with thin straps, decorated with colourful Maasai beaded strands in a diamond pattern and hanging silver beaded drops, styled with a beaded collar and cuff.', 'cohf-child' ),
+			'short'    => __( 'A long royal blue mermaid dress decorated with colourful Maasai beaded strands and hanging silver drops.', 'cohf-child' ),
+			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 121,
+		),
 	);
 }
 
