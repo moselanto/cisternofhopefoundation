@@ -61,6 +61,11 @@ function cohf_shop_category_map() {
 			'description' => __( 'Colourful animal sculptures carved from layered flip-flop rubber.', 'cohf-child' ),
 			'cover'       => 'flip-flop-lion-large',
 		),
+		'clothing'         => array(
+			'name'        => __( 'Clothing', 'cohf-child' ),
+			'description' => __( 'African attire, from embroidered agbada to statement pieces for special occasions.', 'cohf-child' ),
+			'cover'       => 'navy-blue-agbada',
+		),
 	);
 }
 
@@ -119,7 +124,7 @@ function cohf_shop_ensure_term( $name ) {
 /**
  * One-time category sync. Bump COHF_SHOP_CATS_VERSION to run it again.
  */
-const COHF_SHOP_CATS_VERSION = 1;
+const COHF_SHOP_CATS_VERSION = 2;
 
 function cohf_shop_categories_sync() {
 	if ( cohf_has_shop() === false || current_user_can( 'manage_woocommerce' ) === false ) {

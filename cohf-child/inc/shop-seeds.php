@@ -987,6 +987,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Each pair is beaded by hand, so patterns and colours vary slightly from the photo. Add your shoe size in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
 			'order'    => 90,
 		),
+		'navy-blue-agbada' => array(
+			'name'     => __( 'Navy Blue Agbada', 'cohf-child' ),
+			'price'    => '13000',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'navy-blue-agbada.jpg',
+			'alt'      => __( 'A navy blue agbada on a mannequin: a flowing outer robe over a long tunic with tonal diamond embroidery down the front, worn with a matching navy cap embroidered in gold.', 'cohf-child' ),
+			'short'    => __( 'A flowing navy blue agbada with tonal embroidery down the front, pictured with a matching gold-embroidered cap.', 'cohf-child' ),
+			'long'     => __( 'Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 91,
+		),
 	);
 }
 
