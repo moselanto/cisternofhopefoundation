@@ -1037,6 +1037,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 95,
 		),
+		'african-kaftan-lilac' => array(
+			'name'     => __( 'African Kaftan', 'cohf-child' ),
+			'price'    => '5000',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'african-kaftan-lilac.jpg',
+			'alt'      => __( 'A man wearing a lilac short-sleeved kaftan with a round neck, an asymmetric layered hem and buttoned fabric tabs across the front, with matching trousers.', 'cohf-child' ),
+			'short'    => __( 'A lilac short-sleeved kaftan with an asymmetric layered hem and buttoned tab details, worn with matching trousers.', 'cohf-child' ),
+			'long'     => __( 'Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 96,
+		),
 	);
 }
 
