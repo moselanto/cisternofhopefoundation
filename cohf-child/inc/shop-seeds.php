@@ -1137,6 +1137,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 105,
 		),
+		'maasai-beaded-shirt' => array(
+			'name'     => __( 'Maasai Beaded Shirt', 'cohf-child' ),
+			'price'    => '6500',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'maasai-beaded-shirt.jpg',
+			'alt'      => __( 'The back of a long-sleeved white shirt with a red and blue Maasai shuka check yoke and hem, decorated with lines of colourful beadwork and rows of hanging silver chains and discs.', 'cohf-child' ),
+			'short'    => __( 'A long-sleeved white shirt with a red and blue Maasai shuka check yoke and hem, decorated with colourful beaded lines and hanging silver chains.', 'cohf-child' ),
+			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 106,
+		),
 	);
 }
 
