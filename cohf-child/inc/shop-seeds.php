@@ -1087,6 +1087,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Each piece is beaded by hand, so colours and patterns vary slightly from the photo. Price is for the complete set as pictured. Add your shoe size in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
 			'order'    => 100,
 		),
+		'maasai-beaded-jewellery-boxes' => array(
+			'name'     => __( 'Maasai Beaded Jewellery Box', 'cohf-child' ),
+			'price'    => '2000',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'maasai-beaded-jewellery-boxes.jpg',
+			'alt'      => __( 'A collection of round lidded jewellery boxes covered in Maasai beadwork, in multicolour, red, yellow, green, blue, black and gold designs with beaded swirl motifs on the lids.', 'cohf-child' ),
+			'short'    => __( 'A round lidded jewellery box covered in handmade Maasai beadwork, with a beaded swirl motif on the lid.', 'cohf-child' ),
+			'long'     => __( 'Price is per box. Each box is beaded by hand, so colours and patterns vary. Pictured is a selection of the designs available. Add your preferred colour in the order notes and we will confirm availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 101,
+		),
 	);
 }
 
