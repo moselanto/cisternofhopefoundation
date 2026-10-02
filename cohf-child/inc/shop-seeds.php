@@ -1237,6 +1237,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your size in the order notes and we will confirm details, including which pieces are included, before dispatch.', 'cohf-child' ),
 			'order'    => 115,
 		),
+		'maasai-beaded-leather-sandals-gold' => array(
+			'name'     => __( 'Maasai Beaded Leather Sandals', 'cohf-child' ),
+			'price'    => '3000',
+			'category' => __( 'Sandals', 'cohf-child' ),
+			'image'    => 'maasai-beaded-leather-sandals-gold.jpg',
+			'alt'      => __( 'A pair of brown leather slide sandals with two wide straps covered in gold beadwork with small black accents.', 'cohf-child' ),
+			'short'    => __( 'Brown leather slide sandals with two straps covered in gold Maasai beadwork.', 'cohf-child' ),
+			'long'     => __( 'Each pair is beaded by hand, so patterns vary slightly from the photo. Add your shoe size in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
+			'order'    => 116,
+		),
 	);
 }
 
