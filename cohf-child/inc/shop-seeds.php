@@ -1127,6 +1127,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Price is per hat. Beadwork is done by hand, so patterns vary slightly from the photo. Add your preferred colour in the order notes and we will confirm availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 104,
 		),
+		'maasai-dress-with-beads-lilac' => array(
+			'name'     => __( 'Maasai Dress with Beads', 'cohf-child' ),
+			'price'    => '5500',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'maasai-dress-with-beads-lilac.jpg',
+			'alt'      => __( 'A woman wearing a long fitted lilac dress decorated with a colourful Maasai beaded strip down the front and small beaded details, styled with a beaded collar, beaded cuffs and a red checked Maasai shuka worn as a cape.', 'cohf-child' ),
+			'short'    => __( 'A long fitted lilac dress with a colourful Maasai beaded strip down the front and small beaded details across the skirt.', 'cohf-child' ),
+			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 105,
+		),
 	);
 }
 
