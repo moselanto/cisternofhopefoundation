@@ -1337,6 +1337,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Price is per mat, large size. Each mat is beaded by hand, so colours and patterns vary. Add your preferred colours in the order notes and we will confirm availability before dispatch. Wipe clean with a damp cloth.', 'cohf-child' ),
 			'order'    => 125,
 		),
+		'maasai-beaded-keychains' => array(
+			'name'     => __( 'Maasai Beaded Keychain', 'cohf-child' ),
+			'price'    => '650',
+			'category' => __( 'Accessories', 'cohf-child' ),
+			'image'    => 'maasai-beaded-keychains.jpg',
+			'alt'      => __( 'A selection of handmade beaded keychains on silver rings: rectangular designs in the Kenyan flag, the American flag and a blue pattern, and round leather-backed designs in colourful Maasai beadwork.', 'cohf-child' ),
+			'short'    => __( 'A handmade Maasai beaded keychain on a silver ring. Available in flag designs and round leather-backed beadwork.', 'cohf-child' ),
+			'long'     => __( 'Price is per keychain. Pictured is a selection of the designs available. Add your preferred design in the order notes and we will confirm availability before dispatch.', 'cohf-child' ),
+			'order'    => 126,
+		),
 	);
 }
 
