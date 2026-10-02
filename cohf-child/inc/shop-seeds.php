@@ -977,6 +977,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Each piece is beaded by hand by Maasai artisans and edged with braided leather, so patterns vary slightly from the photo. Wipe clean with a damp cloth. Price is for one set of placemats with matching coasters.', 'cohf-child' ),
 			'order'    => 89,
 		),
+		'beaded-high-heels' => array(
+			'name'     => __( 'Beaded High Heels', 'cohf-child' ),
+			'price'    => '5500',
+			'category' => __( 'Sandals', 'cohf-child' ),
+			'image'    => 'beaded-high-heels.jpg',
+			'alt'      => __( 'A pair of pointed-toe block-heel shoes with ankle straps, fully covered in handmade beadwork in red, yellow, blue, green and white geometric patterns.', 'cohf-child' ),
+			'short'    => __( 'Pointed-toe block heels with an ankle strap, fully covered in colourful handmade beadwork.', 'cohf-child' ),
+			'long'     => __( 'Each pair is beaded by hand, so patterns and colours vary slightly from the photo. Add your shoe size in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
+			'order'    => 90,
+		),
 	);
 }
 
