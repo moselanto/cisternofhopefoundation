@@ -1147,6 +1147,26 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 106,
 		),
+		'maasai-beaded-shirt-red-check' => array(
+			'name'     => __( 'Maasai Beaded Shirt - Red Check Trim', 'cohf-child' ),
+			'price'    => '5000',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'maasai-beaded-shirt-red-check.jpg',
+			'alt'      => __( 'A white round-neck shirt on a mannequin with a red checked Maasai shuka placket and neckline, a curved red check pocket trim, beaded details and rows of hanging silver chains with discs.', 'cohf-child' ),
+			'short'    => __( 'A white shirt with a red checked Maasai shuka placket and trim, decorated with beaded details and hanging silver chains.', 'cohf-child' ),
+			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 107,
+		),
+		'complete-custom-outfit-maasai' => array(
+			'name'     => __( 'Complete Custom Outfit', 'cohf-child' ),
+			'price'    => '14000',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'complete-custom-outfit-maasai.jpg',
+			'alt'      => __( 'A complete outfit on a mannequin: a fitted sleeveless red dress with hanging silver chains, a wide Maasai beaded collar with long coloured bead strands, and a wide black leather belt with beaded medallions and draped silver chains.', 'cohf-child' ),
+			'short'    => __( 'A complete Maasai-styled outfit: fitted red dress, wide beaded collar with long bead strands, and a beaded leather belt with silver chains.', 'cohf-child' ),
+			'long'     => __( 'Made to order. Beadwork is done by hand, so it varies slightly from the photo. Add your size or measurements in the order notes and we will confirm details with you before we begin.', 'cohf-child' ),
+			'order'    => 108,
+		),
 	);
 }
 
