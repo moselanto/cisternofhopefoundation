@@ -997,6 +997,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 91,
 		),
+		'men-agbada-suit-turquoise' => array(
+			'name'     => __( 'Men Agbada Suit', 'cohf-child' ),
+			'price'    => '13000',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'men-agbada-suit-turquoise.jpg',
+			'alt'      => __( 'A turquoise men\'s agbada suit on a mannequin: a flowing outer robe over a tunic with tonal embroidery at the neck and chest, matching trousers and a matching embroidered cap.', 'cohf-child' ),
+			'short'    => __( 'A turquoise men\'s agbada suit with tonal embroidery at the neck and chest, pictured with matching trousers and cap.', 'cohf-child' ),
+			'long'     => __( 'Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 92,
+		),
 	);
 }
 
