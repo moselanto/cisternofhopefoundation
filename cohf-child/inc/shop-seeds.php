@@ -1067,6 +1067,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 98,
 		),
+		'maasai-dress' => array(
+			'name'     => __( 'Maasai Dress', 'cohf-child' ),
+			'price'    => '8000',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'maasai-dress.jpg',
+			'alt'      => __( 'Two long fitted dresses on mannequins, one red and one white, with three-quarter sleeves and Maasai beaded trim around the neckline, down the front, on the cuffs and in rows across the skirt.', 'cohf-child' ),
+			'short'    => __( 'A long fitted dress with three-quarter sleeves, finished with colourful Maasai beadwork at the neckline, cuffs and skirt. Pictured in red and white.', 'cohf-child' ),
+			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your preferred colour and size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 99,
+		),
 	);
 }
 
