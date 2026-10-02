@@ -1327,6 +1327,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Each pair is beaded by hand, so colours and patterns vary slightly from the photo. Add your shoe size in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
 			'order'    => 124,
 		),
+		'beaded-table-mat-large' => array(
+			'name'     => __( 'Beaded Table Mat - Large', 'cohf-child' ),
+			'price'    => '1000',
+			'category' => __( 'Home and kitchen', 'cohf-child' ),
+			'image'    => 'beaded-table-mat-large.jpg',
+			'alt'      => __( 'A large round beaded table mat in black and gold patterns with a gold border, held up in front of a second round mat beaded in bright multicolour.', 'cohf-child' ),
+			'short'    => __( 'A large round table mat made of handmade beadwork. Pictured in black and gold, and in bright multicolour.', 'cohf-child' ),
+			'long'     => __( 'Price is per mat, large size. Each mat is beaded by hand, so colours and patterns vary. Add your preferred colours in the order notes and we will confirm availability before dispatch. Wipe clean with a damp cloth.', 'cohf-child' ),
+			'order'    => 125,
+		),
 	);
 }
 
