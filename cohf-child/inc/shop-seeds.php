@@ -1197,6 +1197,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your size in the order notes and we will confirm details, including which pieces are included, before dispatch.', 'cohf-child' ),
 			'order'    => 111,
 		),
+		'maasai-mermaid-dress-red-shuka' => array(
+			'name'     => __( 'Maasai Mermaid Dress - Red with Shuka Skirt', 'cohf-child' ),
+			'price'    => '9000',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'maasai-mermaid-dress-red-shuka.jpg',
+			'alt'      => __( 'A woman wearing a long red mermaid dress with cold-shoulder checked sleeves, rows of draped gold chains across the bodice, and a flared skirt in red and purple Maasai shuka check.', 'cohf-child' ),
+			'short'    => __( 'A long red mermaid dress with cold-shoulder sleeves, draped chain details and a flared Maasai shuka check skirt.', 'cohf-child' ),
+			'long'     => __( 'Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 112,
+		),
 	);
 }
 
