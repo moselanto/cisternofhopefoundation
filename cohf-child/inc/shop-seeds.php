@@ -1377,6 +1377,26 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Add your preferred style and size in the order notes and we will confirm details, including which pieces are included, before dispatch.', 'cohf-child' ),
 			'order'    => 129,
 		),
+		'african-print-kitenge-dress' => array(
+			'name'     => __( 'African Print Kitenge Dress', 'cohf-child' ),
+			'price'    => '6500',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'african-print-kitenge-dress.jpg',
+			'alt'      => __( 'Two long African print dresses on mannequins: one in a maroon, orange and white geometric kitenge print, and one in maroon with a bold multicolour geometric print panel, wide sleeves and a matching head wrap.', 'cohf-child' ),
+			'short'    => __( 'A long, comfortable dress in African kitenge print. Pictured in a maroon and orange geometric print, and in maroon with a multicolour print panel and matching head wrap.', 'cohf-child' ),
+			'long'     => __( 'Add your preferred style and size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 130,
+		),
+		'african-print-boubou-dress' => array(
+			'name'     => __( 'African Print Boubou Dress', 'cohf-child' ),
+			'price'    => '7000',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'african-print-boubou-dress.jpg',
+			'alt'      => __( 'A loose, flowing boubou-style dress on a mannequin with wide batwing sleeves, in an African print of mustard yellow, brown and red diamond shapes with white crackle lines.', 'cohf-child' ),
+			'short'    => __( 'A loose, flowing boubou-style dress with wide batwing sleeves, in a mustard, brown and red African print.', 'cohf-child' ),
+			'long'     => __( 'Generous, relaxed fit. Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 131,
+		),
 	);
 }
 
