@@ -1277,6 +1277,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Price is for the hat and sandals together. Beadwork is done by hand, so patterns vary slightly from the photo. Add your shoe size in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
 			'order'    => 119,
 		),
+		'maasai-beaded-wide-leather-belt' => array(
+			'name'     => __( 'Maasai Beaded Wide Leather Belt', 'cohf-child' ),
+			'price'    => '8500',
+			'category' => __( 'Accessories', 'cohf-child' ),
+			'image'    => 'maasai-beaded-wide-leather-belt.jpg',
+			'alt'      => __( 'A wide tan leather belt with a buckle, covered in dense Maasai beadwork in bold geometric patterns of orange, white, brown, yellow, blue and green, with a fringe of silver chains and discs along the lower edge.', 'cohf-child' ),
+			'short'    => __( 'A wide leather belt covered in bold handmade Maasai beadwork, finished with a fringe of silver chains and discs.', 'cohf-child' ),
+			'long'     => __( 'Beaded by hand, so patterns vary slightly from the photo. Add your waist size in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
+			'order'    => 120,
+		),
 	);
 }
 
