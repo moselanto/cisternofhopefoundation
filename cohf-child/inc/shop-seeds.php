@@ -1317,6 +1317,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Each pair is made by hand, so beadwork and shells vary slightly from the photo. Add your shoe size in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
 			'order'    => 123,
 		),
+		'maasai-beaded-leather-toe-ring-sandals' => array(
+			'name'     => __( 'Maasai Beaded Leather Toe-Ring Sandals', 'cohf-child' ),
+			'price'    => '2500',
+			'category' => __( 'Sandals', 'cohf-child' ),
+			'image'    => 'maasai-beaded-leather-toe-ring-sandals.jpg',
+			'alt'      => __( 'A pair of tan leather flat sandals worn on the feet, each with a wide strap beaded in pink, blue, yellow and white and a round beaded toe ring.', 'cohf-child' ),
+			'short'    => __( 'Tan leather flat sandals with a wide Maasai beaded strap and a beaded toe ring, in pink, blue, yellow and white.', 'cohf-child' ),
+			'long'     => __( 'Each pair is beaded by hand, so colours and patterns vary slightly from the photo. Add your shoe size in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
+			'order'    => 124,
+		),
 	);
 }
 
