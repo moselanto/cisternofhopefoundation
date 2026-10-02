@@ -1357,6 +1357,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Price is per mat. Each mat is beaded by hand, so it varies slightly from the photo. Wipe clean with a damp cloth.', 'cohf-child' ),
 			'order'    => 127,
 		),
+		'maasai-beaded-wall-clock' => array(
+			'name'     => __( 'Maasai Beaded Wall Clock', 'cohf-child' ),
+			'price'    => '9000',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'maasai-beaded-wall-clock.jpg',
+			'alt'      => __( 'A round wall clock with a white face and black numerals, set in a wide frame of royal blue beadwork with colourful beaded feather patterns, edged with black woven trim.', 'cohf-child' ),
+			'short'    => __( 'A round wall clock framed in royal blue Maasai beadwork with colourful beaded feather patterns.', 'cohf-child' ),
+			'long'     => __( 'Beaded by hand, so patterns vary slightly from the photo. Battery-powered quartz movement. We will confirm availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 128,
+		),
 	);
 }
 
