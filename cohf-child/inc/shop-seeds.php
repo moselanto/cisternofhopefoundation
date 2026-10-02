@@ -1027,6 +1027,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 94,
 		),
+		'indo-western-sherwani-maroon' => array(
+			'name'     => __( 'Indo-Western Sherwani', 'cohf-child' ),
+			'price'    => '8000',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'indo-western-sherwani-maroon.jpg',
+			'alt'      => __( 'A maroon Indo-Western sherwani on a mannequin, in a tonal diamond-patterned fabric with a mandarin collar, an asymmetric curved front panel and gold buttons on three fabric tabs at the waist.', 'cohf-child' ),
+			'short'    => __( 'A maroon Indo-Western sherwani in tonal patterned fabric, with a mandarin collar, asymmetric front and gold button tabs.', 'cohf-child' ),
+			'long'     => __( 'Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 95,
+		),
 	);
 }
 
