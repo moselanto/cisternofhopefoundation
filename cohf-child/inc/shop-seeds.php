@@ -1217,6 +1217,26 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your preferred colour and size in the order notes and we will confirm details, including which pieces are included, before dispatch.', 'cohf-child' ),
 			'order'    => 113,
 		),
+		'maasai-beaded-enamel-mug' => array(
+			'name'     => __( 'Maasai Beaded Enamel Mug', 'cohf-child' ),
+			'price'    => '2500',
+			'category' => __( 'Home and kitchen', 'cohf-child' ),
+			'image'    => 'maasai-beaded-enamel-mug.jpg',
+			'alt'      => __( 'Four white enamel mugs with blue rims, each covered on the outside in colourful Maasai beadwork in geometric patterns of green, orange, turquoise, red, black and white.', 'cohf-child' ),
+			'short'    => __( 'A white enamel mug with a blue rim, covered on the outside in colourful handmade Maasai beadwork.', 'cohf-child' ),
+			'long'     => __( 'Price is per mug. Each mug is beaded by hand, so colours and patterns vary. Pictured is a selection of the designs available. Add your preferred colours in the order notes and we will confirm availability before dispatch. Wipe the beadwork clean; do not soak.', 'cohf-child' ),
+			'order'    => 114,
+		),
+		'maasai-dress-lilac-purple-beaded-waistband' => array(
+			'name'     => __( 'Maasai Dress - Lilac and Purple with Beaded Waistband', 'cohf-child' ),
+			'price'    => '8500',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'maasai-dress-lilac-purple-beaded-waistband.jpg',
+			'alt'      => __( 'A mannequin dressed in a sleeveless lilac top and a long fitted purple skirt with a front slit, styled with a wide Maasai beaded collar with long beaded strands and a wide beaded waistband with hanging silver chains and discs.', 'cohf-child' ),
+			'short'    => __( 'A Maasai-styled look: sleeveless lilac top and long fitted purple skirt with a wide beaded waistband, pictured with a beaded collar.', 'cohf-child' ),
+			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your size in the order notes and we will confirm details, including which pieces are included, before dispatch.', 'cohf-child' ),
+			'order'    => 115,
+		),
 	);
 }
 
