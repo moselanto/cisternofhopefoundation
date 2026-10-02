@@ -5,7 +5,7 @@ Template: cohf
 Author: Cistern of Hope Foundation
 Author URI: https://cisternofhope.org
 Description: Premium, human-centred child theme for Cistern of Hope Foundation (COHF), Kenya. Editorial design system, twelve programme areas, impact and story content structures, accountability and partnership architecture, WCAG-conscious markup and a performance-first asset strategy. Motto: Together for a lasting change.
-Version: 13.79.0
+Version: 13.80.0
 Requires at least: 6.2
 Requires PHP: 8.0
 License: GNU General Public License v2 or later
@@ -232,64 +232,3 @@ h1, h2, h3 { overflow-wrap: anywhere; hyphens: auto; text-wrap: balance; }
 	}
 }
 
-
-/* 13.79.0: "Shop by category" is one row on every screen size. With more
-   categories than fit across, the rest scroll left and right instead of
-   wrapping to a second row. Six tiles show on desktop, four on tablets and
-   just over two on phones, so a cut-off tile hints there is more to see. */
-.shop-cat-tiles__grid {
-	display: flex;
-	flex-wrap: nowrap;
-	overflow-x: auto;
-	overscroll-behavior-x: contain;
-	scroll-snap-type: x mandatory;
-	scroll-behavior: smooth;
-	gap: 14px;
-	padding: 0 0 10px;
-	scrollbar-width: thin;
-	scrollbar-color: var(--forest) transparent;
-}
-
-.shop-cat-tiles__grid::-webkit-scrollbar {
-	display: block;
-	height: 6px;
-}
-
-.shop-cat-tiles__grid::-webkit-scrollbar-thumb {
-	background: var(--forest);
-	border-radius: 999px;
-}
-
-.shop-cat-tiles__grid li {
-	flex: 0 0 calc((100% - 5 * 14px) / 6);
-	scroll-snap-align: start;
-}
-
-@media (max-width: 1100px) {
-	.shop-cat-tiles__grid li {
-		flex-basis: calc((100% - 3 * 14px) / 4);
-	}
-}
-
-@media (max-width: 760px) {
-	.shop-cat-tiles__grid {
-		gap: 12px;
-		margin-right: -16px;
-		padding: 0 16px 8px 0;
-		scrollbar-width: none;
-	}
-
-	.shop-cat-tiles__grid::-webkit-scrollbar {
-		display: none;
-	}
-
-	.shop-cat-tiles__grid li {
-		flex-basis: 42%;
-	}
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.shop-cat-tiles__grid {
-		scroll-behavior: auto;
-	}
-}
