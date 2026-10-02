@@ -1007,6 +1007,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 92,
 		),
+		'three-piece-agbada-mens-suit' => array(
+			'name'     => __( '3-Piece Agbada Men\'s Suit', 'cohf-child' ),
+			'price'    => '16500',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'three-piece-agbada-mens-suit.jpg',
+			'alt'      => __( 'A man wearing a navy blue three-piece agbada: a wide flowing outer robe over a long tunic with sparkling embellishment down the front, with a black cap.', 'cohf-child' ),
+			'short'    => __( 'A navy blue three-piece agbada men\'s suit, with a flowing outer robe over an embellished long tunic.', 'cohf-child' ),
+			'long'     => __( 'Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 93,
+		),
 	);
 }
 
