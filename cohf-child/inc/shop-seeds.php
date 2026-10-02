@@ -1367,6 +1367,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Beaded by hand, so patterns vary slightly from the photo. Battery-powered quartz movement. We will confirm availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 128,
 		),
+		'african-print-jacket-pleated-dress-set' => array(
+			'name'     => __( 'African Print Jacket and Pleated Dress Set', 'cohf-child' ),
+			'price'    => '8500',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'african-print-jacket-pleated-dress-set.jpg',
+			'alt'      => __( 'Two outfits on mannequins: a long red pleated dress under a short African print blazer in yellow, green, red and white, and a long black pleated dress under a full-length coat in a dark green, orange and white zigzag print.', 'cohf-child' ),
+			'short'    => __( 'A long pleated dress paired with an African print jacket. Pictured as a red dress with a short print blazer, and a black dress with a full-length zigzag print coat.', 'cohf-child' ),
+			'long'     => __( 'Add your preferred style and size in the order notes and we will confirm details, including which pieces are included, before dispatch.', 'cohf-child' ),
+			'order'    => 129,
+		),
 	);
 }
 
