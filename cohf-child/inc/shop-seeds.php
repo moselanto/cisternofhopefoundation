@@ -1177,6 +1177,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your preferred colour and size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 109,
 		),
+		'modern-maasai-cultural-dress' => array(
+			'name'     => __( 'Modern Maasai-Inspired Cultural Dress', 'cohf-child' ),
+			'price'    => '16500',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'modern-maasai-cultural-dress.jpg',
+			'alt'      => __( 'A woman wearing a long fitted navy dress decorated with small beads and hanging silver chains, a red beaded waistband with draped chains, a flowing red cape, a wide Maasai beaded collar and beaded cuffs.', 'cohf-child' ),
+			'short'    => __( 'A modern Maasai-inspired look: long fitted navy dress with beaded details, red beaded waistband and flowing red cape.', 'cohf-child' ),
+			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your size in the order notes and we will confirm details, including which pieces are included, before dispatch.', 'cohf-child' ),
+			'order'    => 110,
+		),
 	);
 }
 
