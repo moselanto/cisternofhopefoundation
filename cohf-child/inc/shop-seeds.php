@@ -1257,6 +1257,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Price is for the hat and sandals together. Beadwork is done by hand, so patterns vary slightly from the photo. Add your shoe size in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
 			'order'    => 117,
 		),
+		'woven-african-acrylic-blanket-wrap' => array(
+			'name'     => __( 'Woven African Acrylic Blanket / Wrap', 'cohf-child' ),
+			'price'    => '2500',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'woven-african-acrylic-blanket-wrap.jpg',
+			'alt'      => __( 'A tall stack of folded woven acrylic blankets in Maasai-style checked patterns, in red, blue, green, purple and orange, each wrapped in clear plastic.', 'cohf-child' ),
+			'short'    => __( 'A woven acrylic blanket in a Maasai-style check, to use as a throw or wear as a wrap. Available in several colours.', 'cohf-child' ),
+			'long'     => __( 'Price is per blanket. Pictured is a selection of the colours available. Add your preferred colour in the order notes and we will confirm availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 118,
+		),
 	);
 }
 
