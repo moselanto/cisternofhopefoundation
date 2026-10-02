@@ -1097,6 +1097,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Price is per box. Each box is beaded by hand, so colours and patterns vary. Pictured is a selection of the designs available. Add your preferred colour in the order notes and we will confirm availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 101,
 		),
+		'maasai-beaded-sun-visor-hat' => array(
+			'name'     => __( 'Maasai Beaded Sun Visor Hat', 'cohf-child' ),
+			'price'    => '1800',
+			'category' => __( 'Accessories', 'cohf-child' ),
+			'image'    => 'maasai-beaded-sun-visor-hat.jpg',
+			'alt'      => __( 'Three wide-brimmed sun visor hats in white, natural beige and red, each with a band of colourful Maasai beadwork in geometric patterns around the crown.', 'cohf-child' ),
+			'short'    => __( 'A wide-brimmed sun visor with a band of colourful handmade Maasai beadwork. Pictured in white, natural beige and red.', 'cohf-child' ),
+			'long'     => __( 'Price is per visor. Beadwork is done by hand, so patterns vary slightly from the photo. Add your preferred colour in the order notes and we will confirm availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 102,
+		),
 	);
 }
 
