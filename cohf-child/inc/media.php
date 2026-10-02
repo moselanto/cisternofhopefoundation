@@ -104,7 +104,7 @@ function cohf_image_library() {
 		'leader-kevin-bosire' => array( 'file' => 'leader-kevin-bosire.jpg', 'alt' => __( 'Kevin Bosire, Communications, Media and Digital Engagement Manager.', 'cohf-child' ) ),
 		'leader-christabel-sagali' => array( 'file' => 'leader-christabel-sagali.jpg', 'alt' => __( 'Christabel Sagali, Community Engagement and Partnerships Manager.', 'cohf-child' ) ),
 		'leader-claire-auma' => array( 'file' => 'leader-claire-auma.jpg', 'alt' => __( 'Claire Auma, member of the leadership and governance team.', 'cohf-child' ) ),
-		'leader-daria-lumati' => array( 'file' => 'leader-daria-lumati.jpg', 'alt' => __( 'Dalia Lumati, member of the leadership and governance team.', 'cohf-child' ) ),
+		'leader-daria-lumati' => array( 'file' => 'leader-daria-lumati.jpg', 'alt' => __( 'Daria Lumati, member of the leadership and governance team.', 'cohf-child' ) ),
 	);
 }
 

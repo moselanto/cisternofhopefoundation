@@ -378,7 +378,7 @@ function cohf_leadership_seed() {
 			'bio'   => __( 'Oversees day-to-day operational coordination, logistics and organisational support, helping ensure that programmes and activities are implemented efficiently and effectively.', 'cohf-child' ),
 		),
 		array(
-			'name'  => 'Dalia Lumati',
+			'name'  => 'Daria Lumati',
 			'photo' => 'leader-daria-lumati',
 			'role'  => __( 'Finance & Administration Manager', 'cohf-child' ),
 			'group' => 'management',

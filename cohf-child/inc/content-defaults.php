@@ -540,3 +540,40 @@ function cohf_sync_menu() {
 
 	return $added;
 }
+
+/**
+ * 13.30.0: remove the duplicate "Dalia Lumati" leader profile.
+ *
+ * 13.28.0 renamed the seeded leader, and the setup routine (which matches
+ * leaders by title) then created a second profile beside the existing
+ * "Daria Lumati" one. This moves the duplicate to the Bin once, and only
+ * when the original profile is still there, so no leader is ever lost.
+ */
+function cohf_remove_duplicate_leader() {
+	if ( get_option( 'cohf_dup_leader_cleanup' ) ) {
+		return;
+	}
+	$keep = get_posts( array(
+		'post_type'      => 'cohf_leader',
+		'post_status'    => 'publish',
+		'title'          => 'Daria Lumati',
+		'posts_per_page' => 1,
+	) );
+	$keep = $keep ? $keep[0] : null;
+	if ( $keep ) {
+		$dupes = get_posts( array(
+			'post_type'      => 'cohf_leader',
+			'post_status'    => 'any',
+			'title'          => 'Dalia Lumati',
+			'posts_per_page' => 10,
+			'fields'         => 'ids',
+		) );
+		foreach ( $dupes as $dupe_id ) {
+			if ( (int) $dupe_id !== (int) $keep->ID ) {
+				wp_trash_post( $dupe_id );
+			}
+		}
+	}
+	update_option( 'cohf_dup_leader_cleanup', COHF_CHILD_VERSION, false );
+}
+add_action( 'admin_init', 'cohf_remove_duplicate_leader' );
