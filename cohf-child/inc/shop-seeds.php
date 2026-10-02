@@ -1017,6 +1017,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 93,
 		),
+		'african-mens-senator-suit' => array(
+			'name'     => __( 'African Senator Suit', 'cohf-child' ),
+			'price'    => '5000',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'african-mens-senator-suit.jpg',
+			'alt'      => __( 'A man wearing a sage green senator suit: a long-sleeved tunic with a contrasting dark collar and front placket, two chest pockets with stitched detail, and matching trousers.', 'cohf-child' ),
+			'short'    => __( 'A sage green senator suit with a contrasting dark collar and front placket, two buttoned chest pockets and matching trousers.', 'cohf-child' ),
+			'long'     => __( 'Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 94,
+		),
 	);
 }
 
