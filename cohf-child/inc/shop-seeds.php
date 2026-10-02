@@ -1307,6 +1307,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Each pair is made by hand, so beadwork and shells vary slightly from the photo. Add your shoe size in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
 			'order'    => 122,
 		),
+		'maasai-beaded-gladiator-sandals-cowrie' => array(
+			'name'     => __( 'Maasai Beaded Gladiator Sandals with Cowrie Shells', 'cohf-child' ),
+			'price'    => '5500',
+			'category' => __( 'Sandals', 'cohf-child' ),
+			'image'    => 'maasai-beaded-gladiator-sandals-cowrie.jpg',
+			'alt'      => __( 'A pair of black-soled gladiator sandals worn on the feet, with wide ankle bands and toe straps covered in multicolour, white and gold Maasai beadwork and decorated with rows of cowrie shells.', 'cohf-child' ),
+			'short'    => __( 'Gladiator sandals with wide ankle bands and toe straps in colourful Maasai beadwork, decorated with cowrie shells.', 'cohf-child' ),
+			'long'     => __( 'Each pair is made by hand, so beadwork and shells vary slightly from the photo. Add your shoe size in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
+			'order'    => 123,
+		),
 	);
 }
 
