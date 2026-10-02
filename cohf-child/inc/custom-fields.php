@@ -30,7 +30,7 @@ function cohf_field_schema() {
 				'purpose'     => array( 'label' => __( 'Strategic purpose', 'cohf-child' ), 'type' => 'textarea', 'hint' => __( 'One or two sentences taken from the 2026–2030 strategic framework.', 'cohf-child' ) ),
 				'what_we_do'  => array( 'label' => __( 'What we do', 'cohf-child' ), 'type' => 'repeater_lines', 'hint' => __( 'One activity per line.', 'cohf-child' ) ),
 				'who_serves'  => array( 'label' => __( 'Who it serves', 'cohf-child' ), 'type' => 'textarea' ),
-				'indicators'  => array( 'label' => __( 'Impact indicators (reported)', 'cohf-child' ), 'type' => 'repeater_lines', 'hint' => __( 'One indicator per line, e.g. "8 women supported to establish small businesses currently running". Leave empty if there is no verified figure. Never estimate.', 'cohf-child' ) ),
+				'indicators'  => array( 'label' => __( 'Impact indicators (reported)', 'cohf-child' ), 'type' => 'repeater_lines', 'hint' => __( 'One indicator per line, e.g. "6 women supported to establish small businesses currently running". Leave empty if there is no verified figure. Never estimate.', 'cohf-child' ) ),
 				'cta_label'   => array( 'label' => __( 'Call-to-action label', 'cohf-child' ), 'type' => 'text', 'hint' => __( 'Defaults to "Partner with us" when left empty.', 'cohf-child' ) ),
 				'cta_url'     => array( 'label' => __( 'Call-to-action link', 'cohf-child' ), 'type' => 'url' ),
 			),

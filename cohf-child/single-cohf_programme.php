@@ -15,6 +15,35 @@ while ( have_posts() ) :
 	$cta_label = cohf_field( 'cta_label' );
 	$cta_url   = cohf_field( 'cta_url' );
 	$image     = cohf_field( 'image_key' );
+
+	// When this programme carries a before-and-after story, the feature
+	// photo must not be one of those images: an "after" shown above the
+	// pair put the end of the story before its beginning. The feature slot
+	// then uses the photo of where the journey began, so the page reads in
+	// order: the start, then Before, then After.
+	$cohf_ba_keys = array();
+	if ( function_exists( 'cohf_programme_seeded_stories' ) ) {
+		foreach ( cohf_programme_seeded_stories( get_the_title() ) as $cohf_s ) {
+			if ( empty( $cohf_s['gallery'] ) ) {
+				continue;
+			}
+			foreach ( (array) $cohf_s['gallery'] as $cohf_item ) {
+				$cohf_ba_keys[] = $cohf_item['key'];
+			}
+			$cohf_ba_keys[] = 'story-04-back-to-school';
+			$cohf_ba_keys[] = 'gallery-three-boys-at-school';
+			$cohf_ba_keys[] = 'hero-home';
+		}
+	}
+	if ( $cohf_ba_keys ) {
+		$cohf_current_key = (string) $image;
+		if ( '' === $cohf_current_key && has_post_thumbnail() ) {
+			$cohf_current_key = (string) get_post_meta( (int) get_post_thumbnail_id(), '_cohf_image_key', true );
+		}
+		if ( in_array( $cohf_current_key, $cohf_ba_keys, true ) ) {
+			$image = 'gallery-before-school-meeting';
+		}
+	}
 	?>
 	<main id="main-content" tabindex="-1">
 

@@ -97,12 +97,12 @@ function cohf_apply_figure_mods( $group, $defaults ) {
 function cohf_impact_figures_default() {
 	return array(
 		array(
-			'value'  => 8,
+			'value'  => 6,
 			'label'  => __( 'women supported to establish small businesses', 'cohf-child' ),
 			'note'   => __( 'Businesses currently running.', 'cohf-child' ),
 		),
 		array(
-			'value'  => 6,
+			'value'  => 4,
 			'label'  => __( 'young people supported to establish businesses', 'cohf-child' ),
 			'note'   => __( 'Businesses currently running.', 'cohf-child' ),
 		),
@@ -417,3 +417,24 @@ function cohf_pathways() {
 		array( 'id' => 'in-kind',   'title' => __( 'Provide in-kind support', 'cohf-child' ), 'text' => __( 'Contribute equipment, learning materials, sanitary products, food support or other practical resources.', 'cohf-child' ), 'tpl' => '' ),
 	);
 }
+
+/**
+ * 13.31.0: confirmed reach figures are 6 women and 4 young people.
+ *
+ * The defaults above now say so, but a value typed into the Customizer
+ * overrides a default. Any saved override for these two figures is set to
+ * the confirmed numbers once, so the site shows them everywhere.
+ */
+function cohf_update_reach_figures_v1() {
+	if ( get_option( 'cohf_reach_figures_v1' ) ) {
+		return;
+	}
+	foreach ( array( 0 => 6, 1 => 4 ) as $index => $value ) {
+		$key = 'cohf_fig_impact_' . $index . '_value';
+		if ( '' !== trim( (string) get_theme_mod( $key, '' ) ) ) {
+			set_theme_mod( $key, $value );
+		}
+	}
+	update_option( 'cohf_reach_figures_v1', COHF_CHILD_VERSION, false );
+}
+add_action( 'init', 'cohf_update_reach_figures_v1' );
