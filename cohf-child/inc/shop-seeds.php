@@ -1069,7 +1069,7 @@ function cohf_shop_seed_products() {
 		),
 		'maasai-dress' => array(
 			'name'     => __( 'Maasai Dress', 'cohf-child' ),
-			'price'    => '8500',
+			'price'    => '9000',
 			'category' => __( 'Clothing', 'cohf-child' ),
 			'image'    => 'maasai-dress.jpg',
 			'alt'      => __( 'Two long fitted dresses on mannequins, one red and one white, with three-quarter sleeves and Maasai beaded trim around the neckline, down the front, on the cuffs and in rows across the skirt.', 'cohf-child' ),
