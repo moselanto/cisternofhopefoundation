@@ -51,7 +51,7 @@ $audiences = get_terms( array( 'taxonomy' => 'cohf_audience', 'hide_empty' => tr
 				} else {
 					printf(
 						'<p class="partner-empty">%s</p>',
-						esc_html__( 'Programme pages are created from the Programmes menu in the WordPress admin. Run the one-time setup to add all twelve programme areas automatically.', 'cohf-child' )
+						esc_html__( 'Programme pages are created from the Programmes menu in the WordPress admin. Run the one-time setup to add all the programme areas automatically.', 'cohf-child' )
 					);
 				}
 				?>

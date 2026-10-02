@@ -10,7 +10,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'COHF_CHILD_VERSION', '13.31.0' );
+define( 'COHF_CHILD_VERSION', '13.33.0' );
 define( 'COHF_CHILD_DIR', get_stylesheet_directory() );
 define( 'COHF_CHILD_URI', get_stylesheet_directory_uri() );
 
@@ -46,6 +46,7 @@ foreach ( array(
 	'page-seeds',
 	'story-seeds',
 	'gallery',
+	'videos',
 	'privacy',
 	'customizer',
 	'photos',

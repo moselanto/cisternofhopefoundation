@@ -119,7 +119,7 @@ $contact = cohf_page_url( 'page-templates/page-contact.php' );
 				} else {
 					printf(
 						'<p class="partner-empty">%s</p>',
-						esc_html__( 'Run the one-time setup to add all twelve programme areas.', 'cohf-child' )
+						esc_html__( 'Run the one-time setup to add all the programme areas.', 'cohf-child' )
 					);
 				}
 				?>

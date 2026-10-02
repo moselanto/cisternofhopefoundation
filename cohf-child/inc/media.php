@@ -65,6 +65,7 @@ function cohf_image_library() {
 		'programme-09' => array( 'file' => 'programme-09.jpg', 'alt' => __( 'Young people planting tree seedlings together on a green hillside.', 'cohf-child' ) ),
 		'programme-10' => array( 'file' => 'programme-10.jpg', 'alt' => __( 'A facilitator demonstrating handwashing to schoolchildren at a clean water point.', 'cohf-child' ) ),
 		'programme-11' => array( 'file' => 'programme-11.jpg', 'alt' => __( 'Young people learning at laptops in a community digital learning space with a trainer.', 'cohf-child' ) ),
+		'programme-13' => array( 'file' => 'programme-13.jpg', 'alt' => __( 'A widow smiling as she receives her monthly food support of flour, bread, milk and cooking fat at home.', 'cohf-child' ) ),
 		'programme-12' => array( 'file' => 'programme-12.jpg', 'alt' => __( 'A community planning meeting with elders and young people around a shared table.', 'cohf-child' ) ),
 
 		// Impact story lead images, supplied by the Foundation with consent.
@@ -75,6 +76,8 @@ function cohf_image_library() {
 		'story-04-before' => array( 'file' => 'story-04-before.jpg', 'alt' => __( 'Before: one of the boys, photographed from behind, barefoot in a torn school shirt and ripped shorts.', 'cohf-child' ) ),
 		'story-04-after' => array( 'file' => 'story-04-after.jpg', 'alt' => __( 'After: the three boys in new school uniforms, shoes and school bags, standing with a Foundation representative outside their primary school.', 'cohf-child' ) ),
 		// Photo gallery, supplied by the Foundation.
+		'gallery-widows-food-support' => array( 'file' => 'gallery-widows-food-support.jpg', 'alt' => __( 'A widow smiling as she receives her monthly food support of flour, bread, milk and cooking fat at home.', 'cohf-child' ) ),
+		'gallery-widows-home-visit' => array( 'file' => 'gallery-widows-home-visit.jpg', 'alt' => __( 'A widow supported by the Foundation standing outside her mud-walled home.', 'cohf-child' ) ),
 		'gallery-shoe-donation' => array( 'file' => 'gallery-shoe-donation.jpg', 'alt' => __( 'A young entrepreneur crouching beside rows of shoes laid out for sale.', 'cohf-child' ) ),
 		'gallery-enterprise-visit-eggs' => array( 'file' => 'gallery-enterprise-visit-eggs.jpg', 'alt' => __( 'Foundation team members visiting a roadside egg vendor and his food cart.', 'cohf-child' ) ),
 		'gallery-enterprise-visit-potatoes' => array( 'file' => 'gallery-enterprise-visit-potatoes.jpg', 'alt' => __( 'Foundation team members with a trader at his roadside potato stall.', 'cohf-child' ) ),

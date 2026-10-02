@@ -122,7 +122,7 @@ function cohf_setup_notice() {
 	?>
 	<div class="notice notice-info">
 		<p><strong><?php esc_html_e( 'Cistern of Hope Foundation theme', 'cohf-child' ); ?></strong></p>
-		<p><?php esc_html_e( 'Set up the site structure: create the pages, add the twelve programme areas and the leadership profiles from the Foundation\'s documents, and build the main menu. Nothing existing is overwritten.', 'cohf-child' ); ?></p>
+		<p><?php esc_html_e( 'Set up the site structure: create the pages, add the programme areas and the leadership profiles from the Foundation\'s documents, and build the main menu. Nothing existing is overwritten.', 'cohf-child' ); ?></p>
 		<p><a class="button button-primary" href="<?php echo esc_url( $url ); ?>"><?php esc_html_e( 'Run one-time setup', 'cohf-child' ); ?></a></p>
 	</div>
 	<?php
@@ -577,3 +577,59 @@ function cohf_remove_duplicate_leader() {
 	update_option( 'cohf_dup_leader_cleanup', COHF_CHILD_VERSION, false );
 }
 add_action( 'admin_init', 'cohf_remove_duplicate_leader' );
+
+
+/**
+ * 13.32.0: add programme 13, Widows' Care & Food Support.
+ *
+ * The setup routine only runs once, so a programme added to the seed later
+ * would never reach a live site. This creates it once, with the Foundation's
+ * own words as the page body and the supplied photograph as its main image.
+ * Nothing is created if a programme with the same title already exists.
+ */
+function cohf_add_widows_programme() {
+	if ( get_option( 'cohf_widows_programme_added' ) || ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	$seed = null;
+	foreach ( cohf_programme_seed() as $programme ) {
+		if ( '13' === $programme['num'] ) {
+			$seed = $programme;
+			break;
+		}
+	}
+	if ( ! $seed ) {
+		return;
+	}
+	if ( ! cohf_find_by_title( $seed['title'], 'cohf_programme' ) ) {
+		$paragraphs = array(
+			__( 'At Cistern of Hope Foundation, we currently provide monthly food support to three widows in our community.', 'cohf-child' ),
+			__( 'We recognise that the need extends far beyond the three families we are presently able to support. With limited resources, we have had to begin with what we can sustain, while remaining mindful of the many other widows who would benefit from consistent community support.', 'cohf-child' ),
+			__( 'We believe every widow deserves to be treated with dignity, compassion, and respect, and to know that she is not forgotten or alone.', 'cohf-child' ),
+			__( 'We therefore invite individuals, organisations, and partners who share this conviction to stand with us as we seek to expand this initiative. Your partnership can help us reach more widows with practical support while affirming their dignity and reminding them that their lives and contributions to our communities matter.', 'cohf-child' ),
+			__( 'Together, we can build a community where no widow is forgotten and where compassion becomes meaningful action.', 'cohf-child' ),
+		);
+		$content = '';
+		foreach ( $paragraphs as $p ) {
+			$content .= "<!-- wp:paragraph -->\n<p>" . esc_html( $p ) . "</p>\n<!-- /wp:paragraph -->\n\n";
+		}
+		$id = wp_insert_post( array(
+			'post_type'    => 'cohf_programme',
+			'post_status'  => 'publish',
+			'post_title'   => $seed['title'],
+			'menu_order'   => (int) $seed['num'],
+			'post_excerpt' => $seed['purpose'],
+			'post_content' => $content,
+		) );
+		if ( $id && ! is_wp_error( $id ) ) {
+			update_post_meta( $id, '_cohf_number', $seed['num'] );
+			update_post_meta( $id, '_cohf_purpose', $seed['purpose'] );
+			$attachment_id = cohf_import_image( 'programme-' . $seed['num'] );
+			if ( $attachment_id ) {
+				set_post_thumbnail( $id, $attachment_id );
+			}
+		}
+	}
+	update_option( 'cohf_widows_programme_added', COHF_CHILD_VERSION, false );
+}
+add_action( 'admin_init', 'cohf_add_widows_programme' );

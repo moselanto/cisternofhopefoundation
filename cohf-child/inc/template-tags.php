@@ -30,9 +30,10 @@ function cohf_approach_steps() {
 }
 
 /**
- * The twelve programme areas and their strategic purpose.
+ * The programme areas and their strategic purpose.
  *
- * Source: Strategic Framework 2026–2030, section 7.
+ * Source: Strategic Framework 2026–2030, section 7 (01-12). Programme 13,
+ * Widows' Care & Food Support, was supplied by the Foundation in October 2026.
  * Used to seed the Programmes content type and as a fallback if none exist yet.
  *
  * @return array<int,array<string,string>>
@@ -51,6 +52,7 @@ function cohf_programme_seed() {
 		array( 'num' => '10', 'title' => __( 'Water, Sanitation & Hygiene', 'cohf-child' ), 'purpose' => __( 'To improve hygiene, sanitation, safe-water awareness and community WASH practices.', 'cohf-child' ) ),
 		array( 'num' => '11', 'title' => __( 'Digital Inclusion & Innovation', 'cohf-child' ), 'purpose' => __( 'To expand digital skills, information access, digital safety and digital economic opportunity.', 'cohf-child' ) ),
 		array( 'num' => '12', 'title' => __( 'Community Development & Partnerships', 'cohf-child' ), 'purpose' => __( 'To strengthen community ownership, local networks, volunteers, referrals and strategic partnerships.', 'cohf-child' ) ),
+		array( 'num' => '13', 'title' => __( 'Widows\' Care & Food Support', 'cohf-child' ), 'purpose' => __( 'To provide consistent monthly food support to widows in our community and affirm their dignity, so that no widow is forgotten or alone.', 'cohf-child' ) ),
 	);
 }
 
@@ -116,6 +118,11 @@ function cohf_impact_figures_default() {
 			'value'  => 6,
 			'label'  => __( 'vulnerable children supported with school fees', 'cohf-child' ),
 			'note'   => __( 'Alongside books, materials and other school needs.', 'cohf-child' ),
+		),
+		array(
+			'value'  => 3,
+			'label'  => __( 'widows supported with food donation once a month', 'cohf-child' ),
+			'note'   => __( 'Monthly food donation, with the aim of reaching more widows.', 'cohf-child' ),
 		),
 	);
 }

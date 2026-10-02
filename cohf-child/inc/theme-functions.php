@@ -491,6 +491,16 @@ function cohf_impact_nav_children() {
 		);
 	}
 
+	$videos = get_post_type_archive_link( 'cohf_video' );
+
+	if ( $videos ) {
+		$children[] = array(
+			'label' => __( 'Video Stories', 'cohf-child' ),
+			'url'   => $videos,
+			'desc'  => __( 'Our work and the people behind it, on film', 'cohf-child' ),
+		);
+	}
+
 	$gallery = cohf_page_url( 'page-templates/page-gallery.php' );
 	if ( $gallery ) {
 		$children[] = array(

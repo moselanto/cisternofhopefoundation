@@ -13,7 +13,7 @@ if ( ! empty( $outreach ) ) {
 }
 $count = count( $figures );
 ?>
-<div class="numbers<?php echo 4 === $count ? ' numbers--4' : ''; ?>">
+<div class="numbers<?php echo ( 4 === $count || 6 === $count ) ? ' numbers--' . (int) $count : ''; ?>">
 	<?php
 	foreach ( $figures as $figure ) {
 		$prefix = isset( $figure['prefix'] ) ? $figure['prefix'] : '';

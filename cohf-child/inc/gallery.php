@@ -81,6 +81,8 @@ function cohf_gallery_items() {
  */
 function cohf_gallery_static_items() {
 	$items = array(
+		array( 'key' => 'gallery-widows-food-support',       'cat' => 'community',  'title' => __( 'Monthly food support for widows', 'cohf-child' ),     'caption' => __( 'Every month we deliver food support to widows in our community, so that each one knows she is not forgotten or alone.', 'cohf-child' ) ),
+		array( 'key' => 'gallery-widows-home-visit',         'cat' => 'community',  'title' => __( 'Standing with widows', 'cohf-child' ),               'caption' => __( 'A home visit to one of the widows we support. Every widow deserves dignity, compassion and respect.', 'cohf-child' ) ),
 		array( 'key' => 'story-02-fellowship-tshirts',       'cat' => 'dignity',    'title' => __( 'Children\'s home visit', 'cohf-child' ),              'caption' => __( 'Our team, in Cistern of Hope Foundation T-shirts, sharing sanitary pads and encouragement with children at a children\'s home.', 'cohf-child' ) ),
 		array( 'key' => 'gallery-childrens-home-group',      'cat' => 'dignity',    'title' => __( 'Together at the children\'s home', 'cohf-child' ),   'caption' => __( 'Children and our team together after sharing sanitary pads, encouragement and a lot of laughter.', 'cohf-child' ) ),
 		array( 'key' => 'story-04-after',                    'cat' => 'education',  'title' => __( 'Back in school', 'cohf-child' ),                      'caption' => __( 'Three boys we took off the streets, now in new uniforms, shoes and school bags outside their primary school.', 'cohf-child' ) ),

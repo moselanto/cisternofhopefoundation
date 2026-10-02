@@ -52,7 +52,7 @@ function cohf_register_post_types() {
 
 		'cohf_programme' => array(
 			'labels'      => cohf_cpt_labels( __( 'Programme', 'cohf-child' ), __( 'Programmes', 'cohf-child' ) ),
-			'description' => __( 'The Foundation\'s twelve programme areas.', 'cohf-child' ),
+			'description' => __( 'The Foundation\'s programme areas.', 'cohf-child' ),
 			'menu_icon'   => 'dashicons-networking',
 			'rewrite'     => array( 'slug' => 'programmes', 'with_front' => false ),
 			'has_archive' => 'programmes',
@@ -66,6 +66,16 @@ function cohf_register_post_types() {
 			'menu_icon'   => 'dashicons-format-quote',
 			'rewrite'     => array( 'slug' => 'stories', 'with_front' => false ),
 			'has_archive' => 'stories',
+			'supports'    => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions' ),
+			'menu_pos'    => 22,
+		),
+
+		'cohf_video' => array(
+			'labels'      => cohf_cpt_labels( __( 'Video Story', 'cohf-child' ), __( 'Video Stories', 'cohf-child' ) ),
+			'description' => __( 'Video stories from the Foundation\'s work, published with consent.', 'cohf-child' ),
+			'menu_icon'   => 'dashicons-video-alt3',
+			'rewrite'     => array( 'slug' => 'videos', 'with_front' => false ),
+			'has_archive' => 'videos',
 			'supports'    => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions' ),
 			'menu_pos'    => 22,
 		),
@@ -256,9 +266,9 @@ function cohf_default_ordering( $query ) {
 	}
 	if ( $query->is_post_type_archive( 'cohf_programme' ) ) {
 		$query->set( 'orderby', array( 'menu_order' => 'ASC', 'title' => 'ASC' ) );
-		$query->set( 'posts_per_page', 12 );
+		$query->set( 'posts_per_page', 24 );
 	}
-	if ( $query->is_post_type_archive( array( 'cohf_story', 'cohf_news' ) ) ) {
+	if ( $query->is_post_type_archive( array( 'cohf_story', 'cohf_news', 'cohf_video' ) ) ) {
 		$query->set( 'posts_per_page', 9 );
 	}
 }

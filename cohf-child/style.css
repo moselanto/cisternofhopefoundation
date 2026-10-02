@@ -5,7 +5,7 @@ Template: cohf
 Author: Cistern of Hope Foundation
 Author URI: https://cisternofhope.org
 Description: Premium, human-centred child theme for Cistern of Hope Foundation (COHF), Kenya. Editorial design system, twelve programme areas, impact and story content structures, accountability and partnership architecture, WCAG-conscious markup and a performance-first asset strategy. Motto: Together for a lasting change.
-Version: 13.31.0
+Version: 13.33.0
 Requires at least: 6.2
 Requires PHP: 8.0
 License: GNU General Public License v2 or later
@@ -139,3 +139,95 @@ h1, h2, h3 { overflow-wrap: anywhere; hyphens: auto; text-wrap: balance; }
 .foot .foot-social a { display: grid; place-items: center; width: 44px; height: 44px; margin: 0; padding: 0; border: 1px solid #ffffff2e; border-radius: 50%; color: #d6e1db; transition: background .2s, color .2s; }
 .foot .foot-social a:hover, .foot .foot-social a:focus-visible { background: var(--gold); border-color: var(--gold); color: #102d24; }
 .foot-social svg { width: 18px; height: 18px; }
+
+
+/* 13.32.0: six impact figures (the widows' food support figure was added).
+   Five columns would strand one figure on a second row, so six sit as two
+   even rows of three, then two columns, then one. */
+.impact .numbers.numbers--6 {
+	grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 700px) {
+	.impact .numbers.numbers--6 {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 460px) {
+	.impact .numbers.numbers--6 {
+		grid-template-columns: 1fr;
+	}
+}
+
+
+/* 13.33.0: Video Stories (Impact > Video Stories). */
+.video-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 24px;
+}
+
+.video-card {
+	border: 1px solid var(--line);
+	border-radius: var(--r);
+	background: #fff;
+	overflow: hidden;
+}
+
+.video-card__player,
+.video-story__player {
+	position: relative;
+	aspect-ratio: 16 / 9;
+	background: #0e2d23;
+}
+
+.video-card__player iframe,
+.video-card__player video,
+.video-card__player img,
+.video-card__player .wp-video,
+.video-story__player iframe,
+.video-story__player video,
+.video-story__player .wp-video {
+	position: absolute;
+	inset: 0;
+	width: 100% !important;
+	height: 100% !important;
+	object-fit: cover;
+	border: 0;
+}
+
+.video-card__body {
+	padding: 20px 22px 24px;
+}
+
+.video-card__title {
+	font-size: 22px;
+	line-height: 1.25;
+	margin: 0 0 8px;
+}
+
+.video-card__body p {
+	color: var(--muted);
+	margin: 0;
+}
+
+.video-story {
+	max-width: 960px;
+}
+
+.video-story__player {
+	border-radius: var(--r);
+	overflow: hidden;
+	margin-bottom: 28px;
+}
+
+.video-story__content {
+	margin-bottom: 28px;
+}
+
+@media (max-width: 760px) {
+	.video-grid {
+		grid-template-columns: 1fr;
+	}
+}
