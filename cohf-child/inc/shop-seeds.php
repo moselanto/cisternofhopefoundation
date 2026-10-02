@@ -1207,6 +1207,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 112,
 		),
+		'maasai-cape-dress-turquoise-purple' => array(
+			'name'     => __( 'Maasai Cape Dress - Turquoise or Purple', 'cohf-child' ),
+			'price'    => '9000',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'maasai-cape-dress-turquoise-purple.jpg',
+			'alt'      => __( 'Two women in long fitted Maasai-styled dresses: one turquoise with attached cape sleeves and a black beaded leather belt with silver chains, the other purple with a wide beaded waistband, beaded strands on the skirt and a checked shuka cape.', 'cohf-child' ),
+			'short'    => __( 'A long fitted Maasai-styled dress with beaded waist detail and hanging silver chains. Pictured in turquoise with cape sleeves, and in purple with a checked shuka cape.', 'cohf-child' ),
+			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your preferred colour and size in the order notes and we will confirm details, including which pieces are included, before dispatch.', 'cohf-child' ),
+			'order'    => 113,
+		),
 	);
 }
 
