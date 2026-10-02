@@ -1267,6 +1267,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Price is per blanket. Pictured is a selection of the colours available. Add your preferred colour in the order notes and we will confirm availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 118,
 		),
+		'maasai-beaded-cap-sandals-set' => array(
+			'name'     => __( 'Maasai Beaded Cap and Sandals Set', 'cohf-child' ),
+			'price'    => '5500',
+			'category' => __( 'Accessories', 'cohf-child' ),
+			'image'    => 'maasai-beaded-cap-sandals-set.jpg',
+			'alt'      => __( 'A navy felt hat with colourful Maasai beadwork around the crown and brim edge, beside a pair of brown leather toe-loop sandals with matching beaded straps.', 'cohf-child' ),
+			'short'    => __( 'A matching set: navy felt hat with a Maasai beaded band and brim, and brown leather sandals with beaded straps.', 'cohf-child' ),
+			'long'     => __( 'Price is for the hat and sandals together. Beadwork is done by hand, so patterns vary slightly from the photo. Add your shoe size in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
+			'order'    => 119,
+		),
 	);
 }
 
