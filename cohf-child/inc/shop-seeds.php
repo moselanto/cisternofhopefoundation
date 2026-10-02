@@ -1297,6 +1297,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 121,
 		),
+		'maasai-cowrie-shell-beaded-leather-sandals' => array(
+			'name'     => __( 'Maasai Cowrie Shell Beaded Leather Sandals', 'cohf-child' ),
+			'price'    => '2500',
+			'category' => __( 'Sandals', 'cohf-child' ),
+			'image'    => 'maasai-cowrie-shell-beaded-leather-sandals.jpg',
+			'alt'      => __( 'A pair of dark brown leather thong sandals with stitched edges, the straps decorated with white cowrie shells set in red beadwork.', 'cohf-child' ),
+			'short'    => __( 'Dark brown leather thong sandals with straps decorated in cowrie shells and red Maasai beadwork.', 'cohf-child' ),
+			'long'     => __( 'Each pair is made by hand, so beadwork and shells vary slightly from the photo. Add your shoe size in the order notes and we will confirm with you before dispatch.', 'cohf-child' ),
+			'order'    => 122,
+		),
 	);
 }
 
