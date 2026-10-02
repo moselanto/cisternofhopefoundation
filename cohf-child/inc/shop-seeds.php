@@ -1397,6 +1397,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Generous, relaxed fit. Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 131,
 		),
+		'african-print-fusion-dress' => array(
+			'name'     => __( 'African Print Fusion Dress', 'cohf-child' ),
+			'price'    => '5500',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'african-print-fusion-dress.jpg',
+			'alt'      => __( 'Two dresses on mannequins: one with an orange, purple and teal African print peplum bodice over a long teal tulle skirt, and a fitted pale grey dress with navy and orange African print sleeves and a flared print hem.', 'cohf-child' ),
+			'short'    => __( 'A dress combining plain fabric with African print. Pictured as a print peplum bodice with a teal tulle skirt, and as a fitted grey dress with print sleeves and a flared print hem.', 'cohf-child' ),
+			'long'     => __( 'Add your preferred style and size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 132,
+		),
 	);
 }
 
