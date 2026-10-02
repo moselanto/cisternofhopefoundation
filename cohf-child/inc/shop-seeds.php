@@ -1018,8 +1018,8 @@ function cohf_shop_seed_products() {
 			'order'    => 93,
 		),
 		'african-mens-senator-suit' => array(
-			'name'     => __( 'African Senator Suit', 'cohf-child' ),
-			'price'    => '5000',
+			'name'     => __( 'African Men\'s Senator Suit', 'cohf-child' ),
+			'price'    => '6000',
 			'category' => __( 'Clothing', 'cohf-child' ),
 			'image'    => 'african-mens-senator-suit.jpg',
 			'alt'      => __( 'A man wearing a sage green senator suit: a long-sleeved tunic with a contrasting dark collar and front placket, two chest pockets with stitched detail, and matching trousers.', 'cohf-child' ),
@@ -1046,6 +1046,26 @@ function cohf_shop_seed_products() {
 			'short'    => __( 'A lilac short-sleeved kaftan with an asymmetric layered hem and buttoned tab details, worn with matching trousers.', 'cohf-child' ),
 			'long'     => __( 'Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 96,
+		),
+		'three-layered-casual-kaftan' => array(
+			'name'     => __( 'Three-Layered Casual Kaftan', 'cohf-child' ),
+			'price'    => '5000',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'three-layered-casual-kaftan.jpg',
+			'alt'      => __( 'A casual kaftan on a mannequin in beige textured fabric, with bold horizontal bands of deep brown and white across the chest and a small leather badge.', 'cohf-child' ),
+			'short'    => __( 'A casual round-neck kaftan in beige textured fabric, with three-layered colour blocking in beige, deep brown and white.', 'cohf-child' ),
+			'long'     => __( 'Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 97,
+		),
+		'african-senator-suit-navy' => array(
+			'name'     => __( 'African Senator Suit', 'cohf-child' ),
+			'price'    => '5000',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'african-senator-suit-navy.jpg',
+			'alt'      => __( 'A man wearing a dark navy senator tunic with a round neck, a tonal embroidered placket down the front and matching embroidered cuffs.', 'cohf-child' ),
+			'short'    => __( 'A dark navy senator suit with a tonal embroidered front placket and matching embroidered cuffs.', 'cohf-child' ),
+			'long'     => __( 'Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 98,
 		),
 	);
 }
