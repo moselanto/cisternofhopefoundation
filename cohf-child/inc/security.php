@@ -213,3 +213,12 @@ add_action( 'wp_login_failed', function () {
 add_action( 'wp_login', function () {
 	delete_transient( cohf_login_ip_key() );
 } );
+
+/**
+ * 14.3.0: do not advertise the PHP version to scanners.
+ */
+add_action( 'send_headers', function () {
+	if ( function_exists( 'header_remove' ) ) {
+		header_remove( 'X-Powered-By' );
+	}
+} );

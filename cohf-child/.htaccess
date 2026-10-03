@@ -60,5 +60,5 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteRule ^(inc|template-parts|page-templates|docs)/ - [F,L]
-  RewriteRule ^(?\!index)[^/]+\.php$ - [F,L]
+  RewriteRule ^(?!index\.php$)[^/]+\.php$ - [F,L]
 </IfModule>

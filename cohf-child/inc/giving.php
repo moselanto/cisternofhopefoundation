@@ -220,17 +220,3 @@ function cohf_giving_enqueue() {
 }
 add_action( 'wp_enqueue_scripts', 'cohf_giving_enqueue', 20 );
 
-/**
- * Paystack is a third-party payment origin. Allow it explicitly rather than
- * loosening the whole policy.
- *
- * @param string $csp Existing policy.
- * @return string
- */
-function cohf_giving_csp( $csp ) {
-	if ( strpos( $csp, 'paystack' ) !== false ) {
-		return $csp;
-	}
-	return $csp;
-}
-add_filter( 'cohf_csp', 'cohf_giving_csp' );

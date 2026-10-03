@@ -120,3 +120,19 @@ Administrators, shop managers and WP-CLI are exempt.
    through WP Mail SMTP is trusted and spoofing is harder.
 5. Use strong unique passwords and two-factor login for every
    administrator account (for example with the Two Factor plugin).
+
+---
+
+## Update 14.3.0 (3 October 2026)
+
+Fixed in code:
+
+- **Finding 1 (page caching vs giving nonce) - fixed.** The giving form now asks `GET /wp-json/cohf/v1/giving-nonce` (sent with no-store / LiteSpeed no-cache headers) for a fresh nonce just before payment, falling back to the printed one. Full page caching is now safe for every page, including Support Our Work.
+- **Broken `.htaccess` rule - fixed.** The rule meant to block direct requests to theme PHP files contained a stray backslash (`(?\\!index)`), so it never matched. It now reads `^(?\!index\.php$)[^/]+\.php$`.
+- **Finding 5 - fixed.** Removed the no-op `cohf_giving_csp` filter.
+- **Finding 6 - fixed.** Added `.github/workflows/php-lint.yml`, which runs `php -l` on every PHP file for each push and pull request.
+- **New:** the `X-Powered-By` header (PHP version) is removed from responses.
+
+Measured on the live site before this release: about 1 second server response on every request and no page-cache header, so every visit rebuilds the page in PHP. Turning on LiteSpeed Cache (the server already runs LiteSpeed) is the largest remaining speed gain and is now safe for giving.
+
+Still open (admin side): Paystack secret key in `wp-config.php`, SPF/DKIM/DMARC, two-factor login for administrators.

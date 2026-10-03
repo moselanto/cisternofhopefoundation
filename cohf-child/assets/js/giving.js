@@ -94,11 +94,20 @@
     submit.disabled = true;
     submit.textContent = 'Preparing secure payment...';
 
-    window.fetch(form.dataset.endpoint, {
+    // 14.3.0: always use a fresh nonce so a cached page never blocks a gift.
+    var freshNonce = function () {
+      if (typeof form.dataset.nonceUrl === 'undefined') { return Promise.resolve(form.dataset.nonce); }
+      return window.fetch(form.dataset.nonceUrl, { cache: 'no-store', credentials: 'same-origin' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (b) { return b && b.nonce ? b.nonce : form.dataset.nonce; })
+        .catch(function () { return form.dataset.nonce; });
+    };
+
+    freshNonce().then(function (nonce) { return window.fetch(form.dataset.endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        nonce: form.dataset.nonce,
+        nonce: nonce,
         amount: amount,
         name: name,
         email: email,
@@ -107,7 +116,7 @@
         area: areaEl ? areaEl.options[areaEl.selectedIndex].text : '',
         anonymous: anonEl ? anonEl.checked : false
       })
-    }).then(function (res) {
+    }); }).then(function (res) {
       return res.json().then(function (body) {
         return { ok: res.ok, body: body };
       });

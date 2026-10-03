@@ -188,6 +188,7 @@ $cohf_result  = $cohf_show_ty ? cohf_giving_verify( $cohf_ref ) : array();
 			data-thanks="<?php echo esc_url( add_query_arg( 'giving', 'thank-you', cohf_page_url( 'page-templates/page-support.php' ) ) ); ?>"
 			data-endpoint="<?php echo esc_url( rest_url( 'cohf/v1/initialize' ) ); ?>"
 			data-nonce="<?php echo esc_attr( wp_create_nonce( 'cohf_giving' ) ); ?>"
+			data-nonce-url="<?php echo esc_url( rest_url( 'cohf/v1/giving-nonce' ) ); ?>"
 			novalidate>
 
 			<?php if ( $recur ) : ?>

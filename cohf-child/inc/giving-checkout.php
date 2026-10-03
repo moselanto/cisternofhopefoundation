@@ -51,6 +51,31 @@ function cohf_giving_checkout_routes() {
 add_action( 'rest_api_init', 'cohf_giving_checkout_routes' );
 
 /**
+ * 14.3.0: a fresh giving nonce, fetched by the form just before payment.
+ *
+ * The nonce printed into the page goes stale once the Support page is served
+ * from a page cache (nonces live 12-24 hours). The form now asks this
+ * endpoint for a current one, so full page caching is safe for every page.
+ */
+function cohf_giving_nonce_route() {
+	register_rest_route(
+		'cohf/v1',
+		'/giving-nonce',
+		array(
+			'methods'             => 'GET',
+			'callback'            => function () {
+				$res = new WP_REST_Response( array( 'nonce' => wp_create_nonce( 'cohf_giving' ) ) );
+				$res->header( 'Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0' );
+				$res->header( 'X-LiteSpeed-Cache-Control', 'no-cache' );
+				return $res;
+			},
+			'permission_callback' => '__return_true',
+		)
+	);
+}
+add_action( 'rest_api_init', 'cohf_giving_nonce_route' );
+
+/**
  * Initialise a Paystack transaction.
  *
  * @param WP_REST_Request $request The request.
