@@ -1447,6 +1447,36 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'A striking statement piece for a desk, shelf or reception. Colours and finish may vary slightly from the photo. We will confirm availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 135,
 		),
+		'double-eagle-decor' => array(
+			'name'     => __( 'Double Eagle Decor', 'cohf-child' ),
+			'price'    => '14000',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'double-eagle-decor.jpg',
+			'alt'      => __( 'A hand-painted sculpture of two bald eagles on a carved wood-effect tree, one landing with wings spread and one perched below, on a black base.', 'cohf-child' ),
+			'short'    => __( 'A detailed hand-painted sculpture of two eagles on a wood-effect tree, one with wings spread, for the home or office.', 'cohf-child' ),
+			'long'     => __( 'A large statement piece for a living room, reception or office. Colours and finish may vary slightly from the photo. We will confirm availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 136,
+		),
+		'decorative-eagle-decor' => array(
+			'name'     => __( 'Decorative Eagle Decor', 'cohf-child' ),
+			'price'    => '9500',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'decorative-eagle-decor.jpg',
+			'alt'      => __( 'A hand-painted sculpture of a bald eagle with a white head and rich brown feathers, perched on a carved wood-effect branch with green leaves and yellow flowers.', 'cohf-child' ),
+			'short'    => __( 'A detailed hand-painted eagle perched on a wood-effect branch with leaves and flowers, for the home or office.', 'cohf-child' ),
+			'long'     => __( 'A striking statement piece for a desk, shelf or reception. Colours and finish may vary slightly from the photo. We will confirm availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 137,
+		),
+		'ceramic-donut-vase' => array(
+			'name'     => __( 'Ceramic Donut Vase (Single)', 'cohf-child' ),
+			'price'    => '7500',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'ceramic-donut-vase.jpg',
+			'alt'      => __( 'Two glossy white ceramic donut-shaped vases, one larger holding red and blue pampas grass stems, on a white marble surface.', 'cohf-child' ),
+			'short'    => __( 'A glossy white ceramic vase in a modern ring (donut) shape, lovely with dried flowers or pampas grass.', 'cohf-child' ),
+			'long'     => __( 'Price is for one vase. The photo shows two sizes for display; add the size you prefer in the order notes and we will confirm availability with you before dispatch. Stems are not included.', 'cohf-child' ),
+			'order'    => 138,
+		),
 	);
 }
 
