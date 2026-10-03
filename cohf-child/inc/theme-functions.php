@@ -448,6 +448,16 @@ function cohf_programme_nav_children() {
 		'suppress_filters' => false,
 	) );
 
+	// 13.85.0: the widows feeding programme is always offered in the menu,
+	// even though it sits after the first six by number.
+	$widows = get_page_by_path( 'widows-care-food-support', OBJECT, 'cohf_programme' );
+	if ( $widows && 'publish' === $widows->post_status ) {
+		$ids = wp_list_pluck( $programmes, 'ID' );
+		if ( ! in_array( (int) $widows->ID, array_map( 'intval', $ids ), true ) ) {
+			$programmes[] = $widows;
+		}
+	}
+
 	foreach ( $programmes as $programme ) {
 		$children[] = array(
 			'label' => get_the_title( $programme ),

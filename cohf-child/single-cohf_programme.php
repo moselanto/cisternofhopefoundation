@@ -91,6 +91,37 @@ while ( have_posts() ) :
 			</div>
 		</section>
 
+		<?php
+		// 13.85.0: extra photographs for a programme, keyed by slug.
+		$cohf_programme_photos = array(
+			'widows-care-food-support' => array(
+				array( 'key' => 'gallery-widows-food-support', 'caption' => __( 'Monthly food support delivered to a widow at her home.', 'cohf-child' ) ),
+				array( 'key' => 'gallery-widows-home-visit', 'caption' => __( 'A home visit to one of the widows we support.', 'cohf-child' ) ),
+			),
+		);
+		$cohf_slug = get_post_field( 'post_name', get_the_ID() );
+		if ( ! empty( $cohf_programme_photos[ $cohf_slug ] ) ) :
+			?>
+			<section class="cream programme-photos">
+				<div class="container">
+					<div class="section-head">
+						<div>
+							<div class="kicker"><?php esc_html_e( 'In pictures', 'cohf-child' ); ?></div>
+							<h2><?php esc_html_e( 'This programme in action.', 'cohf-child' ); ?></h2>
+						</div>
+					</div>
+					<div class="story-impact__grid">
+						<?php foreach ( $cohf_programme_photos[ $cohf_slug ] as $cohf_photo ) : ?>
+							<figure class="story-impact__item">
+								<?php cohf_the_image( $cohf_photo['key'], array( 'sizes' => '(max-width: 60em) 100vw, 450px' ) ); ?>
+								<figcaption><?php echo esc_html( $cohf_photo['caption'] ); ?></figcaption>
+							</figure>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			</section>
+		<?php endif; ?>
+
 		<?php if ( $serves ) : ?>
 			<section class="cream">
 				<div class="container">
