@@ -39,6 +39,16 @@ function cohf_handle_enquiry() {
 		return;
 	}
 
+	// Addresses that keep failing the checks are paused for an hour.
+	if ( function_exists( 'cohf_guard_blocked' ) && cohf_guard_blocked() ) {
+		cohf_set_form_result( 'error', sprintf(
+			/* translators: %s: email address. */
+			__( 'Too many attempts from your connection. Please try again later or email us at %s.', 'cohf-child' ),
+			cohf_org_get( 'email' )
+		) );
+		return;
+	}
+
 	$nonce = isset( $_POST['cohf_enquiry_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['cohf_enquiry_nonce'] ) ) : '';
 	if ( ! wp_verify_nonce( $nonce, 'cohf_enquiry' ) ) {
 		cohf_set_form_result( 'error', __( 'Your session expired. Please try sending the message again.', 'cohf-child' ) );
@@ -59,6 +69,9 @@ function cohf_handle_enquiry() {
 	$sig    = isset( $parts[1] ) ? $parts[1] : '';
 	$age    = time() - $ts;
 	if ( ( $ts > 0 && hash_equals( cohf_form_ts_sig( $ts ), $sig ) ) === false || $age < 3 || $age > DAY_IN_SECONDS ) {
+		if ( function_exists( 'cohf_guard_record_fail' ) ) {
+			cohf_guard_record_fail();
+		}
 		cohf_set_form_result( 'error', __( 'Please take a moment to complete the form, then send it again.', 'cohf-child' ) );
 		return;
 	}
@@ -105,6 +118,17 @@ function cohf_handle_enquiry() {
 	if ( $links > 2 || preg_match( '#https?://|www\.#i', $name ) ) {
 		cohf_set_form_result( 'error', __( 'Please remove the web links from your message and try again, or email us directly.', 'cohf-child' ) );
 		return;
+	}
+
+	// Spam scoring: thank the sender, send nothing.
+	if ( function_exists( 'cohf_guard_spam_score' ) ) {
+		$js    = isset( $_POST['cohf_js'] ) ? sanitize_text_field( wp_unslash( $_POST['cohf_js'] ) ) : '';
+		$score = cohf_guard_spam_score( array( 'name' => $name, 'email' => $email, 'org' => $org, 'message' => $message, 'js' => $js ) );
+		if ( $score >= 5 ) {
+			cohf_guard_record_fail();
+			cohf_set_form_result( 'success', __( 'Thank you. Your message has been received.', 'cohf-child' ) );
+			return;
+		}
 	}
 
 	// The same message sent again within a day is a replay or a bulk run:

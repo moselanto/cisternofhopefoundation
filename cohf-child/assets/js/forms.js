@@ -108,8 +108,41 @@
 		});
 	}
 
+	/* Human check and fresh security tokens (13.89.0): the first time a
+	   visitor interacts with a form, mark it as touched by a person and
+	   collect a fresh token, so cached pages never send an expired one. */
+	var started = Date.now();
+	var fetched = false;
+
+	function refreshTokens(url) {
+		if (fetched || typeof window.fetch === 'undefined' || url === null || url === '') { return; }
+		fetched = true;
+		window.fetch(url, { credentials: 'same-origin', cache: 'no-store' })
+			.then(function (r) { return r.ok ? r.json() : null; })
+			.then(function (d) {
+				if (d === null || typeof d.ts === 'undefined') { return; }
+				Array.prototype.forEach.call(document.querySelectorAll('input[name="cohf_ts"]'), function (i) { i.value = d.ts; });
+				Array.prototype.forEach.call(document.querySelectorAll('input[name="cohf_enquiry_nonce"]'), function (i) { i.value = d.enquiry; });
+				var give = document.getElementById('cohf-give');
+				if (give && d.giving) { give.dataset.nonce = d.giving; }
+			})
+			.catch(function () { fetched = false; });
+	}
+
+	function guard(form) {
+		var token = form.querySelector('input[name="cohf_js"]');
+		var mark = function () {
+			if (token && token.value === '') { token.value = 'h' + Math.round((Date.now() - started) / 1000); }
+			refreshTokens(form.getAttribute('data-token-url'));
+		};
+		['focusin', 'pointerdown', 'keydown', 'touchstart'].forEach(function (ev) {
+			form.addEventListener(ev, mark, { passive: true });
+		});
+	}
+
 	function init() {
 		Array.prototype.forEach.call(document.querySelectorAll('[data-cohf-form]'), setup);
+		Array.prototype.forEach.call(document.querySelectorAll('[data-cohf-form]'), guard);
 		var notice = document.querySelector('.form-notice');
 		if (notice) {
 			notice.scrollIntoView({ block: 'center' });
