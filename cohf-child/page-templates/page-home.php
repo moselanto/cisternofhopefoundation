@@ -37,6 +37,14 @@ $contact = cohf_page_url( 'page-templates/page-contact.php' );
 	get_template_part( 'template-parts/hero' );
 	?>
 
+	<?php
+	// 14.0.0: Hope Market and entrepreneur services.
+	if ( function_exists( 'cohf_hm_market_section' ) ) {
+		cohf_hm_market_section();
+		cohf_hm_services_section();
+	}
+	?>
+
 	<!-- Story -->
 	<section>
 		<div class="container story">
@@ -63,6 +71,12 @@ $contact = cohf_page_url( 'page-templates/page-contact.php' );
 			</div>
 		</div>
 	</section>
+
+	<?php
+	if ( function_exists( 'cohf_hm_purpose_strip' ) ) {
+		cohf_hm_purpose_strip();
+	}
+	?>
 
 	<!-- Purpose -->
 	<section class="cream">

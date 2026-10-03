@@ -222,6 +222,10 @@ while ( have_posts() ) :
 			wp_reset_postdata();
 		endif;
 
+		if ( function_exists( 'cohf_hm_purpose_strip' ) ) {
+			cohf_hm_purpose_strip();
+		}
+
 		get_template_part( 'template-parts/cta', null, array(
 			'title'         => __( 'Support this programme.', 'cohf-child' ),
 			'text'          => __( 'We welcome programme grants, technical assistance, equipment, market linkages and co-funding.', 'cohf-child' ),

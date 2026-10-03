@@ -42,6 +42,7 @@ while ( have_posts() ) :
 				<?php if ( has_post_thumbnail() ) { the_post_thumbnail( 'large' ); } ?>
 				<div class="story-copy">
 					<div class="prose"><?php the_content(); ?></div>
+					<?php if ( function_exists( 'cohf_hm_story_cta' ) ) { cohf_hm_story_cta(); } ?>
 					<?php if ( $quote ) : ?>
 						<div class="quote"><?php echo esc_html( $quote ); ?></div>
 						<?php if ( $quote_attr ) : ?>
