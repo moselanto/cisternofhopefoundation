@@ -98,7 +98,7 @@ $org        = cohf_org();
 						<span><?php esc_html_e( 'Registered under the Registrar of Societies', 'cohf-child' ); ?></span>
 					</div>
 					<div class="fact">
-						<strong><?php esc_html_e( '12', 'cohf-child' ); ?></strong>
+						<strong><?php $cohf_pc = wp_count_posts( 'cohf_programme' ); echo esc_html( (string) ( isset( $cohf_pc->publish ) && $cohf_pc->publish ? (int) $cohf_pc->publish : 13 ) ); ?></strong>
 						<span><a href="<?php echo esc_url( home_url( '/programmes-overview/' ) ); ?>"><?php esc_html_e( 'Connected programme areas', 'cohf-child' ); ?> &rarr;</a></span>
 					</div>
 				</div>

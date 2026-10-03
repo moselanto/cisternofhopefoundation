@@ -461,9 +461,9 @@ add_filter( 'woocommerce_get_catalog_ordering_args', 'cohf_search_title_order', 
 function cohf_search_price_bands() {
 	return array(
 		array( 'min' => '', 'max' => '999', 'label' => __( 'Under KSh 1,000', 'cohf-child' ) ),
-		array( 'min' => '1000', 'max' => '4999', 'label' => __( 'KSh 1,000 - 5,000', 'cohf-child' ) ),
-		array( 'min' => '5000', 'max' => '14999', 'label' => __( 'KSh 5,000 - 15,000', 'cohf-child' ) ),
-		array( 'min' => '15000', 'max' => '', 'label' => __( 'Over KSh 15,000', 'cohf-child' ) ),
+		array( 'min' => '1000', 'max' => '4999', 'label' => __( 'KSh 1,000 - 4,999', 'cohf-child' ) ),
+		array( 'min' => '5000', 'max' => '14999', 'label' => __( 'KSh 5,000 - 14,999', 'cohf-child' ) ),
+		array( 'min' => '15000', 'max' => '', 'label' => __( 'KSh 15,000 and over', 'cohf-child' ) ),
 	);
 }
 

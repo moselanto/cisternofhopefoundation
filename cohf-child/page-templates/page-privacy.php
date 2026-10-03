@@ -27,7 +27,9 @@ $updated = '30 September 2026';
 	<section>
 		<div class="container prose privacy">
 			<?php
-			if ( '' !== trim( (string) get_post_field( 'post_content', get_the_ID() ) ) ) {
+			$cohf_priv = trim( (string) get_post_field( 'post_content', get_the_ID() ) );
+			// 14.4.0: WordPress's unedited sample policy ("Suggested text:") is replaced by the Foundation's own policy.
+			if ( '' !== $cohf_priv && false === strpos( $cohf_priv, 'Suggested text:' ) ) {
 				while ( have_posts() ) {
 					the_post();
 					the_content();

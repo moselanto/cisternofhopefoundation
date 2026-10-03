@@ -441,6 +441,14 @@ function cohf_shop_block_wa_option( $content ) {
 		cohf_shop_wa_icon(),
 		esc_html__( 'Order on WhatsApp', 'cohf-child' )
 	);
+	// 14.4.0: the cart page had no way to pay online; give it a clear checkout button.
+	if ( 'render_block_woocommerce/cart' === current_filter() && function_exists( 'WC' ) && WC()->cart && WC()->cart->get_cart_contents_count() > 0 ) {
+		$box = sprintf(
+			'<div class="cart-proceed"><a class="cart-btn cart-btn--primary" href="%1$s">%2$s</a></div>',
+			esc_url( wc_get_checkout_url() ),
+			esc_html__( 'Proceed to checkout', 'cohf-child' )
+		) . $box;
+	}
 	return $content . $box;
 }
 add_filter( 'render_block_woocommerce/cart', 'cohf_shop_block_wa_option' );

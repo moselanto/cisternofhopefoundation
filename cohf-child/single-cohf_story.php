@@ -62,7 +62,8 @@ while ( have_posts() ) :
 					<div class="section-head">
 						<div>
 							<div class="kicker"><?php esc_html_e( 'The real impact', 'cohf-child' ); ?></div>
-							<h2><?php esc_html_e( 'Before and after.', 'cohf-child' ); ?></h2>
+							<?php $cohf_ba = false; foreach ( $gallery as $cohf_g ) { if ( isset( $cohf_g['label'] ) && false !== stripos( (string) $cohf_g['label'], 'before' ) ) { $cohf_ba = true; } } ?>
+							<h2><?php echo esc_html( $cohf_ba ? __( 'Before and after.', 'cohf-child' ) : __( 'The work in pictures.', 'cohf-child' ) ); ?></h2>
 						</div>
 					</div>
 					<div class="story-impact__grid">
