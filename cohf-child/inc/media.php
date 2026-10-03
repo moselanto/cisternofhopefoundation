@@ -75,7 +75,6 @@ function cohf_image_library() {
 		'story-05-school-pads' => array( 'file' => 'story-05-school-pads.jpg', 'alt' => __( 'A Cistern of Hope Foundation team member handing packs of sanitary pads to schoolgirls in uniform during a monthly school donation.', 'cohf-child' ) ),
 		'story-04-before' => array( 'file' => 'story-04-before.jpg', 'alt' => __( 'Before: one of the boys, photographed from behind, barefoot in a torn school shirt and ripped shorts.', 'cohf-child' ) ),
 		'story-04-after' => array( 'file' => 'story-04-after.jpg', 'alt' => __( 'After: the three boys in new school uniforms, shoes and school bags, standing with a Foundation representative outside their primary school.', 'cohf-child' ) ),
-		'story-06-tailoring-owino' => array( 'file' => 'story-06-tailoring-owino.jpg', 'alt' => __( 'Mr Owino in his tailoring workshop, seated behind a sewing machine with finished garments hanging on the wall.', 'cohf-child' ) ),
 		'story-06-tailoring-workshop' => array( 'file' => 'story-06-tailoring-workshop.jpg', 'alt' => __( 'A tailor at work at a sewing machine in Mr Owino\'s workshop, with finished robes and shirts on display.', 'cohf-child' ) ),
 		// Photo gallery, supplied by the Foundation.
 		'gallery-widows-food-support' => array( 'file' => 'gallery-widows-food-support.jpg', 'alt' => __( 'A widow smiling as she receives her monthly food support of flour, bread, milk and cooking fat at home.', 'cohf-child' ) ),

@@ -128,10 +128,9 @@ function cohf_story_seed() {
 			'title'     => __( 'From one machine at home to a growing tailoring business', 'cohf-child' ),
 			'slug'      => 'enterprise-tailoring-mr-owino',
 			'date'      => '2026-10-02',
-			'image'     => 'story-06-tailoring-owino',
+			'image'     => 'story-06-tailoring-workshop',
 			'programme' => 'Youth Skills, Enterprise & Employability',
 			'gallery'   => array(
-				array( 'key' => 'story-06-tailoring-owino',    'label' => __( 'Mr Owino', 'cohf-child' ),  'caption' => __( 'Mr Owino in his tailoring workshop.', 'cohf-child' ) ),
 				array( 'key' => 'story-06-tailoring-workshop', 'label' => __( 'The workshop', 'cohf-child' ), 'caption' => __( 'The business that began with one machine at home, now growing.', 'cohf-child' ) ),
 			),
 			'excerpt'   => __( 'Mr Owino began with only one sewing machine in his house. With tailoring support from the Foundation, his business is now growing.', 'cohf-child' ),
@@ -612,3 +611,58 @@ function cohf_fix_enterprise_story_dates() {
 	update_option( 'cohf_enterprise_dates_fixed', COHF_CHILD_VERSION );
 }
 add_action( 'admin_init', 'cohf_fix_enterprise_story_dates', 20 );
+
+
+/**
+ * 13.83.0: remove a photo that was wrongly captioned as Mr Owino.
+ *
+ * The photo shows a member of the Foundation, not Mr Owino. The story now
+ * uses the workshop photograph as its main image, the Gallery photo made
+ * from the wrong picture is moved to the Bin, and the picture itself is
+ * deleted from the Media Library. Runs once.
+ */
+function cohf_remove_wrong_owino_photo() {
+	if ( get_option( 'cohf_owino_photo_removed' ) || ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	$wrong = get_posts( array(
+		'post_type'      => 'attachment',
+		'post_status'    => 'inherit',
+		'posts_per_page' => 5,
+		'fields'         => 'ids',
+		'meta_key'       => '_cohf_image_key',
+		'meta_value'     => 'story-06-tailoring-owino',
+	) );
+
+	$story = get_page_by_path( 'enterprise-tailoring-mr-owino', OBJECT, 'cohf_story' );
+	if ( $story ) {
+		$thumb = (int) get_post_thumbnail_id( $story->ID );
+		if ( 0 === $thumb || in_array( $thumb, array_map( 'intval', $wrong ), true ) ) {
+			$replacement = function_exists( 'cohf_import_image' ) ? cohf_import_image( 'story-06-tailoring-workshop' ) : 0;
+			if ( $replacement ) {
+				set_post_thumbnail( $story->ID, $replacement );
+			} else {
+				delete_post_thumbnail( $story->ID );
+			}
+		}
+	}
+
+	$photos = get_posts( array(
+		'post_type'   => 'cohf_photo',
+		'post_status' => 'any',
+		'meta_key'    => '_cohf_photo_key',
+		'meta_value'  => 'story-06-tailoring-owino',
+		'fields'      => 'ids',
+		'numberposts' => 5,
+	) );
+	foreach ( $photos as $photo_id ) {
+		wp_trash_post( $photo_id );
+	}
+
+	foreach ( $wrong as $attachment_id ) {
+		wp_delete_attachment( (int) $attachment_id, true );
+	}
+
+	update_option( 'cohf_owino_photo_removed', COHF_CHILD_VERSION, false );
+}
+add_action( 'admin_init', 'cohf_remove_wrong_owino_photo', 25 );
