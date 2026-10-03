@@ -107,6 +107,11 @@ function cohf_kw_pages() {
 		'support-our-work'      => array( 'Donate to Charity in Kenya by M-Pesa or Card', 'donate to charity Kenya, donate via M-Pesa, donate to children in Kenya, give to an NGO in Kenya' ),
 		'strategic-journey'     => array( 'Strategic Plan 2026-2030', 'NGO strategic plan Kenya' ),
 		'gallery'               => array( 'Photo Gallery: Charity Work in Nairobi, Kenya', 'charity photos Kenya, NGO gallery' ),
+		'delivery'              => array( 'Delivery and Shipping Across Kenya', 'Hope Market delivery Kenya', 'Hope Market delivers handmade crafts to addresses across Kenya. See delivery fees, delivery times and what to do if your order arrives damaged.' ),
+		'refund-returns'        => array( 'Refund and Returns Policy', 'Hope Market returns', 'Return Hope Market items within 7 days of delivery. Damaged or wrong items are replaced or refunded in full, including the delivery fee.' ),
+		'privacy-policy'        => array( 'Privacy Policy', 'privacy policy' ),
+		'terms-of-use'          => array( 'Terms of Use', 'terms of use' ),
+		'donation-policy'       => array( 'Donation and Fundraising Policy', 'donation policy Kenya NGO' ),
 	);
 }
 
@@ -124,6 +129,22 @@ function cohf_kw_categories() {
 	);
 }
 
+/** Impact story keywords, by story slug: title, description. */
+function cohf_kw_stories() {
+	return array(
+		'door-to-door-distribution'             => array( 'Door-to-Door Sanitary Pad Distribution, Nairobi', 'Our door-to-door sanitary pad distribution reaches less fortunate girls in our Nairobi community, restoring dignity and helping them stay in school.' ),
+		'enterprise-roadside-egg-business'      => array( 'A Roadside Egg Business Finds Its Feet, Kenya', 'A small food cart and a steady trade in eggs: one of the small businesses Cistern of Hope Foundation supports so families in Nairobi earn an income.' ),
+		'enterprise-roadside-potato-trade'      => array( 'Growing a Roadside Potato Trade in Nairobi', 'Buckets of potatoes and a roadside stall: how small business support from Cistern of Hope Foundation helps a trader in Nairobi build a livelihood.' ),
+		'enterprise-shoe-business'              => array( 'Youth Enterprise: A Young Man\'s Shoe Business', 'A young man in Nairobi takes his first steps in business selling shoes, with youth enterprise support from Cistern of Hope Foundation.' ),
+		'enterprise-tailoring-mr-owino'         => array( 'Mr Owino\'s Tailoring Business, Nairobi', 'Mr Owino began with one sewing machine at home. With tailoring support from Cistern of Hope Foundation, his business in Nairobi is growing.' ),
+		'enterprise-womens-vegetable-stall'     => array( 'Women Empowerment: Her Fruit and Vegetable Stall', 'A woman in Nairobi builds income, confidence and dignity through her fruit and vegetable stall, with women\'s enterprise support from our Foundation.' ),
+		'fellowship-with-orphans'               => array( 'Supporting Orphans in Our Nairobi Community', 'Sanitary pads, encouragement and shared joy with orphaned children in Nairobi, and our commitment to return every month.' ),
+		'monthly-school-sanitary-pad-donations' => array( 'Monthly Sanitary Pad Donations in Kenyan Schools', 'Every month we visit schools to give sanitary pads to girls, so a period is never the reason a girl in Kenya misses class.' ),
+		'three-boys-enrolled-in-school'         => array( 'Three Street Boys Enrolled in School, Kenya', 'In June 2026 we took three boys off the streets of Nairobi and enrolled them in school, and we continue to follow their progress.' ),
+		'women-empowerment-seminar'             => array( 'Women Empowerment Seminar in Nairobi, Kenya', 'A women empowerment seminar in Nairobi equipping women with knowledge, confidence and practical tools to transform their families and community.' ),
+	);
+}
+
 /** Current programme / page / category keyword entry, if any. */
 function cohf_kw_current() {
 	if ( is_singular( 'cohf_programme' ) ) {
@@ -134,7 +155,22 @@ function cohf_kw_current() {
 	if ( is_page() ) {
 		$map  = cohf_kw_pages();
 		$slug = get_post_field( 'post_name', get_queried_object_id() );
-		return isset( $map[ $slug ] ) ? array( 'title' => $map[ $slug ][0], 'kw' => $map[ $slug ][1] ) : null;
+		if ( ! isset( $map[ $slug ] ) ) {
+			return null;
+		}
+		$out = array( 'title' => $map[ $slug ][0], 'kw' => $map[ $slug ][1] );
+		if ( ! empty( $map[ $slug ][2] ) ) {
+			$out['desc'] = $map[ $slug ][2];
+		}
+		return $out;
+	}
+	if ( is_singular( 'cohf_story' ) ) {
+		$map  = cohf_kw_stories();
+		$slug = get_post_field( 'post_name', get_queried_object_id() );
+		if ( isset( $map[ $slug ] ) ) {
+			return array( 'title' => $map[ $slug ][0], 'desc' => $map[ $slug ][1], 'kw' => 'charity in Kenya, NGO in Nairobi, ' . strtolower( $map[ $slug ][0] ) );
+		}
+		return null;
 	}
 	if ( function_exists( 'is_product_category' ) && is_product_category() ) {
 		$map  = cohf_kw_categories();
