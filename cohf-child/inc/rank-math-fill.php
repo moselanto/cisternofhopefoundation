@@ -40,31 +40,56 @@ function cohf_rmf_trim( $text, $max = 158 ) {
 	return $text;
 }
 
-/** Fill empty Rank Math fields on a post. */
+/** Fill empty Rank Math fields on a post; refresh fields this theme filled earlier (never hand-edited ones). */
 function cohf_rmf_post( $id, $title, $desc, $kw = '' ) {
-	if ( '' !== $title && '' === trim( (string) get_post_meta( $id, 'rank_math_title', true ) ) ) {
+	$cur_title  = trim( (string) get_post_meta( $id, 'rank_math_title', true ) );
+	$auto_title = (string) get_post_meta( $id, '_cohf_rm_auto_title', true );
+	$is_auto    = '' !== $auto_title && $cur_title === $auto_title;
+	if ( '' !== $title && ( '' === $cur_title || $is_auto ) ) {
 		update_post_meta( $id, 'rank_math_title', $title );
 		update_post_meta( $id, '_cohf_rm_auto_title', $title );
 	}
-	if ( '' !== $desc && '' === trim( (string) get_post_meta( $id, 'rank_math_description', true ) ) ) {
-		update_post_meta( $id, 'rank_math_description', cohf_rmf_trim( $desc ) );
-	}
-	if ( '' !== $kw && '' === trim( (string) get_post_meta( $id, 'rank_math_focus_keyword', true ) ) ) {
-		update_post_meta( $id, 'rank_math_focus_keyword', strtolower( $kw ) );
+	$fields = array( 'rank_math_description' => '' !== $desc ? cohf_rmf_trim( $desc ) : '', 'rank_math_focus_keyword' => strtolower( $kw ) );
+	foreach ( $fields as $key => $value ) {
+		if ( '' === $value ) {
+			continue;
+		}
+		$cur  = trim( (string) get_post_meta( $id, $key, true ) );
+		$mark = (string) get_post_meta( $id, '_cohf_auto_' . $key, true );
+		if ( '' === $cur || ( $is_auto && ( '' === $mark || $cur === $mark ) ) ) {
+			update_post_meta( $id, $key, $value );
+			update_post_meta( $id, '_cohf_auto_' . $key, $value );
+		}
 	}
 }
 
-/** Fill empty Rank Math fields on a term. */
+/** Fill empty Rank Math fields on a term; refresh fields this theme filled earlier. */
 function cohf_rmf_term( $term_id, $title, $desc, $kw = '' ) {
-	if ( '' !== $title && '' === trim( (string) get_term_meta( $term_id, 'rank_math_title', true ) ) ) {
-		update_term_meta( $term_id, 'rank_math_title', $title );
+	$values = array( 'rank_math_title' => $title, 'rank_math_description' => '' !== $desc ? cohf_rmf_trim( $desc ) : '', 'rank_math_focus_keyword' => strtolower( $kw ) );
+	$legacy = cohf_rmf_legacy_term_titles();
+	$cur_t  = trim( (string) get_term_meta( $term_id, 'rank_math_title', true ) );
+	$mark_t = (string) get_term_meta( $term_id, '_cohf_auto_rank_math_title', true );
+	$is_auto = ( '' !== $mark_t && $cur_t === $mark_t ) || in_array( $cur_t, $legacy, true );
+	foreach ( $values as $key => $value ) {
+		if ( '' === $value ) {
+			continue;
+		}
+		$cur  = trim( (string) get_term_meta( $term_id, $key, true ) );
+		$mark = (string) get_term_meta( $term_id, '_cohf_auto_' . $key, true );
+		if ( '' === $cur || ( $is_auto && ( '' === $mark || $cur === $mark || 'rank_math_title' !== $key ) ) ) {
+			update_term_meta( $term_id, $key, $value );
+			update_term_meta( $term_id, '_cohf_auto_' . $key, $value );
+		}
 	}
-	if ( '' !== $desc && '' === trim( (string) get_term_meta( $term_id, 'rank_math_description', true ) ) ) {
-		update_term_meta( $term_id, 'rank_math_description', cohf_rmf_trim( $desc ) );
+}
+
+/** Category titles written by 13.98.0 (safe to refresh). */
+function cohf_rmf_legacy_term_titles() {
+	$out = array();
+	foreach ( array( 'Maasai Beaded Jewellery, Handmade in Kenya', 'Beaded Leather Sandals, Handmade in Kenya', 'Maasai Dresses and African Fashion, Kenya', 'Handmade African Bags and Baskets, Kenya', 'African Beaded Accessories from Kenya', 'Handmade Kitchenware and Wooden Gifts, Kenya', 'African Home Decor and Wood Carvings, Kenya', 'Flip-Flop Art Animals, Handmade in Kenya' ) as $t ) {
+		$out[] = cohf_rmf_title( $t );
 	}
-	if ( '' !== $kw && '' === trim( (string) get_term_meta( $term_id, 'rank_math_focus_keyword', true ) ) ) {
-		update_term_meta( $term_id, 'rank_math_focus_keyword', strtolower( $kw ) );
-	}
+	return $out;
 }
 
 /** First phrase of a comma-separated keyword list. */
@@ -106,15 +131,15 @@ function cohf_rmf_product_kw( $product ) {
 /** Story focus keywords, by slug. */
 function cohf_rmf_story_kw() {
 	return array(
-		'door-to-door-distribution'             => 'sanitary pads for girls',
+		'door-to-door-distribution'             => 'sanitary pad distribution',
 		'enterprise-roadside-egg-business'      => 'roadside egg business',
 		'enterprise-roadside-potato-trade'      => 'roadside potato trade',
 		'enterprise-shoe-business'              => 'youth enterprise',
 		'enterprise-tailoring-mr-owino'         => 'tailoring business',
-		'enterprise-womens-vegetable-stall'     => 'women empowerment',
-		'fellowship-with-orphans'               => 'supporting orphans',
+		'enterprise-womens-vegetable-stall'     => 'vegetable stall business',
+		'fellowship-with-orphans'               => 'orphans in Kenya',
 		'monthly-school-sanitary-pad-donations' => 'sanitary pad donations',
-		'three-boys-enrolled-in-school'         => 'street boys enrolled in school',
+		'three-boys-enrolled-in-school'         => 'street children in Kenya',
 		'women-empowerment-seminar'             => 'women empowerment seminar',
 		'enterprise-photography-dan'            => 'photography business',
 	);
@@ -124,9 +149,9 @@ function cohf_rmf_story_kw() {
 function cohf_rmf_category_kw() {
 	return array(
 		'jewellery'        => 'Maasai beaded jewellery',
-		'sandals'          => 'beaded leather sandals',
+		'sandals'          => 'Maasai sandals',
 		'clothing'         => 'Maasai dresses',
-		'bags-and-baskets' => 'handmade African bags',
+		'bags-and-baskets' => 'kiondo bags',
 		'accessories'      => 'African beaded accessories',
 		'home-and-kitchen' => 'handmade kitchenware',
 		'home-decor'       => 'African home decor',
@@ -142,13 +167,13 @@ function cohf_rm_fill_all() {
 	// Home page.
 	$front = (int) get_option( 'page_on_front' );
 	if ( $front ) {
-		cohf_rmf_post( $front, 'Cistern of Hope Foundation: NGO in Nairobi, Kenya', 'Registered NGO in Nairobi, Kenya helping orphans, needy children, widows, women and youth with school fees, sanitary pads, food and small businesses.', 'NGO in Nairobi' );
+		cohf_rmf_post( $front, 'Cistern of Hope Foundation: NGO in Nairobi, Kenya', 'Registered NGO and charity organization in Nairobi, Kenya helping orphans, street children, widows, women and youth with school fees, sanitary pads and food.', 'NGO in Nairobi Kenya' );
 	}
 
 	// Shop page.
 	$shop = function_exists( 'wc_get_page_id' ) ? (int) wc_get_page_id( 'shop' ) : 0;
 	if ( $shop > 0 ) {
-		cohf_rmf_post( $shop, cohf_rmf_title( 'Hope Market: Handmade Kenyan Crafts Online' ), 'Hope Market: handmade African crafts, jewellery, baskets, sandals and home decor from Kenya. Every purchase supports the Cistern of Hope Foundation.', 'handmade Kenyan crafts' );
+		cohf_rmf_post( $shop, cohf_rmf_title( 'Hope Market: Kenya Handmade Crafts Online' ), 'Shop Kenya handmade crafts online: Maasai jewellery, Maasai sandals, kiondo bags, African home decor and gifts. Every purchase supports our charity work.', 'Kenya handmade crafts' );
 	}
 
 	// Pages.

@@ -48,7 +48,7 @@ function cohf_rm_keyword_title() {
 			return html_entity_decode( wp_strip_all_tags( get_the_title() ) ) . ', ' . $price . ' | Hope Market Kenya';
 		}
 	} elseif ( function_exists( 'is_shop' ) && is_shop() ) {
-		$title = 'Hope Market: Handmade Kenyan Crafts Online';
+		$title = 'Hope Market: Kenya Handmade Crafts Online';
 	} elseif ( is_post_type_archive( 'cohf_story' ) ) {
 		$title = 'Impact Stories from Our Work in Kenya';
 	} elseif ( function_exists( 'cohf_kw_current' ) ) {
@@ -178,6 +178,14 @@ add_filter( 'rank_math/json_ld', function ( $data, $jsonld = null ) {
 			$node['@type']         = array( 'NGO', 'NonprofitOrganization' );
 			$node['alternateName'] = array( 'Cistern of Hope', 'COHF', 'Cistern of Hope Foundation Kenya' );
 			$node['knowsAbout']    = function_exists( 'cohf_schema_topics' ) ? cohf_schema_topics() : array();
+			$catalog = array();
+			foreach ( get_posts( array( 'post_type' => 'cohf_programme', 'post_status' => 'publish', 'numberposts' => 50, 'orderby' => 'menu_order title', 'order' => 'ASC' ) ) as $prog ) {
+				$catalog[] = array( '@type' => 'Offer', 'price' => 0, 'priceCurrency' => 'KES', 'itemOffered' => array( '@type' => 'Service', 'name' => wp_strip_all_tags( get_the_title( $prog ) ), 'url' => get_permalink( $prog ) ) );
+			}
+			if ( $catalog ) {
+				$node['hasOfferCatalog'] = array( '@type' => 'OfferCatalog', 'name' => 'Cistern of Hope Foundation programmes', 'itemListElement' => $catalog );
+			}
+			$node['seeks'] = array( '@type' => 'Demand', 'name' => 'Donations, volunteers and partners to support vulnerable children, widows, women and youth in Kenya' );
 			$node['keywords']      = 'NGO in Kenya, NGO in Nairobi, charity in Kenya, donate to charity Kenya, donate via M-Pesa, sponsor a child in Kenya, school fees support Kenya, sanitary pads for girls Kenya, help widows in Kenya, women empowerment Kenya, youth empowerment Kenya, street children Kenya, orphans in Kenya, volunteer in Nairobi';
 			$data[ $key ] = $node;
 			continue;

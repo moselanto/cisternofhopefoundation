@@ -24,29 +24,29 @@ function cohf_kw_brand() {
 function cohf_kw_programmes() {
 	return array(
 		'education-scholarship-child-development' => array(
-			'title' => 'School Fees Support for Needy Children in Kenya',
+			'title' => 'Sponsor a Child\'s Education in Kenya',
 			'desc'  => 'We help orphans and needy children in Nairobi stay in school with school fees, uniforms and learning materials. Sponsor a child\'s education in Kenya.',
-			'kw'    => 'school fees support Kenya, sponsor a child in Kenya, education for orphans Kenya, scholarships for needy students Kenya, help street children go to school',
+			'kw'    => 'sponsor a child\'s education in Kenya, sponsor a child in Kenya, school fees support Kenya, orphans scholarship in Kenya, education for orphans Kenya, scholarships for needy students Kenya, help street children go to school',
 		),
 		'menstrual-health-hygiene-dignity' => array(
-			'title' => 'Sanitary Pads for Schoolgirls in Kenya',
+			'title' => 'Sanitary Pads for Girls in School, Kenya',
 			'desc'  => 'Around 200 girls receive sanitary pads from us every month, so no girl misses school because of her period. Help end period poverty in Kenya.',
-			'kw'    => 'sanitary pads for girls Kenya, donate sanitary pads Kenya, period poverty Kenya, menstrual hygiene Kenya, keep girls in school',
+			'kw'    => 'sanitary pads for girls in school, sanitary pads donation, sanitary pads for girls Kenya, period poverty Kenya, menstrual hygiene Kenya, keep girls in school',
 		),
 		'widows-care-food-support' => array(
-			'title' => 'Support Widows in Kenya: Monthly Food Aid',
+			'title' => 'Supporting Widows in Kenya: Monthly Food Aid',
 			'desc'  => 'We give widows in our Nairobi community monthly food support and care, so no widow is forgotten. Help us reach more widows in Kenya.',
-			'kw'    => 'help widows in Kenya, food donation Kenya, support widows Nairobi, charity for widows Kenya, feed a family Kenya',
+			'kw'    => 'widows in Kenya, widows organizations in Kenya, help widows and orphans, help widows in Kenya, food donation Kenya, support widows Nairobi, charity for widows Kenya, feed a family Kenya',
 		),
 		'youth-skills-enterprise-employability' => array(
 			'title' => 'Youth Empowerment and Skills Training in Kenya',
 			'desc'  => 'Skills training, mentorship and business start-up support that help young people in Nairobi find work or build their own business.',
-			'kw'    => 'youth empowerment Kenya, skills training for youth Nairobi, youth employment Kenya, entrepreneurship for young people Kenya',
+			'kw'    => 'youth empowerment Kenya, youth empowerment programs Kenya, skills training for youth Nairobi, youth employment Kenya, entrepreneurship for young people Kenya',
 		),
 		'womens-enterprise-economic-empowerment' => array(
-			'title' => 'Women Empowerment and Small Business in Kenya',
+			'title' => 'Women Empowerment Programs in Kenya',
 			'desc'  => 'We help women in Nairobi start and grow small businesses with start-up support, training and mentorship, so families earn steady income.',
-			'kw'    => 'women empowerment Kenya, small business support for women Kenya, women entrepreneurs Nairobi, economic empowerment Kenya',
+			'kw'    => 'women empowerment programs in Kenya, women empowerment organizations in Kenya, women empowerment Kenya, small business support for women Kenya, women entrepreneurs Nairobi, economic empowerment Kenya',
 		),
 		'humanitarian-assistance-household-resilience' => array(
 			'title' => 'Food Aid and Emergency Help for Families in Kenya',
@@ -84,9 +84,9 @@ function cohf_kw_programmes() {
 			'kw'    => 'digital skills training Kenya, computer classes for youth Nairobi, digital inclusion Kenya',
 		),
 		'community-development-partnerships' => array(
-			'title' => 'Community Development NGO in Nairobi',
+			'title' => 'Charity Organization in Nairobi, Kenya',
 			'desc'  => 'We work with volunteers, schools and partners to strengthen our community in Uthiru, Kabete and across Nairobi.',
-			'kw'    => 'community development Kenya, NGO partnerships Kenya, community based organisation Nairobi',
+			'kw'    => 'charity organizations in Kenya, community development Kenya, NGO partnerships Kenya, community based organisation Nairobi',
 		),
 	);
 }
@@ -94,17 +94,17 @@ function cohf_kw_programmes() {
 /** Main page keywords, by page slug. */
 function cohf_kw_pages() {
 	return array(
-		'about'                 => array( 'About Our NGO in Uthiru, Nairobi, Kenya', 'NGO in Nairobi, NGO in Kenya, Uthiru, Kabete' ),
+		'about'                 => array( 'About Our Charity Foundation in Kenya', 'charity foundation in Kenya, charity foundations in Kenya, NGO in Nairobi, NGO in Kenya' ),
 		'programmes-overview'   => array( 'Our Programmes: Education, Pads, Youth and Women', 'charity programmes Kenya, school fees support, sanitary pads for girls' ),
 		'impact'                => array( 'Our Impact: Children, Women and Youth in Kenya', 'NGO impact Kenya, charity results Kenya' ),
 		'approach'              => array( 'Our Approach: From Support to Self-Reliance', 'community development Kenya, sustainable charity' ),
-		'get-involved'          => array( 'Volunteer in Nairobi, Kenya or Partner With Us', 'volunteer in Kenya, volunteer in Nairobi, volunteer opportunities Kenya' ),
-		'partners-overview'     => array( 'Partner With a Registered NGO in Kenya', 'NGO partnership Kenya, corporate social responsibility Kenya, CSR partners Kenya' ),
+		'get-involved'          => array( 'Volunteer Opportunities in Nairobi, Kenya', 'volunteer opportunities in Nairobi, volunteer in Kenya, volunteer in Kenya schools, volunteer in Kenya orphanage, volunteer in Nairobi, volunteer opportunities Kenya' ),
+		'partners-overview'     => array( 'Partner With a Registered NGO in Kenya', 'NGO in Kenya, NGO partnership Kenya, corporate social responsibility Kenya, CSR partners Kenya' ),
 		'resources-overview'    => array( 'NGO Reports, Policies and Resources', 'NGO annual report Kenya, NGO policies' ),
-		'contact'               => array( 'Contact Us: NGO in Kabete, Nairobi', 'NGO contacts Nairobi, charity near me Nairobi' ),
+		'contact'               => array( 'Contact Us: NGO in Nairobi, Kenya', 'NGO in Nairobi, NGOs in Nairobi and their contacts, NGO contacts Nairobi, charity near me Nairobi' ),
 		'leadership-governance' => array( 'Leadership and Board of Our Kenyan NGO', 'NGO board Kenya, NGO leadership' ),
 		'accountability'        => array( 'Accountability and Child Safeguarding', 'child safeguarding policy Kenya, NGO accountability' ),
-		'support-our-work'      => array( 'Donate to Charity in Kenya by M-Pesa or Card', 'donate to charity Kenya, donate via M-Pesa, donate to children in Kenya, give to an NGO in Kenya' ),
+		'support-our-work'      => array( 'Donate to Charity in Kenya by M-Pesa or Card', 'charity in Kenya, donate to charity Kenya, donate via M-Pesa, donate to children in Kenya, give to an NGO in Kenya' ),
 		'strategic-journey'     => array( 'Strategic Plan 2026-2030', 'NGO strategic plan Kenya' ),
 		'gallery'               => array( 'Photo Gallery: Charity Work in Nairobi, Kenya', 'charity photos Kenya, NGO gallery' ),
 		'delivery'              => array( 'Delivery and Shipping Across Kenya', 'Hope Market delivery Kenya', 'Hope Market delivers handmade crafts to addresses across Kenya. See delivery fees, delivery times and what to do if your order arrives damaged.' ),
@@ -119,12 +119,12 @@ function cohf_kw_pages() {
 function cohf_kw_categories() {
 	return array(
 		'jewellery'        => array( 'Maasai Beaded Jewellery, Handmade in Kenya', 'Buy handmade Maasai beaded jewellery in Kenya: necklaces, chokers, earrings, bangles and bracelets. Delivered across Kenya; supports children and women.' ),
-		'sandals'          => array( 'Beaded Leather Sandals, Handmade in Kenya', 'Buy handmade Maasai beaded leather sandals in Kenya. Comfortable, colourful and delivered across Kenya. Every pair supports Cistern of Hope Foundation.' ),
-		'clothing'         => array( 'Maasai Dresses and African Fashion, Kenya', 'Shop Maasai dresses, kitenge print dresses, kaftans, agbada and senator suits in Kenya. Delivered across Kenya; every purchase supports our charity.' ),
-		'bags-and-baskets' => array( 'Handmade African Bags and Baskets, Kenya', 'Buy handmade sisal baskets, kiondo and Ankara bags and beaded clutches from Kenya. Delivered across Kenya; every purchase supports children and women.' ),
+		'sandals'          => array( 'Maasai Sandals: Beaded Leather, Made in Kenya', 'Buy handmade Maasai beaded leather sandals in Kenya. Comfortable, colourful and delivered across Kenya. Every pair supports Cistern of Hope Foundation.' ),
+		'clothing'         => array( 'Maasai Dresses and Kitenge Dresses for Ladies', 'Shop Maasai dresses, kitenge print dresses, kaftans, agbada and senator suits in Kenya. Delivered across Kenya; every purchase supports our charity.' ),
+		'bags-and-baskets' => array( 'Kiondo Bags, Sisal Bags and Baskets, Kenya', 'Buy handmade sisal baskets, kiondo and Ankara bags and beaded clutches from Kenya. Delivered across Kenya; every purchase supports children and women.' ),
 		'accessories'      => array( 'African Beaded Accessories from Kenya', 'Shop handmade African accessories from Kenya: beaded hats, caps, belts, keychains and purses. Delivered across Kenya; every purchase supports our charity work.' ),
 		'home-and-kitchen' => array( 'Handmade Kitchenware and Wooden Gifts, Kenya', 'Buy handmade kitchenware from Kenya: salad servers, ebony bowls, clay pots and coasters. Delivery across Kenya; every purchase supports our charity work.' ),
-		'home-decor'       => array( 'African Home Decor and Wood Carvings, Kenya', 'Shop African home decor from Kenya: copper wall clocks, carvings, soapstone and wall art. Delivery across Kenya; every purchase supports our charity work.' ),
+		'home-decor'       => array( 'African Home Decor, Nairobi: Carvings and Art', 'Shop African home decor from Kenya: copper wall clocks, carvings, soapstone and wall art. Delivery across Kenya; every purchase supports our charity work.' ),
 		'flip-flop-art'    => array( 'Flip-Flop Art Animals, Handmade in Kenya', 'Colourful animals carved from recycled flip-flops in Kenya. Unique eco-friendly gifts, delivered across Kenya; every purchase supports our charity work.' ),
 	);
 }
@@ -139,9 +139,9 @@ function cohf_kw_stories() {
 		'enterprise-photography-dan'            => array( 'Support Dan\'s Photography Business in Nairobi', __( 'Dan runs a home photography and photo-mounting business in Nairobi. Help him get a camera, printer and studio space to grow his youth enterprise.', 'cohf-child' ) ),
 		'enterprise-tailoring-mr-owino'         => array( 'Mr Owino\'s Tailoring Business, Nairobi', 'Mr Owino began with one sewing machine at home. With tailoring support from Cistern of Hope Foundation, his business in Nairobi is growing.' ),
 		'enterprise-womens-vegetable-stall'     => array( 'Women Empowerment: Her Fruit and Vegetable Stall', 'A woman in Nairobi builds income, confidence and dignity through her fruit and vegetable stall, with women\'s enterprise support from our Foundation.' ),
-		'fellowship-with-orphans'               => array( 'Supporting Orphans in Our Nairobi Community', 'Sanitary pads, encouragement and shared joy with orphaned children in Nairobi, and our commitment to return every month.' ),
+		'fellowship-with-orphans'               => array( 'Supporting Orphans in Kenya: Fellowship in Nairobi', 'Sanitary pads, encouragement and shared joy with orphaned children in Nairobi, and our commitment to return every month.' ),
 		'monthly-school-sanitary-pad-donations' => array( 'Monthly Sanitary Pad Donations in Kenyan Schools', 'Every month we visit schools to give sanitary pads to girls, so a period is never the reason a girl in Kenya misses class.' ),
-		'three-boys-enrolled-in-school'         => array( 'Three Street Boys Enrolled in School, Kenya', 'In June 2026 we took three boys off the streets of Nairobi and enrolled them in school, and we continue to follow their progress.' ),
+		'three-boys-enrolled-in-school'         => array( 'Street Children in Kenya: Three Boys Back in School', 'In June 2026 we took three boys off the streets of Nairobi and enrolled them in school, and we continue to follow their progress.' ),
 		'women-empowerment-seminar'             => array( 'Women Empowerment Seminar in Nairobi, Kenya', 'A women empowerment seminar in Nairobi equipping women with knowledge, confidence and practical tools to transform their families and community.' ),
 	);
 }
@@ -194,7 +194,7 @@ add_filter( 'document_title_parts', function ( $parts ) {
 		return array( 'title' => 'Cistern of Hope Foundation: NGO in Nairobi, Kenya' );
 	}
 	if ( function_exists( 'is_shop' ) && is_shop() ) {
-		$parts['title'] = 'Hope Market: Handmade Kenyan Crafts Online';
+		$parts['title'] = 'Hope Market: Kenya Handmade Crafts Online';
 	}
 	if ( function_exists( 'is_product' ) && is_product() ) {
 		$p = wc_get_product( get_the_ID() );
@@ -245,7 +245,7 @@ add_filter( 'cohf_seo_description', function ( $text ) {
 		return $kw['desc'];
 	}
 	if ( is_front_page() ) {
-		return 'Registered NGO in Nairobi, Kenya helping orphans, needy children, widows, women and youth with school fees, sanitary pads, food and small businesses.';
+		return 'Registered NGO and charity organization in Nairobi, Kenya helping orphans, street children, widows, women and youth with school fees, sanitary pads and food.';
 	}
 	if ( is_post_type_archive( 'cohf_story' ) ) {
 		return 'Real stories from our work in Nairobi, Kenya: children back in school, girls receiving sanitary pads, and women and youth building small businesses.';
