@@ -81,7 +81,7 @@ function cohf_gallery_items() {
  */
 function cohf_gallery_static_items() {
 	$items = array(
-		array( 'key' => 'story-06-tailoring-workshop',       'cat' => 'enterprise', 'title' => __( 'A growing workshop', 'cohf-child' ),                  'caption' => __( 'Inside Mr Owino\'s tailoring workshop, where the business that started with one machine continues to grow.', 'cohf-child' ) ),
+		array( 'key' => 'story-06-tailoring-workshop',       'cat' => 'enterprise', 'title' => __( 'Mr Owino at work', 'cohf-child' ),                    'caption' => __( 'Mr Owino at his sewing machine. His tailoring business began with only one machine in his house and is now growing.', 'cohf-child' ) ),
 		array( 'key' => 'gallery-widows-food-support',       'cat' => 'community',  'title' => __( 'Monthly food support for widows', 'cohf-child' ),     'caption' => __( 'Every month we deliver food support to widows in our community, so that each one knows she is not forgotten or alone.', 'cohf-child' ) ),
 		array( 'key' => 'gallery-widows-home-visit',         'cat' => 'community',  'title' => __( 'Standing with widows', 'cohf-child' ),               'caption' => __( 'A home visit to one of the widows we support. Every widow deserves dignity, compassion and respect.', 'cohf-child' ) ),
 		array( 'key' => 'story-02-fellowship-tshirts',       'cat' => 'dignity',    'title' => __( 'Children\'s home visit', 'cohf-child' ),              'caption' => __( 'Our team, in Cistern of Hope Foundation T-shirts, sharing sanitary pads and encouragement with children at a children\'s home.', 'cohf-child' ) ),

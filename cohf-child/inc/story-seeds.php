@@ -131,7 +131,7 @@ function cohf_story_seed() {
 			'image'     => 'story-06-tailoring-workshop',
 			'programme' => 'Youth Skills, Enterprise & Employability',
 			'gallery'   => array(
-				array( 'key' => 'story-06-tailoring-workshop', 'label' => __( 'The workshop', 'cohf-child' ), 'caption' => __( 'The business that began with one machine at home, now growing.', 'cohf-child' ) ),
+				array( 'key' => 'story-06-tailoring-workshop', 'label' => __( 'Mr Owino', 'cohf-child' ), 'caption' => __( 'Mr Owino at his sewing machine. The business that began with one machine at home is now growing.', 'cohf-child' ) ),
 			),
 			'excerpt'   => __( 'Mr Owino began with only one sewing machine in his house. With tailoring support from the Foundation, his business is now growing.', 'cohf-child' ),
 			'body'      => array(
@@ -666,3 +666,48 @@ function cohf_remove_wrong_owino_photo() {
 	update_option( 'cohf_owino_photo_removed', COHF_CHILD_VERSION, false );
 }
 add_action( 'admin_init', 'cohf_remove_wrong_owino_photo', 25 );
+
+
+/**
+ * 13.84.0: name Mr Owino correctly in the workshop photo already in the
+ * Media Library and the Gallery. Only updates text that still matches the
+ * earlier wording, so later edits in the admin are kept. Runs once.
+ */
+function cohf_name_owino_in_workshop_photo() {
+	if ( get_option( 'cohf_owino_named' ) || ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	$attachments = get_posts( array(
+		'post_type'      => 'attachment',
+		'post_status'    => 'inherit',
+		'posts_per_page' => 5,
+		'fields'         => 'ids',
+		'meta_key'       => '_cohf_image_key',
+		'meta_value'     => 'story-06-tailoring-workshop',
+	) );
+	foreach ( $attachments as $attachment_id ) {
+		$alt = (string) get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
+		if ( '' === $alt || 0 === strpos( $alt, 'A tailor at work' ) ) {
+			update_post_meta( $attachment_id, '_wp_attachment_image_alt', cohf_img_alt( 'story-06-tailoring-workshop' ) );
+		}
+	}
+	$photos = get_posts( array(
+		'post_type'   => 'cohf_photo',
+		'post_status' => 'any',
+		'meta_key'    => '_cohf_photo_key',
+		'meta_value'  => 'story-06-tailoring-workshop',
+		'fields'      => 'ids',
+		'numberposts' => 5,
+	) );
+	foreach ( $photos as $photo_id ) {
+		if ( 'A growing workshop' === get_the_title( $photo_id ) ) {
+			wp_update_post( array(
+				'ID'           => $photo_id,
+				'post_title'   => __( 'Mr Owino at work', 'cohf-child' ),
+				'post_excerpt' => __( 'Mr Owino at his sewing machine. His tailoring business began with only one machine in his house and is now growing.', 'cohf-child' ),
+			) );
+		}
+	}
+	update_option( 'cohf_owino_named', COHF_CHILD_VERSION, false );
+}
+add_action( 'admin_init', 'cohf_name_owino_in_workshop_photo', 26 );
