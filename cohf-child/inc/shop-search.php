@@ -671,3 +671,68 @@ function cohf_search_assets() {
 	) );
 }
 add_action( 'wp_enqueue_scripts', 'cohf_search_assets', 46 );
+
+/* -------------------------------------------------------------------------
+   Fresh order on every visit (14.6.0)
+   ------------------------------------------------------------------------- */
+
+/**
+ * Seed for the shop's random order. Page 1 gets a new seed on every visit;
+ * later pages reuse it (short cookie) so no product repeats or goes missing
+ * while the visitor pages through.
+ *
+ * @return int
+ */
+function cohf_shop_random_seed() {
+	static $seed = null;
+	if ( null !== $seed ) {
+		return $seed;
+	}
+	$paged  = max( 1, (int) get_query_var( 'paged' ) );
+	$cookie = isset( $_COOKIE['cohf_shop_seed'] ) ? absint( $_COOKIE['cohf_shop_seed'] ) : 0;
+	if ( $paged > 1 && $cookie > 0 ) {
+		$seed = $cookie;
+		return $seed;
+	}
+	$seed = wp_rand( 1, 999999 );
+	if ( ! headers_sent() ) {
+		setcookie( 'cohf_shop_seed', (string) $seed, array(
+			'expires'  => time() + HOUR_IN_SECONDS,
+			'path'     => '/',
+			'secure'   => is_ssl(),
+			'httponly' => true,
+			'samesite' => 'Lax',
+		) );
+	}
+	return $seed;
+}
+
+/**
+ * Shop and category pages show products in a fresh random order on each
+ * visit, unless the visitor picked a sort or is searching.
+ *
+ * @param array $args Ordering args.
+ * @return array
+ */
+function cohf_shop_random_order( $args ) {
+	if ( is_admin() || ! function_exists( 'is_shop' ) || isset( $_GET['orderby'] ) || is_search() ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return $args;
+	}
+	if ( ! ( is_shop() || is_product_taxonomy() ) ) {
+		return $args;
+	}
+	$args['orderby'] = 'RAND(' . (int) cohf_shop_random_seed() . ')';
+	$args['order']   = 'ASC';
+	unset( $args['meta_key'] );
+	return $args;
+}
+add_filter( 'woocommerce_get_catalog_ordering_args', 'cohf_shop_random_order', 30 );
+
+/**
+ * Keep shop listings out of the page cache so each refresh can show new items.
+ */
+add_action( 'template_redirect', function () {
+	if ( function_exists( 'is_shop' ) && ( is_shop() || is_product_taxonomy() ) && ! headers_sent() ) {
+		header( 'X-LiteSpeed-Cache-Control: no-cache' );
+	}
+} );
