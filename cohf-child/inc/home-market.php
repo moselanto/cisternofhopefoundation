@@ -10,6 +10,7 @@
  *
  * Orders for services go to the Foundation's WhatsApp with a ready-made message.
  * 14.0.1: no prices are shown for services; customers enquire on WhatsApp.
+ * 14.5.0: on tablets and phones Shop with purpose is two products per row.
  * 14.2.0: Shop with purpose shows four random products on every load.
  * 14.1.0: the top notice can be closed; Shop with purpose is one row of
  *         custom product cards (swipeable on tablet and phone).
@@ -325,8 +326,14 @@ add_action( 'wp_enqueue_scripts', function () {
 		. '.hm-story-cta{background:#f7f3ea;border:1px solid #dfe6e1;border-radius:16px;padding:28px;margin:36px 0}'
 		. '.hm-story-cta h2{margin:0 0 8px;font-size:26px}.hm-story-cta p{color:#66736d}'
 		. '.hm-story-cta__btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}'
-		/* Tablet and phone: the product row stays one row and swipes sideways. */
-		. '@media (max-width:64em){.hm-row{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(240px,32%);overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 4px 14px;margin:0 -4px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}.hm-card{scroll-snap-align:start}}'
+		/* Tablet and phone: two products per row, compact cards (14.5.0). */
+		. '@media (max-width:64em){.hm-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}}'
+		. '@media (max-width:48em){.hm-row{gap:12px}.hm-card{border-radius:14px}.hm-card:hover,.hm-card:focus-within{transform:none}'
+		. '.hm-card__body{padding:10px 12px 12px;gap:4px}.hm-card__cat{font-size:10px;letter-spacing:.08em}'
+		. '.hm-card__title{font-size:14.5px;line-height:1.3}.hm-card__foot{flex-direction:column;align-items:stretch;gap:8px;padding-top:6px}'
+		. '.hm-card__price{font-size:15px}.hm-card__add{width:100%;min-height:44px;padding:0 10px;font-size:13px;background:#163f32;color:#fff}'
+		. '.hm-card__add:hover,.hm-card__add:focus-visible{background:#0f2c23;color:#fff}'
+		. '.hm-market__head{margin-bottom:20px;gap:14px}.hm-market__head p{font-size:15px}.hm-market__all{min-height:44px;padding:0 18px;font-size:14px}}'
 		. '@media (max-width:60em){.hm-svc-grid{grid-template-columns:1fr}}'
 		. '@media (max-width:48em){.hm-market__head{flex-direction:column;align-items:flex-start}.hm-row{grid-auto-columns:72%}.hm-bar__in{padding:8px 52px 8px 16px;gap:10px}}'
 		. '@media (max-width:36em){.hm-svc{grid-template-columns:1fr}.hm-svc__img img{min-height:220px;max-height:280px}.hm-bar{font-size:13px}}'
