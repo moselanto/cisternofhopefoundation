@@ -65,7 +65,7 @@ function cohf_giving_areas() {
 	$programmes = get_posts( array(
 		'post_type'        => 'cohf_programme',
 		'post_status'      => 'publish',
-		'numberposts'      => 12,
+		'numberposts'      => 50, // 13.93.0: was 12, which cut off the 13th programme (Widows' Care & Food Support).
 		'orderby'          => array( 'menu_order' => 'ASC', 'title' => 'ASC' ),
 		'suppress_filters' => false,
 	) );
