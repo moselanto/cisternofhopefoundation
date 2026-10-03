@@ -1417,6 +1417,16 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'Add your preferred style and size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 132,
 		),
+		'decorative-horse' => array(
+			'name'     => __( 'Decorative Horse (Home and Office Decor)', 'cohf-child' ),
+			'price'    => '10500',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'decorative-horse.jpg',
+			'alt'      => __( 'A detailed sculpture of a chestnut horse with a dark mane, a saddle and reins, standing beside a weathered wooden fence on a rocky base.', 'cohf-child' ),
+			'short'    => __( 'A detailed decorative sculpture of a saddled chestnut horse beside a rustic wooden fence, for the home or office.', 'cohf-child' ),
+			'long'     => __( 'A striking statement piece for a living room, reception or office shelf. Colours and finish may vary slightly from the photo. We will confirm availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 133,
+		),
 	);
 }
 
