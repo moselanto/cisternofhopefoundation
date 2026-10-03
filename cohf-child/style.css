@@ -5,7 +5,7 @@ Template: cohf
 Author: Cistern of Hope Foundation
 Author URI: https://cisternofhope.org
 Description: Premium, human-centred child theme for Cistern of Hope Foundation (COHF), Kenya. Editorial design system, twelve programme areas, impact and story content structures, accountability and partnership architecture, WCAG-conscious markup and a performance-first asset strategy. Motto: Together for a lasting change.
-Version: 14.5.0
+Version: 14.1.0
 Requires at least: 6.2
 Requires PHP: 8.0
 License: GNU General Public License v2 or later
@@ -241,54 +241,3 @@ h1, h2, h3 { overflow-wrap: anywhere; hyphens: auto; text-wrap: balance; }
 	color: var(--muted);
 	text-align: center;
 }
-
-
-/* ==========================================================================
-   14.4.0 - Desktop review fixes
-   ========================================================================== */
-
-/* Header: keep the wordmark clear of the first menu item on mid-size desktops. */
-header .nav .brand { flex-shrink: 0; margin-right: clamp(14px, 1.6vw, 28px); }
-@media (min-width: 901px) and (max-width: 1560px) {
-  header .nav .brand > span:last-child { font-size: 12px; }
-  header .nav .brand small { font-size: 8px; letter-spacing: 1px; }
-  .links { gap: 0 12px; }
-}
-@media (min-width: 901px) and (max-width: 1240px) {
-  header .nav .brand > span:last-child { display: none; }
-}
-
-/* Gold buttons: dark text for readable contrast. */
-.cta, .btn.gold, .gold.btn, .cta-band .btn.gold { color: #17231e; }
-.cta:hover, .cta:focus-visible, .btn.gold:hover, .btn.gold:focus-visible { color: #17231e; }
-
-/* Donation form: name and email fields line up. */
-.give__row { align-items: start; }
-.give__row > .give__field { margin-top: 0; }
-
-/* Cart page: online checkout button above the WhatsApp alternative. */
-.cart-proceed { display: flex; justify-content: flex-end; margin: 18px 0 8px; }
-.cart-proceed .cart-btn { min-height: 48px; padding: 0 28px; }
-@media (max-width: 600px) { .cart-proceed .cart-btn { width: 100%; justify-content: center; } }
-
-
-/* ==========================================================================
-   14.5.0 - Floating WhatsApp button
-   ========================================================================== */
-.cohf-wa-float {
-  position: fixed; right: 20px; bottom: 24px; z-index: 80;
-  display: inline-flex; align-items: center; gap: 8px;
-  height: 56px; padding: 0 20px 0 16px; border-radius: 999px;
-  background: #25d366; color: #fff; font-weight: 800; font-size: 15px;
-  text-decoration: none; box-shadow: 0 10px 28px -8px rgba(0,0,0,.35);
-  transition: transform .2s, box-shadow .2s;
-}
-.cohf-wa-float svg { width: 26px; height: 26px; flex: 0 0 auto; }
-.cohf-wa-float:hover, .cohf-wa-float:focus-visible { color: #fff; transform: translateY(-2px); box-shadow: 0 14px 32px -8px rgba(0,0,0,.4); }
-@media (max-width: 900px) {
-  .cohf-wa-float { right: 14px; bottom: calc(76px + env(safe-area-inset-bottom, 0px)); width: 54px; height: 54px; padding: 0; justify-content: center; }
-  .cohf-wa-float__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  body:has(.links.is-open) .cohf-wa-float { display: none; }
-}
-body:has(.cart-drawer.is-open) .cohf-wa-float { display: none; }
-@media (prefers-reduced-motion: reduce) { .cohf-wa-float { transition: none; } .cohf-wa-float:hover { transform: none; } }

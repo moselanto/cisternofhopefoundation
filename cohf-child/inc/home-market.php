@@ -9,11 +9,6 @@
  * 5. A "Every purchase is support" strip on the home page and programme pages.
  *
  * Orders for services go to the Foundation's WhatsApp with a ready-made message.
- * 14.0.1: no prices are shown for services; customers enquire on WhatsApp.
- * 14.5.0: on tablets and phones Shop with purpose is two products per row.
- * 14.2.0: Shop with purpose shows four random products on every load.
- * 14.1.0: the top notice can be closed; Shop with purpose is one row of
- *         custom product cards (swipeable on tablet and phone).
  *
  * @package COHF_Child
  */
@@ -34,8 +29,8 @@ function cohf_hm_services() {
 			'who'   => __( 'Dan - Art City', 'cohf-child' ),
 			'title' => __( 'Photo editing, mounting and framing', 'cohf-child' ),
 			'text'  => __( 'Photography, photo editing, photo mounting and framing for graduations, portraits and gifts.', 'cohf-child' ),
-			'price' => __( 'Enquire for a price', 'cohf-child' ),
-			'wa'    => __( 'Hello Cistern of Hope Foundation, I would like to enquire about photo editing, mounting or framing from Dan, and the price.', 'cohf-child' ),
+			'price' => __( 'Price on request', 'cohf-child' ),
+			'wa'    => __( 'Hello Cistern of Hope Foundation, I would like to order photo editing, mounting or framing from Dan.', 'cohf-child' ),
 			'story' => 'enterprise-photography-dan',
 			'cta'   => __( 'Order photo framing from Dan', 'cohf-child' ),
 		),
@@ -44,15 +39,15 @@ function cohf_hm_services() {
 			'who'   => __( 'Mr Owino - Tailor', 'cohf-child' ),
 			'title' => __( 'Custom tailoring', 'cohf-child' ),
 			'text'  => __( 'Shirts, African wear, suits and repairs, made to measure in his workshop.', 'cohf-child' ),
-			'price' => __( 'Enquire for a price', 'cohf-child' ),
-			'wa'    => __( 'Hello Cistern of Hope Foundation, I would like to enquire about tailoring from Mr Owino, and the price.', 'cohf-child' ),
+			'price' => __( 'Price on request', 'cohf-child' ),
+			'wa'    => __( 'Hello Cistern of Hope Foundation, I would like to order tailoring from Mr Owino.', 'cohf-child' ),
 			'story' => 'enterprise-tailoring-mr-owino',
 			'cta'   => __( 'Order tailoring from Mr Owino', 'cohf-child' ),
 		),
 	);
 }
 
-/* 1. Dismissible Hope Market notice on every page (14.1.0). */
+/* 1. Top bar on every page. */
 add_action( 'wp_body_open', function () {
 	if ( is_admin() || ! function_exists( 'cohf_shop_url' ) || '' === cohf_shop_url() ) {
 		return;
@@ -61,140 +56,29 @@ add_action( 'wp_body_open', function () {
 		return;
 	}
 	printf(
-		'<div class="hm-bar" id="cohf-hm-bar" role="region" aria-label="%1$s"><div class="container hm-bar__in"><p class="hm-bar__text">%2$s</p><a class="hm-bar__btn" href="%3$s">%4$s</a></div><button type="button" class="hm-bar__close" data-hm-close aria-label="%5$s"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button></div>',
-		esc_attr__( 'Hope Market notice', 'cohf-child' ),
+		'<div class="hm-bar" role="region" aria-label="%1$s"><div class="container hm-bar__in"><span class="hm-bar__text">%2$s</span><a class="hm-bar__btn" href="%3$s">%4$s</a></div></div>',
+		esc_attr__( 'Hope Market', 'cohf-child' ),
 		esc_html__( 'Shop Hope Market: handmade Kenyan clothes, crafts and decor. Every purchase supports our work.', 'cohf-child' ),
 		esc_url( cohf_shop_url() ),
-		esc_html__( 'Shop now', 'cohf-child' ),
-		esc_attr__( 'Close this notice', 'cohf-child' )
+		esc_html__( 'Shop now', 'cohf-child' )
 	);
-	// Runs straight after the bar so a dismissed notice never flashes. The
-	// choice is remembered on this device for 30 days.
-	?>
-	<script>
-	(function () {
-		var bar = document.getElementById('cohf-hm-bar'), key = 'cohfHmBarClosed', days = 30;
-		if (!bar) { return; }
-		try {
-			var t = parseInt(localStorage.getItem(key) || '0', 10);
-			if (t && (Date.now() - t) < days * 864e5) { bar.parentNode.removeChild(bar); return; }
-		} catch (e) {}
-		bar.querySelector('[data-hm-close]').addEventListener('click', function () {
-			try { localStorage.setItem(key, String(Date.now())); } catch (e) {}
-			bar.classList.add('is-closing');
-			setTimeout(function () { if (bar.parentNode) { bar.parentNode.removeChild(bar); } }, 220);
-			var main = document.getElementById('main-content');
-			if (main) { main.focus({ preventScroll: true }); }
-		});
-	}());
-	</script>
-	<?php
 }, 5 );
 
-/**
- * A random pick of in-stock Hope Market products for the home page (14.2.0).
- * A wider pool is printed and the browser shuffles it on every load, so the
- * row changes on each visit even when the page is served from a cache.
- */
-function cohf_hm_products( $limit = 4 ) {
-	if ( ! function_exists( 'wc_get_products' ) ) {
-		return array();
-	}
-	return wc_get_products( array(
-		'status'     => 'publish',
-		'limit'        => $limit,
-		'orderby'      => 'rand',
-		'visibility'   => 'catalog',
-		'stock_status' => 'instock',
-	) );
-}
-
-/** One product card. */
-function cohf_hm_product_card( $product ) {
-	$link  = $product->get_permalink();
-	$terms = get_the_terms( $product->get_id(), 'product_cat' );
-	$cat   = ( $terms && ! is_wp_error( $terms ) ) ? $terms[0]->name : '';
-	$name  = $product->get_name();
-	?>
-	<li class="hm-card">
-		<a class="hm-card__media" href="<?php echo esc_url( $link ); ?>" tabindex="-1" aria-hidden="true">
-			<?php echo $product->get_image( 'woocommerce_thumbnail', array( 'loading' => 'lazy', 'sizes' => '(max-width: 48em) 72vw, 280px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- core image markup. ?>
-			<?php if ( $product->is_on_sale() ) : ?>
-				<span class="hm-card__flag"><?php esc_html_e( 'Sale', 'cohf-child' ); ?></span>
-			<?php endif; ?>
-		</a>
-		<div class="hm-card__body">
-			<?php if ( $cat ) : ?>
-				<span class="hm-card__cat"><?php echo esc_html( $cat ); ?></span>
-			<?php endif; ?>
-			<h3 class="hm-card__title"><a href="<?php echo esc_url( $link ); ?>"><?php echo esc_html( $name ); ?></a></h3>
-			<div class="hm-card__foot">
-				<span class="hm-card__price"><?php echo wp_kses_post( $product->get_price_html() ); ?></span>
-				<?php
-				if ( $product->is_type( 'simple' ) && $product->is_purchasable() && $product->is_in_stock() ) {
-					printf(
-						'<a class="hm-card__add js-cohf-add" href="%1$s" data-product_id="%2$d" data-quantity="1" rel="nofollow" aria-label="%3$s">%4$s</a>',
-						esc_url( $product->add_to_cart_url() ),
-						(int) $product->get_id(),
-						/* translators: %s: product name. */
-						esc_attr( sprintf( __( 'Add %s to cart', 'cohf-child' ), $name ) ),
-						esc_html__( 'Add to cart', 'cohf-child' )
-					);
-				} else {
-					printf(
-						'<a class="hm-card__add hm-card__add--view" href="%1$s" aria-label="%2$s">%3$s</a>',
-						esc_url( $link ),
-						/* translators: %s: product name. */
-						esc_attr( sprintf( __( 'View %s', 'cohf-child' ), $name ) ),
-						esc_html__( 'View', 'cohf-child' )
-					);
-				}
-				?>
-			</div>
-		</div>
-	</li>
-	<?php
-}
-
-/* 2. Home page product section: one row of the four newest products. */
+/* 2. Home page product section. */
 function cohf_hm_market_section() {
 	if ( ! function_exists( 'cohf_shop_url' ) || '' === cohf_shop_url() ) {
-		return;
-	}
-	$products = cohf_hm_products( 16 );
-	if ( empty( $products ) ) {
 		return;
 	}
 	?>
 	<section class="cream hm-market" aria-labelledby="hm-market-title">
 		<div class="container">
-			<div class="hm-market__head">
-				<div>
-					<div class="sec-label"><span class="sec-label__rule"></span><span class="sec-label__text"><?php esc_html_e( 'Hope Market', 'cohf-child' ); ?></span></div>
-					<h2 id="hm-market-title" class="sec-statement sec-statement--wide"><?php esc_html_e( 'Shop with purpose.', 'cohf-child' ); ?></h2>
-					<p><?php esc_html_e( 'Handmade in Kenya by the women and youth we support. Every purchase funds our programmes.', 'cohf-child' ); ?></p>
-				</div>
-				<a class="hm-market__all" href="<?php echo esc_url( cohf_shop_url() ); ?>"><?php esc_html_e( 'Visit Hope Market', 'cohf-child' ); ?><span aria-hidden="true">&rarr;</span></a>
+			<div class="hm-head">
+				<div class="sec-label"><span class="sec-label__rule"></span><span class="sec-label__text"><?php esc_html_e( 'Hope Market', 'cohf-child' ); ?></span></div>
+				<h2 id="hm-market-title" class="sec-statement sec-statement--wide"><?php esc_html_e( 'Shop with purpose.', 'cohf-child' ); ?></h2>
+				<p><?php esc_html_e( 'Handmade in Kenya by the women and youth we support. Every purchase funds our programmes.', 'cohf-child' ); ?></p>
 			</div>
-			<ul class="hm-row" id="cohf-hm-row" role="list">
-				<?php
-				foreach ( $products as $product ) {
-					cohf_hm_product_card( $product );
-				}
-				?>
-			</ul>
-			<script>
-			(function () {
-				var row = document.getElementById('cohf-hm-row');
-				if (!row) { return; }
-				var items = Array.prototype.slice.call(row.children);
-				for (var i = items.length - 1; i > 0; i--) {
-					var j = Math.floor(Math.random() * (i + 1)), t = items[i];
-					items[i] = items[j]; items[j] = t;
-				}
-				items.forEach(function (el) { row.appendChild(el); });
-			}());
-			</script>
+			<?php echo do_shortcode( '[products limit="4" columns="4" orderby="rand" visibility="visible"]' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<p class="hm-center"><a class="btn hm-btn-gold" href="<?php echo esc_url( cohf_shop_url() ); ?>"><?php esc_html_e( 'Visit Hope Market', 'cohf-child' ); ?></a></p>
 		</div>
 	</section>
 	<?php
@@ -272,71 +156,80 @@ function cohf_hm_story_cta() {
 
 /* Styles. */
 add_action( 'wp_enqueue_scripts', function () {
-	$css = ''
-		/* Notice bar */
-		. '.hm-bar{position:relative;background:#d9a441;color:#17231e;font-size:14px;font-weight:700;transition:opacity .2s,transform .2s}'
-		. '.hm-bar.is-closing{opacity:0;transform:translateY(-100%)}'
-		. '.hm-bar__in{display:flex;align-items:center;justify-content:center;gap:14px;padding:8px 56px;flex-wrap:wrap;text-align:center}'
-		. '.hm-bar__text{margin:0}'
-		. '.hm-bar__btn{background:#163f32;color:#fff;border-radius:999px;padding:6px 16px;font-weight:800;white-space:nowrap;text-decoration:none}'
-		. '.hm-bar__btn:hover,.hm-bar__btn:focus-visible{background:#0f2c23;color:#fff}'
-		. '.hm-bar__close{position:absolute;top:50%;right:8px;transform:translateY(-50%);display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:50%;background:transparent;color:#17231e;cursor:pointer}'
-		. '.hm-bar__close:hover{background:rgba(23,35,30,.12)}'
-		/* Section heads */
+	$css = '.hm-bar{background:#d9a441;color:#17231e;font-size:14px;font-weight:700}'
+		. '.hm-bar__in{display:flex;align-items:center;justify-content:center;gap:14px;padding:8px 0;flex-wrap:wrap;text-align:center}'
+		. '.hm-bar__btn{background:#163f32;color:#fff;border-radius:999px;padding:6px 14px;font-weight:800;white-space:nowrap}'
+		. '.hm-bar__btn:hover{background:#0f2c23;color:#fff}'
 		. '.hm-head{text-align:center;max-width:760px;margin:0 auto 34px}.hm-head .sec-label{justify-content:center}.hm-head p{color:#66736d}'
+		. '.hm-center{text-align:center;margin-top:28px}'
 		. '.hm-btn-gold{background:#d9a441;color:#17231e}.hm-btn-gold:hover{background:#c8932f;color:#17231e}'
 		. '.hm-btn-wa{background:#25a05a;color:#fff}.hm-btn-wa:hover{background:#1e8a4c;color:#fff}'
-		/* Shop with purpose */
-		. '.hm-market__head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:32px}'
-		. '.hm-market__head p{color:#66736d;margin:8px 0 0;max-width:560px}'
-		. '.hm-market__all{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 22px;border-radius:999px;background:#d9a441;color:#17231e;font-weight:800;white-space:nowrap;text-decoration:none;transition:background .2s}'
-		. '.hm-market__all:hover,.hm-market__all:focus-visible{background:#c8932f;color:#17231e}'
-		. '.hm-market__all span{transition:transform .2s}.hm-market__all:hover span{transform:translateX(3px)}'
-		. '.hm-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;list-style:none;margin:0;padding:0}'
-		. '.hm-row>.hm-card:nth-child(n+5){display:none}'
-		. '.hm-card{display:flex;flex-direction:column;margin:0;background:#fff;border:1px solid #e7e2d6;border-radius:18px;overflow:hidden;transition:transform .25s,box-shadow .25s}'
-		. '.hm-card:hover,.hm-card:focus-within{transform:translateY(-4px);box-shadow:0 18px 40px -22px rgba(22,63,50,.45)}'
-		. '.hm-card__media{position:relative;display:block;aspect-ratio:1/1;overflow:hidden;background:#efe9dc}'
-		. '.hm-card__media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}'
-		. '.hm-card:hover .hm-card__media img{transform:scale(1.05)}'
-		. '.hm-card__flag{position:absolute;top:12px;left:12px;padding:4px 10px;border-radius:999px;background:#b86f52;color:#fff;font-size:12px;font-weight:800}'
-		. '.hm-card__body{display:flex;flex-direction:column;flex:1;gap:6px;padding:16px 18px 18px}'
-		. '.hm-card__cat{color:#b86f52;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}'
-		. '.hm-card__title{margin:0;font-size:18px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}'
-		. '.hm-card__title a{color:#17231e;text-decoration:none}.hm-card__title a:hover{color:#163f32;text-decoration:underline}'
-		. '.hm-card__foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:10px}'
-		. '.hm-card__price{color:#163f32;font-weight:800;font-size:16px}.hm-card__price del{color:#8a948f;font-weight:500;margin-right:4px}.hm-card__price ins{text-decoration:none}'
-		. '.hm-card__add{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border-radius:999px;border:1.5px solid #163f32;color:#163f32;background:#fff;font-size:14px;font-weight:800;white-space:nowrap;text-decoration:none;transition:background .2s,color .2s}'
-		. '.hm-card__add:hover,.hm-card__add:focus-visible{background:#163f32;color:#fff}'
-		. '.hm-card__add[aria-busy="true"]{opacity:.6;pointer-events:none}'
-		/* Services */
 		. '.hm-svc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}'
-		. '.hm-svc{display:grid;grid-template-columns:240px 1fr;background:#fff;border-radius:18px;overflow:hidden;transition:box-shadow .25s}'
-		. '.hm-svc:hover{box-shadow:0 18px 40px -24px rgba(22,63,50,.45)}'
+		. '.hm-svc{display:grid;grid-template-columns:240px 1fr;background:#fff;border-radius:16px;overflow:hidden}'
 		. '.hm-svc__img img{width:100%;height:100%;object-fit:cover;display:block;min-height:300px}'
-		. '.hm-svc__body{padding:26px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}'
+		. '.hm-svc__body{padding:24px 24px 26px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}'
 		. '.hm-svc__who{color:#b86f52;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}'
-		. '.hm-svc h3{margin:0;font-size:22px}.hm-svc p{color:#66736d;margin:0}'
-		. '.hm-svc__price{color:#66736d;font-size:14px;font-weight:600;margin-top:auto;padding-top:8px}'
-		/* Strip */
+		. '.hm-svc h3{margin:0;font-size:22px}.hm-svc p{color:#66736d;margin:0}.hm-svc__price{color:#163f32;font-size:18px;margin-top:auto}'
 		. '.hm-strip{background:#163f32;color:#fff;padding:44px 0}'
 		. '.hm-strip__in{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}'
 		. '.hm-strip h2{color:#fff;margin:0 0 6px;font-size:clamp(26px,3vw,34px)}.hm-strip p{color:#d2e1d7;margin:0}'
-		/* Story CTA */
 		. '.hm-story-cta{background:#f7f3ea;border:1px solid #dfe6e1;border-radius:16px;padding:28px;margin:36px 0}'
 		. '.hm-story-cta h2{margin:0 0 8px;font-size:26px}.hm-story-cta p{color:#66736d}'
 		. '.hm-story-cta__btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}'
-		/* Tablet and phone: two products per row, compact cards (14.5.0). */
-		. '@media (max-width:64em){.hm-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}}'
-		. '@media (max-width:48em){.hm-row{gap:12px}.hm-card{border-radius:14px}.hm-card:hover,.hm-card:focus-within{transform:none}'
-		. '.hm-card__body{padding:10px 12px 12px;gap:4px}.hm-card__cat{font-size:10px;letter-spacing:.08em}'
-		. '.hm-card__title{font-size:14.5px;line-height:1.3}.hm-card__foot{flex-direction:column;align-items:stretch;gap:8px;padding-top:6px}'
-		. '.hm-card__price{font-size:15px}.hm-card__add{width:100%;min-height:44px;padding:0 10px;font-size:13px;background:#163f32;color:#fff}'
-		. '.hm-card__add:hover,.hm-card__add:focus-visible{background:#0f2c23;color:#fff}'
-		. '.hm-market__head{margin-bottom:20px;gap:14px}.hm-market__head p{font-size:15px}.hm-market__all{min-height:44px;padding:0 18px;font-size:14px}}'
 		. '@media (max-width:60em){.hm-svc-grid{grid-template-columns:1fr}}'
-		. '@media (max-width:48em){.hm-market__head{flex-direction:column;align-items:flex-start}.hm-row{grid-auto-columns:72%}.hm-bar__in{padding:8px 52px 8px 16px;gap:10px}}'
-		. '@media (max-width:36em){.hm-svc{grid-template-columns:1fr}.hm-svc__img img{min-height:220px;max-height:280px}.hm-bar{font-size:13px}}'
-		. '@media (prefers-reduced-motion:reduce){.hm-card,.hm-card__media img,.hm-bar{transition:none}.hm-card:hover,.hm-card:focus-within{transform:none}.hm-card:hover .hm-card__media img{transform:none}}';
+		. '@media (max-width:36em){.hm-svc{grid-template-columns:1fr}.hm-svc__img img{min-height:220px;max-height:280px}.hm-bar{font-size:13px}}';
 	wp_add_inline_style( 'cohf-child-style', $css );
 }, 30 );
+
+/* -------------------------------------------------------------------------
+   14.1.0: fresh products on every visit.
+   The shop and category pages show products in a new random order each time
+   page 1 is opened (when the visitor has not picked a sort order). A short-
+   lived seed keeps the order steady while they move to page 2, 3 and so on,
+   so no product repeats or goes missing between pages.
+   ------------------------------------------------------------------------- */
+
+/** True for the main shop / category listing with the default sort. */
+function cohf_hm_is_shuffle_query( $q ) {
+	if ( is_admin() || ! ( $q instanceof WP_Query ) || ! $q->is_main_query() || $q->is_search() ) {
+		return false;
+	}
+	if ( isset( $_GET['orderby'] ) && '' !== $_GET['orderby'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return false; // Visitor chose a sort order.
+	}
+	return $q->is_post_type_archive( 'product' ) || $q->is_tax( array( 'product_cat', 'product_tag' ) );
+}
+
+/** Seed for this browsing session: new on page 1, kept for later pages. */
+function cohf_hm_shuffle_seed( $q ) {
+	static $seed = null;
+	if ( null !== $seed ) {
+		return $seed;
+	}
+	$paged  = max( 1, (int) $q->get( 'paged' ) );
+	$cookie = isset( $_COOKIE['cohf_shuffle'] ) ? (int) $_COOKIE['cohf_shuffle'] : 0;
+	if ( 1 === $paged || $cookie <= 0 ) {
+		$seed = wp_rand( 1, 999999 );
+		if ( ! headers_sent() ) {
+			setcookie( 'cohf_shuffle', (string) $seed, time() + 30 * MINUTE_IN_SECONDS, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, is_ssl(), true );
+		}
+	} else {
+		$seed = $cookie;
+	}
+	return $seed;
+}
+
+add_filter( 'posts_orderby', function ( $orderby, $q ) {
+	if ( ! cohf_hm_is_shuffle_query( $q ) ) {
+		return $orderby;
+	}
+	return 'RAND(' . (int) cohf_hm_shuffle_seed( $q ) . ')';
+}, 99, 2 );
+
+/* Shuffled pages must not be served from a stale page cache. */
+add_action( 'template_redirect', function () {
+	global $wp_query;
+	if ( cohf_hm_is_shuffle_query( $wp_query ) && ! headers_sent() ) {
+		header( 'Cache-Control: no-cache, must-revalidate, max-age=0' );
+	}
+}, 1 );
