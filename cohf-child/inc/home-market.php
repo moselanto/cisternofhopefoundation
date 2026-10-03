@@ -10,6 +10,7 @@
  *
  * Orders for services go to the Foundation's WhatsApp with a ready-made message.
  * 14.0.1: no prices are shown for services; customers enquire on WhatsApp.
+ * 14.2.0: Shop with purpose shows four random products on every load.
  * 14.1.0: the top notice can be closed; Shop with purpose is one row of
  *         custom product cards (swipeable on tablet and phone).
  *
@@ -89,17 +90,21 @@ add_action( 'wp_body_open', function () {
 	<?php
 }, 5 );
 
-/** Newest Hope Market products for the home page. */
+/**
+ * A random pick of in-stock Hope Market products for the home page (14.2.0).
+ * A wider pool is printed and the browser shuffles it on every load, so the
+ * row changes on each visit even when the page is served from a cache.
+ */
 function cohf_hm_products( $limit = 4 ) {
 	if ( ! function_exists( 'wc_get_products' ) ) {
 		return array();
 	}
 	return wc_get_products( array(
 		'status'     => 'publish',
-		'limit'      => $limit,
-		'orderby'    => 'date',
-		'order'      => 'DESC',
-		'visibility' => 'catalog',
+		'limit'        => $limit,
+		'orderby'      => 'rand',
+		'visibility'   => 'catalog',
+		'stock_status' => 'instock',
 	) );
 }
 
@@ -155,7 +160,7 @@ function cohf_hm_market_section() {
 	if ( ! function_exists( 'cohf_shop_url' ) || '' === cohf_shop_url() ) {
 		return;
 	}
-	$products = cohf_hm_products( 4 );
+	$products = cohf_hm_products( 16 );
 	if ( empty( $products ) ) {
 		return;
 	}
@@ -170,13 +175,25 @@ function cohf_hm_market_section() {
 				</div>
 				<a class="hm-market__all" href="<?php echo esc_url( cohf_shop_url() ); ?>"><?php esc_html_e( 'Visit Hope Market', 'cohf-child' ); ?><span aria-hidden="true">&rarr;</span></a>
 			</div>
-			<ul class="hm-row" role="list">
+			<ul class="hm-row" id="cohf-hm-row" role="list">
 				<?php
 				foreach ( $products as $product ) {
 					cohf_hm_product_card( $product );
 				}
 				?>
 			</ul>
+			<script>
+			(function () {
+				var row = document.getElementById('cohf-hm-row');
+				if (!row) { return; }
+				var items = Array.prototype.slice.call(row.children);
+				for (var i = items.length - 1; i > 0; i--) {
+					var j = Math.floor(Math.random() * (i + 1)), t = items[i];
+					items[i] = items[j]; items[j] = t;
+				}
+				items.forEach(function (el) { row.appendChild(el); });
+			}());
+			</script>
 		</div>
 	</section>
 	<?php
@@ -275,6 +292,7 @@ add_action( 'wp_enqueue_scripts', function () {
 		. '.hm-market__all:hover,.hm-market__all:focus-visible{background:#c8932f;color:#17231e}'
 		. '.hm-market__all span{transition:transform .2s}.hm-market__all:hover span{transform:translateX(3px)}'
 		. '.hm-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;list-style:none;margin:0;padding:0}'
+		. '.hm-row>.hm-card:nth-child(n+5){display:none}'
 		. '.hm-card{display:flex;flex-direction:column;margin:0;background:#fff;border:1px solid #e7e2d6;border-radius:18px;overflow:hidden;transition:transform .25s,box-shadow .25s}'
 		. '.hm-card:hover,.hm-card:focus-within{transform:translateY(-4px);box-shadow:0 18px 40px -22px rgba(22,63,50,.45)}'
 		. '.hm-card__media{position:relative;display:block;aspect-ratio:1/1;overflow:hidden;background:#efe9dc}'
