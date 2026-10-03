@@ -503,3 +503,24 @@ add_action( 'wp_head', function () {
 	}
 	printf( '<link rel="canonical" href="%s">' . "\n", esc_url( $url ) );
 }, 2 );
+
+/* -------------------------------------------------------------------------
+   13.87.0: paginated shop and category pages get "Page N" in the title so
+   each page has a unique title, and pagination links to page 1 point at the
+   clean URL instead of /page/1/ (which only redirects).
+   ------------------------------------------------------------------------- */
+add_filter( 'document_title_parts', function ( $parts ) {
+	if ( cohf_seo_plugin_active() || ! is_paged() ) {
+		return $parts;
+	}
+	$is_shop_listing = ( function_exists( 'is_shop' ) && is_shop() ) || ( function_exists( 'is_product_taxonomy' ) && is_product_taxonomy() );
+	if ( $is_shop_listing && isset( $parts['title'] ) && false === strpos( $parts['title'], 'Page ' ) ) {
+		/* translators: %d: page number. */
+		$parts['title'] .= ' | ' . sprintf( __( 'Page %d', 'cohf-child' ), max( 1, (int) get_query_var( 'paged' ) ) );
+	}
+	return $parts;
+}, 21 );
+
+add_filter( 'paginate_links', function ( $link ) {
+	return preg_replace( '#/page/1/?(?=$|\?|\#)#', '/', $link );
+} );
