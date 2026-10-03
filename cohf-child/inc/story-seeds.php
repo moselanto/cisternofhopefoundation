@@ -158,7 +158,8 @@ function cohf_story_seed() {
 			'image'     => 'story-06-tailoring-workshop',
 			'programme' => 'Youth Skills, Enterprise & Employability',
 			'gallery'   => array(
-				array( 'key' => 'story-06-tailoring-workshop', 'label' => __( 'Mr Owino', 'cohf-child' ), 'caption' => __( 'Mr Owino at his sewing machine. The business that began with one machine at home is now growing.', 'cohf-child' ) ),
+				array( 'key' => 'story-06-tailoring-before', 'label' => __( 'Before', 'cohf-child' ), 'caption' => __( 'Before: where Mr Owino started, with one sewing machine and a few shirts in a small room at home.', 'cohf-child' ) ),
+				array( 'key' => 'story-06-tailoring-workshop', 'label' => __( 'Now', 'cohf-child' ), 'caption' => __( 'Mr Owino at his sewing machine. The business that began with one machine at home is now growing.', 'cohf-child' ) ),
 			),
 			'excerpt'   => __( 'Mr Owino began with only one sewing machine in his house. With tailoring support from the Foundation, his business is now growing.', 'cohf-child' ),
 			'body'      => array(

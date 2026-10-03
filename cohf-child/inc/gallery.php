@@ -81,6 +81,7 @@ function cohf_gallery_items() {
  */
 function cohf_gallery_static_items() {
 	$items = array(
+		array( 'key' => 'story-06-tailoring-before', 'cat' => 'enterprise', 'title' => __( 'Mr Owino: where it began', 'cohf-child' ), 'caption' => __( 'Before: where Mr Owino started, with one sewing machine and a few shirts in a small room at home.', 'cohf-child' ) ),
 		array( 'key' => 'story-06-tailoring-workshop',       'cat' => 'enterprise', 'title' => __( 'Mr Owino at work', 'cohf-child' ),                    'caption' => __( 'Mr Owino at his sewing machine. His tailoring business began with only one machine in his house and is now growing.', 'cohf-child' ) ),
 		array( 'key' => 'story-07-dan-laptop', 'cat' => 'enterprise', 'title' => __( 'Dan at work', 'cohf-child' ), 'caption' => __( 'Dan at the laptop the Foundation helped him acquire, which lets him keep developing his skills and serving clients.', 'cohf-child' ) ),
 		array( 'key' => 'story-07-dan-mounting', 'cat' => 'enterprise', 'title' => __( 'Mounting a client photo', 'cohf-child' ), 'caption' => __( 'Dan finishing a mounted graduation portrait for a client.', 'cohf-child' ) ),
