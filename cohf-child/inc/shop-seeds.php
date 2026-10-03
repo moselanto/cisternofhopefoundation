@@ -1427,6 +1427,26 @@ function cohf_shop_seed_products() {
 			'long'     => __( 'A striking statement piece for a living room, reception or office shelf. Colours and finish may vary slightly from the photo. We will confirm availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 133,
 		),
+		'hunting-tiger' => array(
+			'name'     => __( 'Hunting Tiger (Home and Office Decor)', 'cohf-child' ),
+			'price'    => '9500',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'hunting-tiger.jpg',
+			'alt'      => __( 'A gold-finish sculpture of a prowling tiger with carved stripes, stepping down over a textured rock base.', 'cohf-child' ),
+			'short'    => __( 'A bold gold-finish sculpture of a prowling tiger on a rocky base, for the home or office.', 'cohf-child' ),
+			'long'     => __( 'A striking statement piece for a living room, reception or office desk. Finish may vary slightly from the photo. We will confirm availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 134,
+		),
+		'eagle-head-decor' => array(
+			'name'     => __( 'Eagle Head Decor', 'cohf-child' ),
+			'price'    => '7000',
+			'category' => __( 'Home decor', 'cohf-child' ),
+			'image'    => 'eagle-head-decor.jpg',
+			'alt'      => __( 'A hand-painted sculpture of an eagle head and shoulders with white head feathers, a golden hooked beak and russet wing feathers, rising from a carved wood-effect base.', 'cohf-child' ),
+			'short'    => __( 'A detailed hand-painted eagle head sculpture on a wood-effect base, for the home or office.', 'cohf-child' ),
+			'long'     => __( 'A striking statement piece for a desk, shelf or reception. Colours and finish may vary slightly from the photo. We will confirm availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 135,
+		),
 	);
 }
 
