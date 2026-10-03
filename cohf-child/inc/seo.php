@@ -258,7 +258,7 @@ function cohf_seo_description() {
 		if ( $post instanceof WP_Post ) {
 			$pages = cohf_seo_page_descriptions();
 			if ( 'page' === $post->post_type && isset( $pages[ $post->post_name ] ) && ! has_excerpt( $post ) ) {
-				return $pages[ $post->post_name ];
+				return apply_filters( 'cohf_seo_description', $pages[ $post->post_name ] );
 			}
 			if ( 'cohf_leader' === $post->post_type && ! has_excerpt( $post ) ) {
 				$role = (string) get_post_meta( $post->ID, '_cohf_role', true );
@@ -301,7 +301,7 @@ function cohf_seo_description() {
 		$text = rtrim( substr( $text, 0, 155 ) );
 		$text = preg_replace( '/\s+\S*$/', '', $text ) . '...';
 	}
-	return $text;
+	return (string) apply_filters( 'cohf_seo_description', $text );
 }
 
 /**

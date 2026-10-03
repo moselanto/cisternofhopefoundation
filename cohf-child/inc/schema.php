@@ -357,6 +357,7 @@ function cohf_schema_graph() {
 	}
 
 	$graph[] = $page;
+	$graph   = (array) apply_filters( 'cohf_schema_graph_nodes', $graph );
 	echo '<script type="application/ld+json">' . wp_json_encode( array( '@context' => 'https://schema.org', '@graph' => $graph ), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>' . "\n";
 }
 add_action( 'wp_head', 'cohf_schema_graph', 20 );
