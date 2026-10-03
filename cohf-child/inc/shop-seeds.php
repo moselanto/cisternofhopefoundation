@@ -443,7 +443,7 @@ function cohf_shop_seed_products() {
 		),
 		'fedora-hat-beadwrap' => array(
 			'name'     => __( 'Fedora Hat with Beaded Band', 'cohf-child' ),
-			'price'    => '2400',
+			'price'    => '3000',
 			'category' => __( 'Accessories', 'cohf-child' ),
 			'image'    => 'fedora-hat-beadwrap.jpg',
 			'alt'      => __( 'A camel felt fedora hat with a wide brim and a hand-beaded band of red, mustard, black and white triangles.', 'cohf-child' ),
@@ -1068,13 +1068,23 @@ function cohf_shop_seed_products() {
 			'order'    => 98,
 		),
 		'maasai-dress' => array(
-			'name'     => __( 'Maasai Dress', 'cohf-child' ),
+			'name'     => __( 'Maasai Dress - White', 'cohf-child' ),
 			'price'    => '9000',
 			'category' => __( 'Clothing', 'cohf-child' ),
-			'image'    => 'maasai-dress.jpg',
-			'alt'      => __( 'Two long fitted dresses on mannequins, one red and one white, with three-quarter sleeves and Maasai beaded trim around the neckline, down the front, on the cuffs and in rows across the skirt.', 'cohf-child' ),
-			'short'    => __( 'A long fitted dress with three-quarter sleeves, finished with colourful Maasai beadwork at the neckline, cuffs and skirt. Pictured in red and white.', 'cohf-child' ),
-			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your preferred colour and size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'image'    => 'maasai-dress-white.jpg',
+			'alt'      => __( 'A long fitted white dress on a mannequin with three-quarter sleeves and colourful Maasai beaded trim around the neckline, down the front, on the cuffs and in rows across the skirt.', 'cohf-child' ),
+			'short'    => __( 'A long fitted white dress with three-quarter sleeves, finished with colourful Maasai beadwork at the neckline, cuffs and skirt.', 'cohf-child' ),
+			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
+			'order'    => 99,
+		),
+		'maasai-dress-red' => array(
+			'name'     => __( 'Maasai Dress - Red', 'cohf-child' ),
+			'price'    => '6500',
+			'category' => __( 'Clothing', 'cohf-child' ),
+			'image'    => 'maasai-dress-red.jpg',
+			'alt'      => __( 'A long fitted red dress on a mannequin with three-quarter sleeves and colourful Maasai beaded trim around the neckline, down the front, on the cuffs and in rows across the skirt.', 'cohf-child' ),
+			'short'    => __( 'A long fitted red dress with three-quarter sleeves, finished with colourful Maasai beadwork at the neckline, cuffs and skirt.', 'cohf-child' ),
+			'long'     => __( 'Beadwork is done by hand, so it varies slightly from the photo. Add your size in the order notes and we will confirm details and availability with you before dispatch.', 'cohf-child' ),
 			'order'    => 99,
 		),
 		'maasai-beaded-complete-set' => array(
@@ -1634,3 +1644,48 @@ function cohf_shop_seed_galleries() {
 	}
 }
 add_action( 'admin_init', 'cohf_shop_seed_galleries', 31 );
+
+
+/**
+ * 13.86.0: price and listing corrections for products that already exist on
+ * the live shop (the seeder only creates new products, it never edits).
+ * - Fedora Hat with Beaded Band: KES 2,400 -> 3,000.
+ * - Maasai Dress: split into White (KES 9,000, this product) and Red
+ *   (KES 6,500, created by the seeder as a new product).
+ * Runs once, after the seeder.
+ */
+function cohf_shop_fix_prices_1386() {
+	if ( get_option( 'cohf_shop_fix_1386' ) || ! function_exists( 'wc_get_product' ) || ! current_user_can( 'manage_woocommerce' ) ) {
+		return;
+	}
+	$seeds = cohf_shop_seed_products();
+
+	$fedora_id = cohf_shop_product_by_seed( 'fedora-hat-beadwrap' );
+	if ( $fedora_id ) {
+		$product = wc_get_product( $fedora_id );
+		if ( $product ) {
+			$product->set_regular_price( '3000' );
+			$product->save();
+		}
+	}
+
+	$dress_id = cohf_shop_product_by_seed( 'maasai-dress' );
+	if ( $dress_id ) {
+		$product = wc_get_product( $dress_id );
+		if ( $product ) {
+			$seed = $seeds['maasai-dress'];
+			$product->set_name( $seed['name'] );
+			$product->set_regular_price( $seed['price'] );
+			$product->set_short_description( $seed['short'] );
+			$product->set_description( $seed['long'] );
+			$image_id = cohf_shop_import_image( $seed['image'], $seed['alt'] );
+			if ( $image_id ) {
+				$product->set_image_id( $image_id );
+			}
+			$product->save();
+		}
+	}
+
+	update_option( 'cohf_shop_fix_1386', COHF_CHILD_VERSION, false );
+}
+add_action( 'admin_init', 'cohf_shop_fix_prices_1386', 35 );

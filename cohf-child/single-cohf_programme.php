@@ -95,8 +95,8 @@ while ( have_posts() ) :
 		// 13.85.0: extra photographs for a programme, keyed by slug.
 		$cohf_programme_photos = array(
 			'widows-care-food-support' => array(
-				array( 'key' => 'gallery-widows-food-support', 'caption' => __( 'Monthly food support delivered to a widow at her home.', 'cohf-child' ) ),
-				array( 'key' => 'gallery-widows-home-visit', 'caption' => __( 'A home visit to one of the widows we support.', 'cohf-child' ) ),
+				array( 'key' => 'gallery-widows-food-support', 'caption' => __( 'Monthly food support delivered at home.', 'cohf-child' ) ),
+				array( 'key' => 'gallery-widows-home-visit', 'caption' => __( 'A home visit during the monthly support.', 'cohf-child' ) ),
 			),
 		);
 		$cohf_slug = get_post_field( 'post_name', get_the_ID() );
@@ -108,6 +108,9 @@ while ( have_posts() ) :
 						<div>
 							<div class="kicker"><?php esc_html_e( 'In pictures', 'cohf-child' ); ?></div>
 							<h2><?php esc_html_e( 'This programme in action.', 'cohf-child' ); ?></h2>
+							<?php if ( 'widows-care-food-support' === $cohf_slug ) : ?>
+								<p><?php esc_html_e( 'Esther and Christine are among the widows who receive food support from the Foundation every month.', 'cohf-child' ); ?></p>
+							<?php endif; ?>
 						</div>
 					</div>
 					<div class="story-impact__grid">
