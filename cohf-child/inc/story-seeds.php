@@ -125,6 +125,33 @@ function cohf_story_seed() {
 		 * (Stories) once the real details are in hand.
 		 */
 		array(
+			'title'     => __( 'Empowering young people through enterprise: Dan\'s photography business', 'cohf-child' ),
+			'slug'      => 'enterprise-photography-dan',
+			'date'      => '2026-10-03',
+			'image'     => 'story-07-dan-laptop',
+			'programme' => 'Youth Skills, Enterprise & Employability',
+			'gallery'   => array(
+				array( 'key' => 'story-07-dan-laptop', 'label' => __( 'Dan at work', 'cohf-child' ), 'caption' => __( 'Dan at the laptop the Foundation helped him acquire, which lets him keep developing his skills and serving clients.', 'cohf-child' ) ),
+				array( 'key' => 'story-07-dan-mounting', 'label' => __( 'Mounting a client photo', 'cohf-child' ), 'caption' => __( 'Dan finishing a mounted graduation portrait for a client.', 'cohf-child' ) ),
+				array( 'key' => 'story-07-dan-portrait', 'label' => __( 'Finished work', 'cohf-child' ), 'caption' => __( 'Dan with a finished mounted portrait. His services include photography, photo editing, mounting and framing.', 'cohf-child' ) ),
+				array( 'key' => 'story-07-dan-measuring', 'label' => __( 'Measuring a mounting board', 'cohf-child' ), 'caption' => __( 'Dan measuring a board for photo mounting. His vision is a cyber cafe combined with a professional photography studio.', 'cohf-child' ) ),
+			),
+			'excerpt'   => __( 'Dan runs a small photography and photo-mounting business from home. With a laptop from the Foundation, he dreams of a cyber café and photography studio.', 'cohf-child' ),
+			'body'      => array(
+				__( 'At Cistern of Hope Foundation, we believe in empowering young people with opportunities that enable them to become self-reliant and create opportunities for others.', 'cohf-child' ),
+				__( 'Dan is one of the young people we are currently walking alongside in his journey of entrepreneurship. He runs a small photography and photo-mounting business from his home. Through our support, we have been able to help him acquire a laptop, which has enabled him to continue developing his skills and serving clients.', 'cohf-child' ),
+				__( 'Dan has a vision of growing his business into a Cyber Café combined with a professional photography studio. To achieve this, he needs support to secure a small business premises and acquire essential equipment, including a professional camera, printers, an additional laptop and other photography and studio equipment.', 'cohf-child' ),
+				__( '<strong>Services offered:</strong> photography, photo editing, photo mounting and photo framing.', 'cohf-child' ),
+				__( '<strong>Greatest needs:</strong> a professional camera; a MacBook or other suitable laptop; a professional printer; additional photography and studio equipment; and support towards securing a small business premises.', 'cohf-child' ),
+				__( 'We welcome well-wishers, partners and organisations who would like to join us in supporting Dan as he works towards making this dream a reality. By investing in his business today, we can help him build a sustainable livelihood and, in time, create employment opportunities for other young people.', 'cohf-child' ),
+				__( 'To support Dan, <a href="/support-our-work/">give to our enterprise work</a> or <a href="/contact/">contact us</a> to donate equipment or partner with us.', 'cohf-child' ),
+			),
+			'challenge'    => __( 'Dan runs a small photography and photo-mounting business from his home and needs premises and professional equipment to grow.', 'cohf-child' ),
+			'intervention' => __( 'The Foundation helped Dan acquire a laptop and is seeking partners to help him secure premises and studio equipment.', 'cohf-child' ),
+			'change'       => __( 'With the laptop, Dan continues to develop his skills and serve clients, working towards a cyber café and photography studio.', 'cohf-child' ),
+		),
+
+		array(
 			'title'     => __( 'From one machine at home to a growing tailoring business', 'cohf-child' ),
 			'slug'      => 'enterprise-tailoring-mr-owino',
 			'date'      => '2026-10-02',
