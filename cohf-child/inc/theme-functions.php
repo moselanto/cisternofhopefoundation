@@ -491,9 +491,12 @@ function cohf_impact_nav_children() {
 		);
 	}
 
-	$videos = get_post_type_archive_link( 'cohf_video' );
+	// Offered only once at least one video is published, so the menu never
+	// leads to an empty "coming soon" page.
+	$videos       = get_post_type_archive_link( 'cohf_video' );
+	$video_counts = wp_count_posts( 'cohf_video' );
 
-	if ( $videos ) {
+	if ( $videos && ! empty( $video_counts->publish ) ) {
 		$children[] = array(
 			'label' => __( 'Video Stories', 'cohf-child' ),
 			'url'   => $videos,

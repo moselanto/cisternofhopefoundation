@@ -373,3 +373,23 @@ add_filter( 'wp_get_attachment_image_attributes', function ( $attr ) {
 	}
 	return $attr;
 } );
+
+
+/**
+ * 13.82.0: speed clean-up.
+ *
+ * - The parent theme's style.css holds only its header comment, so it is
+ *   dequeued: one fewer render-blocking request on every page.
+ * - Only the first image on a page loads eagerly (the logo). Everything
+ *   further down is lazy-loaded, so phones download the hero and the
+ *   visible screen first. The front-page hero is a CSS background and is
+ *   preloaded separately in cohf_preload_hero().
+ */
+add_action( 'wp_enqueue_scripts', function () {
+	wp_dequeue_style( 'cohf-base' );
+}, 20 );
+
+add_filter( 'wp_omit_loading_attr_threshold', function () {
+	return 1;
+} );
+
