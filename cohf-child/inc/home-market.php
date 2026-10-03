@@ -9,6 +9,7 @@
  * 5. A "Every purchase is support" strip on the home page and programme pages.
  *
  * Orders for services go to the Foundation's WhatsApp with a ready-made message.
+ * 14.0.1: no prices are shown for services; customers enquire on WhatsApp.
  *
  * @package COHF_Child
  */
@@ -29,8 +30,8 @@ function cohf_hm_services() {
 			'who'   => __( 'Dan - Art City', 'cohf-child' ),
 			'title' => __( 'Photo editing, mounting and framing', 'cohf-child' ),
 			'text'  => __( 'Photography, photo editing, photo mounting and framing for graduations, portraits and gifts.', 'cohf-child' ),
-			'price' => __( 'Price on request', 'cohf-child' ),
-			'wa'    => __( 'Hello Cistern of Hope Foundation, I would like to order photo editing, mounting or framing from Dan.', 'cohf-child' ),
+			'price' => __( 'Enquire for a price', 'cohf-child' ),
+			'wa'    => __( 'Hello Cistern of Hope Foundation, I would like to enquire about photo editing, mounting or framing from Dan, and the price.', 'cohf-child' ),
 			'story' => 'enterprise-photography-dan',
 			'cta'   => __( 'Order photo framing from Dan', 'cohf-child' ),
 		),
@@ -39,8 +40,8 @@ function cohf_hm_services() {
 			'who'   => __( 'Mr Owino - Tailor', 'cohf-child' ),
 			'title' => __( 'Custom tailoring', 'cohf-child' ),
 			'text'  => __( 'Shirts, African wear, suits and repairs, made to measure in his workshop.', 'cohf-child' ),
-			'price' => __( 'Price on request', 'cohf-child' ),
-			'wa'    => __( 'Hello Cistern of Hope Foundation, I would like to order tailoring from Mr Owino.', 'cohf-child' ),
+			'price' => __( 'Enquire for a price', 'cohf-child' ),
+			'wa'    => __( 'Hello Cistern of Hope Foundation, I would like to enquire about tailoring from Mr Owino, and the price.', 'cohf-child' ),
 			'story' => 'enterprise-tailoring-mr-owino',
 			'cta'   => __( 'Order tailoring from Mr Owino', 'cohf-child' ),
 		),
