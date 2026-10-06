@@ -662,3 +662,52 @@ function cohf_migrate_official_number() {
 	update_option( 'cohf_contact_number_version', '14.7.0', false );
 }
 add_action( 'init', 'cohf_migrate_official_number', 1 );
+
+/**
+ * 14.7.1: the legal pages (Donation policy and others) had their wording
+ * copied into the page content when they were first created, so the old
+ * number was saved inside the text and did not follow Organisation details.
+ * This one-time pass swaps the old number in saved content: visible text
+ * becomes [cohf_phone] (which always shows the current number) and
+ * tel:/wa.me links get the new digits. Only the old number is touched.
+ */
+function cohf_migrate_old_number_in_content() {
+	if ( '14.7.1' === get_option( 'cohf_content_number_version' ) ) {
+		return;
+	}
+	global $wpdb;
+
+	$ids = $wpdb->get_col(
+		"SELECT ID FROM {$wpdb->posts}
+		WHERE post_status IN ( 'publish', 'draft', 'pending', 'private', 'future' )
+		AND post_type NOT IN ( 'revision', 'nav_menu_item' )
+		AND ( post_content LIKE '%110 304 521%' OR post_content LIKE '%110304521%' )"
+	);
+
+	$swap = array(
+		'tel:+254110304521'   => 'tel:+254182751610',
+		'tel:254110304521'    => 'tel:+254182751610',
+		'tel:0110304521'      => 'tel:+254182751610',
+		'wa.me/254110304521'  => 'wa.me/254182751610',
+		'+254 110 304 521'    => '[cohf_phone]',
+		'+254110304521'       => '[cohf_phone]',
+		'254 110 304 521'     => '[cohf_phone]',
+		'0110 304 521'        => '[cohf_phone]',
+		'0110304521'          => '[cohf_phone]',
+	);
+
+	foreach ( (array) $ids as $id ) {
+		$post = get_post( (int) $id );
+		if ( ! $post ) {
+			continue;
+		}
+		$new = strtr( (string) $post->post_content, $swap );
+		if ( $new !== $post->post_content ) {
+			wp_update_post( array( 'ID' => $post->ID, 'post_content' => $new ) );
+		}
+	}
+
+	update_option( 'cohf_content_number_version', '14.7.1', false );
+}
+add_action( 'init', 'cohf_migrate_old_number_in_content', 20 );
+

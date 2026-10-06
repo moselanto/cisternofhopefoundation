@@ -616,3 +616,54 @@ function cohf_sc_programmes( $atts ) {
 	return (string) ob_get_clean();
 }
 add_shortcode( 'cohf_programmes', 'cohf_sc_programmes' );
+
+
+/**
+ * 14.7.1: contact details for use inside page and post content.
+ *
+ * [cohf_phone] [cohf_whatsapp] [cohf_email] print the value saved under
+ * Foundation > Organisation details, so text typed in the editor follows
+ * that screen instead of freezing a number in place. Add link="yes" to
+ * print a tap-to-call, WhatsApp or email link.
+ *
+ * @param array|string $atts Shortcode attributes.
+ * @param string       $content Unused.
+ * @param string       $tag Shortcode name.
+ * @return string
+ */
+function cohf_sc_org_contact( $atts, $content = '', $tag = '' ) {
+	if ( ! function_exists( 'cohf_org' ) ) {
+		return '';
+	}
+	$atts = shortcode_atts( array( 'link' => 'no' ), $atts, $tag );
+	$org  = cohf_org();
+	$link = in_array( strtolower( (string) $atts['link'] ), array( 'yes', '1', 'true' ), true );
+
+	if ( 'cohf_email' === $tag ) {
+		$value = isset( $org['email'] ) ? (string) $org['email'] : '';
+		if ( '' === $value ) {
+			return '';
+		}
+		return $link ? '<a href="mailto:' . esc_attr( $value ) . '">' . esc_html( $value ) . '</a>' : esc_html( $value );
+	}
+
+	$phone = isset( $org['phone'] ) ? (string) $org['phone'] : '';
+	if ( 'cohf_whatsapp' === $tag ) {
+		$value = ! empty( $org['whatsapp'] ) ? (string) $org['whatsapp'] : $phone;
+		if ( '' === $value ) {
+			return '';
+		}
+		$digits = preg_replace( '/[^0-9]/', '', $value );
+		return $link ? '<a href="' . esc_url( 'https://wa.me/' . $digits ) . '" target="_blank" rel="noopener">' . esc_html( $value ) . '</a>' : esc_html( $value );
+	}
+
+	if ( '' === $phone ) {
+		return '';
+	}
+	$tel = preg_replace( '/[^0-9+]/', '', $phone );
+	return $link ? '<a href="tel:' . esc_attr( $tel ) . '">' . esc_html( $phone ) . '</a>' : esc_html( $phone );
+}
+add_shortcode( 'cohf_phone', 'cohf_sc_org_contact' );
+add_shortcode( 'cohf_whatsapp', 'cohf_sc_org_contact' );
+add_shortcode( 'cohf_email', 'cohf_sc_org_contact' );
+
