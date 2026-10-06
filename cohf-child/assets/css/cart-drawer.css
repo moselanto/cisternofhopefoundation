@@ -122,3 +122,126 @@ html.cart-drawer-open{overflow:hidden}
 .wa-form__skip{min-height:40px;border:0;background:none;color:#5b6863;font-size:14px;text-decoration:underline;cursor:pointer}
 html.wa-form-open{overflow:hidden}
 @media (max-width:480px){.wa-form{align-items:flex-end;padding:0}.wa-form__panel{border-radius:22px 22px 0 0;max-height:92dvh}.wa-form__row{grid-template-columns:1fr}}
+
+/* ==========================================================================
+   14.8.0 - Order on WhatsApp pop-up (.wao)
+   Centred card on desktop, bottom sheet on phones. Replaces .wa-form.
+   ========================================================================== */
+.wao{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:16px}
+.wao[hidden]{display:none}
+.wao__backdrop{position:absolute;inset:0;background:rgba(10,28,22,.6);opacity:0;transition:opacity .2s ease}
+.wao__sheet{position:relative;display:flex;flex-direction:column;width:min(520px,100%);max-height:calc(100dvh - 32px);background:#fff;border-radius:24px;box-shadow:0 30px 90px rgba(0,0,0,.3);overflow:hidden;transform:translateY(16px) scale(.98);opacity:0;transition:transform .22s ease,opacity .22s ease}
+.wao.is-open .wao__backdrop{opacity:1}
+.wao.is-open .wao__sheet{transform:none;opacity:1}
+html.wao-open{overflow:hidden}
+
+.wao__head{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;padding:20px 20px 12px;background:linear-gradient(180deg,#eefaf2,#fff)}
+.wao__badge{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:#25d366;color:#fff}
+.wao__badge .wa-icon{width:24px;height:24px}
+.wao__head h2{margin:0;font-size:21px;line-height:1.2;color:var(--forest,#123a2d)}
+.wao__lead{margin:4px 0 0;font-size:14px;line-height:1.45;color:#5b6863}
+.wao__x{width:40px;height:40px;min-height:0;border:0;border-radius:50%;background:#f2f0ea;color:#33443d;font-size:24px;line-height:1;cursor:pointer}
+.wao__x:hover{background:#e7e3da}
+
+.wao__steps{display:flex;gap:6px;margin:0;padding:0 20px 12px;list-style:none;counter-reset:wao}
+.wao__steps[hidden]{display:none}
+.wao__steps li{flex:1;padding-top:8px;border-top:4px solid #e7e3da;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#8a948f;transition:border-color .2s,color .2s}
+.wao__steps li.is-on{border-top-color:#25d366;color:var(--forest,#123a2d)}
+
+.wao__body{display:flex;flex-direction:column;gap:14px;margin:0;padding:4px 20px 0;overflow:auto;overscroll-behavior:contain}
+.wao__body[hidden]{display:none}
+
+.wao__card{padding:14px;border:1px solid #e7e3da;border-radius:16px;background:#fcfbf8}
+.wao__items{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none;max-height:208px;overflow:auto}
+.wao__items li{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center}
+.wao__items img,.wao__noimg{width:56px;height:56px;border-radius:12px;object-fit:cover;background:#efe9de}
+.wao__items b{display:block;font-size:15px;line-height:1.3;color:#17231e}
+.wao__items small{display:block;margin-top:2px;font-size:13px;color:#66736d}
+.wao__sub{font-weight:800;font-size:15px;color:#17231e;white-space:nowrap}
+.wao__skel{height:56px;border-radius:12px;background:linear-gradient(90deg,#f1ede5 25%,#faf8f3 50%,#f1ede5 75%);background-size:200% 100%;animation:wao-skel 1.2s linear infinite}
+@keyframes wao-skel{to{background-position:-200% 0}}
+.wao__qty{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px dashed #e0d9cc;font-weight:700;font-size:14px;color:#22332c}
+.wao__qty[hidden]{display:none}
+.wao__stepper{display:inline-flex;align-items:center;border:1.5px solid #dcd5c8;border-radius:999px;background:#fff;overflow:hidden}
+.wao__stepper button{width:44px;height:44px;min-height:0;border:0;background:none;font-size:20px;font-weight:700;color:var(--forest,#123a2d);cursor:pointer}
+.wao__stepper button:hover{background:#f2f0ea}
+.wao__stepper input{width:48px;height:44px;min-height:0;padding:0;border:0;text-align:center;font:inherit;font-weight:800;font-size:16px;background:none;-moz-appearance:textfield}
+.wao__stepper input::-webkit-outer-spin-button,.wao__stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.wao__total{display:flex;justify-content:space-between;align-items:baseline;margin:12px 0 0;padding-top:12px;border-top:1px solid #e7e3da;font-size:14px;color:#5b6863}
+.wao__total strong{font-size:20px;color:var(--forest,#123a2d)}
+.wao__fee{margin:4px 0 0;font-size:13px;color:#7a857f}
+
+.wao fieldset{margin:0;padding:0;border:0;min-width:0}
+.wao legend{margin-bottom:8px;padding:0;font-weight:700;font-size:14px;color:#22332c}
+.wao__seg{display:grid;gap:10px}
+.wao__seg--2{grid-template-columns:1fr 1fr}
+.wao__seg legend{grid-column:1/-1}
+.wao__seg label,.wao__chips label{position:relative;cursor:pointer}
+.wao__seg input,.wao__chips input[type=radio]{position:absolute;opacity:0;width:1px;height:1px}
+.wao__seg span{display:flex;flex-direction:column;gap:2px;height:100%;padding:12px 14px;border:1.5px solid #dcd5c8;border-radius:14px;background:#fff;transition:border-color .15s,box-shadow .15s,background .15s}
+.wao__seg b{font-size:15px;color:#17231e}
+.wao__seg small{font-size:12.5px;line-height:1.35;color:#66736d}
+.wao__seg input:checked+span{border-color:#1ebe5b;background:#effbf3;box-shadow:0 0 0 3px rgba(37,211,102,.18)}
+.wao__chips{display:flex;flex-wrap:wrap;gap:8px}
+.wao__chips legend{width:100%}
+.wao__chips span{display:inline-flex;align-items:center;min-height:40px;padding:8px 14px;border:1.5px solid #dcd5c8;border-radius:999px;background:#fff;font-size:14px;font-weight:600;color:#22332c;transition:border-color .15s,background .15s}
+.wao__chips input:checked+span{border-color:var(--forest,#123a2d);background:var(--forest,#123a2d);color:#fff}
+.wao__seg input:focus-visible+span,.wao__chips input:focus-visible+span{outline:3px solid var(--gold,#d9a441);outline-offset:2px}
+.wao__date{flex:1 1 100%;min-height:48px}
+.wao__date[hidden]{display:none}
+
+.wao__grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.wao__f{display:flex;flex-direction:column;gap:6px}
+.wao__f[hidden]{display:none}
+.wao__f label{font-weight:700;font-size:14px;color:#22332c}
+.wao__f label span{font-weight:500;color:#7a857f}
+.wao input:not([type=radio]):not([type=checkbox]),.wao textarea{width:100%;min-height:50px;padding:12px 14px;border:1.5px solid #dcd5c8;border-radius:12px;background:#fcfbf8;font:inherit;font-size:16px;font-weight:500;color:#17231e}
+.wao textarea{min-height:72px;resize:vertical}
+.wao input:focus,.wao textarea:focus{outline:none;border-color:var(--forest,#123a2d);background:#fff;box-shadow:0 0 0 4px rgba(18,58,45,.12)}
+.wao__f.has-error input,.wao__f.has-error textarea{border-color:#c2410c;background:#fff8f5}
+.wao__err{margin:0;min-height:0;font-size:13px;font-weight:600;color:#a3360a}
+.wao__err:empty{display:none}
+.wao__count{margin:0;text-align:right;font-size:12px;color:#8a948f}
+
+.wao__preview{border:1px solid #e7e3da;border-radius:14px;background:#f7f5f0}
+.wao__preview summary{padding:12px 14px;font-weight:700;font-size:14px;color:var(--forest,#123a2d);cursor:pointer;list-style:none}
+.wao__preview summary::-webkit-details-marker{display:none}
+.wao__preview summary::after{content:"+";float:right;font-size:18px;line-height:1}
+.wao__preview[open] summary::after{content:"\2212"}
+.wao__preview pre{margin:0 12px 12px;padding:12px 14px;max-height:240px;overflow:auto;border-radius:12px 12px 12px 2px;background:#dcf8c6;color:#111b21;font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;white-space:pre-wrap;word-break:break-word}
+
+.wao__remember{display:flex;align-items:center;gap:10px;font-size:14px;color:#33443d;cursor:pointer}
+.wao__remember input{width:20px;height:20px;accent-color:#1ebe5b}
+.wao__forget{align-self:flex-start;min-height:32px;padding:0;border:0;background:none;color:#5b6863;font-size:13px;text-decoration:underline;cursor:pointer}
+.wao__forget[hidden]{display:none}
+.wao__alert{margin:0;padding:10px 12px;border-radius:10px;background:#fdf0ea;color:#a3360a;font-size:14px;font-weight:600}
+.wao__alert[hidden]{display:none}
+
+.wao__foot{position:sticky;bottom:0;margin:0 -20px;padding:12px 20px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(255,255,255,.85),#fff 30%);border-top:1px solid #eee9df}
+.wao__send{width:100%;justify-content:center;gap:10px;min-height:54px;font-size:16px}
+.wao__send em{font-style:normal;font-weight:800;opacity:.85}
+.wao__send em:not(:empty)::before{content:"\00b7";margin-right:8px}
+.wao__secure{margin:8px 0 0;text-align:center;font-size:12.5px;color:#7a857f}
+
+.wao__done{display:flex;flex-direction:column;align-items:center;gap:10px;padding:28px 24px calc(24px + env(safe-area-inset-bottom));text-align:center;outline:none}
+.wao__done[hidden]{display:none}
+.wao__tick{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;background:#25d366;color:#fff}
+.wao__tick svg{width:34px;height:34px}
+.wao__done h2{margin:6px 0 0;font-size:22px;color:var(--forest,#123a2d)}
+.wao__done p{margin:0;max-width:40ch;color:#4c5a54;font-size:15px}
+.wao__ref{padding:8px 14px;border-radius:999px;background:#f2f0ea}
+.wao__ref strong{letter-spacing:.04em;color:#17231e}
+.wao__done-actions{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:8px}
+.wao__done-actions .cart-btn{width:100%;justify-content:center}
+.wao__done-actions [hidden]{display:none}
+.wao__link{min-height:40px;border:0;background:none;color:#5b6863;font-size:14px;text-decoration:underline;cursor:pointer}
+
+@media (max-width:600px){
+	.wao{align-items:flex-end;padding:0}
+	.wao__sheet{width:100%;max-height:94dvh;border-radius:22px 22px 0 0;transform:translateY(100%)}
+	.wao__sheet::before{content:"";position:absolute;top:8px;left:50%;width:40px;height:4px;margin-left:-20px;border-radius:4px;background:#d6d0c4}
+	.wao__head{padding-top:24px}
+	.wao__grid{grid-template-columns:1fr}
+}
+@media (max-width:360px){.wao__seg--2{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.wao__sheet,.wao__backdrop{transition:none}.wao__skel{animation:none}}

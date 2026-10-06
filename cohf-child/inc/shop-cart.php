@@ -73,7 +73,8 @@ function cohf_shop_wa_order_url( $product_id = 0 ) {
  * @return string
  */
 function cohf_shop_wa_message( $lines, $details = array() ) {
-	$ref = 'HM-' . wp_date( 'ymd' ) . '-' . strtoupper( substr( wp_generate_password( 8, false, false ), 0, 4 ) );
+	$ref    = ! empty( $details['ref'] ) ? $details['ref'] : 'HM-' . wp_date( 'ymd' ) . '-' . strtoupper( substr( wp_generate_password( 8, false, false ), 0, 4 ) );
+	$pickup = isset( $details['mode'] ) && 'pickup' === $details['mode'];
 
 	/*
 	 * 14.7.2: one idea per line with a blank line between sections, so the
@@ -112,21 +113,26 @@ function cohf_shop_wa_message( $lines, $details = array() ) {
 	$out[] = '';
 	/* translators: 1: number of items, 2: total. */
 	$out[] = sprintf( _n( '*Items total (%1$d item): %2$s*', '*Items total (%1$d items): %2$s*', $count, 'cohf-child' ), $count, cohf_shop_plain_price( $total ) );
-	$out[] = __( 'Delivery fee: to be confirmed', 'cohf-child' );
+	if ( ! $pickup ) {
+		$out[] = __( 'Delivery fee: to be confirmed', 'cohf-child' );
+	}
 	$out[] = '';
-	$out[] = __( '*Delivery details*', 'cohf-child' );
+	$out[] = $pickup ? __( '*Pickup details*', 'cohf-child' ) : __( '*Delivery details*', 'cohf-child' );
 
 	$rows = array(
 		'name'  => __( 'Name', 'cohf-child' ),
 		'phone' => __( 'Phone', 'cohf-child' ),
-		'area'  => __( 'Location', 'cohf-child' ),
-		'date'  => __( 'Delivery date', 'cohf-child' ),
+		'area'  => $pickup ? __( 'Pickup', 'cohf-child' ) : __( 'Location', 'cohf-child' ),
+		'date'  => $pickup ? __( 'Pickup date', 'cohf-child' ) : __( 'Delivery date', 'cohf-child' ),
 		'pay'   => __( 'Payment', 'cohf-child' ),
 	);
 	foreach ( $rows as $key => $label ) {
 		$val = isset( $details[ $key ] ) ? $details[ $key ] : '';
 		if ( '' === $val && 'pay' === $key ) {
 			$val = __( 'M-Pesa / Cash on delivery', 'cohf-child' );
+		}
+		if ( 'area' === $key && $pickup ) {
+			$val = __( 'Our Kabete office', 'cohf-child' );
 		}
 		if ( '' === $val && 'date' === $key && ! empty( $details['name'] ) ) {
 			$val = __( 'Any day', 'cohf-child' );
@@ -140,7 +146,7 @@ function cohf_shop_wa_message( $lines, $details = array() ) {
 	}
 
 	$out[] = '';
-	$out[] = __( 'Please confirm availability and the delivery fee.', 'cohf-child' );
+	$out[] = $pickup ? __( 'Please confirm availability and when I can collect.', 'cohf-child' ) : __( 'Please confirm availability and the delivery fee.', 'cohf-child' );
 	$out[] = __( 'Thank you.', 'cohf-child' );
 
 	return implode( "\n", $out );
@@ -152,7 +158,7 @@ function cohf_shop_wa_message( $lines, $details = array() ) {
  * @return array
  */
 function cohf_shop_wa_details() {
-	$keys = array( 'name' => 60, 'phone' => 20, 'area' => 80, 'date' => 40, 'pay' => 30, 'note' => 160 );
+	$keys = array( 'name' => 60, 'phone' => 20, 'area' => 80, 'date' => 40, 'pay' => 30, 'note' => 300, 'mode' => 10, 'ref' => 20 );
 	$out  = array();
 	foreach ( $keys as $key => $max ) {
 		$raw = isset( $_GET[ 'wa_' . $key ] ) ? sanitize_text_field( wp_unslash( $_GET[ 'wa_' . $key ] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- builds a chat message only.
@@ -162,8 +168,107 @@ function cohf_shop_wa_details() {
 	if ( '' !== $out['phone'] ) {
 		$out['phone'] = preg_replace( '/[^0-9+ ]/', '', $out['phone'] );
 	}
+	// 14.8.0: delivery or pickup, and the reference shown in the pop-up.
+	$out['mode'] = 'pickup' === strtolower( $out['mode'] ) ? 'pickup' : 'delivery';
+	$out['ref']  = preg_match( '/^HM-\d{6}-[A-Z0-9]{4}$/', strtoupper( $out['ref'] ) ) ? strtoupper( $out['ref'] ) : '';
 	return $out;
 }
+
+/**
+ * 14.8.0: the order lines for a single product or the whole cart. Shared by
+ * the no-JavaScript redirect and the pop-up preview so both send the same.
+ *
+ * @param string $mode       'product' or 'cart'.
+ * @param int    $product_id Product for 'product' mode.
+ * @param int    $qty        Quantity for 'product' mode.
+ * @return array<int,array{name:string,qty:int,unit:float,url:string,img:string}>
+ */
+function cohf_shop_wa_lines( $mode, $product_id = 0, $qty = 1 ) {
+	$lines = array();
+	$thumb = function ( $product ) {
+		$id = $product->get_image_id();
+		if ( ! $id && $product->get_parent_id() ) {
+			$parent = wc_get_product( $product->get_parent_id() );
+			$id     = $parent ? $parent->get_image_id() : 0;
+		}
+		return $id ? (string) wp_get_attachment_image_url( $id, 'woocommerce_gallery_thumbnail' ) : '';
+	};
+
+	if ( 'product' === $mode ) {
+		$product = $product_id ? wc_get_product( $product_id ) : null;
+		$qty     = max( 1, min( 99, (int) $qty ) );
+		if ( $product && 'publish' === $product->get_status() ) {
+			$lines[] = array(
+				'name' => $product->get_name(),
+				'qty'  => $qty,
+				'unit' => (float) wc_get_price_to_display( $product ),
+				'url'  => home_url( '/?p=' . $product->get_id() ),
+				'img'  => $thumb( $product ),
+			);
+		}
+		return $lines;
+	}
+
+	if ( function_exists( 'WC' ) && WC()->cart ) {
+		foreach ( WC()->cart->get_cart() as $item ) {
+			$product = isset( $item['data'] ) ? $item['data'] : null;
+			if ( empty( $product ) ) {
+				continue;
+			}
+			$lines[] = array(
+				'name' => $product->get_name(),
+				'qty'  => (int) $item['quantity'],
+				'unit' => (float) wc_get_price_to_display( $product ),
+				'url'  => $product->is_visible() ? home_url( '/?p=' . ( $product->get_parent_id() ? $product->get_parent_id() : $product->get_id() ) ) : '',
+				'img'  => $thumb( $product ),
+			);
+		}
+	}
+	return $lines;
+}
+
+/**
+ * 14.8.0: live order preview for the WhatsApp pop-up. Returns the items,
+ * total, the exact message and the wa.me link, so the shopper sees what
+ * will be sent and the link is ready the moment they tap Send.
+ */
+function cohf_shop_ajax_wa_preview() {
+	nocache_headers();
+	$digits = cohf_shop_wa_digits();
+	$mode   = ( isset( $_GET['cohf-wa-order'] ) && 'product' === $_GET['cohf-wa-order'] ) ? 'product' : 'cart'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$lines  = cohf_shop_wa_lines(
+		$mode,
+		isset( $_GET['product_id'] ) ? absint( $_GET['product_id'] ) : 0, // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		isset( $_GET['qty'] ) ? absint( $_GET['qty'] ) : 1 // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	);
+	if ( '' === $digits || empty( $lines ) ) {
+		wp_send_json_error( array( 'empty' => empty( $lines ) ) );
+	}
+	$total = 0;
+	$count = 0;
+	$items = array();
+	foreach ( $lines as $line ) {
+		$sub     = $line['unit'] * $line['qty'];
+		$total  += $sub;
+		$count  += $line['qty'];
+		$items[] = array(
+			'name' => $line['name'],
+			'qty'  => $line['qty'],
+			'unit' => cohf_shop_plain_price( $line['unit'] ),
+			'sub'  => cohf_shop_plain_price( $sub ),
+			'img'  => $line['img'],
+		);
+	}
+	$message = cohf_shop_wa_message( $lines, cohf_shop_wa_details() );
+	wp_send_json_success( array(
+		'items'   => $items,
+		'count'   => $count,
+		'total'   => cohf_shop_plain_price( $total ),
+		'message' => $message,
+		'url'     => 'https://wa.me/' . $digits . '?text=' . rawurlencode( $message ),
+	) );
+}
+add_action( 'wc_ajax_cohf_wa_preview', 'cohf_shop_ajax_wa_preview' );
 
 /**
  * Redirect ?cohf-wa-order=cart|product to WhatsApp with the order written out.
@@ -176,33 +281,9 @@ function cohf_shop_wa_order_redirect() {
 
 	$digits = cohf_shop_wa_digits();
 	$mode   = sanitize_key( wp_unslash( $_GET['cohf-wa-order'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	$lines  = array();
-
-	if ( 'product' === $mode && isset( $_GET['product_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$product = wc_get_product( absint( $_GET['product_id'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$qty     = isset( $_GET['qty'] ) ? max( 1, min( 99, absint( $_GET['qty'] ) ) ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( $product && 'publish' === $product->get_status() ) {
-			$lines[] = array(
-				'name' => $product->get_name(),
-				'qty'  => $qty,
-				'unit' => (float) wc_get_price_to_display( $product ),
-				'url'  => home_url( '/?p=' . $product->get_id() ),
-			);
-		}
-	} elseif ( function_exists( 'WC' ) && WC()->cart ) {
-		foreach ( WC()->cart->get_cart() as $item ) {
-			$product = isset( $item['data'] ) ? $item['data'] : null;
-			if ( empty( $product ) ) {
-				continue;
-			}
-			$lines[] = array(
-				'name' => $product->get_name(),
-				'qty'  => (int) $item['quantity'],
-				'unit' => (float) wc_get_price_to_display( $product ),
-				'url'  => $product->is_visible() ? home_url( '/?p=' . ( $product->get_parent_id() ? $product->get_parent_id() : $product->get_id() ) ) : '',
-			);
-		}
-	}
+	$product_id = isset( $_GET['product_id'] ) ? absint( $_GET['product_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$qty        = isset( $_GET['qty'] ) ? absint( $_GET['qty'] ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$lines      = cohf_shop_wa_lines( $mode, $product_id, $qty );
 
 	if ( '' === $digits ) {
 		wp_safe_redirect( empty( $lines ) ? cohf_shop_url() : wc_get_cart_url() );
@@ -497,6 +578,7 @@ function cohf_shop_cart_assets() {
 		'added'    => __( '%s added to your cart', 'cohf-child' ),
 		'addedAny' => __( 'Added to your cart', 'cohf-child' ),
 		'error'    => __( 'Sorry, that did not work. Please try again.', 'cohf-child' ),
+		'office'   => __( 'Kabete, behind N Market', 'cohf-child' ),
 	) );
 }
 add_action( 'wp_enqueue_scripts', 'cohf_shop_cart_assets', 45 );
