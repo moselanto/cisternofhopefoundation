@@ -75,12 +75,17 @@ function cohf_shop_wa_order_url( $product_id = 0 ) {
 function cohf_shop_wa_message( $lines, $details = array() ) {
 	$ref = 'HM-' . wp_date( 'ymd' ) . '-' . strtoupper( substr( wp_generate_password( 8, false, false ), 0, 4 ) );
 
+	/*
+	 * 14.7.2: one idea per line with a blank line between sections, so the
+	 * order reads cleanly in WhatsApp. Bold markers (*...*) always open and
+	 * close on the same line, otherwise WhatsApp shows the asterisks.
+	 */
 	$out   = array();
-	$out[] = __( 'Hello Hope Market team, I would like to order:', 'cohf-child' );
+	$out[] = __( 'Hello Hope Market team,', 'cohf-child' );
+	$out[] = __( 'I would like to place an order.', 'cohf-child' );
 	$out[] = '';
 	/* translators: %s: order reference. */
-	$out[] = sprintf( __( '*Order %s*', 'cohf-child' ), $ref );
-	$out[] = '';
+	$out[] = sprintf( __( '*Order: %s*', 'cohf-child' ), $ref );
 
 	$total = 0;
 	$count = 0;
@@ -90,16 +95,17 @@ function cohf_shop_wa_message( $lines, $details = array() ) {
 		$sub    = $line['unit'] * $line['qty'];
 		$total += $sub;
 		$count += $line['qty'];
-		$out[]  = sprintf( '%1$d. %2$s', $n, $line['name'] );
+		$out[]  = '';
+		$out[]  = sprintf( '*%1$d. %2$s*', $n, $line['name'] );
 		$out[]  = sprintf(
 			/* translators: 1: quantity, 2: unit price, 3: line total. */
-			__( '   %1$d x %2$s = *%3$s*', 'cohf-child' ),
+			__( 'Qty %1$d x %2$s = %3$s', 'cohf-child' ),
 			$line['qty'],
 			cohf_shop_plain_price( $line['unit'] ),
 			cohf_shop_plain_price( $sub )
 		);
 		if ( '' !== $line['url'] ) {
-			$out[] = '   ' . $line['url'];
+			$out[] = $line['url'];
 		}
 	}
 
@@ -128,11 +134,14 @@ function cohf_shop_wa_message( $lines, $details = array() ) {
 		$out[] = $label . ': ' . $val;
 	}
 	if ( ! empty( $details['note'] ) ) {
-		$out[] = __( 'Note', 'cohf-child' ) . ': ' . $details['note'];
+		$out[] = '';
+		$out[] = '*' . __( 'Note', 'cohf-child' ) . '*';
+		$out[] = $details['note'];
 	}
 
 	$out[] = '';
-	$out[] = __( 'Please confirm availability and the delivery fee. Thank you.', 'cohf-child' );
+	$out[] = __( 'Please confirm availability and the delivery fee.', 'cohf-child' );
+	$out[] = __( 'Thank you.', 'cohf-child' );
 
 	return implode( "\n", $out );
 }
@@ -204,7 +213,19 @@ function cohf_shop_wa_order_redirect() {
 		? __( "Hello Hope Market team,\n\nI would like to place an order from your website. Kindly share the available items and payment details. Thank you.", 'cohf-child' )
 		: cohf_shop_wa_message( $lines, cohf_shop_wa_details() );
 
-	wp_redirect( 'https://wa.me/' . $digits . '?text=' . rawurlencode( $text ) ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- WhatsApp is the intended destination.
+	/*
+	 * 14.7.2: wp_redirect() runs wp_sanitize_redirect(), which deletes every
+	 * %0A to block header injection - and with it every line break in the
+	 * order, so WhatsApp showed one run-on paragraph. The URL is built only
+	 * from digits and rawurlencode() output (no raw CR or LF can be present),
+	 * so the Location header is sent directly to keep the line breaks.
+	 */
+	$location = 'https://wa.me/' . $digits . '?text=' . rawurlencode( $text );
+	if ( ! headers_sent() ) {
+		nocache_headers();
+		header( 'X-Redirect-By: COHF' );
+		header( 'Location: ' . $location, true, 302 );
+	}
 	exit;
 }
 add_action( 'template_redirect', 'cohf_shop_wa_order_redirect', 1 );
