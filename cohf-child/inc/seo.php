@@ -395,7 +395,7 @@ function cohf_seo_page_descriptions() {
 		'get-involved'          => __( 'Volunteer in Nairobi, partner with us or donate to a Kenyan charity. Find the way to support vulnerable children, women and youth that suits you.', 'cohf-child' ),
 		'partners-overview'     => __( 'Partner with a young, determined Kenyan organisation. The partners we welcome, what we ask partners to contribute and where we need support.', 'cohf-child' ),
 		'resources-overview'    => __( 'Reports, strategies, policies and updates from Cistern of Hope Foundation. Search the library or request a document.', 'cohf-child' ),
-		'contact'               => __( 'Contact Cistern of Hope Foundation, an NGO in Nairobi, Kenya. Visit our Kabete office, call or WhatsApp +254 110 304 521, or send us a message.', 'cohf-child' ),
+		'contact'               => sprintf( /* translators: %s: Foundation phone number. */ __( 'Contact Cistern of Hope Foundation, an NGO in Nairobi, Kenya. Visit our Kabete office, call or WhatsApp %s, or send us a message.', 'cohf-child' ), cohf_org_get( 'phone' ) ),
 		'leadership-governance' => __( 'Meet the board and team accountable for Cistern of Hope Foundation, and how the Foundation is governed and overseen.', 'cohf-child' ),
 		'accountability'        => __( 'How we steward resources, safeguard the people we serve, protect privacy and handle concerns. Raise a concern safely.', 'cohf-child' ),
 		'support-our-work'      => __( 'Donate to a Kenyan NGO by M-Pesa or card. Your gift pays school fees, sanitary pads and food for vulnerable children and families in Nairobi.', 'cohf-child' ),

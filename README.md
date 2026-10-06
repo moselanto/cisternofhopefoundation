@@ -361,7 +361,7 @@ From [`AGENTS.md`](AGENTS.md):
 **Cistern of Hope Foundation**
 Office: Kabete, behind N Market, Nairobi, Kenya
 Postal: P.O. Box 23524-00625, Nairobi, Kenya
-Phone and WhatsApp: [+254 110 304 521](tel:+254110304521) · Email: [info@cisternofhopefoundation.org](mailto:info@cisternofhopefoundation.org)
+Phone and WhatsApp: [+254 182 751 610](tel:+254182751610) · Email: [info@cisternofhopefoundation.org](mailto:info@cisternofhopefoundation.org)
 
 [Support Our Work](https://cisternofhopefoundation.org/support-our-work/) · [Partner With Us](https://cisternofhopefoundation.org/partners-overview/) · [Volunteer](https://cisternofhopefoundation.org/get-involved/) · [Shop the Hope Market](https://cisternofhopefoundation.org/shop/)
 

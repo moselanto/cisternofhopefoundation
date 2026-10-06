@@ -91,8 +91,8 @@ function cohf_org_defaults() {
 		'constitution' => '21 June 2024',
 		'country'      => 'Kenya',
 		'address'      => 'P.O. Box 23524–00625, Nairobi, Kenya',
-		'phone'        => '+254 110 304 521',
-		'whatsapp'     => '+254 110 304 521',
+		'phone'        => '+254 182 751 610',
+		'whatsapp'     => '+254 182 751 610',
 		'email'        => 'info@cisternofhopefoundation.org',
 		// Social accounts. Empty until the Foundation confirms each one; an
 		// empty field hides that icon everywhere.
@@ -645,3 +645,20 @@ function cohf_social_links() {
 
 	return apply_filters( 'cohf_social_links', $links );
 }
+
+/**
+ * 14.7.0: the Foundation's official number is now +254 182 751 610 for both
+ * calls and WhatsApp. Saved options override the defaults above, so this
+ * one-time update writes the new number into the Telephone and WhatsApp
+ * settings once. Afterwards both stay editable under Foundation >
+ * Organisation details and this never runs again.
+ */
+function cohf_migrate_official_number() {
+	if ( '14.7.0' === get_option( 'cohf_contact_number_version' ) ) {
+		return;
+	}
+	update_option( 'cohf_org_phone', '+254 182 751 610' );
+	update_option( 'cohf_org_whatsapp', '+254 182 751 610' );
+	update_option( 'cohf_contact_number_version', '14.7.0', false );
+}
+add_action( 'init', 'cohf_migrate_official_number', 1 );
