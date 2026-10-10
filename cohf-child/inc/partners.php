@@ -177,7 +177,7 @@ function cohf_partner_seed() {
 			'slug'    => 'suivera-community',
 			'title'   => 'Suivera Community',
 			'order'   => 3,
-			'excerpt' => __( 'Partners in girls\' dignity and education: supporting our Girls\' Dignity Kits initiative and Partial Education Support Programme, with encouraging progress in school retention.', 'cohf-child' ),
+			'excerpt' => __( 'Supporting our Girls\' Dignity Kits initiative and Partial Education Support Programme, with encouraging progress in school retention among girls and boys.', 'cohf-child' ),
 			'body'    => array(
 				__( 'Suivera Community has stood alongside Cistern of Hope Foundation in supporting our Girls\' Dignity Kits initiative and Partial Education Support Programme.', 'cohf-child' ),
 				__( 'Through their support, we have continued working to address barriers that prevent vulnerable children, particularly girls, from accessing and remaining in school.', 'cohf-child' ),
@@ -305,3 +305,24 @@ function cohf_partners_maybe_seed() {
 	}
 }
 add_action( 'admin_init', 'cohf_partners_maybe_seed', 30 );
+
+
+/**
+ * 14.9.1: the seeded Suivera Community summary repeated its own headline
+ * ("Partners in girls' dignity and education: ..."). Replace it once, and
+ * only if staff have not already edited it.
+ */
+function cohf_partners_fix_suivera_excerpt() {
+	if ( get_option( 'cohf_suivera_excerpt_fixed' ) || ! current_user_can( 'edit_posts' ) ) {
+		return;
+	}
+	$post = get_page_by_path( 'suivera-community', OBJECT, 'cohf_partner' );
+	if ( $post && 0 === strpos( (string) $post->post_excerpt, 'Partners in girls' ) ) {
+		wp_update_post( array(
+			'ID'           => $post->ID,
+			'post_excerpt' => __( 'Supporting our Girls\' Dignity Kits initiative and Partial Education Support Programme, with encouraging progress in school retention among girls and boys.', 'cohf-child' ),
+		) );
+	}
+	update_option( 'cohf_suivera_excerpt_fixed', COHF_CHILD_VERSION, false );
+}
+add_action( 'admin_init', 'cohf_partners_fix_suivera_excerpt', 31 );
