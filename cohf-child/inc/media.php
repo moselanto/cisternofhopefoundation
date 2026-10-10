@@ -115,6 +115,8 @@ function cohf_image_library() {
 		'partner-australia-supporter-1' => array( 'file' => 'partner-australia-supporter-1.jpg', 'alt' => __( 'Portrait of one of the Foundation\'s supporters from Australia, smiling.', 'cohf-child' ) ),
 		'partner-australia-supporter-2' => array( 'file' => 'partner-australia-supporter-2.jpg', 'alt' => __( 'Portrait of one of the Foundation\'s supporters from Australia, smiling, wearing glasses and a pearl necklace.', 'cohf-child' ) ),
 
+		'partner-suivera-community-logo' => array( 'file' => 'partner-suivera-community-logo.jpg', 'alt' => __( 'Suivera Community logo: a light green interwoven heart on a dark green background.', 'cohf-child' ) ),
+
 		// Leadership portraits, supplied by the Foundation.
 		'leader-justus-kubai' => array( 'file' => 'leader-justus-kubai.jpg', 'alt' => __( 'Mr. Justus Kubai, Founder and Executive Director.', 'cohf-child' ) ),
 		'leader-henry-onzere' => array( 'file' => 'leader-henry-onzere.jpg', 'alt' => __( 'Henry Onzere, Chairperson of the Board of Directors.', 'cohf-child' ) ),

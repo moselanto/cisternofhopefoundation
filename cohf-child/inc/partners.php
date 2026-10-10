@@ -91,6 +91,9 @@ function cohf_partner_bundled_images( $slug ) {
 			'logo'  => 'partner-deliverance-church-logo',
 			'photo' => 'partner-deliverance-church-feeding',
 		),
+		'suivera-community'           => array(
+			'logo' => 'partner-suivera-community-logo',
+		),
 		'nellique-sylvia-kat-australia' => array(
 			'photo'  => 'partner-australia-christmas-meal',
 			'people' => array( 'partner-australia-supporter-1', 'partner-australia-supporter-2' ),
