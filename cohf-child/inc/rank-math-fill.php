@@ -167,7 +167,7 @@ function cohf_rm_fill_all() {
 	// Home page.
 	$front = (int) get_option( 'page_on_front' );
 	if ( $front ) {
-		cohf_rmf_post( $front, 'Cistern of Hope Foundation: NGO in Nairobi, Kenya', 'Registered NGO and charity organization in Nairobi, Kenya helping orphans, street children, widows, women and youth with school fees, sanitary pads and food.', 'NGO in Nairobi Kenya' );
+		cohf_rmf_post( $front, 'Cistern of Hope Foundation: NGO in Nairobi, Kenya', 'Nairobi-based charity supporting vulnerable children, widows, women and youth in Kenya with school fees, sanitary pads, food and small-business support.', 'NGO in Nairobi Kenya' );
 	}
 
 	// Shop page.
@@ -186,7 +186,7 @@ function cohf_rm_fill_all() {
 		$title = cohf_rmf_title( $entry ? $entry[0] : get_the_title( $page ) );
 		$desc  = ( $entry && ! empty( $entry[2] ) ) ? $entry[2] : ( isset( $page_desc[ $slug ] ) ? $page_desc[ $slug ] : ( $page->post_excerpt ? $page->post_excerpt : $page->post_content ) );
 		if ( '' === cohf_rmf_trim( $desc ) ) {
-			$desc = get_the_title( $page ) . ' - Cistern of Hope Foundation, a registered NGO in Nairobi, Kenya.';
+			$desc = get_the_title( $page ) . ' - Cistern of Hope Foundation, a charity in Nairobi, Kenya.';
 		}
 		cohf_rmf_post( $page->ID, $title, $desc, $entry ? cohf_rmf_first_kw( $entry[1] ) : '' );
 	}
@@ -255,7 +255,7 @@ function cohf_rm_fill_all() {
 			}
 			$desc = $item->post_excerpt ? $item->post_excerpt : $item->post_content;
 			if ( '' === cohf_rmf_trim( $desc ) ) {
-				$desc = $name . ' - Cistern of Hope Foundation, a registered NGO in Nairobi, Kenya serving children, women and youth.';
+				$desc = $name . ' - Cistern of Hope Foundation, a charity in Nairobi, Kenya serving children, women and youth.';
 			}
 			cohf_rmf_post( $item->ID, cohf_rmf_title( $name ), $desc );
 		}

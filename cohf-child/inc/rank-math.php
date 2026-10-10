@@ -178,15 +178,11 @@ add_filter( 'rank_math/json_ld', function ( $data, $jsonld = null ) {
 			$node['@type']         = array( 'NGO', 'NonprofitOrganization' );
 			$node['alternateName'] = array( 'Cistern of Hope', 'COHF', 'Cistern of Hope Foundation Kenya' );
 			$node['knowsAbout']    = function_exists( 'cohf_schema_topics' ) ? cohf_schema_topics() : array();
-			$catalog = array();
-			foreach ( get_posts( array( 'post_type' => 'cohf_programme', 'post_status' => 'publish', 'numberposts' => 50, 'orderby' => 'menu_order title', 'order' => 'ASC' ) ) as $prog ) {
-				$catalog[] = array( '@type' => 'Offer', 'price' => 0, 'priceCurrency' => 'KES', 'itemOffered' => array( '@type' => 'Service', 'name' => wp_strip_all_tags( get_the_title( $prog ) ), 'url' => get_permalink( $prog ) ) );
-			}
-			if ( $catalog ) {
-				$node['hasOfferCatalog'] = array( '@type' => 'OfferCatalog', 'name' => 'Cistern of Hope Foundation programmes', 'itemListElement' => $catalog );
-			}
-			$node['seeks'] = array( '@type' => 'Demand', 'name' => 'Donations, volunteers and partners to support vulnerable children, widows, women and youth in Kenya' );
-			$node['keywords']      = 'NGO in Kenya, NGO in Nairobi, charity in Kenya, donate to charity Kenya, donate via M-Pesa, sponsor a child in Kenya, school fees support Kenya, sanitary pads for girls Kenya, help widows in Kenya, women empowerment Kenya, youth empowerment Kenya, street children Kenya, orphans in Kenya, volunteer in Nairobi';
+			// 14.11.0: removed hasOfferCatalog (charitable programmes wrapped as
+			// price-0 commercial Offers), 'seeks' and a keyword list naming
+			// services the Foundation has not confirmed (e.g. child sponsorship).
+			// Programmes stay described through knowsAbout and their own pages.
+			unset( $node['hasOfferCatalog'], $node['seeks'], $node['keywords'] );
 			$data[ $key ] = $node;
 			continue;
 		}
@@ -216,6 +212,20 @@ add_filter( 'rank_math/json_ld', function ( $data, $jsonld = null ) {
 		}
 	}
 
+	// 14.11.0: Rank Math's default Article + author Person was being emitted on
+	// the homepage and every ordinary page, describing them as articles written
+	// by the site admin. Pages keep their WebPage node only.
+	if ( is_page() || is_front_page() ) {
+		foreach ( $data as $key => $node ) {
+			$types = is_array( $node ) && isset( $node['@type'] ) ? (array) $node['@type'] : array();
+			$is_author = in_array( 'Person', $types, true ) && isset( $node['@id'] ) && false !== strpos( (string) $node['@id'], '/author/' );
+			if ( $is_author || ( 'richSnippet' === $key && array_intersect( $types, array( 'Article', 'BlogPosting', 'NewsArticle' ) ) ) ) {
+				unset( $data[ $key ] );
+			}
+		}
+	}
+	$GLOBALS['cohf_rm_schema_printed'] = true;
+
 	$org_ref = array( '@id' => isset( $data['publisher']['@id'] ) ? $data['publisher']['@id'] : home_url( '/#organization' ) );
 
 	// Programme pages: the programme as a free service of the NGO.
@@ -237,9 +247,6 @@ add_filter( 'rank_math/json_ld', function ( $data, $jsonld = null ) {
 			),
 			'audience'            => array( '@type' => 'Audience', 'audienceType' => 'Vulnerable children, youth, women, widows and households in Kenya' ),
 		);
-		if ( $kw && ! empty( $kw['kw'] ) ) {
-			$service['keywords'] = $kw['kw'];
-		}
 		if ( has_post_thumbnail() ) {
 			$service['image'] = get_the_post_thumbnail_url( null, 'full' );
 		}
@@ -308,4 +315,56 @@ add_action( 'admin_init', function () {
 		update_option( 'rank-math-options-general', $general );
 	}
 	update_option( 'cohf_rm_defaults_1', 1, false );
+} );
+
+
+/**
+ * 14.11.0: Article markup for impact stories when Rank Math prints nothing.
+ *
+ * The live audit (10 October 2026) found no JSON-LD at all on the 11 impact
+ * story pages: Rank Math's schema is off for that post type, and the theme's
+ * own graph stands down whenever an SEO plugin is active. This prints one
+ * small Article node, linked to Rank Math's organisation and website by @id,
+ * only when Rank Math has not already printed a graph on the page.
+ */
+add_action( 'wp_head', function () {
+	if ( ! is_singular( 'cohf_story' ) || ! empty( $GLOBALS['cohf_rm_schema_printed'] ) ) {
+		return;
+	}
+	$id      = get_queried_object_id();
+	$article = array(
+		'@context'         => 'https://schema.org',
+		'@type'            => 'Article',
+		'@id'              => get_permalink( $id ) . '#article',
+		'headline'         => wp_strip_all_tags( get_the_title( $id ) ),
+		'description'      => wp_strip_all_tags( (string) get_the_excerpt( $id ) ),
+		'datePublished'    => get_the_date( 'c', $id ),
+		'dateModified'     => get_the_modified_date( 'c', $id ),
+		'mainEntityOfPage' => get_permalink( $id ),
+		'url'              => get_permalink( $id ),
+		'inLanguage'       => 'en-KE',
+		'isPartOf'         => array( '@id' => home_url( '/#website' ) ),
+		'author'           => array( '@id' => home_url( '/#organization' ) ),
+		'publisher'        => array( '@id' => home_url( '/#organization' ) ),
+	);
+	$img = get_the_post_thumbnail_url( $id, 'full' );
+	if ( $img ) {
+		$article['image'] = $img;
+	}
+	echo '<script type="application/ld+json">' . wp_json_encode( $article, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . '</script>' . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_json_encode output.
+}, 99 );
+
+/**
+ * 14.11.0: keep MailPoet's subscription-management and captcha utility pages
+ * out of the Rank Math sitemap and out of search results. The live sitemap
+ * listed both with the description "[mailpoet_page]".
+ */
+add_filter( 'rank_math/sitemap/exclude_post_type', function ( $exclude, $type ) {
+	return 'mailpoet_page' === $type ? true : $exclude;
+}, 10, 2 );
+add_filter( 'rank_math/frontend/robots', function ( $robots ) {
+	if ( is_singular( 'mailpoet_page' ) || isset( $_GET['mailpoet_page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only routing check.
+		$robots['index'] = 'noindex';
+	}
+	return $robots;
 } );

@@ -250,7 +250,7 @@ add_filter( 'wp_sitemaps_post_types', function ( $post_types ) {
 function cohf_seo_description() {
 	$text = '';
 	if ( is_front_page() ) {
-		$text = __( 'Registered NGO in Nairobi, Kenya helping vulnerable children, women and youth: school fees, monthly sanitary pads, food support and small business start-ups.', 'cohf-child' );
+		$text = __( 'Nairobi-based charity supporting vulnerable children, widows, women and youth in Kenya with school fees, sanitary pads, food and small-business support.', 'cohf-child' );
 	} elseif ( function_exists( 'is_shop' ) && is_shop() ) {
 		$text = __( 'Hope Market: handmade African crafts, jewellery, baskets, sandals and home decor from Kenya. Every purchase supports the Cistern of Hope Foundation.', 'cohf-child' );
 	} elseif ( is_singular() ) {
@@ -388,7 +388,7 @@ add_filter( 'wp_sitemaps_taxonomies', function ( $taxonomies ) {
  */
 function cohf_seo_page_descriptions() {
 	return array(
-		'about'                 => __( 'About Cistern of Hope Foundation, a registered Kenyan NGO founded in Uthiru, Nairobi in 2021. Our story, vision, mission, values and leadership.', 'cohf-child' ),
+		'about'                 => __( 'About Cistern of Hope Foundation, a Kenyan charity founded in Uthiru, Nairobi in 2021. Our story, vision, mission, values and leadership.', 'cohf-child' ),
 		'programmes-overview'   => __( 'Our programmes in Kenya: school fees and scholarships, sanitary pads for girls, youth skills, women\'s enterprise, food support, health and WASH.', 'cohf-child' ),
 		'impact'                => __( 'Our impact in Kenya: children back in school, around 200 girls receiving sanitary pads every month, and women and youth running small businesses.', 'cohf-child' ),
 		'approach'              => __( 'From support to self-reliance: how we combine compassion with practical action and treat communities as partners, not recipients.', 'cohf-child' ),

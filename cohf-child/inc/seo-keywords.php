@@ -99,7 +99,7 @@ function cohf_kw_pages() {
 		'impact'                => array( 'Our Impact: Children, Women and Youth in Kenya', 'NGO impact Kenya, charity results Kenya' ),
 		'approach'              => array( 'Our Approach: From Support to Self-Reliance', 'community development Kenya, sustainable charity' ),
 		'get-involved'          => array( 'Volunteer Opportunities in Nairobi, Kenya', 'volunteer opportunities in Nairobi, volunteer in Kenya, volunteer in Kenya schools, volunteer in Kenya orphanage, volunteer in Nairobi, volunteer opportunities Kenya' ),
-		'partners-overview'     => array( 'Partner With a Registered NGO in Kenya', 'NGO in Kenya, NGO partnership Kenya, corporate social responsibility Kenya, CSR partners Kenya' ),
+		'partners-overview'     => array( 'NGO Partnerships and CSR in Kenya', 'NGO in Kenya, NGO partnership Kenya, corporate social responsibility Kenya, CSR partners Kenya' ),
 		'resources-overview'    => array( 'NGO Reports, Policies and Resources', 'NGO annual report Kenya, NGO policies' ),
 		'contact'               => array( 'Contact Us: NGO in Nairobi, Kenya', 'NGO in Nairobi, NGOs in Nairobi and their contacts, NGO contacts Nairobi, charity near me Nairobi' ),
 		'leadership-governance' => array( 'Leadership and Board of Our Kenyan NGO', 'NGO board Kenya, NGO leadership' ),
@@ -245,7 +245,7 @@ add_filter( 'cohf_seo_description', function ( $text ) {
 		return $kw['desc'];
 	}
 	if ( is_front_page() ) {
-		return 'Registered NGO and charity organization in Nairobi, Kenya helping orphans, street children, widows, women and youth with school fees, sanitary pads and food.';
+		return 'Nairobi-based charity supporting vulnerable children, widows, women and youth in Kenya with school fees, sanitary pads, food and small-business support.';
 	}
 	if ( is_post_type_archive( 'cohf_story' ) ) {
 		return 'Real stories from our work in Nairobi, Kenya: children back in school, girls receiving sanitary pads, and women and youth building small businesses.';
@@ -278,7 +278,7 @@ add_filter( 'cohf_schema_graph_nodes', function ( $graph ) {
 			$node['alternateName'] = array( 'Cistern of Hope', 'COHF', 'Cistern of Hope Foundation Kenya' );
 			$node['slogan']        = 'Restoring hope, dignity and opportunity in Kenya';
 			$node['knowsAbout']    = array( 'Education support and school fees for needy children', 'Sanitary pads and menstrual hygiene for girls', 'Support for widows and food aid', 'Women\'s economic empowerment', 'Youth skills and employment', 'Street children and orphans', 'Counselling and mentorship', 'Community development in Nairobi, Kenya' );
-			$node['keywords']      = 'NGO in Kenya, NGO in Nairobi, charity in Kenya, donate to charity Kenya, donate via M-Pesa, sponsor a child in Kenya, school fees support Kenya, sanitary pads for girls Kenya, help widows in Kenya, women empowerment Kenya, youth empowerment Kenya, street children Kenya, orphans in Kenya, volunteer in Nairobi';
+			// 14.11.0: keyword list removed from the Organization node; it named services the Foundation has not confirmed (e.g. child sponsorship).
 		} elseif ( in_array( 'WebSite', $type, true ) ) {
 			$node['alternateName'] = array( 'Cistern of Hope', 'Hope Market' );
 			$node['inLanguage']    = 'en-KE';
