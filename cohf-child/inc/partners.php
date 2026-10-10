@@ -91,6 +91,10 @@ function cohf_partner_bundled_images( $slug ) {
 			'logo'  => 'partner-deliverance-church-logo',
 			'photo' => 'partner-deliverance-church-feeding',
 		),
+		'warrionotes-fellowship-australia' => array(
+			'logo'  => 'partner-warriornotes-logo',
+			'photo' => 'partner-warriornotes-shoes',
+		),
 		'suivera-community'           => array(
 			'logo' => 'partner-suivera-community-logo',
 		),
