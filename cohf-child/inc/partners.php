@@ -163,6 +163,32 @@ function cohf_partner_seed() {
 				'figure_label' => '',
 			),
 		),
+		array(
+			'slug'    => 'warrionotes-fellowship-australia',
+			'title'   => 'WarrioNotes Fellowship Australia',
+			'order'   => 4,
+			'excerpt' => __( 'Under the leadership of Simon Marshal, the fellowship bought shoes and socks for 8 children from less fortunate backgrounds as schools prepared to reopen, easing the burden on their families.', 'cohf-child' ),
+			'body'    => array(
+				__( 'Under the leadership of Simon Marshal, WarrioNotes Fellowship Australia demonstrated its compassion and commitment to vulnerable families by supporting Cistern of Hope Foundation on 13 January 2025 to purchase shoes and socks for 8 children from less fortunate backgrounds.', 'cohf-child' ),
+				__( 'This support came at a particularly important time, as schools were preparing to reopen. By helping provide essential school items, the fellowship eased some of the financial pressure on families and helped parents meet their children\'s needs as they prepared to return to school.', 'cohf-child' ),
+				__( 'Beyond the shoes and socks, this act of generosity brought relief, dignity, and encouragement to families facing financial challenges. It also helped children prepare for the school term with essential items that many families struggle to afford.', 'cohf-child' ),
+				__( 'We sincerely appreciate WarrioNotes Fellowship Australia, under the leadership of Simon Marshal, for believing in our mission and standing with us in supporting vulnerable children and their families.', 'cohf-child' ),
+				__( 'Thank you for helping us turn compassion into practical support and making the back-to-school season a little easier for the families we serve.', 'cohf-child' ),
+				__( 'Together, we are restoring dignity, easing family burdens, and creating opportunities for children to thrive.', 'cohf-child' ),
+			),
+			'meta'    => array(
+				'status'       => 'past',
+				'tagline'      => __( 'Bringing Dignity and Relief to Families', 'cohf-child' ),
+				'partner_type' => __( 'Fellowship, Australia', 'cohf-child' ),
+				'period'       => __( 'January 2025', 'cohf-child' ),
+				'achievements' => implode( "\n", array(
+					__( 'Shoes and socks for 8 children from less fortunate backgrounds, ahead of schools reopening', 'cohf-child' ),
+					__( 'Eased the financial pressure on families preparing their children for the school term', 'cohf-child' ),
+				) ),
+				'figure'       => '8',
+				'figure_label' => __( 'children given shoes and socks for the new school term', 'cohf-child' ),
+			),
+		),
 	);
 }
 
