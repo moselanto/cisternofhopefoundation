@@ -5,7 +5,7 @@ Template: cohf
 Author: Cistern of Hope Foundation
 Author URI: https://cisternofhope.org
 Description: Premium, human-centred child theme for Cistern of Hope Foundation (COHF), Kenya. Editorial design system, twelve programme areas, impact and story content structures, accountability and partnership architecture, WCAG-conscious markup and a performance-first asset strategy. Motto: Together for a lasting change.
-Version: 14.9.1
+Version: 14.10.0
 Requires at least: 6.2
 Requires PHP: 8.0
 License: GNU General Public License v2 or later
@@ -494,4 +494,127 @@ h1, h2, h3 { overflow-wrap: anywhere; hyphens: auto; text-wrap: balance; }
 @media (max-width: 600px) {
 	.partner-join { padding: 24px 22px; }
 	.partner-join__actions .btn { flex: 1 1 100%; text-align: center; }
+}
+
+
+/* ------------------------------------------------------------------
+ * 14.10.0 Homepage partner logo strip (template-parts/partner-logos.php).
+ * ------------------------------------------------------------------ */
+.partner-logos__frame { position: relative; }
+.partner-logos__track {
+	--tile: 196px;
+	display: grid;
+	grid-auto-flow: column;
+	grid-auto-columns: var(--tile);
+	gap: 18px;
+	margin: 0;
+	padding: 6px 2px 18px;
+	list-style: none;
+	overflow-x: auto;
+	overscroll-behavior-x: contain;
+	scroll-snap-type: x mandatory;
+	scroll-padding-inline: 2px;
+	scrollbar-width: thin;
+	scrollbar-color: var(--line, #dfe6e1) transparent;
+	-webkit-overflow-scrolling: touch;
+}
+.partner-logos__frame:not(.is-scrollable) .partner-logos__track { justify-content: center; }
+.partner-logos__track::-webkit-scrollbar { height: 6px; }
+.partner-logos__track::-webkit-scrollbar-thumb { background: var(--line, #dfe6e1); border-radius: 999px; }
+.partner-logos__item { scroll-snap-align: start; }
+.partner-logos__tile {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+	height: 100%;
+	padding: 22px 16px 18px;
+	background: #fff;
+	border: 1px solid var(--line, #dfe6e1);
+	border-radius: 18px;
+	color: var(--ink, #1c1b19);
+	text-align: center;
+	text-decoration: none;
+	transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.partner-logos__tile:hover { transform: translateY(-3px); border-color: var(--gold, #d9a441); box-shadow: 0 14px 28px rgba(23, 35, 30, .10); }
+.partner-logos__tile:focus-visible { outline: 3px solid var(--gold, #d9a441); outline-offset: 3px; }
+.partner-logos__mark {
+	display: grid;
+	place-items: center;
+	width: 112px;
+	height: 112px;
+	margin-bottom: 8px;
+	border-radius: 20px;
+	overflow: hidden;
+	background: #fff;
+}
+.partner-logos__mark img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.partner-logos__mark--mono {
+	border-radius: 50%;
+	background: var(--green, #1f5e3b);
+	color: #fff;
+	font: 700 34px/1 var(--font-display, Georgia, serif);
+}
+.partner-logos__name {
+	font-weight: 700;
+	font-size: 15px;
+	line-height: 1.3;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	min-height: 2.6em;
+}
+.partner-logos__meta { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #5b6b63; }
+.partner-logos__nav {
+	position: absolute;
+	top: calc(50% - 30px);
+	z-index: 2;
+	display: grid;
+	place-items: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	border: 1px solid var(--line, #dfe6e1);
+	background: #fff;
+	color: var(--green, #1f5e3b);
+	font-size: 18px;
+	box-shadow: 0 6px 18px rgba(23, 35, 30, .12);
+	cursor: pointer;
+	transition: opacity .2s ease, background .2s ease;
+}
+.partner-logos__nav[hidden] { display: none; }
+.partner-logos__nav--prev { left: -14px; }
+.partner-logos__nav--next { right: -14px; }
+.partner-logos__nav:hover { background: var(--green, #1f5e3b); color: #fff; }
+.partner-logos__nav:focus-visible { outline: 3px solid var(--gold, #d9a441); outline-offset: 2px; }
+.partner-logos__nav:disabled { opacity: 0; pointer-events: none; }
+.partner-logos__frame.is-scrollable::before,
+.partner-logos__frame.is-scrollable::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 18px;
+	width: 48px;
+	z-index: 1;
+	pointer-events: none;
+	transition: opacity .2s ease;
+}
+.partner-logos__frame.is-scrollable::before { left: 0; background: linear-gradient(90deg, var(--bg, #fbf9f4), transparent); }
+.partner-logos__frame.is-scrollable::after { right: 0; background: linear-gradient(270deg, var(--bg, #fbf9f4), transparent); }
+.partner-logos__frame.at-start::before,
+.partner-logos__frame.at-end::after { opacity: 0; }
+.partner-logos__join { margin: 18px 0 0; text-align: center; color: #5b6b63; }
+.partner-logos__join a { font-weight: 700; color: var(--green, #1f5e3b); }
+@media (max-width: 700px) {
+	.partner-logos__track { --tile: 164px; gap: 14px; }
+	.partner-logos__mark { width: 96px; height: 96px; }
+	.partner-logos__nav { display: none; }
+	.partner-logos__frame.is-scrollable .partner-logos__track { padding-right: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+	.partner-logos__tile,
+	.partner-logos__nav { transition: none; }
+	.partner-logos__tile:hover { transform: none; }
 }

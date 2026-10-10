@@ -201,6 +201,13 @@ $contact = cohf_page_url( 'page-templates/page-contact.php' );
 		</section>
 	<?php endif; ?>
 
+	<?php
+	// Partner logos (14.10.0): proof that others already walk with the
+	// Foundation, placed after the evidence and before the partnership ask.
+	// Renders nothing until a partner is confirmed.
+	get_template_part( 'template-parts/partner-logos' );
+	?>
+
 	<!-- The change we seek -->
 	<section class="cream">
 		<div class="container feature">

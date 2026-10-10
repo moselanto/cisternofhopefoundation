@@ -85,6 +85,23 @@ function cohf_enqueue_assets() {
 		array( 'strategy' => 'defer', 'in_footer' => true )
 	);
 
+	// Homepage partner logo strip (14.10.0): only the front page uses it.
+	if ( is_front_page() || is_page_template( 'page-templates/page-home.php' ) ) {
+		$logos_js = $dir . 'js/partner-logos.js';
+		if ( file_exists( $logos_js ) ) {
+			wp_enqueue_script(
+				'cohf-partner-logos',
+				$uri . 'js/partner-logos.js',
+				array(),
+				(string) filemtime( $logos_js ),
+				array(
+					'strategy'  => 'defer',
+					'in_footer' => true,
+				)
+			);
+		}
+	}
+
 	// The leadership profile panel is only needed on that one page.
 	if ( is_page_template( 'page-templates/page-leadership.php' ) ) {
 		$lead = $dir . 'js/leadership.js';

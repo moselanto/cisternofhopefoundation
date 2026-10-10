@@ -145,9 +145,13 @@ function cohf_outreach_figures() {
  */
 function cohf_outreach_figures_default() {
 	return array(
-		array( 'value' => 82, 'label' => __( 'children reached', 'cohf-child' ), 'note' => __( 'Documented 19 August 2026 community programme.', 'cohf-child' ) ),
-		array( 'value' => 26, 'label' => __( 'teenagers among those participants', 'cohf-child' ), 'note' => __( 'Same documented programme.', 'cohf-child' ) ),
-		array( 'value' => 56, 'label' => __( 'children below teenage years', 'cohf-child' ), 'note' => __( 'Same documented programme.', 'cohf-child' ) ),
+		// 14.10.0: 297 children reached through our community efforts, as
+		// confirmed by the Foundation (October 2026). 82 was the attendance of
+		// the 19 August 2026 children's event only; the 26 / 56 split below
+		// still describes that one event, and its labels now say so.
+		array( 'value' => 297, 'label' => __( 'children reached', 'cohf-child' ), 'note' => __( 'Reached through our community efforts. Current reported figure.', 'cohf-child' ) ),
+		array( 'value' => 26, 'label' => __( 'teenagers at our 19 August 2026 children\'s event', 'cohf-child' ), 'note' => __( 'Of 82 children who attended that event.', 'cohf-child' ) ),
+		array( 'value' => 56, 'label' => __( 'children below teenage years at the same event', 'cohf-child' ), 'note' => __( 'Of 82 children who attended that event.', 'cohf-child' ) ),
 		array( 'value' => 0,  'text' => __( 'Quarterly', 'cohf-child' ), 'label' => __( 'youth counselling forums', 'cohf-child' ), 'note' => __( 'Held alongside mentorship and personal-development activities.', 'cohf-child' ) ),
 	);
 }
@@ -479,3 +483,29 @@ function cohf_update_reach_figures_v1() {
 	update_option( 'cohf_reach_figures_v1', COHF_CHILD_VERSION, false );
 }
 add_action( 'init', 'cohf_update_reach_figures_v1' );
+
+
+/**
+ * 14.10.0: children reached is 297, not 82.
+ *
+ * A value typed into the Customizer overrides the default, so a saved
+ * override still showing 82 is updated once, and a saved note or label that
+ * still describes the 19 August event is cleared so the new default shows.
+ * Any other saved value is left alone: staff may have entered something newer.
+ */
+function cohf_update_outreach_children_v1() {
+	if ( get_option( 'cohf_outreach_children_v1' ) ) {
+		return;
+	}
+	if ( '82' === trim( (string) get_theme_mod( 'cohf_fig_outreach_0_value', '' ) ) ) {
+		set_theme_mod( 'cohf_fig_outreach_0_value', 297 );
+	}
+	foreach ( array( 'note', 'label' ) as $field ) {
+		$key = 'cohf_fig_outreach_0_' . $field;
+		if ( false !== strpos( (string) get_theme_mod( $key, '' ), '19 August' ) ) {
+			remove_theme_mod( $key );
+		}
+	}
+	update_option( 'cohf_outreach_children_v1', COHF_CHILD_VERSION, false );
+}
+add_action( 'init', 'cohf_update_outreach_children_v1' );
