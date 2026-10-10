@@ -180,6 +180,10 @@ function cohf_partner_seed() {
 				__( 'The provision of dignity kits helps girls manage their menstrual health with dignity and confidence, while partial education support helps ease some of the financial challenges that can interrupt a child\'s education.', 'cohf-child' ),
 				__( 'This partnership has contributed to encouraging progress in school retention, with positive changes witnessed among girls and boys who continue to pursue their education.', 'cohf-child' ),
 				__( 'We are deeply grateful to Suivera Community for believing in our mission and helping us create an environment where children can learn, grow, and pursue a brighter future.', 'cohf-child' ),
+				/* translators: {impact_link} is replaced with a link to the Impact page; keep it. */
+				__( 'For more information about the reach of our education initiatives and the children we support, please visit our {impact_link}.', 'cohf-child' ),
+				__( 'Thank you, Suivera Community, for standing with us to protect girls\' dignity, support education, and keep hope alive.', 'cohf-child' ),
+				__( 'Together, we are building a long lasting change through dignity, education, and opportunity.', 'cohf-child' ),
 			),
 			'meta'    => array(
 				'status'       => 'current',
@@ -256,7 +260,13 @@ function cohf_partners_maybe_seed() {
 		if ( empty( $existing ) ) {
 			$content = '';
 			foreach ( $partner['body'] as $paragraph ) {
-				$content .= "<!-- wp:paragraph -->\n<p>" . esc_html( $paragraph ) . "</p>\n<!-- /wp:paragraph -->\n\n";
+				$html = esc_html( $paragraph );
+				if ( false !== strpos( $html, '{impact_link}' ) ) {
+					$impact_url = function_exists( 'cohf_page_url' ) ? cohf_page_url( 'page-templates/page-impact.php' ) : '';
+					$impact_url = $impact_url ? $impact_url : home_url( '/impact/' );
+					$html       = str_replace( '{impact_link}', '<a href="' . esc_url( $impact_url ) . '">' . esc_html__( 'Impact page', 'cohf-child' ) . '</a>', $html );
+				}
+				$content .= "<!-- wp:paragraph -->\n<p>" . $html . "</p>\n<!-- /wp:paragraph -->\n\n";
 			}
 
 			$meta = array( '_cohf_confirmed' => '1' );
