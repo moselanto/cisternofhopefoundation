@@ -22,7 +22,7 @@ while ( have_posts() ) :
 	$cohf_website      = cohf_field( 'website' );
 	$cohf_programme_id = (int) cohf_field( 'programme_id' );
 	$cohf_partners_url = function_exists( 'cohf_page_url' ) ? cohf_page_url( 'page-templates/page-partners.php' ) : home_url( '/partners-overview/' );
-	$cohf_bundled      = function_exists( 'cohf_partner_bundled_images' ) ? cohf_partner_bundled_images( get_post_field( 'post_name' ) ) : array( 'logo' => '', 'photo' => '' );
+	$cohf_bundled      = function_exists( 'cohf_partner_bundled_images' ) ? cohf_partner_bundled_images( get_post_field( 'post_name' ) ) : array( 'logo' => '', 'photo' => '', 'people' => array() );
 	$cohf_logo_url     = has_post_thumbnail() ? get_the_post_thumbnail_url( null, 'medium' ) : ( $cohf_bundled['logo'] ? cohf_img_url( $cohf_bundled['logo'] ) : '' );
 	$cohf_has_photo    = $cohf_bundled['photo'] && cohf_img_url( $cohf_bundled['photo'] );
 	$cohf_eyebrow      = 'past' === $cohf_status ? __( 'Past partner', 'cohf-child' ) : __( 'Current partner', 'cohf-child' );
@@ -61,6 +61,16 @@ while ( have_posts() ) :
 						</div>
 					<?php endif; ?>
 					<div class="prose"><?php the_content(); ?></div>
+					<?php
+					$cohf_people = array_filter( (array) $cohf_bundled['people'], 'cohf_img_url' );
+					if ( $cohf_people ) :
+						?>
+						<div class="partner-single__people">
+							<?php foreach ( $cohf_people as $cohf_person_key ) : ?>
+								<figure class="partner-single__person"><?php cohf_the_image( $cohf_person_key, array( 'sizes' => '160px' ) ); ?></figure>
+							<?php endforeach; ?>
+						</div>
+					<?php endif; ?>
 					<?php if ( $cohf_website ) : ?>
 						<p><a class="btn outline" href="<?php echo esc_url( $cohf_website ); ?>" rel="noopener" target="_blank"><?php esc_html_e( 'Visit their website', 'cohf-child' ); ?><span class="screen-reader-text"> <?php esc_html_e( '(opens in a new tab)', 'cohf-child' ); ?></span></a></p>
 					<?php endif; ?>

@@ -111,6 +111,10 @@ function cohf_image_library() {
 		'partner-deliverance-church-logo' => array( 'file' => 'partner-deliverance-church-logo.jpg', 'alt' => __( 'Deliverance Church, Cistern of Hope Center logo: a red cross above a blue triangle, with the words The Church of Choice and Luke 4:18.', 'cohf-child' ) ),
 		'partner-deliverance-church-feeding' => array( 'file' => 'partner-deliverance-church-feeding.jpg', 'alt' => __( 'Children seated on plastic chairs in a church compound being served porridge in cups at a Sunday-morning feeding session.', 'cohf-child' ) ),
 
+		'partner-australia-christmas-meal' => array( 'file' => 'partner-australia-christmas-meal.jpg', 'alt' => __( 'Rows of plates of samosas, watermelon, bananas, boiled eggs and snacks laid out for a Christmas 2024 meal, with a Foundation member holding a hand-written Merry Christmas thank-you sign for the supporters from Australia.', 'cohf-child' ) ),
+		'partner-australia-supporter-1' => array( 'file' => 'partner-australia-supporter-1.jpg', 'alt' => __( 'Portrait of one of the Foundation\'s supporters from Australia, smiling.', 'cohf-child' ) ),
+		'partner-australia-supporter-2' => array( 'file' => 'partner-australia-supporter-2.jpg', 'alt' => __( 'Portrait of one of the Foundation\'s supporters from Australia, smiling, wearing glasses and a pearl necklace.', 'cohf-child' ) ),
+
 		// Leadership portraits, supplied by the Foundation.
 		'leader-justus-kubai' => array( 'file' => 'leader-justus-kubai.jpg', 'alt' => __( 'Mr. Justus Kubai, Founder and Executive Director.', 'cohf-child' ) ),
 		'leader-henry-onzere' => array( 'file' => 'leader-henry-onzere.jpg', 'alt' => __( 'Henry Onzere, Chairperson of the Board of Directors.', 'cohf-child' ) ),

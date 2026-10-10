@@ -390,3 +390,7 @@ h1, h2, h3 { overflow-wrap: anywhere; hyphens: auto; text-wrap: balance; }
 .partner-single__photo img { width: 100%; height: auto; border-radius: 18px; display: block; }
 .partner-single__id { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
 .partner-single__id .partner-card__meta { margin: 0; }
+
+.partner-single__people { display: flex; flex-wrap: wrap; gap: 16px; margin: 24px 0; }
+.partner-single__person { margin: 0; width: 120px; height: 120px; border-radius: 50%; overflow: hidden; border: 3px solid var(--gold, #d9a441); background: #eef1ee; }
+.partner-single__person img { width: 100%; height: 100%; object-fit: cover; display: block; }

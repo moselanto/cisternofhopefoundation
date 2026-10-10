@@ -82,7 +82,8 @@ add_filter( 'wp_sitemaps_posts_query_args', 'cohf_partner_sitemap_args', 10, 2 )
  * can also be replaced from Appearance > Customize > Site photographs.
  *
  * @param string $slug Partner post slug.
- * @return array{logo:string,photo:string} Image keys, or '' when none.
+ * @return array{logo:string,photo:string,people:string[]} Image keys; '' or empty when none.
+ *         people: portraits of individual supporters, shown on the partner page.
  */
 function cohf_partner_bundled_images( $slug ) {
 	$map = array(
@@ -90,10 +91,15 @@ function cohf_partner_bundled_images( $slug ) {
 			'logo'  => 'partner-deliverance-church-logo',
 			'photo' => 'partner-deliverance-church-feeding',
 		),
+		'nellique-sylvia-kat-australia' => array(
+			'photo'  => 'partner-australia-christmas-meal',
+			'people' => array( 'partner-australia-supporter-1', 'partner-australia-supporter-2' ),
+		),
 	);
 	return wp_parse_args( isset( $map[ $slug ] ) ? $map[ $slug ] : array(), array(
-		'logo'  => '',
-		'photo' => '',
+		'logo'   => '',
+		'photo'  => '',
+		'people' => array(),
 	) );
 }
 
