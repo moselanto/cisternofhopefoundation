@@ -106,6 +106,11 @@ function cohf_image_library() {
 		'story-03-door-to-door' => array( 'file' => 'story-03-door-to-door.jpg', 'alt' => __( 'A Foundation staff member handing a pack of sanitary pads to a girl at her home.', 'cohf-child' ) ),
 		'story-04-back-to-school' => array( 'file' => 'story-04-back-to-school.jpg', 'alt' => __( 'Three boys in school uniform standing with their family outside their home.', 'cohf-child' ) ),
 
+		// Partner images, supplied by the Foundation (14.9.0). Used by
+		// cohf_partner_bundled_images() until a main image is set in wp-admin.
+		'partner-deliverance-church-logo' => array( 'file' => 'partner-deliverance-church-logo.jpg', 'alt' => __( 'Deliverance Church, Cistern of Hope Center logo: a red cross above a blue triangle, with the words The Church of Choice and Luke 4:18.', 'cohf-child' ) ),
+		'partner-deliverance-church-feeding' => array( 'file' => 'partner-deliverance-church-feeding.jpg', 'alt' => __( 'Children seated on plastic chairs in a church compound being served porridge in cups at a Sunday-morning feeding session.', 'cohf-child' ) ),
+
 		// Leadership portraits, supplied by the Foundation.
 		'leader-justus-kubai' => array( 'file' => 'leader-justus-kubai.jpg', 'alt' => __( 'Mr. Justus Kubai, Founder and Executive Director.', 'cohf-child' ) ),
 		'leader-henry-onzere' => array( 'file' => 'leader-henry-onzere.jpg', 'alt' => __( 'Henry Onzere, Chairperson of the Board of Directors.', 'cohf-child' ) ),

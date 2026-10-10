@@ -22,6 +22,9 @@ while ( have_posts() ) :
 	$cohf_website      = cohf_field( 'website' );
 	$cohf_programme_id = (int) cohf_field( 'programme_id' );
 	$cohf_partners_url = function_exists( 'cohf_page_url' ) ? cohf_page_url( 'page-templates/page-partners.php' ) : home_url( '/partners-overview/' );
+	$cohf_bundled      = function_exists( 'cohf_partner_bundled_images' ) ? cohf_partner_bundled_images( get_post_field( 'post_name' ) ) : array( 'logo' => '', 'photo' => '' );
+	$cohf_logo_url     = has_post_thumbnail() ? get_the_post_thumbnail_url( null, 'medium' ) : ( $cohf_bundled['logo'] ? cohf_img_url( $cohf_bundled['logo'] ) : '' );
+	$cohf_has_photo    = $cohf_bundled['photo'] && cohf_img_url( $cohf_bundled['photo'] );
 	$cohf_eyebrow      = 'past' === $cohf_status ? __( 'Past partner', 'cohf-child' ) : __( 'Current partner', 'cohf-child' );
 	?>
 	<main id="main-content" class="partner-single" tabindex="-1">
@@ -39,14 +42,23 @@ while ( have_posts() ) :
 
 		<section>
 			<div class="container story">
-				<?php if ( has_post_thumbnail() ) : ?>
-					<div class="partner-single__logo"><?php the_post_thumbnail( 'large', array( 'alt' => sprintf( /* translators: %s: partner name. */ __( '%s logo', 'cohf-child' ), get_the_title() ) ) ); ?></div>
+				<?php if ( $cohf_has_photo ) : ?>
+					<div class="partner-single__photo"><?php cohf_the_image( $cohf_bundled['photo'], array( 'sizes' => '(max-width: 60em) 100vw, 50vw' ) ); ?></div>
+				<?php elseif ( $cohf_logo_url ) : ?>
+					<div class="partner-single__logo"><img src="<?php echo esc_url( $cohf_logo_url ); ?>" alt="<?php echo esc_attr( sprintf( /* translators: %s: partner name. */ __( '%s logo', 'cohf-child' ), get_the_title() ) ); ?>" loading="lazy" decoding="async"></div>
 				<?php else : ?>
 					<div class="portrait partner-single__mono" aria-hidden="true"><?php echo esc_html( cohf_initials( get_the_title() ) ); ?></div>
 				<?php endif; ?>
 				<div class="story-copy">
-					<?php if ( $cohf_type ) : ?>
-						<p class="partner-card__meta"><?php echo esc_html( $cohf_type ); ?></p>
+					<?php if ( $cohf_type || ( $cohf_has_photo && $cohf_logo_url ) ) : ?>
+						<div class="partner-single__id">
+							<?php if ( $cohf_has_photo && $cohf_logo_url ) : ?>
+								<span class="partner-card__logo"><img src="<?php echo esc_url( $cohf_logo_url ); ?>" alt="<?php echo esc_attr( sprintf( /* translators: %s: partner name. */ __( '%s logo', 'cohf-child' ), get_the_title() ) ); ?>" width="64" height="64" loading="lazy" decoding="async"></span>
+							<?php endif; ?>
+							<?php if ( $cohf_type ) : ?>
+								<p class="partner-card__meta"><?php echo esc_html( $cohf_type ); ?></p>
+							<?php endif; ?>
+						</div>
 					<?php endif; ?>
 					<div class="prose"><?php the_content(); ?></div>
 					<?php if ( $cohf_website ) : ?>

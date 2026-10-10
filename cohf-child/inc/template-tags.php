@@ -345,6 +345,7 @@ function cohf_confirmed_partners( $status = '' ) {
 			'figure'       => cohf_field( 'figure', $id ),
 			'figure_label' => cohf_field( 'figure_label', $id ),
 			'logo_id'      => (int) get_post_thumbnail_id( $id ),
+			'bundled'      => function_exists( 'cohf_partner_bundled_images' ) ? cohf_partner_bundled_images( $cohf_partner_post->post_name ) : array( 'logo' => '', 'photo' => '' ),
 			'link'         => get_permalink( $id ),
 			'has_story'    => '' !== trim( wp_strip_all_tags( (string) $cohf_partner_post->post_content ) ),
 			'programme'    => $programme_id && 'publish' === get_post_status( $programme_id )

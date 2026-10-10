@@ -62,7 +62,14 @@ $cohf_group_count = count( array_filter( wp_list_pluck( $cohf_groups, 'items' ) 
 
 				<ul class="partner-grid">
 					<?php foreach ( $cohf_group['items'] as $cohf_p ) : ?>
-						<li class="partner-card partner-card--<?php echo esc_attr( $cohf_p['status'] ); ?>">
+						<?php
+						$cohf_photo_key = $cohf_p['bundled']['photo'];
+						$cohf_logo_key  = $cohf_p['bundled']['logo'];
+						?>
+						<li class="partner-card partner-card--<?php echo esc_attr( $cohf_p['status'] ); ?><?php echo ( $cohf_photo_key && cohf_img_url( $cohf_photo_key ) ) ? ' partner-card--photo' : ''; ?>">
+							<?php if ( $cohf_photo_key && cohf_img_url( $cohf_photo_key ) ) : ?>
+								<div class="partner-card__photo"><?php cohf_the_image( $cohf_photo_key, array( 'sizes' => '(max-width: 760px) 100vw, 400px' ) ); ?></div>
+							<?php endif; ?>
 							<div class="partner-card__head">
 								<?php if ( $cohf_p['logo_id'] ) : ?>
 									<span class="partner-card__logo">
@@ -72,6 +79,10 @@ $cohf_group_count = count( array_filter( wp_list_pluck( $cohf_groups, 'items' ) 
 											'loading' => 'lazy',
 										) );
 										?>
+									</span>
+								<?php elseif ( $cohf_logo_key && cohf_img_url( $cohf_logo_key ) ) : ?>
+									<span class="partner-card__logo">
+										<img src="<?php echo esc_url( cohf_img_url( $cohf_logo_key ) ); ?>" alt="<?php echo esc_attr( sprintf( /* translators: %s: partner name. */ __( '%s logo', 'cohf-child' ), $cohf_p['name'] ) ); ?>" width="64" height="64" loading="lazy" decoding="async">
 									</span>
 								<?php else : ?>
 									<span class="partner-card__logo partner-card__logo--mono" aria-hidden="true"><?php echo esc_html( function_exists( 'cohf_initials' ) ? cohf_initials( $cohf_p['name'] ) : mb_substr( $cohf_p['name'], 0, 1 ) ); ?></span>

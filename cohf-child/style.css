@@ -382,3 +382,11 @@ h1, h2, h3 { overflow-wrap: anywhere; hyphens: auto; text-wrap: balance; }
 @media print {
 	.partner-card { box-shadow: none; break-inside: avoid; }
 }
+
+/* Partner photographs (14.9.0). */
+.partner-card--photo { padding-top: 0; overflow: hidden; }
+.partner-card__photo { margin: 0 -26px 4px; aspect-ratio: 16 / 9; overflow: hidden; background: #eef1ee; }
+.partner-card__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.partner-single__photo img { width: 100%; height: auto; border-radius: 18px; display: block; }
+.partner-single__id { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.partner-single__id .partner-card__meta { margin: 0; }

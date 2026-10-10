@@ -75,6 +75,29 @@ function cohf_partner_sitemap_args( $args, $post_type ) {
 add_filter( 'wp_sitemaps_posts_query_args', 'cohf_partner_sitemap_args', 10, 2 );
 
 /**
+ * Logo and photograph bundled with the theme for a partner, by slug.
+ *
+ * A main image set on the partner in wp-admin always wins over the bundled
+ * logo. Keys refer to cohf_image_library() in inc/media.php, so each image
+ * can also be replaced from Appearance > Customize > Site photographs.
+ *
+ * @param string $slug Partner post slug.
+ * @return array{logo:string,photo:string} Image keys, or '' when none.
+ */
+function cohf_partner_bundled_images( $slug ) {
+	$map = array(
+		'deliverance-church-kabete-n' => array(
+			'logo'  => 'partner-deliverance-church-logo',
+			'photo' => 'partner-deliverance-church-feeding',
+		),
+	);
+	return wp_parse_args( isset( $map[ $slug ] ) ? $map[ $slug ] : array(), array(
+		'logo'  => '',
+		'photo' => '',
+	) );
+}
+
+/**
  * Partners supplied by the Foundation, in the order they were sent.
  *
  * @return array<int,array<string,mixed>>
