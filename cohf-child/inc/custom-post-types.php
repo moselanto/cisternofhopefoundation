@@ -136,7 +136,7 @@ function cohf_register_post_types() {
 			'menu_icon'   => 'dashicons-admin-links',
 			'rewrite'     => array( 'slug' => 'partners', 'with_front' => false ),
 			'has_archive' => false,
-			'supports'    => array( 'title', 'editor', 'thumbnail', 'page-attributes' ),
+			'supports'    => array( 'title', 'editor', 'excerpt', 'thumbnail', 'page-attributes', 'revisions' ),
 			'menu_pos'    => 28,
 		),
 	);

@@ -5,7 +5,7 @@ Template: cohf
 Author: Cistern of Hope Foundation
 Author URI: https://cisternofhope.org
 Description: Premium, human-centred child theme for Cistern of Hope Foundation (COHF), Kenya. Editorial design system, twelve programme areas, impact and story content structures, accountability and partnership architecture, WCAG-conscious markup and a performance-first asset strategy. Motto: Together for a lasting change.
-Version: 14.8.1
+Version: 14.9.0
 Requires at least: 6.2
 Requires PHP: 8.0
 License: GNU General Public License v2 or later
@@ -240,4 +240,145 @@ h1, h2, h3 { overflow-wrap: anywhere; hyphens: auto; text-wrap: balance; }
 	font-size: 14px;
 	color: var(--muted);
 	text-align: center;
+}
+
+
+/* ------------------------------------------------------------------
+ * 14.9.0 Our partners showcase (template-parts/partner-section.php)
+ * and single partner pages (single-cohf_partner.php).
+ * ------------------------------------------------------------------ */
+.partner-group + .partner-group { margin-top: 48px; }
+.partner-group__title {
+	margin: 0 0 18px;
+	font-size: 13px;
+	font-weight: 800;
+	letter-spacing: .12em;
+	text-transform: uppercase;
+	color: var(--green, #1f5e3b);
+}
+.partner-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+	gap: 24px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.partner-card {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	padding: 28px 26px 26px;
+	background: #fff;
+	border: 1px solid var(--line, #dfe6e1);
+	border-top: 4px solid var(--gold, #d9a441);
+	border-radius: 18px;
+	box-shadow: 0 1px 2px rgba(23, 35, 30, .05);
+	transition: transform .25s ease, box-shadow .25s ease;
+}
+.partner-card--past { border-top-color: var(--line, #dfe6e1); }
+.partner-card:hover,
+.partner-card:focus-within { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(23, 35, 30, .09); }
+.partner-card__head { display: flex; align-items: center; gap: 14px; }
+.partner-card__logo {
+	flex: 0 0 64px;
+	width: 64px;
+	height: 64px;
+	display: grid;
+	place-items: center;
+	overflow: hidden;
+	border-radius: 14px;
+	background: #fff;
+	border: 1px solid var(--line, #dfe6e1);
+}
+.partner-card__logo img { width: 100%; height: 100%; object-fit: contain; padding: 6px; }
+.partner-card__logo--mono {
+	background: var(--green, #1f5e3b);
+	border-color: var(--green, #1f5e3b);
+	color: #fff;
+	font: 700 20px/1 var(--font-display, Georgia, serif);
+	letter-spacing: .02em;
+}
+.partner-card__meta {
+	margin: 0 0 2px;
+	font-size: 12.5px;
+	font-weight: 700;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+	color: #5b6b63;
+}
+.partner-card__name { margin: 0; font-size: 21px; line-height: 1.25; text-wrap: balance; }
+.partner-card__tagline {
+	margin: 0;
+	font-family: var(--font-display, Georgia, serif);
+	font-style: italic;
+	font-size: 17px;
+	color: var(--green, #1f5e3b);
+}
+.partner-card__text { margin: 0; color: var(--ink, #1c1b19); }
+.partner-card__figure,
+.partner-single__figure {
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+	margin: 0;
+	padding: 12px 16px;
+	border-radius: 12px;
+	background: #fbf6ea;
+}
+.partner-card__figure strong,
+.partner-single__figure strong {
+	font: 700 30px/1 var(--font-display, Georgia, serif);
+	color: var(--green, #1f5e3b);
+}
+.partner-card__figure span,
+.partner-single__figure span { font-size: 14.5px; color: var(--ink, #1c1b19); }
+.partner-card__together { padding-top: 14px; border-top: 1px solid var(--line, #dfe6e1); }
+.partner-card__label {
+	margin: 0 0 8px;
+	font-size: 12.5px;
+	font-weight: 800;
+	letter-spacing: .1em;
+	text-transform: uppercase;
+	color: var(--green, #1f5e3b);
+}
+.partner-card__list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.partner-card__list li { position: relative; padding-left: 22px; font-size: 15px; line-height: 1.5; }
+.partner-card__list li::before {
+	content: "";
+	position: absolute;
+	left: 2px;
+	top: .5em;
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	background: var(--gold, #d9a441);
+}
+.partner-card__more {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	min-height: 44px;
+	margin-top: auto;
+	font-weight: 700;
+	color: var(--green, #1f5e3b);
+	text-decoration: none;
+}
+.partner-card__more:hover { text-decoration: underline; }
+.partner-card__more:focus-visible { outline: 3px solid var(--gold, #d9a441); outline-offset: 3px; border-radius: 6px; }
+
+.partner-single__logo img { width: 100%; height: auto; object-fit: contain; background: #fff; border-radius: 18px; }
+.partner-single__mono { background: var(--green, #1f5e3b); color: #fff; }
+.partner-single__together { display: grid; gap: 22px; }
+.partner-single__figure { justify-self: start; }
+.partner-single__programme { margin: 22px 0 0; }
+.partner-single__back { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+	.partner-card { transition: none; }
+	.partner-card:hover,
+	.partner-card:focus-within { transform: none; }
+}
+@media print {
+	.partner-card { box-shadow: none; break-inside: avoid; }
 }

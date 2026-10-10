@@ -60,9 +60,15 @@ $cohf_priority_areas = array(
 
 	// This page is a long single scroll; without this the only route to the
 	// enquiry form is to read past six sections.
+	// 14.9.0: "Our partners" sits straight after the message so visitors see
+	// who already walks with the Foundation before the invitation to join.
+	$cohf_has_partners = function_exists( 'cohf_confirmed_partners' ) && cohf_confirmed_partners();
+	$cohf_nav          = array( '#message' => __( 'Our message', 'cohf-child' ) );
+	if ( $cohf_has_partners ) {
+		$cohf_nav['#our-partners'] = __( 'Our partners', 'cohf-child' );
+	}
 	get_template_part( 'template-parts/section-nav', null, array(
-		'sections' => array(
-			'#message'             => __( 'Our message', 'cohf-child' ),
+		'sections' => $cohf_nav + array(
 			'#who-we-partner-with' => __( 'Who we work with', 'cohf-child' ),
 			'#opportunities'       => __( 'Opportunities', 'cohf-child' ),
 			'#priority-areas'      => __( 'Priority areas', 'cohf-child' ),
@@ -85,7 +91,9 @@ $cohf_priority_areas = array(
 		</div>
 	</section>
 
-	<section class="cream" id="who-we-partner-with">
+	<?php get_template_part( 'template-parts/partner-section' ); ?>
+
+	<section id="who-we-partner-with">
 		<div class="container">
 			<div class="section-head">
 				<div>
@@ -104,7 +112,7 @@ $cohf_priority_areas = array(
 		</div>
 	</section>
 
-	<section id="opportunities">
+	<section class="cream" id="opportunities">
 		<div class="container">
 			<div class="section-head">
 				<div>
@@ -129,7 +137,7 @@ $cohf_priority_areas = array(
 		</div>
 	</section>
 
-	<section class="cream" id="priority-areas">
+	<section id="priority-areas">
 		<div class="container">
 			<div class="section-head">
 				<div>
@@ -180,7 +188,6 @@ $cohf_priority_areas = array(
 		</div>
 	</section>
 
-	<?php get_template_part( 'template-parts/partner-section' ); ?>
 
 	<section id="enquire">
 		<div class="container">

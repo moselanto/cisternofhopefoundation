@@ -39,7 +39,7 @@ No page builder is required. No premium plugin is required. No external font or 
 | An annual or programme report (PDF) | **Reports** |
 | A policy or publication | **Resources** |
 | A team member | **Leadership** |
-| A confirmed partner | **Partners** |
+| A current or past partner, and what you achieved together | **Partners** (tick *Partnership confirmed in writing*; set *Current or past partner*, headline, accomplishments, optional figure; the main image is the logo) |
 | Page wording | **Pages** |
 | Phone, email, postal address, social media links | **Foundation → Organisation details** |
 | Top menu | **Appearance → Menus** |
@@ -84,6 +84,7 @@ cohf-child/
     media.php, photos.php, leader-photos.php   Bundled photo library + overrides
     custom-post-types.php        Post types and taxonomies
     custom-fields.php            Native metaboxes (no ACF dependency)
+    partners.php                 Partner visibility rules (404 + sitemap) and Foundation-supplied partner seeds
     customizer.php               Photos and impact figures editable in the Customizer
     gallery.php                  Gallery post type, import and assets
     page-body.php, page-seeds.php, story-seeds.php   Editable page and story content

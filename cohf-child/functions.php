@@ -10,7 +10,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'COHF_CHILD_VERSION', '14.8.1' );
+define( 'COHF_CHILD_VERSION', '14.9.0' );
 define( 'COHF_CHILD_DIR', get_stylesheet_directory() );
 define( 'COHF_CHILD_URI', get_stylesheet_directory_uri() );
 
@@ -55,6 +55,7 @@ foreach ( array(
 	'photos',
 	'custom-post-types',
 	'custom-fields',
+	'partners',
 	'admin-experience',
 	'content-defaults',
 	'forms',

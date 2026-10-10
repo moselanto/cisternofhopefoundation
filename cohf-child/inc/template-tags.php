@@ -281,11 +281,17 @@ function cohf_partnership_offers() {
  * Reads the cohf_partner content type and returns only entries whose
  * "Partnership confirmed in writing" box is ticked. An empty array is a valid
  * and expected result: the Foundation publishes no placeholder or aspirational
- * partners, so the Partners page shows an honest empty state instead.
+ * partners, so the Partners page shows no partner section at all.
  *
- * @return array<int,array<string,string>> Each: name, text, url, type.
+ * 14.9.0: each partner now carries its status (current or past), a headline,
+ * the partnership period, what was accomplished together, an optional
+ * reported figure and a link to its own page, so the Partners page can
+ * showcase the relationship rather than list a name.
+ *
+ * @param string $status Optional. 'current' or 'past' to filter; '' for all.
+ * @return array<int,array<string,mixed>>
  */
-function cohf_confirmed_partners() {
+function cohf_confirmed_partners( $status = '' ) {
 	if ( ! post_type_exists( 'cohf_partner' ) ) {
 		return array();
 	}
@@ -312,11 +318,38 @@ function cohf_confirmed_partners() {
 	$partners = array();
 
 	foreach ( $posts as $cohf_partner_post ) {
+		$id            = (int) $cohf_partner_post->ID;
+		$cohf_p_status = 'past' === cohf_field( 'status', $id ) ? 'past' : 'current';
+
+		if ( $status && $status !== $cohf_p_status ) {
+			continue;
+		}
+
+		$excerpt = trim( (string) $cohf_partner_post->post_excerpt );
+		if ( '' === $excerpt ) {
+			$excerpt = wp_trim_words( wp_strip_all_tags( (string) $cohf_partner_post->post_content ), 28, '&hellip;' );
+		}
+
+		$programme_id = (int) cohf_field( 'programme_id', $id );
+
 		$partners[] = array(
-			'name' => get_the_title( $cohf_partner_post ),
-			'text' => wp_trim_words( wp_strip_all_tags( (string) $cohf_partner_post->post_content ), 28, '&hellip;' ),
-			'url'  => cohf_field( 'website', $cohf_partner_post->ID ),
-			'type' => cohf_field( 'partner_type', $cohf_partner_post->ID ),
+			'id'           => $id,
+			'name'         => get_the_title( $cohf_partner_post ),
+			'text'         => $excerpt,
+			'url'          => cohf_field( 'website', $id ),
+			'type'         => cohf_field( 'partner_type', $id ),
+			'status'       => $cohf_p_status,
+			'tagline'      => cohf_field( 'tagline', $id ),
+			'period'       => cohf_field( 'period', $id ),
+			'achievements' => cohf_field_lines( 'achievements', $id ),
+			'figure'       => cohf_field( 'figure', $id ),
+			'figure_label' => cohf_field( 'figure_label', $id ),
+			'logo_id'      => (int) get_post_thumbnail_id( $id ),
+			'link'         => get_permalink( $id ),
+			'has_story'    => '' !== trim( wp_strip_all_tags( (string) $cohf_partner_post->post_content ) ),
+			'programme'    => $programme_id && 'publish' === get_post_status( $programme_id )
+				? array( 'title' => get_the_title( $programme_id ), 'url' => get_permalink( $programme_id ) )
+				: array(),
 		);
 	}
 

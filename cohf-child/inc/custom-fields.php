@@ -99,9 +99,19 @@ function cohf_field_schema() {
 		'cohf_partner' => array(
 			'title'  => __( 'Partner details', 'cohf-child' ),
 			'fields' => array(
-				'partner_type' => array( 'label' => __( 'Partner type', 'cohf-child' ), 'type' => 'text' ),
-				'website'      => array( 'label' => __( 'Website', 'cohf-child' ), 'type' => 'url' ),
-				'confirmed'    => array( 'label' => __( 'Partnership confirmed in writing', 'cohf-child' ), 'type' => 'checkbox', 'hint' => __( 'Only confirmed partners appear on the website. Unconfirmed entries stay hidden.', 'cohf-child' ) ),
+				'confirmed'     => array( 'label' => __( 'Partnership confirmed in writing', 'cohf-child' ), 'type' => 'checkbox', 'hint' => __( 'Only confirmed partners appear on the website. Unconfirmed entries stay hidden, and their page returns "not found".', 'cohf-child' ) ),
+				'status'        => array( 'label' => __( 'Current or past partner', 'cohf-child' ), 'type' => 'select', 'options' => array(
+					'current' => __( 'Current partner', 'cohf-child' ),
+					'past'    => __( 'Past partner', 'cohf-child' ),
+				), 'hint' => __( 'Decides whether the partner is listed under "Current partners" or "Past partners". Left empty, the partner is treated as current.', 'cohf-child' ) ),
+				'tagline'       => array( 'label' => __( 'Headline', 'cohf-child' ), 'type' => 'text', 'hint' => __( 'A short line about the partnership, e.g. "Our First Believer in Hope".', 'cohf-child' ) ),
+				'partner_type'  => array( 'label' => __( 'Partner type', 'cohf-child' ), 'type' => 'text', 'hint' => __( 'e.g. Faith-based organisation, Foundation, Private company.', 'cohf-child' ) ),
+				'period'        => array( 'label' => __( 'Partnership period', 'cohf-child' ), 'type' => 'text', 'hint' => __( 'e.g. "Since 2021" or "2022 - 2024". Leave empty if the Foundation has not confirmed the dates.', 'cohf-child' ) ),
+				'achievements'  => array( 'label' => __( 'What we accomplished together', 'cohf-child' ), 'type' => 'repeater_lines', 'hint' => __( 'One accomplishment per line. Shown as a list on the partner card and the partner page. Use only what the Foundation has confirmed.', 'cohf-child' ) ),
+				'figure'        => array( 'label' => __( 'Headline figure (optional)', 'cohf-child' ), 'type' => 'text', 'hint' => __( 'A single reported number from the partnership, e.g. "297". Never estimate; leave empty if there is no recorded figure.', 'cohf-child' ) ),
+				'figure_label'  => array( 'label' => __( 'What the figure counts', 'cohf-child' ), 'type' => 'text', 'hint' => __( 'e.g. "children reached through this partnership".', 'cohf-child' ) ),
+				'programme_id'  => array( 'label' => __( 'Related programme (optional)', 'cohf-child' ), 'type' => 'select_post', 'post_type' => 'cohf_programme' ),
+				'website'       => array( 'label' => __( 'Website', 'cohf-child' ), 'type' => 'url' ),
 			),
 		),
 	);
