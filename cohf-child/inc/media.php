@@ -118,6 +118,8 @@ function cohf_image_library() {
 		'partner-suivera-community-logo' => array( 'file' => 'partner-suivera-community-logo.jpg', 'alt' => __( 'Suivera Community logo: a light green interwoven heart on a dark green background.', 'cohf-child' ) ),
 
 		'partner-warriornotes-logo' => array( 'file' => 'partner-warriornotes-logo.jpg', 'alt' => __( 'WarriorNotes Australia logo: the letters W and N with a sword across an Australian flag, in a black circle.', 'cohf-child' ) ),
+		'partner-rosie-kuhn-logo' => array( 'file' => 'partner-rosie-kuhn-logo.jpg', 'alt' => __( 'The Paradigm Shifts logo: a golden sunburst and swirl beside the words The Paradigm Shifts, with the line Cultivating Enlightened Living.', 'cohf-child' ) ),
+
 		'partner-warriornotes-shoes' => array( 'file' => 'partner-warriornotes-shoes.jpg', 'alt' => __( 'Children holding up their new school shoes and socks, with a Foundation team member holding a hand-written thank-you sign for Bro. Simon and the WarriorNotes family.', 'cohf-child' ) ),
 
 		// Leadership portraits, supplied by the Foundation.
