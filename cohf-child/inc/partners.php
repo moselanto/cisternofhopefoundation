@@ -98,6 +98,9 @@ function cohf_partner_bundled_images( $slug ) {
 		'suivera-community'           => array(
 			'logo' => 'partner-suivera-community-logo',
 		),
+		'dr-rosie-kuhn'               => array(
+			'logo' => 'partner-rosie-kuhn-logo',
+		),
 		'nellique-sylvia-kat-australia' => array(
 			'photo'  => 'partner-australia-christmas-meal',
 			'people' => array( 'partner-australia-supporter-1', 'partner-australia-supporter-2' ),
@@ -229,6 +232,36 @@ function cohf_partner_seed() {
 				'figure_label' => __( 'children given shoes and socks for the new school term', 'cohf-child' ),
 			),
 		),
+		array(
+			'slug'    => 'dr-rosie-kuhn',
+			'title'   => 'Dr. Rosie Kuhn',
+			'order'   => 5,
+			'excerpt' => __( 'Volunteer life coach and leadership development supporter, investing her time, wisdom and heart in our leadership team through life coaching, training and mentorship.', 'cohf-child' ),
+			'body'    => array(
+				__( 'At Cistern of Hope Foundation, we are deeply grateful to Dr. Rosie Kuhn for her incredible generosity, dedication, and commitment to our leadership team.', 'cohf-child' ),
+				__( 'Through her life coaching, training, and mentorship, Dr. Rosie has given us far more than knowledge and skills; she has invested her time, wisdom, and heart in helping us grow as individuals and as leaders. Her willingness to walk alongside us on this journey has been a meaningful gift to our foundation.', 'cohf-child' ),
+				__( 'We believe that transforming lives and communities begins with leaders who are continually growing, learning, and becoming better equipped to serve others. Dr. Rosie\'s contribution has been an important part of that journey, strengthening us to lead with greater purpose, confidence, and compassion.', 'cohf-child' ),
+				__( 'Dr. Rosie, thank you for believing in us, for pouring into our lives, and for sharing your gifts so generously. Your investment reaches beyond the training sessions; it touches the lives we serve and the communities we are committed to transforming.', 'cohf-child' ),
+				__( 'You may never fully see the extent of the impact you are making, but please know that your generosity is valued, your contribution is deeply appreciated, and your investment in our leaders will continue to bear fruit in the lives of others.', 'cohf-child' ),
+				__( 'With heartfelt gratitude and appreciation, we honour you, Dr. Rosie Kuhn, for being part of the Cistern of Hope Foundation journey.', 'cohf-child' ),
+				/* translators: {website_link} is replaced with a link to the partner's website; keep it. */
+				__( 'Learn more about Dr. Rosie Kuhn and her work at {website_link}.', 'cohf-child' ),
+			),
+			'meta'    => array(
+				'status'       => 'current',
+				'tagline'      => __( 'A Heartfelt Appreciation for Investing in Our Leaders', 'cohf-child' ),
+				'partner_type' => __( 'Volunteer Life Coach & Leadership Development Supporter', 'cohf-child' ),
+				'period'       => '',
+				'website'      => 'https://theparadigmshifts.com',
+				'achievements' => implode( "\n", array(
+					__( 'Life coaching for our leadership team', 'cohf-child' ),
+					__( 'Leadership training and mentorship', 'cohf-child' ),
+					__( 'Strengthening our leaders to serve with greater purpose, confidence and compassion', 'cohf-child' ),
+				) ),
+				'figure'       => '',
+				'figure_label' => '',
+			),
+		),
 	);
 }
 
@@ -269,6 +302,12 @@ function cohf_partners_maybe_seed() {
 					$impact_url = function_exists( 'cohf_page_url' ) ? cohf_page_url( 'page-templates/page-impact.php' ) : '';
 					$impact_url = $impact_url ? $impact_url : home_url( '/impact/' );
 					$html       = str_replace( '{impact_link}', '<a href="' . esc_url( $impact_url ) . '">' . esc_html__( 'Impact page', 'cohf-child' ) . '</a>', $html );
+				}
+				if ( false !== strpos( $html, '{website_link}' ) ) {
+					$site = isset( $partner['meta']['website'] ) ? (string) $partner['meta']['website'] : '';
+					$host = $site ? preg_replace( '#^www\.#', '', (string) wp_parse_url( $site, PHP_URL_HOST ) ) : '';
+					$link = $site ? '<a href="' . esc_url( $site ) . '" rel="noopener" target="_blank">' . esc_html( $host ? $host : $site ) . '<span class="screen-reader-text"> ' . esc_html__( '(opens in a new tab)', 'cohf-child' ) . '</span></a>' : '';
+					$html = str_replace( '{website_link}', $link, $html );
 				}
 				$content .= "<!-- wp:paragraph -->\n<p>" . $html . "</p>\n<!-- /wp:paragraph -->\n\n";
 			}
