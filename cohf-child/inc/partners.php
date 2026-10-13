@@ -82,8 +82,10 @@ add_filter( 'wp_sitemaps_posts_query_args', 'cohf_partner_sitemap_args', 10, 2 )
  * can also be replaced from Appearance > Customize > Site photographs.
  *
  * @param string $slug Partner post slug.
- * @return array{logo:string,photo:string,people:string[]} Image keys; '' or empty when none.
+ * @return array{logo:string,photo:string,brand:string,people:string[]} Image keys; '' or empty when none.
  *         people: portraits of individual supporters, shown on the partner page.
+ *         brand: an organisation logo shown in the partner page content, for a
+ *         partner whose tile uses a portrait instead of a logo.
  */
 function cohf_partner_bundled_images( $slug ) {
 	$map = array(
@@ -98,8 +100,13 @@ function cohf_partner_bundled_images( $slug ) {
 		'suivera-community'           => array(
 			'logo' => 'partner-suivera-community-logo',
 		),
+		// At her request, her portrait stands in for a logo on the homepage
+		// strip and partner cards; The Paradigm Shifts logo appears in the
+		// content of her page beside her website link.
 		'dr-rosie-kuhn'               => array(
-			'logo' => 'partner-rosie-kuhn-logo',
+			'logo'  => 'partner-rosie-kuhn-portrait',
+			'photo' => 'partner-rosie-kuhn-photo',
+			'brand' => 'partner-rosie-kuhn-logo',
 		),
 		'nellique-sylvia-kat-australia' => array(
 			'photo'  => 'partner-australia-christmas-meal',
@@ -109,6 +116,7 @@ function cohf_partner_bundled_images( $slug ) {
 	return wp_parse_args( isset( $map[ $slug ] ) ? $map[ $slug ] : array(), array(
 		'logo'   => '',
 		'photo'  => '',
+		'brand'  => '',
 		'people' => array(),
 	) );
 }
