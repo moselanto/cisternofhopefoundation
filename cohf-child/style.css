@@ -5,7 +5,7 @@ Template: cohf
 Author: Cistern of Hope Foundation
 Author URI: https://cisternofhope.org
 Description: Premium, human-centred child theme for Cistern of Hope Foundation (COHF), Kenya. Editorial design system, twelve programme areas, impact and story content structures, accountability and partnership architecture, WCAG-conscious markup and a performance-first asset strategy. Motto: Together for a lasting change.
-Version: 14.12.0
+Version: 14.12.1
 Requires at least: 6.2
 Requires PHP: 8.0
 License: GNU General Public License v2 or later
@@ -618,3 +618,9 @@ h1, h2, h3 { overflow-wrap: anywhere; hyphens: auto; text-wrap: balance; }
 	.partner-logos__nav { transition: none; }
 	.partner-logos__tile:hover { transform: none; }
 }
+
+/* 14.12.1: organisation logo in a partner page's content (Dr. Rosie Kuhn). */
+.partner-single__brand { margin: 32px 0 16px; }
+.partner-single__brand a { display: inline-block; border-radius: 12px; }
+.partner-single__brand a:focus-visible { outline: 3px solid var(--green, #1f5e3b); outline-offset: 4px; }
+.partner-single__brand img { display: block; width: 200px; max-width: 60%; height: auto; }

@@ -22,9 +22,12 @@ while ( have_posts() ) :
 	$cohf_website      = cohf_field( 'website' );
 	$cohf_programme_id = (int) cohf_field( 'programme_id' );
 	$cohf_partners_url = function_exists( 'cohf_page_url' ) ? cohf_page_url( 'page-templates/page-partners.php' ) : home_url( '/partners-overview/' );
-	$cohf_bundled      = function_exists( 'cohf_partner_bundled_images' ) ? cohf_partner_bundled_images( get_post_field( 'post_name' ) ) : array( 'logo' => '', 'photo' => '', 'people' => array() );
+	$cohf_bundled      = function_exists( 'cohf_partner_bundled_images' ) ? cohf_partner_bundled_images( get_post_field( 'post_name' ) ) : array( 'logo' => '', 'photo' => '', 'brand' => '', 'people' => array() );
 	$cohf_logo_url     = has_post_thumbnail() ? get_the_post_thumbnail_url( null, 'medium' ) : ( $cohf_bundled['logo'] ? cohf_img_url( $cohf_bundled['logo'] ) : '' );
 	$cohf_has_photo    = $cohf_bundled['photo'] && cohf_img_url( $cohf_bundled['photo'] );
+	$cohf_brand_key    = ! empty( $cohf_bundled['brand'] ) && cohf_img_url( $cohf_bundled['brand'] ) ? $cohf_bundled['brand'] : '';
+	// A partner with a separate brand logo uses a portrait as its tile image, so do not repeat it beside the photo.
+	$cohf_id_logo      = $cohf_has_photo && $cohf_logo_url && ! $cohf_brand_key;
 	$cohf_eyebrow      = 'past' === $cohf_status ? __( 'Past partner', 'cohf-child' ) : __( 'Current partner', 'cohf-child' );
 	?>
 	<main id="main-content" class="partner-single" tabindex="-1">
@@ -50,9 +53,9 @@ while ( have_posts() ) :
 					<div class="portrait partner-single__mono" aria-hidden="true"><?php echo esc_html( cohf_initials( get_the_title() ) ); ?></div>
 				<?php endif; ?>
 				<div class="story-copy">
-					<?php if ( $cohf_type || ( $cohf_has_photo && $cohf_logo_url ) ) : ?>
+					<?php if ( $cohf_type || $cohf_id_logo ) : ?>
 						<div class="partner-single__id">
-							<?php if ( $cohf_has_photo && $cohf_logo_url ) : ?>
+							<?php if ( $cohf_id_logo ) : ?>
 								<span class="partner-card__logo"><img src="<?php echo esc_url( $cohf_logo_url ); ?>" alt="<?php echo esc_attr( sprintf( /* translators: %s: partner name. */ __( '%s logo', 'cohf-child' ), get_the_title() ) ); ?>" width="64" height="64" loading="lazy" decoding="async"></span>
 							<?php endif; ?>
 							<?php if ( $cohf_type ) : ?>
@@ -70,6 +73,13 @@ while ( have_posts() ) :
 								<figure class="partner-single__person"><?php cohf_the_image( $cohf_person_key, array( 'sizes' => '160px' ) ); ?></figure>
 							<?php endforeach; ?>
 						</div>
+					<?php endif; ?>
+					<?php if ( $cohf_brand_key ) : ?>
+						<figure class="partner-single__brand">
+							<?php if ( $cohf_website ) : ?><a href="<?php echo esc_url( $cohf_website ); ?>" rel="noopener" target="_blank"><?php endif; ?>
+							<img src="<?php echo esc_url( cohf_img_url( $cohf_brand_key ) ); ?>" alt="<?php echo esc_attr( cohf_img_alt( $cohf_brand_key ) ); ?>" width="240" height="240" loading="lazy" decoding="async">
+							<?php if ( $cohf_website ) : ?><span class="screen-reader-text"> <?php esc_html_e( '(opens in a new tab)', 'cohf-child' ); ?></span></a><?php endif; ?>
+						</figure>
 					<?php endif; ?>
 					<?php if ( $cohf_website ) : ?>
 						<p><a class="btn outline" href="<?php echo esc_url( $cohf_website ); ?>" rel="noopener" target="_blank"><?php esc_html_e( 'Visit their website', 'cohf-child' ); ?><span class="screen-reader-text"> <?php esc_html_e( '(opens in a new tab)', 'cohf-child' ); ?></span></a></p>
