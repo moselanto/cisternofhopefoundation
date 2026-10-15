@@ -23,6 +23,108 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
+ * Build block markup for a seeded story body.
+ *
+ * Each item is either a plain paragraph string or an array with one of:
+ * - 'h2'    => heading text
+ * - 'quote' => pull-quote text, with an optional 'cite'
+ * - 'html'  => a prepared HTML block (passed through wp_kses_post)
+ *
+ * @param array $body Story body items.
+ * @return string Block markup.
+ */
+function cohf_story_body_html( $body ) {
+	$content = '';
+	foreach ( (array) $body as $item ) {
+		if ( is_array( $item ) && isset( $item['h2'] ) ) {
+			$content .= "<!-- wp:heading -->\n<h2 class=\"wp-block-heading\">" . esc_html( $item['h2'] ) . "</h2>\n<!-- /wp:heading -->\n\n";
+		} elseif ( is_array( $item ) && isset( $item['quote'] ) ) {
+			$cite     = ! empty( $item['cite'] ) ? '<cite>' . esc_html( $item['cite'] ) . '</cite>' : '';
+			$content .= "<!-- wp:quote {\"className\":\"story-pullquote\"} -->\n<blockquote class=\"wp-block-quote story-pullquote\"><p>" . esc_html( $item['quote'] ) . '</p>' . $cite . "</blockquote>\n<!-- /wp:quote -->\n\n";
+		} elseif ( is_array( $item ) && isset( $item['html'] ) ) {
+			$content .= "<!-- wp:html -->\n" . wp_kses_post( $item['html'] ) . "\n<!-- /wp:html -->\n\n";
+		} elseif ( is_string( $item ) ) {
+			$content .= "<!-- wp:paragraph -->\n<p>" . wp_kses_post( $item ) . "</p>\n<!-- /wp:paragraph -->\n\n";
+		}
+	}
+	return trim( $content );
+}
+
+/**
+ * Body of Sam's story (14.13.1): the Foundation's text, set out with
+ * headings, an at-a-glance panel, a pull quote and a support appeal. Every
+ * fact comes from the text the Foundation supplied; nothing has been added.
+ *
+ * @return array Story body items for cohf_story_body_html().
+ */
+function cohf_story_sam_body() {
+	$glance = '<div class="story-glance">'
+		. '<div class="story-glance__item"><span class="story-glance__label">' . esc_html__( 'Started with', 'cohf-child' ) . '</span><strong>' . esc_html__( 'One packet of wheat flour', 'cohf-child' ) . '</strong></div>'
+		. '<div class="story-glance__item"><span class="story-glance__label">' . esc_html__( 'Now', 'cohf-child' ) . '</span><strong>' . esc_html__( 'Supplying mandazi to shops in his village', 'cohf-child' ) . '</strong></div>'
+		. '<div class="story-glance__item"><span class="story-glance__label">' . esc_html__( 'Next step', 'cohf-child' ) . '</span><strong>' . esc_html__( 'His own cafeteria', 'cohf-child' ) . '</strong></div>'
+		. '</div>';
+
+	$appeal = '<div class="story-appeal">'
+		. '<p class="story-appeal__kicker">' . esc_html__( 'Help Sam grow', 'cohf-child' ) . '</p>'
+		. '<h2 class="story-appeal__title">' . esc_html__( 'Will you help Sam take the next step?', 'cohf-child' ) . '</h2>'
+		. '<p>' . esc_html__( 'You can be part of Sam\'s journey by supporting his transition from a small village-based business to a sustainable cafeteria. Your contribution, whether financial or through other practical support, can help turn his hard work and determination into a lasting success story.', 'cohf-child' ) . '</p>'
+		. '<p class="story-appeal__needs-title">' . esc_html__( 'What Sam needs to open his cafeteria', 'cohf-child' ) . '</p>'
+		. '<ul class="story-appeal__needs">'
+		. '<li>' . esc_html__( 'A suitable business premises', 'cohf-child' ) . '</li>'
+		. '<li>' . esc_html__( 'The necessary licences', 'cohf-child' ) . '</li>'
+		. '<li>' . esc_html__( 'The essential resources to establish his cafeteria', 'cohf-child' ) . '</li>'
+		. '</ul>'
+		. '<p>' . esc_html__( 'Join Cistern of Hope Foundation in helping Sam grow his business, strengthen his family\'s future, and create opportunities for others.', 'cohf-child' ) . '</p>'
+		. '<p class="story-appeal__actions">'
+		. '<a class="btn gold" href="' . esc_url( home_url( '/support-our-work/' ) ) . '">' . esc_html__( 'Support Sam\'s next step', 'cohf-child' ) . '</a> '
+		. '<a class="btn outline" href="' . esc_url( home_url( '/contact/' ) ) . '">' . esc_html__( 'Offer practical support', 'cohf-child' ) . '</a>'
+		. '</p>'
+		. '</div>';
+
+	return array(
+		__( 'Sam is one of the beneficiaries of Cistern of Hope Foundation\'s start-up business empowerment initiative. His journey is a powerful example of how a small opportunity, combined with determination and hard work, can become the foundation for a brighter future.', 'cohf-child' ),
+		array( 'html' => $glance ),
+		array( 'h2' => __( 'A small beginning', 'cohf-child' ) ),
+		__( 'Sam began his business with just one packet of wheat flour, making mandazi to sell to his neighbours. Through commitment, perseverance, and a vision for something greater, his small venture has steadily grown.', 'cohf-child' ),
+		__( 'He now supplies mandazi to small shops within his village, taking meaningful steps towards building a sustainable livelihood for himself and his family.', 'cohf-child' ),
+		array( 'h2' => __( 'A growing dream', 'cohf-child' ) ),
+		__( 'But Sam\'s dream does not end here. He envisions expanding his business into a cafeteria where he can serve more people, grow his income, support his family, and eventually create employment opportunities for others in his community.', 'cohf-child' ),
+		array(
+			'quote' => __( 'Every small beginning deserves an opportunity to grow.', 'cohf-child' ),
+			'cite'  => __( 'Cistern of Hope Foundation', 'cohf-child' ),
+		),
+		__( 'We want to walk alongside Sam as he takes the next step towards his dream by helping him secure a suitable business premises, obtain the necessary licences, and acquire the essential resources needed to establish his cafeteria.', 'cohf-child' ),
+		__( 'With the right support, Sam\'s dream can become a reality, not only changing his own life and that of his family, but also opening doors of opportunity for others.', 'cohf-child' ),
+		array( 'html' => $appeal ),
+	);
+}
+
+/**
+ * 14.13.1: bring an already-seeded copy of Sam's story up to the new layout.
+ *
+ * Runs once in wp-admin, and only while the story still carries the 14.13.0
+ * text (a plain bold appeal line and no appeal panel). A story an editor has
+ * reworked is left alone.
+ */
+function cohf_story_refresh_sam() {
+	if ( get_option( 'cohf_sam_story_refreshed' ) || ! is_admin() || ! current_user_can( 'edit_posts' ) || ! post_type_exists( 'cohf_story' ) ) {
+		return;
+	}
+	$post = get_page_by_path( 'enterprise-mandazi-sam', OBJECT, 'cohf_story' );
+	if ( $post ) {
+		$content = (string) $post->post_content;
+		if ( false !== strpos( $content, '<strong>Will you help Sam take the next step?</strong>' ) && false === strpos( $content, 'story-appeal' ) ) {
+			wp_update_post( array(
+				'ID'           => $post->ID,
+				'post_content' => cohf_story_body_html( cohf_story_sam_body() ),
+			) );
+		}
+	}
+	update_option( 'cohf_sam_story_refreshed', COHF_CHILD_VERSION, false );
+}
+add_action( 'admin_init', 'cohf_story_refresh_sam', 27 );
+
+/**
  * The stories supplied by the Foundation, oldest first.
  *
  * @return array<int,array<string,mixed>>
@@ -161,17 +263,7 @@ function cohf_story_seed() {
 				array( 'key' => 'story-08-sam-full', 'label' => __( 'Sam at work', 'cohf-child' ), 'caption' => __( 'Sam frying mandazi, with a tray of finished mandazi and cut dough ready on the table beside him.', 'cohf-child' ) ),
 			),
 			'excerpt'   => __( 'A small beginning, a growing dream, and an opportunity to transform lives. Sam started with one packet of wheat flour and now supplies mandazi to shops in his village.', 'cohf-child' ),
-			'body'      => array(
-				__( 'Sam is one of the beneficiaries of Cistern of Hope Foundation\'s start-up business empowerment initiative. His journey is a powerful example of how a small opportunity, combined with determination and hard work, can become the foundation for a brighter future.', 'cohf-child' ),
-				__( 'Sam began his business with just one packet of wheat flour, making mandazi to sell to his neighbours. Through commitment, perseverance, and a vision for something greater, his small venture has steadily grown. He now supplies mandazi to small shops within his village, taking meaningful steps towards building a sustainable livelihood for himself and his family.', 'cohf-child' ),
-				__( 'But Sam\'s dream does not end here. He envisions expanding his business into a cafeteria where he can serve more people, grow his income, support his family, and eventually create employment opportunities for others in his community.', 'cohf-child' ),
-				__( 'At Cistern of Hope Foundation, we believe that every small beginning deserves an opportunity to grow. We want to walk alongside Sam as he takes the next step towards his dream by helping him secure a suitable business premises, obtain the necessary licences, and acquire the essential resources needed to establish his cafeteria.', 'cohf-child' ),
-				__( 'With the right support, Sam\'s dream can become a reality, not only changing his own life and that of his family, but also opening doors of opportunity for others.', 'cohf-child' ),
-				__( '<strong>Will you help Sam take the next step?</strong>', 'cohf-child' ),
-				__( 'You can be part of Sam\'s journey by supporting his transition from a small village-based business to a sustainable cafeteria. Your contribution, whether financial or through other practical support, can help turn his hard work and determination into a lasting success story.', 'cohf-child' ),
-				__( 'Join Cistern of Hope Foundation in helping Sam grow his business, strengthen his family\'s future, and create opportunities for others.', 'cohf-child' ),
-				__( 'To support Sam, <a href="/support-our-work/">give to our enterprise work</a> or <a href="/contact/">contact us</a> to offer practical support or partner with us.', 'cohf-child' ),
-			),
+			'body'      => cohf_story_sam_body(),
 			'challenge'    => __( 'Sam began with just one packet of wheat flour, making mandazi for his neighbours. To grow into a cafeteria he needs business premises, licences and essential resources.', 'cohf-child' ),
 			'intervention' => __( 'Through its start-up business empowerment initiative, the Foundation is walking alongside Sam and seeking support to help him secure premises, obtain licences and acquire the resources for his cafeteria.', 'cohf-child' ),
 			'change'       => __( 'Sam\'s business has grown from selling to his neighbours to supplying mandazi to small shops within his village.', 'cohf-child' ),
@@ -343,10 +435,7 @@ function cohf_seed_stories() {
 			continue;
 		}
 
-		$content = '';
-		foreach ( $story['body'] as $paragraph ) {
-			$content .= "<!-- wp:paragraph -->\n<p>" . wp_kses_post( $paragraph ) . "</p>\n<!-- /wp:paragraph -->\n\n";
-		}
+		$content = cohf_story_body_html( $story['body'] );
 
 		// Deliberately inserted as a draft. cohf_guard_story_consent() forces
 		// any story to draft when consent is not on record at the moment of

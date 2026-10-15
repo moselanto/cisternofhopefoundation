@@ -5,7 +5,7 @@ Template: cohf
 Author: Cistern of Hope Foundation
 Author URI: https://cisternofhope.org
 Description: Premium, human-centred child theme for Cistern of Hope Foundation (COHF), Kenya. Editorial design system, twelve programme areas, impact and story content structures, accountability and partnership architecture, WCAG-conscious markup and a performance-first asset strategy. Motto: Together for a lasting change.
-Version: 14.13.0
+Version: 14.13.1
 Requires at least: 6.2
 Requires PHP: 8.0
 License: GNU General Public License v2 or later
@@ -624,3 +624,124 @@ h1, h2, h3 { overflow-wrap: anywhere; hyphens: auto; text-wrap: balance; }
 .partner-single__brand a { display: inline-block; border-radius: 12px; }
 .partner-single__brand a:focus-visible { outline: 3px solid var(--green, #1f5e3b); outline-offset: 4px; }
 .partner-single__brand img { display: block; width: 200px; max-width: 60%; height: auto; }
+
+/* 14.13.1: richer impact-story layout (first used on Sam's story).
+   At-a-glance panel, section headings, pull quote and support appeal. */
+.single-cohf_story .story-copy .prose h2.wp-block-heading {
+	font-size: clamp(26px, 3vw, 32px);
+	line-height: 1.15;
+	color: var(--g, #163f32);
+	margin: 40px 0 12px;
+}
+.story-glance {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 12px;
+	margin: 28px 0 8px;
+}
+.story-glance__item {
+	padding: 18px;
+	border: 1px solid var(--line, #dfe6e1);
+	border-top: 3px solid var(--gold, #d9a441);
+	border-radius: 16px;
+	background: #fff;
+}
+.story-glance__label {
+	display: block;
+	margin-bottom: 6px;
+	font-size: 11px;
+	font-weight: 800;
+	letter-spacing: 1.5px;
+	text-transform: uppercase;
+	color: var(--t, #b86f52);
+}
+.story-glance__item strong {
+	display: block;
+	font: 600 18px/1.3 var(--font-display, Georgia, serif);
+	color: var(--g, #163f32);
+}
+.single-cohf_story .story-pullquote {
+	margin: 32px 0;
+	padding: 4px 0 4px 22px;
+	border-left: 4px solid var(--gold, #d9a441);
+}
+.single-cohf_story .story-pullquote p {
+	margin: 0;
+	font: 600 clamp(22px, 2.6vw, 28px)/1.3 var(--font-display, Georgia, serif);
+	color: var(--g, #163f32);
+}
+.single-cohf_story .story-pullquote cite {
+	display: block;
+	margin-top: 10px;
+	font-style: normal;
+	font-size: 13px;
+	font-weight: 700;
+	color: var(--muted, #66736d);
+}
+.story-appeal {
+	margin: 44px 0 8px;
+	padding: 32px;
+	border-radius: 22px;
+	background: var(--g, #163f32);
+	color: #eef5f0;
+}
+.single-cohf_story .story-appeal p { color: #d6e3dc; }
+.story-appeal__kicker {
+	margin: 0;
+	font-size: 11px;
+	font-weight: 900;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	color: #e9c16a !important;
+}
+.single-cohf_story .story-appeal h2.story-appeal__title {
+	margin: 8px 0 14px;
+	font-size: clamp(26px, 3vw, 34px);
+	line-height: 1.12;
+	color: #fff;
+}
+.single-cohf_story .story-appeal .story-appeal__needs-title {
+	margin-top: 22px;
+	font-weight: 800;
+	color: #fff;
+}
+.story-appeal__needs {
+	list-style: none;
+	margin: 10px 0 20px;
+	padding: 0;
+}
+.story-appeal__needs li {
+	position: relative;
+	padding: 10px 0 10px 30px;
+	border-bottom: 1px solid #ffffff1f;
+	color: #fff;
+}
+.story-appeal__needs li::before {
+	content: "";
+	position: absolute;
+	left: 4px;
+	top: 18px;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: var(--gold, #d9a441);
+}
+.story-appeal__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-top: 24px;
+}
+.story-appeal__actions .btn {
+	min-height: 44px;
+	display: inline-flex;
+	align-items: center;
+}
+.story-appeal__actions .btn.gold { background: var(--gold, #d9a441); color: var(--ink, #17231e); }
+.story-appeal__actions .btn.outline { border-color: #ffffffb3; color: #fff; }
+.story-appeal__actions .btn:focus-visible { outline: 3px solid #e9c16a; outline-offset: 3px; }
+@media (max-width: 700px) {
+	.story-glance { grid-template-columns: 1fr; }
+	.story-appeal { padding: 24px; }
+	.story-appeal__actions .btn { width: 100%; justify-content: center; }
+}
