@@ -152,6 +152,32 @@ function cohf_story_seed() {
 		),
 
 		array(
+			'title'     => __( 'Sam\'s journey: from one packet of flour to a growing business', 'cohf-child' ),
+			'slug'      => 'enterprise-mandazi-sam',
+			'date'      => '2026-10-15',
+			'image'     => 'story-08-sam-mandazi',
+			'programme' => 'Youth Skills, Enterprise & Employability',
+			'gallery'   => array(
+				array( 'key' => 'story-08-sam-full', 'label' => __( 'Sam at work', 'cohf-child' ), 'caption' => __( 'Sam frying mandazi, with a tray of finished mandazi and cut dough ready on the table beside him.', 'cohf-child' ) ),
+			),
+			'excerpt'   => __( 'A small beginning, a growing dream, and an opportunity to transform lives. Sam started with one packet of wheat flour and now supplies mandazi to shops in his village.', 'cohf-child' ),
+			'body'      => array(
+				__( 'Sam is one of the beneficiaries of Cistern of Hope Foundation\'s start-up business empowerment initiative. His journey is a powerful example of how a small opportunity, combined with determination and hard work, can become the foundation for a brighter future.', 'cohf-child' ),
+				__( 'Sam began his business with just one packet of wheat flour, making mandazi to sell to his neighbours. Through commitment, perseverance, and a vision for something greater, his small venture has steadily grown. He now supplies mandazi to small shops within his village, taking meaningful steps towards building a sustainable livelihood for himself and his family.', 'cohf-child' ),
+				__( 'But Sam\'s dream does not end here. He envisions expanding his business into a cafeteria where he can serve more people, grow his income, support his family, and eventually create employment opportunities for others in his community.', 'cohf-child' ),
+				__( 'At Cistern of Hope Foundation, we believe that every small beginning deserves an opportunity to grow. We want to walk alongside Sam as he takes the next step towards his dream by helping him secure a suitable business premises, obtain the necessary licences, and acquire the essential resources needed to establish his cafeteria.', 'cohf-child' ),
+				__( 'With the right support, Sam\'s dream can become a reality, not only changing his own life and that of his family, but also opening doors of opportunity for others.', 'cohf-child' ),
+				__( '<strong>Will you help Sam take the next step?</strong>', 'cohf-child' ),
+				__( 'You can be part of Sam\'s journey by supporting his transition from a small village-based business to a sustainable cafeteria. Your contribution, whether financial or through other practical support, can help turn his hard work and determination into a lasting success story.', 'cohf-child' ),
+				__( 'Join Cistern of Hope Foundation in helping Sam grow his business, strengthen his family\'s future, and create opportunities for others.', 'cohf-child' ),
+				__( 'To support Sam, <a href="/support-our-work/">give to our enterprise work</a> or <a href="/contact/">contact us</a> to offer practical support or partner with us.', 'cohf-child' ),
+			),
+			'challenge'    => __( 'Sam began with just one packet of wheat flour, making mandazi for his neighbours. To grow into a cafeteria he needs business premises, licences and essential resources.', 'cohf-child' ),
+			'intervention' => __( 'Through its start-up business empowerment initiative, the Foundation is walking alongside Sam and seeking support to help him secure premises, obtain licences and acquire the resources for his cafeteria.', 'cohf-child' ),
+			'change'       => __( 'Sam\'s business has grown from selling to his neighbours to supplying mandazi to small shops within his village.', 'cohf-child' ),
+		),
+
+		array(
 			'title'     => __( 'From one machine at home to a growing tailoring business', 'cohf-child' ),
 			'slug'      => 'enterprise-tailoring-mr-owino',
 			'date'      => '2026-10-02',

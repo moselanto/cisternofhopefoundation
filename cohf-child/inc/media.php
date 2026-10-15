@@ -81,6 +81,8 @@ function cohf_image_library() {
 		'story-07-dan-mounting' => array( 'file' => 'story-07-dan-mounting.jpg', 'alt' => __( 'Dan finishing a mounted graduation photo in his home photography and photo-mounting business.', 'cohf-child' ) ),
 		'story-07-dan-portrait' => array( 'file' => 'story-07-dan-portrait.jpg', 'alt' => __( 'Dan holding a finished mounted graduation portrait he produced for a client.', 'cohf-child' ) ),
 		'story-07-dan-measuring' => array( 'file' => 'story-07-dan-measuring.jpg', 'alt' => __( 'Dan measuring a mounting board at his workbench, with framed portraits he has produced on display.', 'cohf-child' ) ),
+		'story-08-sam-mandazi' => array( 'file' => 'story-08-sam-mandazi.jpg', 'alt' => __( 'Sam frying mandazi in a wok on a gas burner, beside a table with a tray of finished mandazi and cut dough.', 'cohf-child' ) ),
+		'story-08-sam-full' => array( 'file' => 'story-08-sam-full.jpg', 'alt' => __( 'Sam standing at his gas burner frying mandazi, with a tray of finished mandazi, cut dough, flour and cooking oil on the table beside him.', 'cohf-child' ) ),
 		// Photo gallery, supplied by the Foundation.
 		'gallery-widows-food-support' => array( 'file' => 'gallery-widows-food-support.jpg', 'alt' => __( 'A widow smiling as she receives her monthly food support of flour, bread, milk and cooking fat at home.', 'cohf-child' ) ),
 		'gallery-widows-home-visit' => array( 'file' => 'gallery-widows-home-visit.jpg', 'alt' => __( 'A widow supported by the Foundation standing outside her mud-walled home.', 'cohf-child' ) ),
