@@ -10,7 +10,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'COHF_CHILD_VERSION', '14.13.1' );
+define( 'COHF_CHILD_VERSION', '14.14.0' );
 define( 'COHF_CHILD_DIR', get_stylesheet_directory() );
 define( 'COHF_CHILD_URI', get_stylesheet_directory_uri() );
 
@@ -31,6 +31,7 @@ foreach ( array(
 	'nav-walker',
 	'nav-structure',
 	'mobile-actions',
+	'whatsapp-chat',
 	'leader-photos',
 	'media',
 	'performance',
