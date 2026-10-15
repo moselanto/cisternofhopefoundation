@@ -5,7 +5,7 @@ Template: cohf
 Author: Cistern of Hope Foundation
 Author URI: https://cisternofhope.org
 Description: Premium, human-centred child theme for Cistern of Hope Foundation (COHF), Kenya. Editorial design system, twelve programme areas, impact and story content structures, accountability and partnership architecture, WCAG-conscious markup and a performance-first asset strategy. Motto: Together for a lasting change.
-Version: 14.14.0
+Version: 14.14.1
 Requires at least: 6.2
 Requires PHP: 8.0
 License: GNU General Public License v2 or later
@@ -1135,3 +1135,87 @@ body:has(.links.is-open) .cohf-chat { display: none; }
 	.cohf-chat__fab:hover, .cohf-chat__fab:focus-visible { transform: none; }
 }
 @media print { .cohf-chat { display: none; } }
+
+/* ==========================================================================
+   14.14.1 - WhatsApp chat card: layout fixes and a better desktop card.
+   The prototype styles every section (85px padding), header (sticky, white,
+   blurred, bordered), form (two-column grid) and input (14px padding). The
+   card now uses plain divs, and these resets guard against the rest.
+   ========================================================================== */
+.cohf-chat .cohf-chat__panel,
+.cohf-chat .cohf-chat__head {
+	margin: 0;
+	padding: 0;
+}
+.cohf-chat .cohf-chat__head {
+	position: static;
+	top: auto;
+	z-index: auto;
+	height: auto;
+	padding: 16px 14px 16px 18px;
+	border: 0;
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
+	flex: 0 0 auto;
+}
+.cohf-chat .cohf-chat__body { min-height: 0; }
+.cohf-chat .cohf-chat__form {
+	display: block;
+	grid-template-columns: none;
+	gap: 0;
+	flex: 0 0 auto;
+}
+.cohf-chat .cohf-chat__note { flex: 0 0 auto; }
+.cohf-chat .cohf-chat__share input {
+	padding: 0;
+	border: 0;
+	border-radius: 3px;
+	min-height: 0;
+}
+.cohf-chat .cohf-chat__compose textarea { min-height: 46px; }
+
+/* Desktop: a fixed-height card so the conversation always has room, topic
+   chips that wrap side by side, and room for the WordPress admin bar. */
+@media (min-width: 901px) {
+	.cohf-chat__panel {
+		width: 400px;
+		height: min(600px, calc(100vh - 130px));
+		max-height: none;
+	}
+	.admin-bar .cohf-chat__panel { height: min(600px, calc(100vh - 162px)); }
+	.cohf-chat__body { flex: 1 1 auto; padding: 16px 18px 8px; }
+	.cohf-chat__chips {
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+	.cohf-chat__chip {
+		min-height: 36px;
+		padding: 8px 13px;
+		font-size: 13px;
+	}
+	.cohf-chat__chip--page { flex-basis: 100%; }
+	.cohf-chat__bubble { max-width: 92%; }
+	.cohf-chat__panel::-webkit-scrollbar,
+	.cohf-chat__body::-webkit-scrollbar { width: 8px; }
+	.cohf-chat__body::-webkit-scrollbar-thumb { border-radius: 8px; background: rgba(22, 63, 50, 0.18); }
+	.cohf-chat__body { scrollbar-width: thin; scrollbar-color: rgba(22, 63, 50, 0.25) transparent; }
+	.cohf-chat__fab { height: 58px; padding: 0 24px 0 18px; }
+}
+
+/* Short desktop windows: drop the extras before squeezing the conversation. */
+@media (min-width: 901px) and (max-height: 720px) {
+	.cohf-chat__day { display: none; }
+	.cohf-chat__note { display: none; }
+	.cohf-chat__head { padding-top: 12px; padding-bottom: 12px; }
+	.cohf-chat__avatar img { width: 40px; height: 40px; }
+}
+
+/* Phones: the sheet starts at the header, with no blank band above it. */
+@media (max-width: 600px) {
+	.cohf-chat.is-open .cohf-chat__panel {
+		height: calc(100dvh - 40px);
+		max-height: none;
+	}
+	.cohf-chat__body { flex: 1 1 auto; }
+}

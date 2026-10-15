@@ -17,6 +17,10 @@
  * - Optional reply hours (filter 'cohf_whatsapp_hours'). With none set the
  *   status line makes no promise about reply times.
  *
+ * 14.14.1: panel and header are plain divs. As section/header elements they
+ * picked up the prototype's section padding (85px) and sticky header rules,
+ * which left blank bands and squashed the conversation.
+ *
  * No third-party scripts, no cookies: the teaser and unread state use
  * sessionStorage only. Without JavaScript the button is a plain wa.me link.
  *
@@ -208,15 +212,15 @@ function cohf_whatsapp_chat() {
 			</button>
 		</div>
 
-		<section class="cohf-chat__panel" id="cohf-chat-panel" role="dialog" aria-modal="false" aria-labelledby="cohf-chat-title" hidden>
-			<header class="cohf-chat__head">
+		<div class="cohf-chat__panel" id="cohf-chat-panel" role="dialog" aria-modal="false" aria-labelledby="cohf-chat-title" hidden>
+			<div class="cohf-chat__head">
 				<span class="cohf-chat__avatar"><img src="<?php echo esc_url( $avatar ); ?>" alt="" width="46" height="46" loading="lazy" decoding="async"><i class="cohf-chat__presence" aria-hidden="true"></i></span>
 				<span class="cohf-chat__who">
 					<strong id="cohf-chat-title"><?php echo esc_html( $name ); ?></strong>
 					<span class="cohf-chat__status"><?php esc_html_e( 'We reply on WhatsApp as soon as we can', 'cohf-child' ); ?></span>
 				</span>
 				<button type="button" class="cohf-chat__close" aria-label="<?php esc_attr_e( 'Close chat', 'cohf-child' ); ?>"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
-			</header>
+			</div>
 
 			<div class="cohf-chat__body">
 				<p class="cohf-chat__day" aria-hidden="true"><span><?php esc_html_e( 'Today', 'cohf-child' ); ?></span></p>
@@ -254,7 +258,7 @@ function cohf_whatsapp_chat() {
 				</div>
 			</form>
 			<p class="cohf-chat__note"><?php esc_html_e( 'Opens WhatsApp with your message ready to send. Please do not share card or M-Pesa PINs, or private details about a child.', 'cohf-child' ); ?></p>
-		</section>
+		</div><!-- .cohf-chat__panel -->
 
 		<a class="cohf-chat__fab" href="<?php echo esc_url( $fallback_url ); ?>" target="_blank" rel="noopener noreferrer" aria-controls="cohf-chat-panel" aria-expanded="false">
 			<span class="cohf-chat__fab-icon"><?php echo $wa_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static developer-authored SVG. ?></span>
