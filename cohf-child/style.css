@@ -5,7 +5,7 @@ Template: cohf
 Author: Cistern of Hope Foundation
 Author URI: https://cisternofhope.org
 Description: Premium, human-centred child theme for Cistern of Hope Foundation (COHF), Kenya. Editorial design system, twelve programme areas, impact and story content structures, accountability and partnership architecture, WCAG-conscious markup and a performance-first asset strategy. Motto: Together for a lasting change.
-Version: 14.18.1
+Version: 14.19.0
 Requires at least: 6.2
 Requires PHP: 8.0
 License: GNU General Public License v2 or later
@@ -1323,3 +1323,37 @@ body:has(.links.is-open) .cohf-chat { display: none; }
 
 /* 14.16.0 speed: skip rendering work for the footer until it nears the screen. */
 .site-footer { content-visibility: auto; contain-intrinsic-size: auto 600px; }
+
+
+/* ==========================================================================
+   14.19.0 - Programme "At a glance" answer block (template-parts/programme-glance.php)
+   ========================================================================== */
+.programme-glance { padding-block: clamp(24px, 4vw, 40px) 0; }
+.programme-glance__card {
+  border: 1px solid var(--line, #e3ddd0);
+  border-inline-start: 5px solid var(--gold, #d9a227);
+  border-radius: 18px;
+  background: #fff;
+  padding: clamp(20px, 3vw, 32px);
+  box-shadow: 0 10px 30px rgba(18, 58, 45, 0.06);
+}
+.programme-glance__title {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-family: var(--font-body, Inter, sans-serif);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--forest, #123a2d);
+}
+.programme-glance__answer { margin: 0 0 18px; font-size: clamp(17px, 1.6vw, 19px); line-height: 1.6; color: var(--ink, #1c1b19); max-width: 72ch; }
+.programme-glance__facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px 24px;
+  margin: 0;
+}
+.programme-glance__facts div { padding-block-start: 12px; border-block-start: 1px solid var(--line, #e3ddd0); }
+.programme-glance__facts dt { font-size: 12.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #5d635f; margin: 0 0 4px; }
+.programme-glance__facts dd { margin: 0; font-weight: 600; color: var(--forest, #123a2d); line-height: 1.45; }
+.programme-glance__reviewed { margin: 16px 0 0; font-size: 13.5px; color: #5d635f; }

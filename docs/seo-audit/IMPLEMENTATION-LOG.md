@@ -19,6 +19,12 @@
 - Registration details: Foundation does **not** want them displayed. Rule for all agents: never add a registration number, authority or certificate details to pages, schema or llms.txt.
 - Kiambu County confirmed as an area served (ministry visits); `areaServed` kept.
 
+## 14.19.0 - 20 October 2026 (Phase C start: AEO answer blocks)
+
+- New programme fields: Quick answer, Where it runs, How it is delivered, Current status, Facts last checked (`inc/custom-fields.php`).
+- New `template-parts/programme-glance.php` printed under the programme hero: plain answer + key facts + checked date. Falls back to the existing strategic purpose and "Who it serves"; empty fields are hidden, nothing is invented.
+- Staff fill the fields per programme in wp-admin > Programmes.
+
 ## Next phases (need Foundation input)
 
 - **B:** de-duplicate "NGO in Kenya" across page keyword lists after Search Console export.

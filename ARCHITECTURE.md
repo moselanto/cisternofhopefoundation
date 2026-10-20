@@ -92,6 +92,8 @@ Visitor -> shop / homepage cards -> cart drawer (`wc-ajax=cohf_cart_qty`, nonce)
 
 | Version | Date | Change |
 | --- | --- | --- |
+| 14.19.0 | 20 Oct 2026 | Programme "At a glance" answer block (`template-parts/programme-glance.php`) with new editable fields: quick answer, where it runs, delivery, status, facts-checked date |
+| 14.18.1 | 20 Oct 2026 | Foundation confirmations: Facebook, map pin, founder, Kiambu; registration details never displayed |
 | 14.18.0 | 20 Oct 2026 | SEO/GEO/AEO Phase A: verified-only `sameAs`, office address without another venue's name, map only from a saved verified link, keyword list removed from schema, redundant hreflang removed, explicit search/AI crawler groups in robots.txt (private paths blocked), `/llms.txt` summary (`inc/ai-discovery.php`), full audit set in `docs/seo-audit/` |
 | 14.17.1 | 20 Oct 2026 | Login readability: heading no longer clipped (safe centring), larger type, dark 2px field borders, white fields, gold focus ring, bigger buttons, logo above heading, lighter photo overlay with text shadow |
 | 14.17.0 | 20 Oct 2026 | Branded international staff login (`inc/login.php`, `assets/css/login.css`, `assets/js/login.js`): split-screen photo panel, RTL-ready, language switcher kept, Caps Lock hint, busy state, styled 2FA code screen with one-time-code autofill, honeypot, no account enumeration, no-cache. Two-step verification (`inc/two-factor.php`) through the official Two Factor plugin: install prompt, 7-day grace then required for staff, Users-screen 2FA column, `COHF_REQUIRE_2FA` emergency switch |

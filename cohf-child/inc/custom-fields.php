@@ -30,6 +30,13 @@ function cohf_field_schema() {
 				'purpose'     => array( 'label' => __( 'Strategic purpose', 'cohf-child' ), 'type' => 'textarea', 'hint' => __( 'One or two sentences taken from the 2026–2030 strategic framework.', 'cohf-child' ) ),
 				'what_we_do'  => array( 'label' => __( 'What we do', 'cohf-child' ), 'type' => 'repeater_lines', 'hint' => __( 'One activity per line.', 'cohf-child' ) ),
 				'who_serves'  => array( 'label' => __( 'Who it serves', 'cohf-child' ), 'type' => 'textarea' ),
+				// 14.19.0: "At a glance" answer block (AEO). Shown on the programme
+				// page only when filled. Facts only - never estimate.
+				'answer'      => array( 'label' => __( 'Quick answer (40-80 words)', 'cohf-child' ), 'type' => 'textarea', 'hint' => __( 'Plain answer to "What does this programme do and for whom?" Shown near the top of the page and read by search engines and AI assistants. Leave empty to use the strategic purpose.', 'cohf-child' ) ),
+				'areas'       => array( 'label' => __( 'Where it runs', 'cohf-child' ), 'type' => 'text', 'hint' => __( 'Only places where this programme actually operates, e.g. "Uthiru and Kabete, Nairobi".', 'cohf-child' ) ),
+				'model'       => array( 'label' => __( 'How it is delivered', 'cohf-child' ), 'type' => 'text', 'hint' => __( 'e.g. "Monthly door-to-door distribution" or "School fees paid directly to schools".', 'cohf-child' ) ),
+				'status'      => array( 'label' => __( 'Current status', 'cohf-child' ), 'type' => 'text', 'hint' => __( 'e.g. "Active", "Seeking partners", "Planned for 2027".', 'cohf-child' ) ),
+				'reviewed'    => array( 'label' => __( 'Facts last checked', 'cohf-child' ), 'type' => 'date', 'hint' => __( 'Date someone at the Foundation confirmed the details above.', 'cohf-child' ) ),
 				'indicators'  => array( 'label' => __( 'Impact indicators (reported)', 'cohf-child' ), 'type' => 'repeater_lines', 'hint' => __( 'One indicator per line, e.g. "6 women supported to establish small businesses currently running". Leave empty if there is no verified figure. Never estimate.', 'cohf-child' ) ),
 				'cta_label'   => array( 'label' => __( 'Call-to-action label', 'cohf-child' ), 'type' => 'text', 'hint' => __( 'Defaults to "Partner with us" when left empty.', 'cohf-child' ) ),
 				'cta_url'     => array( 'label' => __( 'Call-to-action link', 'cohf-child' ), 'type' => 'url' ),

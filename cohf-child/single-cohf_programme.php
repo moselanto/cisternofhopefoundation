@@ -64,6 +64,8 @@ while ( have_posts() ) :
 			</div>
 		</section>
 
+		<?php get_template_part( 'template-parts/programme-glance' ); ?>
+
 		<section>
 			<div class="container feature">
 				<div>
