@@ -12,6 +12,7 @@ before touching forms, giving, the shop, REST routes, login or headers.
 4. `PRD.md` - what the site must do and for whom (do not break any listed feature).
 5. `SECURITY-AUDIT.md` - security controls, findings, open items and history.
 6. `cohf-child/README.md` - staff editing guide and install steps.
+7. `docs/seo-audit/` - SEO baseline, schema ownership rule, crawler policy, keyword map and implementation log. Read before touching `seo*.php`, `schema.php`, `rank-math*.php` or `ai-discovery.php`.
 
 ## Layout
 

@@ -65,7 +65,7 @@ function cohf_schema_org_node() {
 			array(
 				'@type'           => 'PostalAddress',
 				'name'            => 'Office',
-				'streetAddress'   => 'Behind N Market (Deliverance Church Kabete N Market)',
+				'streetAddress'   => (string) apply_filters( 'cohf_office_street', 'Behind N Market' ),
 				'addressLocality' => 'Kabete',
 				'addressRegion'   => 'Kiambu',
 				'addressCountry'  => 'KE',
@@ -87,21 +87,28 @@ function cohf_schema_org_node() {
 			array( '@type' => 'ContactPoint', 'contactType' => 'donations', 'url' => home_url( '/support-our-work/' ), 'email' => $org['email'] ),
 		),
 	);
-	$map_url             = 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( 'Deliverance Church Kabete N Market' );
-	$node['hasMap']      = $map_url;
-	$node['location']    = array(
+	// 14.18.0: the map link used to be a search for another organisation's
+	// venue name. It is now only published when the Foundation has saved its
+	// own verified Google Maps link (option cohf_org_map_url).
+	$map_url          = esc_url_raw( (string) get_option( 'cohf_org_map_url', '' ) );
+	$node['location'] = array(
 		'@type'   => 'Place',
 		'name'    => $org['name'] . ' office, Kabete',
-		'hasMap'  => $map_url,
 		'address' => $node['address'][0],
 	);
+	if ( $map_url ) {
+		$node['hasMap']             = $map_url;
+		$node['location']['hasMap'] = $map_url;
+	}
 	$node['areaServed']  = array(
 		array( '@type' => 'Country', 'name' => 'Kenya' ),
 		array( '@type' => 'City', 'name' => 'Nairobi' ),
 		array( '@type' => 'AdministrativeArea', 'name' => 'Kiambu County' ),
 	);
 	$node['founder']     = array( '@type' => 'Person', 'name' => 'Justus Kubai', 'jobTitle' => 'Founder and Executive Director' );
-	$node['keywords']    = 'NGO in Kenya, NGO in Nairobi, charity in Kenya, donate to children in Kenya, sanitary pads for girls Kenya, school fees support Kenya, women empowerment Kenya, youth empowerment Kenya, street children Kenya';
+	// 14.18.0: keyword list removed from the organisation node. It repeated
+	// search phrases (one of them, "street children", is not a programme) and
+	// adds nothing that knowsAbout does not already say truthfully.
 	$acct                = cohf_page_url( 'page-templates/page-accountability.php' );
 	if ( $acct ) {
 		$node['ethicsPolicy']             = $acct;
@@ -113,10 +120,12 @@ function cohf_schema_org_node() {
 		'target' => home_url( '/support-our-work/' ),
 	);
 	$same = function_exists( 'cohf_social_links' ) ? array_values( wp_list_pluck( cohf_social_links(), 'url' ) ) : array();
-	if ( empty( $same ) ) {
-		$same = array( 'https://www.facebook.com/people/Cistern-of-Hope-Foundation/61571155324672/' );
+	// 14.18.0: no guessed profile. sameAs lists only links saved in
+	// Foundation > Organisation details, so every one is confirmed by staff.
+	$same = array_values( array_filter( array_map( 'esc_url_raw', (array) $same ) ) );
+	if ( $same ) {
+		$node['sameAs'] = $same;
 	}
-	$node['sameAs'] = $same;
 	return $node;
 }
 

@@ -167,8 +167,12 @@ function cohf_geo_meta() {
 	if ( is_front_page() ) {
 		$url = home_url( '/' );
 	}
-	printf( '<link rel="alternate" hreflang="en-KE" href="%s">' . "\n", esc_url( $url ) );
-	printf( '<link rel="alternate" hreflang="x-default" href="%s">' . "\n", esc_url( $url ) );
+	// 14.18.0: hreflang removed. The site has one language, and en-KE plus
+	// x-default pointing at the same URL told search engines nothing. Add it
+	// back only when real translated pages exist (filter cohf_hreflang).
+	foreach ( (array) apply_filters( 'cohf_hreflang', array(), $url ) as $lang => $href ) {
+		printf( '<link rel="alternate" hreflang="%1$s" href="%2$s">' . "\n", esc_attr( $lang ), esc_url( $href ) );
+	}
 	echo '<meta name="geo.region" content="KE-30">' . "\n";
 	echo '<meta name="geo.placename" content="Nairobi, Kenya">' . "\n";
 }
