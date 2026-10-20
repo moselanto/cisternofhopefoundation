@@ -89,6 +89,7 @@ Visitor -> shop / homepage cards -> cart drawer (`wc-ajax=cohf_cart_qty`, nonce)
 
 | Version | Date | Change |
 | --- | --- | --- |
+| 14.16.0 | 20 Oct 2026 | Mobile quick-actions bar becomes a floating blurred dock that hides on scroll down and returns on scroll up (WhatsApp button follows), clearer active dot, tactile press, haptic tap, focus ring; Speculation Rules prefetch (moderate) with shop/account exclusions, touchstart/hover prefetch fallback for Safari/Firefox, footer `content-visibility` |
 | 14.15.0 | 20 Oct 2026 | Security review: HTTPS redirect, secure cookies, 8h/7d session expiry, password policy (12+ chars), CORS lock for `cohf/v1`, no-store on `cohf/v1`, upload type/double-extension guard, application passwords off, Paystack secret from env var, Cloudflare-aware client IP, rate limit on `/giving-nonce`, salted rate-limit keys, `payment` allowed for Paystack only, extra CSP directives, CI lint + Dependabot, full documentation set |
 | 14.14.1 | Oct 2026 | Previous release (see git history) |
 | 14.3.0 | 3 Oct 2026 | Fresh giving nonce endpoint, `.htaccess` PHP rule fixed, `X-Powered-By` removed |

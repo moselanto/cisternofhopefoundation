@@ -410,3 +410,54 @@ add_filter( 'wp_omit_loading_attr_threshold', function () {
 	return 1;
 } );
 
+
+/* --------------------------------------------------------------------------
+   14.16.0: instant page loads with Speculation Rules
+   -------------------------------------------------------------------------- */
+
+/**
+ * Chrome, Edge and Android browsers prefetch an internal page as soon as the
+ * visitor shows intent (finger down or ~200 ms hover), so most taps open a
+ * page that has already downloaded. WordPress 6.8+ prints the rules itself;
+ * we only raise eagerness to "moderate" and keep shop/account URLs out.
+ * Older WordPress gets an equivalent block printed by the theme. Browsers
+ * without support fall back to the touchstart prefetch in assets/js/main.js.
+ */
+add_filter( 'wp_speculation_rules_configuration', function ( $config ) {
+	if ( is_user_logged_in() ) {
+		return $config; // Core disables speculation for logged-in users; respect that.
+	}
+	return array(
+		'mode'      => 'prefetch',
+		'eagerness' => 'moderate',
+	);
+} );
+
+add_filter( 'wp_speculation_rules_href_exclude_paths', function ( $paths ) {
+	return array_merge(
+		(array) $paths,
+		array( '/cart/*', '/basket/*', '/checkout/*', '/my-account/*', '/wp-json/*', '/*\\?*add-to-cart=*', '/*\\?*cohf-wa-order=*' )
+	);
+} );
+
+add_action( 'wp_footer', function () {
+	if ( function_exists( 'wp_get_speculation_rules_configuration' ) || is_user_logged_in() || is_admin() ) {
+		return;
+	}
+	$rules = array(
+		'prefetch' => array(
+			array(
+				'source'    => 'document',
+				'where'     => array(
+					'and' => array(
+						array( 'href_matches' => '/*' ),
+						array( 'not' => array( 'href_matches' => array( '/wp-admin/*', '/wp-login.php*', '/cart/*', '/basket/*', '/checkout/*', '/my-account/*', '/wp-json/*', '/*\\?*add-to-cart=*', '/*\\?*cohf-wa-order=*' ) ) ),
+						array( 'not' => array( 'selector_matches' => 'a[rel~="nofollow"], a[target="_blank"], a[download]' ) ),
+					),
+				),
+				'eagerness' => 'moderate',
+			),
+		),
+	);
+	echo '<script type="speculationrules">' . wp_json_encode( $rules, JSON_UNESCAPED_SLASHES ) . '</script>' . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON from a fixed array.
+}, 99 );

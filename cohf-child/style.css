@@ -5,7 +5,7 @@ Template: cohf
 Author: Cistern of Hope Foundation
 Author URI: https://cisternofhope.org
 Description: Premium, human-centred child theme for Cistern of Hope Foundation (COHF), Kenya. Editorial design system, twelve programme areas, impact and story content structures, accountability and partnership architecture, WCAG-conscious markup and a performance-first asset strategy. Motto: Together for a lasting change.
-Version: 14.15.0
+Version: 14.16.0
 Requires at least: 6.2
 Requires PHP: 8.0
 License: GNU General Public License v2 or later
@@ -1219,3 +1219,107 @@ body:has(.links.is-open) .cohf-chat { display: none; }
 	}
 	.cohf-chat__body { flex: 1 1 auto; }
 }
+
+
+/* ==========================================================================
+   14.16.0 - Mobile quick-actions bar: floating dock, hide-on-scroll,
+   clearer active state and tactile press. Behaviour: initActionBar() in
+   assets/js/main.js toggles html.ab-hidden.
+   ========================================================================== */
+@media (max-width: 900px) {
+  .cohf-actionbar {
+    left: 10px;
+    right: 10px;
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    padding: 6px;
+    gap: 4px;
+    border: 1px solid rgba(22, 63, 50, 0.08);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.92);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    backdrop-filter: saturate(180%) blur(14px);
+    box-shadow: 0 10px 30px rgba(23, 35, 30, 0.16), 0 2px 6px rgba(23, 35, 30, 0.06);
+    transform: translateY(0);
+    transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s ease;
+    will-change: transform;
+    contain: layout paint;
+  }
+
+  html.ab-hidden .cohf-actionbar {
+    transform: translateY(calc(100% + 24px + env(safe-area-inset-bottom, 0px)));
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .cohf-actionbar__item {
+    margin-bottom: 0;
+    min-height: 52px;
+    border-radius: 16px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: background-color 0.18s ease, transform 0.12s ease, color 0.18s ease;
+  }
+
+  .cohf-actionbar__item:focus-visible {
+    outline: 3px solid var(--gold, #d9a441);
+    outline-offset: 2px;
+  }
+
+  .cohf-actionbar__item:active { transform: scale(0.94); }
+
+  .cohf-actionbar__item[aria-current]:not(.cohf-actionbar__item--support) {
+    background: rgba(22, 63, 50, 0.09);
+  }
+
+  .cohf-actionbar__item[aria-current]:not(.cohf-actionbar__item--support)::before {
+    top: 4px;
+    width: 5px;
+    height: 5px;
+    margin-left: -2.5px;
+    border-radius: 50%;
+  }
+
+  .cohf-actionbar__item--support {
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(217, 162, 39, 0.38);
+  }
+
+  .cohf-actionbar__item--support .cohf-actionbar__ico svg {
+    animation: cohf-heartbeat 2.8s ease-in-out 1.5s 2;
+  }
+
+  /* Content clears the floating dock. */
+  body { padding-bottom: calc(82px + env(safe-area-inset-bottom, 0px)); }
+
+  /* WhatsApp sits above the dock and drops down with it. */
+  .cohf-wa-float {
+    bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+    transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+  html.ab-hidden .cohf-wa-float {
+    transform: translateY(70px);
+  }
+}
+
+@keyframes cohf-heartbeat {
+  0%, 100% { transform: scale(1); }
+  12% { transform: scale(1.18); }
+  24% { transform: scale(1); }
+  36% { transform: scale(1.12); }
+  48% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cohf-actionbar,
+  .cohf-actionbar__item,
+  .cohf-wa-float { transition: none; }
+  .cohf-actionbar__item--support .cohf-actionbar__ico svg { animation: none; }
+}
+
+/* Browsers without backdrop-filter get a solid bar for legibility. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  @media (max-width: 900px) { .cohf-actionbar { background: #fff; } }
+}
+
+/* 14.16.0 speed: skip rendering work for the footer until it nears the screen. */
+.site-footer { content-visibility: auto; contain-intrinsic-size: auto 600px; }

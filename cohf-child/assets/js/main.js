@@ -297,6 +297,92 @@
     else document.addEventListener('DOMContentLoaded', fn);
   }
 
+
+  /* ---------- 14.16.0: mobile quick-actions bar ----------
+     Hides while the visitor scrolls down to read (more of the page on a small
+     screen) and returns the moment they scroll up, stop near the end, or
+     focus it with a keyboard. The floating WhatsApp button follows it.
+     One passive listener, work batched into requestAnimationFrame. */
+  function initActionBar() {
+    var bar = document.querySelector('.cohf-actionbar');
+    if (!bar || !window.matchMedia) return;
+    var mq = window.matchMedia('(max-width: 900px)');
+    var root = document.documentElement;
+    var lastY = window.pageYOffset || 0;
+    var ticking = false;
+
+    function setHidden(hidden) {
+      root.classList.toggle('ab-hidden', hidden);
+    }
+
+    function update() {
+      ticking = false;
+      if (!mq.matches) { setHidden(false); return; }
+      var y = window.pageYOffset || 0;
+      var nearEnd = (window.innerHeight + y) >= (document.documentElement.scrollHeight - 160);
+      var delta = y - lastY;
+      if (y < 120 || nearEnd || bar.contains(document.activeElement)) {
+        setHidden(false);
+      } else if (delta > 8) {
+        setHidden(true);
+      } else if (delta < -8) {
+        setHidden(false);
+      }
+      lastY = y;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; window.requestAnimationFrame(update); }
+    }, { passive: true });
+    bar.addEventListener('focusin', function () { setHidden(false); });
+
+    /* Light haptic confirmation on supported Android phones. */
+    bar.addEventListener('click', function () {
+      if (navigator.vibrate) { try { navigator.vibrate(8); } catch (e) { /* ignore */ } }
+    });
+  }
+
+  /* ---------- 14.16.0: instant navigation ----------
+     When the browser does not support Speculation Rules (Safari, Firefox),
+     prefetch an internal page the moment a finger touches its link or the
+     mouse rests on it for 65 ms. The tap then opens an already-downloaded
+     page. Cart, checkout, account, admin and action URLs are never fetched. */
+  function initPrefetch() {
+    if (window.HTMLScriptElement && HTMLScriptElement.supports && HTMLScriptElement.supports('speculationrules')) return;
+    var conn = navigator.connection;
+    if (conn && (conn.saveData || /2g/.test(conn.effectiveType || ''))) return;
+    var done = {};
+    var skip = /\/(wp-admin|wp-login|cart|basket|checkout|my-account|wp-json)\b|[?&](add-to-cart|wc-ajax|_wpnonce|cohf-wa-order)=|\/feed\b|logout/i;
+    var timer = null;
+
+    function eligible(a) {
+      if (!a || !a.href || a.target === '_blank' || a.hasAttribute('download')) return false;
+      if (a.origin !== location.origin) return false;
+      if (a.pathname === location.pathname && a.search === location.search) return false;
+      return !skip.test(a.href);
+    }
+    function prefetch(a) {
+      var url = a.href.split('#')[0];
+      if (done[url]) return;
+      done[url] = true;
+      var l = document.createElement('link');
+      l.rel = 'prefetch';
+      l.href = url;
+      document.head.appendChild(l);
+    }
+    document.addEventListener('touchstart', function (e) {
+      var a = e.target.closest && e.target.closest('a');
+      if (eligible(a)) prefetch(a);
+    }, { passive: true, capture: true });
+    document.addEventListener('mouseover', function (e) {
+      var a = e.target.closest && e.target.closest('a');
+      if (!eligible(a)) return;
+      clearTimeout(timer);
+      timer = setTimeout(function () { prefetch(a); }, 65);
+    }, { passive: true, capture: true });
+    document.addEventListener('mouseout', function () { clearTimeout(timer); }, { passive: true, capture: true });
+  }
+
   ready(function () {
     initNav();
     initScrollState();
@@ -306,5 +392,7 @@
     initSectionNav();
     initEnquiryForm();
     initHeroRotator();
+    initActionBar();
+    initPrefetch();
   });
 })();
