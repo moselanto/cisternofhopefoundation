@@ -12,14 +12,14 @@
 ![PHP](https://img.shields.io/badge/PHP-8.0%2B-777BB4?logo=php&logoColor=white)
 ![WooCommerce](https://img.shields.io/badge/Hope%20Market-WooCommerce-96588A?logo=woocommerce&logoColor=white)
 ![Paystack](https://img.shields.io/badge/Giving-Paystack-0BA4DB)
-![Child theme](https://img.shields.io/badge/Child%20theme-v14.2.0-1f5e3b)
+![Child theme](https://img.shields.io/badge/Child%20theme-v14.15.0-1f5e3b)
 ![Base theme](https://img.shields.io/badge/Base%20theme-v9.7.0-2f4f3a)
 ![WCAG](https://img.shields.io/badge/Accessibility-WCAG%202.1%20AA-2e7d32)
 ![No page builder](https://img.shields.io/badge/Build-no%20page%20builder%2C%20zero%20external%20requests-111111)
 ![License](https://img.shields.io/badge/License-GPLv2%2B-blue)
 ![Status](https://img.shields.io/badge/Status-Live-brightgreen)
 
-[Live site](https://cisternofhopefoundation.org/) · [Programmes](https://cisternofhopefoundation.org/programmes-overview/) · [Impact](https://cisternofhopefoundation.org/impact/) · [Impact Stories](https://cisternofhopefoundation.org/stories/) · [Hope Market](https://cisternofhopefoundation.org/shop/) · [Support Our Work](https://cisternofhopefoundation.org/support-our-work/) · [Theme guide](cohf-child/README.md) · [Security audit](cohf-child/docs/SECURITY-AUDIT.md)
+[Live site](https://cisternofhopefoundation.org/) · [Programmes](https://cisternofhopefoundation.org/programmes-overview/) · [Impact](https://cisternofhopefoundation.org/impact/) · [Impact Stories](https://cisternofhopefoundation.org/stories/) · [Hope Market](https://cisternofhopefoundation.org/shop/) · [Support Our Work](https://cisternofhopefoundation.org/support-our-work/) · [Theme guide](cohf-child/README.md) · [Security audit](SECURITY-AUDIT.md) · [Architecture](ARCHITECTURE.md) · [PRD](PRD.md) · [Agent rules](AGENTS.md)
 
 </div>
 
@@ -52,7 +52,7 @@ This repository holds the two themes that power the live site. No page builder a
 | Package | Folder | Version | Role |
 | --- | --- | --- | --- |
 | **COHF Base** (parent theme) | [`cohf/`](cohf) | 9.7.0 | Lightweight, dependency-free document structure, menus and template fallbacks. Never activated directly |
-| **Cistern of Hope Foundation** (child theme) | [`cohf-child/`](cohf-child) | 14.2.0 | **The site.** Design system, content types, templates, giving engine, Hope Market, SEO, accessibility, performance, security and admin experience |
+| **Cistern of Hope Foundation** (child theme) | [`cohf-child/`](cohf-child) | 14.15.0 | **The site.** Design system, content types, templates, giving engine, Hope Market, SEO, accessibility, performance, security and admin experience |
 
 > **Giving is kept separate from the shop.** Donations go through Paystack on their own server-side flow; the Hope Market runs on WooCommerce. A donation never passes through the cart, and the server never trusts an amount sent from the browser.
 
@@ -275,22 +275,30 @@ Enforced in code, not just documented:
 - Self-hosted variable WOFF2 fonts with preload; zero external requests
 - Hero image with `fetchpriority="high"`, everything else lazy-loaded; WebP and AVIF uploads; `filemtime` cache-busting; safe for full-page caching (LiteSpeed)
 
-**Security** (see [`SECURITY-AUDIT.md`](cohf-child/docs/SECURITY-AUDIT.md))
+**Security** (see [`SECURITY-AUDIT.md`](SECURITY-AUDIT.md))
 - Escaped output, sanitised input, nonces and capability checks on every save
 - Forms: nonce, honeypot, time trap, rate limit, anti-spam scoring and an outgoing-mail circuit breaker
-- `DISALLOW_FILE_EDIT`, XML-RPC pingbacks off, non-enumerable login errors, `X-Powered-By` hidden, security headers, and `.htaccess` rules blocking direct access to theme PHP
+- `DISALLOW_FILE_EDIT`, XML-RPC off, non-enumerable login errors, `X-Powered-By` hidden, security headers, and `.htaccess` rules blocking direct access to theme PHP
+- HTTPS redirect + HSTS, Secure cookies, 8-hour sessions (7 days with Remember me), 12+ character password policy
+- CORS locked to this site for theme REST routes, `no-store` on token endpoints, upload type and double-extension guard, application passwords off
+- Rate limits on every public endpoint; Paystack secret from `wp-config.php` or an environment variable, never from code
 
 ## Project structure
 
 ```text
 .
 ├── README.md
-├── AGENTS.md                      # Rules for anyone (or any AI agent) changing code
+├── AGENTS.md                      # Rules for anyone (or any AI agent) changing code - read first
+├── ARCHITECTURE-ESSENTIALS.md     # One-page map of the codebase
+├── ARCHITECTURE.md                # Full module reference, flows, changelog
+├── PRD.md                         # Product requirements (features that must not regress)
+├── SECURITY-AUDIT.md              # Security controls, findings, open items, history
+├── .github/                       # CI (php -l, secret scan) and Dependabot
 ├── docs/screenshots/              # README images captured from the live site
 ├── cohf/                          # COHF Base parent theme (rarely changes)
 └── cohf-child/                    # The site
     ├── README.md                  # Install, editing map and file map
-    ├── docs/SECURITY-AUDIT.md     # Findings and fixes
+    ├── docs/SECURITY-AUDIT.md     # Pointer to the root SECURITY-AUDIT.md
     ├── functions.php  style.css   # Loads inc/ modules; version header
     ├── page-templates/            # Home, About, Programmes, Impact, Approach, Leadership,
     │                              # Partners, Resources, Contact, Get Involved, Support,
@@ -326,7 +334,9 @@ Enforced in code, not just documented:
 3. On the dashboard, click **Run one-time setup**.
 4. **Settings > Permalinks** > Save once.
 5. **Appearance > Customise > Site Identity**: upload the logo.
-6. Enter the Paystack keys and webhook URL under **Foundation > Giving**.
+6. Enter the Paystack public key and webhook URL under **Foundation > Giving**. Put the secret key in `wp-config.php`:
+   `define( 'COHF_PAYSTACK_SECRET_KEY', 'sk_live_...' );` (or set the server environment variable `COHF_PAYSTACK_SECRET_KEY`).
+7. Recommended in `wp-config.php`: `define( 'FORCE_SSL_ADMIN', true );`. Only if behind a CDN: `COHF_BEHIND_CLOUDFLARE` or `COHF_BEHIND_PROXY`.
 
 ## Editing the site
 
@@ -354,7 +364,8 @@ From [`AGENTS.md`](AGENTS.md):
 5. **Respect the CSS load order** and put fixes in the latest layer that applies.
 6. **Bump the version** in `functions.php` and `style.css` for every release.
 7. **Accessibility is enforced.**
-8. **Every `inc/` file loads on every request**: run `php -l` before committing.
+8. **Every `inc/` file loads on every request**: run `php -l` before committing (CI also checks).
+9. **Record every change** in `ARCHITECTURE.md` (changelog) and security changes in `SECURITY-AUDIT.md`.
 
 ## Organisation
 

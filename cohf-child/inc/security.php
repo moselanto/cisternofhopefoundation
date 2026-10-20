@@ -66,7 +66,10 @@ function cohf_security_headers( $headers ) {
 	$headers['X-Content-Type-Options'] = 'nosniff';
 	$headers['Referrer-Policy']        = 'strict-origin-when-cross-origin';
 	$headers['X-Frame-Options']        = 'SAMEORIGIN';
-	$headers['Permissions-Policy']     = 'geolocation=(), microphone=(), camera=(), payment=()';
+	// 14.15.0: payment is allowed for this origin and the Paystack checkout
+	// frame only, so Apple Pay / Google Pay inside Paystack can still appear
+	// while every other embedded frame stays blocked.
+	$headers['Permissions-Policy']     = 'geolocation=(), microphone=(), camera=(), usb=(), interest-cohort=(), payment=(self "https://checkout.paystack.com")';
 	return $headers;
 }
 add_filter( 'wp_headers', 'cohf_security_headers' );
@@ -117,7 +120,13 @@ add_filter( 'wp_headers', function ( $headers ) {
 		$headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains';
 	}
 	$headers['Cross-Origin-Opener-Policy'] = 'same-origin-allow-popups';
-	$headers['Content-Security-Policy']    = "frame-ancestors 'self'; base-uri 'self'; object-src 'none'";
+	$csp = "frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://checkout.paystack.com https://wa.me https://api.whatsapp.com";
+	if ( is_ssl() ) {
+		// HTTPS everywhere: any stray http:// asset is upgraded by the browser.
+		$csp .= '; upgrade-insecure-requests';
+	}
+	$headers['Content-Security-Policy']    = $csp;
+	$headers['X-Permitted-Cross-Domain-Policies'] = 'none';
 	return $headers;
 }, 20 );
 
@@ -221,4 +230,212 @@ add_action( 'send_headers', function () {
 	if ( function_exists( 'header_remove' ) ) {
 		header_remove( 'X-Powered-By' );
 	}
+} );
+
+/* --------------------------------------------------------------------------
+   Hardening added in 14.15.0 (security review, 20 October 2026)
+   See docs/SECURITY-AUDIT.md at the repository root for the reasoning.
+   -------------------------------------------------------------------------- */
+
+/**
+ * HTTPS everywhere.
+ *
+ * When the site address is https://, any front-end request that arrives over
+ * plain http is permanently redirected to the same URL over https. HSTS
+ * (above) then keeps the browser on https for a year. WP-CLI, cron and
+ * local development (http site address) are untouched.
+ */
+add_action( 'template_redirect', function () {
+	if ( is_ssl() || ( defined( 'WP_CLI' ) && WP_CLI ) || wp_doing_cron() || ! apply_filters( 'cohf_force_https', true ) ) {
+		return;
+	}
+	// Behind a TLS-terminating proxy is_ssl() can be false although the
+	// visitor is on https; trust the proxy header so we never loop.
+	$proto = isset( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) ? strtolower( sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) ) ) : '';
+	if ( 'https' === $proto ) {
+		return;
+	}
+	if ( 0 !== strpos( home_url( '/' ), 'https://' ) ) {
+		return;
+	}
+	$host = wp_parse_url( home_url( '/' ), PHP_URL_HOST );
+	$uri  = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/'; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- validated below and only used as a same-host path.
+	if ( ! is_string( $uri ) || '' === $uri || '/' !== $uri[0] || 0 === strpos( $uri, '//' ) ) {
+		$uri = '/';
+	}
+	wp_safe_redirect( 'https://' . $host . $uri, 301 );
+	exit;
+}, 0 );
+
+/**
+ * Login cookies are always Secure on an https site, and HttpOnly (core default).
+ */
+add_filter( 'secure_auth_cookie', function ( $secure ) {
+	return $secure || is_ssl() || 0 === strpos( home_url( '/' ), 'https://' );
+} );
+add_filter( 'secure_logged_in_cookie', function ( $secure ) {
+	return $secure || is_ssl() || 0 === strpos( home_url( '/' ), 'https://' );
+} );
+
+/**
+ * Session expiry.
+ *
+ * WordPress keeps people logged in for 2 days (14 with "Remember me").
+ * Staff log in from shared and mobile devices, so sessions are shortened:
+ * 8 hours normally, 7 days with "Remember me". Filter
+ * `cohf_session_hours` / `cohf_session_remember_days` to change.
+ *
+ * @param int  $length   Default length in seconds.
+ * @param int  $user_id  User ID.
+ * @param bool $remember Whether "Remember me" was ticked.
+ * @return int
+ */
+function cohf_session_length( $length, $user_id, $remember ) {
+	if ( $remember ) {
+		return (int) apply_filters( 'cohf_session_remember_days', 7 ) * DAY_IN_SECONDS;
+	}
+	return (int) apply_filters( 'cohf_session_hours', 8 ) * HOUR_IN_SECONDS;
+}
+add_filter( 'auth_cookie_expiration', 'cohf_session_length', 10, 3 );
+
+/**
+ * Password strength.
+ *
+ * Hashing is done by WordPress core (bcrypt from WordPress 6.8, phpass
+ * before that); the theme never stores or hashes passwords itself. What the
+ * theme adds is a minimum quality for any password a person chooses:
+ * at least 12 characters, not purely digits, and not the username or email.
+ *
+ * @param string  $pass Password chosen.
+ * @param WP_User $user User (may be partially filled on registration).
+ * @return string Error message, or '' when acceptable.
+ */
+function cohf_password_problem( $pass, $user = null ) {
+	$pass = (string) $pass;
+	if ( '' === $pass ) {
+		return '';
+	}
+	$min = (int) apply_filters( 'cohf_password_min_length', 12 );
+	if ( strlen( $pass ) < $min ) {
+		/* translators: %d: minimum number of characters. */
+		return sprintf( __( 'Please choose a password of at least %d characters.', 'cohf-child' ), $min );
+	}
+	if ( ctype_digit( $pass ) ) {
+		return __( 'Please do not use a password made only of numbers.', 'cohf-child' );
+	}
+	if ( $user instanceof WP_User || is_object( $user ) ) {
+		foreach ( array( 'user_login', 'user_email' ) as $field ) {
+			if ( ! empty( $user->$field ) && strlen( (string) $user->$field ) >= 4 && false !== stripos( $pass, (string) $user->$field ) ) {
+				return __( 'Your password must not contain your username or email address.', 'cohf-child' );
+			}
+		}
+	}
+	return '';
+}
+
+// Profile screen (wp-admin) - own profile and admins editing others.
+add_action( 'user_profile_update_errors', function ( $errors, $update, $user ) {
+	$pass = isset( $_POST['pass1'] ) ? (string) wp_unslash( $_POST['pass1'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- core verifies the nonce; passwords are never sanitised.
+	$msg  = cohf_password_problem( $pass, $user );
+	if ( '' !== $msg ) {
+		$errors->add( 'cohf_weak_password', $msg );
+	}
+}, 10, 3 );
+
+// "Reset password" screen.
+add_action( 'validate_password_reset', function ( $errors, $user ) {
+	$pass = isset( $_POST['pass1'] ) ? (string) wp_unslash( $_POST['pass1'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- core verifies the reset key; passwords are never sanitised.
+	$msg  = cohf_password_problem( $pass, $user instanceof WP_User ? $user : null );
+	if ( '' !== $msg && is_wp_error( $errors ) ) {
+		$errors->add( 'cohf_weak_password', $msg );
+	}
+}, 10, 2 );
+
+// WooCommerce "My account > Account details" and registration with a password field.
+add_action( 'woocommerce_save_account_details_errors', function ( $errors, $user ) {
+	$pass = isset( $_POST['password_1'] ) ? (string) wp_unslash( $_POST['password_1'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- WooCommerce verifies the nonce.
+	$msg  = cohf_password_problem( $pass, $user );
+	if ( '' !== $msg ) {
+		$errors->add( 'cohf_weak_password', $msg );
+	}
+}, 10, 2 );
+add_filter( 'woocommerce_registration_errors', function ( $errors, $username, $email ) {
+	$pass = isset( $_POST['password'] ) ? (string) wp_unslash( $_POST['password'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- WooCommerce verifies the nonce.
+	$msg  = cohf_password_problem( $pass, (object) array( 'user_login' => $username, 'user_email' => $email ) );
+	if ( '' !== $msg ) {
+		$errors->add( 'cohf_weak_password', $msg );
+	}
+	return $errors;
+}, 10, 3 );
+
+/**
+ * CORS for the theme's REST routes.
+ *
+ * WordPress core echoes any Origin back in Access-Control-Allow-Origin with
+ * credentials allowed. For the cohf/v1 routes (giving, form tokens, Paystack
+ * webhook) only this site's own origin is allowed; the Paystack webhook is
+ * server-to-server and sends no Origin, so it is unaffected.
+ */
+add_filter( 'rest_pre_serve_request', function ( $served, $result, $request ) {
+	$route  = $request instanceof WP_REST_Request ? (string) $request->get_route() : '';
+	$origin = get_http_origin();
+	if ( 0 !== strpos( $route, '/cohf/v1' ) || ! $origin ) {
+		return $served;
+	}
+	$allowed = array(
+		untrailingslashit( home_url() ),
+		untrailingslashit( site_url() ),
+		untrailingslashit( set_url_scheme( home_url(), 'https' ) ),
+	);
+	if ( ! in_array( untrailingslashit( $origin ), $allowed, true ) && ! headers_sent() ) {
+		header_remove( 'Access-Control-Allow-Origin' );
+		header_remove( 'Access-Control-Allow-Credentials' );
+	}
+	return $served;
+}, 20, 3 );
+
+/**
+ * Never cache personal or token-bearing REST responses from cohf/v1.
+ */
+add_filter( 'rest_post_dispatch', function ( $response, $server, $request ) {
+	if ( $response instanceof WP_REST_Response && $request instanceof WP_REST_Request && 0 === strpos( (string) $request->get_route(), '/cohf/v1' ) ) {
+		$response->header( 'Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0' );
+		$response->header( 'X-Content-Type-Options', 'nosniff' );
+	}
+	return $response;
+}, 10, 3 );
+
+/**
+ * Uploads: only administrators may upload SVG or other script-capable types.
+ *
+ * Core already blocks SVG; this guard makes sure a plugin cannot quietly
+ * re-enable SVG, HTML or XML uploads for non-administrators (stored XSS).
+ */
+add_filter( 'upload_mimes', function ( $mimes ) {
+	if ( current_user_can( 'manage_options' ) ) {
+		return $mimes;
+	}
+	foreach ( array_keys( $mimes ) as $ext ) {
+		if ( preg_match( '/(^|\|)(svg|svgz|html?|xml|xhtml|js|php\d?|phtml|swf)(\||$)/i', $ext ) ) {
+			unset( $mimes[ $ext ] );
+		}
+	}
+	return $mimes;
+}, 99 );
+add_filter( 'wp_handle_upload_prefilter', function ( $file ) {
+	$name = isset( $file['name'] ) ? (string) $file['name'] : '';
+	// Block double extensions such as photo.php.jpg that some servers execute.
+	if ( preg_match( '/\.(php\d?|phtml|phar|pl|py|cgi|asp|aspx|jsp|sh|exe)(\.|$)/i', $name ) ) {
+		$file['error'] = __( 'This file type is not allowed.', 'cohf-child' );
+	}
+	return $file;
+} );
+
+/**
+ * Application passwords are not used by this site; turn them off so a leaked
+ * one can never be used to call the REST API as a staff member.
+ * Filter `cohf_allow_application_passwords` to true to re-enable.
+ */
+add_filter( 'wp_is_application_passwords_available', function ( $available ) {
+	return (bool) apply_filters( 'cohf_allow_application_passwords', false ) && $available;
 } );

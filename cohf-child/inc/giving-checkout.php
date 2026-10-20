@@ -64,6 +64,13 @@ function cohf_giving_nonce_route() {
 		array(
 			'methods'             => 'GET',
 			'callback'            => function () {
+				// 14.15.0: rate limit - 30 fresh nonces per visitor per 10 minutes.
+				$key  = 'cohf_gn_' . md5( (string) cohf_giving_client_ip() . wp_salt() );
+				$hits = (int) get_transient( $key );
+				if ( $hits >= 30 ) {
+					return new WP_REST_Response( array( 'message' => __( 'Too many requests. Please wait a few minutes.', 'cohf-child' ) ), 429 );
+				}
+				set_transient( $key, $hits + 1, 10 * MINUTE_IN_SECONDS );
 				$res = new WP_REST_Response( array( 'nonce' => wp_create_nonce( 'cohf_giving' ) ) );
 				$res->header( 'Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0' );
 				$res->header( 'X-LiteSpeed-Cache-Control', 'no-cache' );
@@ -104,7 +111,7 @@ function cohf_giving_initialize( $request ) {
 
 	// A crude but effective brake on scripted abuse: five attempts per IP
 	// per five minutes. A genuine donor never approaches this.
-	$bucket = 'cohf_give_' . md5( (string) cohf_giving_client_ip() );
+	$bucket = 'cohf_give_' . md5( (string) cohf_giving_client_ip() . wp_salt() );
 	$hits   = (int) get_transient( $bucket );
 
 	if ( $hits >= 5 ) {
@@ -297,6 +304,17 @@ function cohf_giving_next_reference() {
  */
 function cohf_giving_client_ip() {
 	$remote = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+
+	// 14.15.0: Cloudflare sends the real visitor address in CF-Connecting-IP.
+	// It is trusted only when the site owner says the site is behind
+	// Cloudflare (COHF_BEHIND_CLOUDFLARE in wp-config.php), because any
+	// visitor can forge the header on a direct request.
+	if ( defined( 'COHF_BEHIND_CLOUDFLARE' ) && COHF_BEHIND_CLOUDFLARE && isset( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ) {
+		$cf = trim( sanitize_text_field( wp_unslash( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ) );
+		if ( filter_var( $cf, FILTER_VALIDATE_IP ) ) {
+			return $cf;
+		}
+	}
 
 	if ( defined( 'COHF_BEHIND_PROXY' ) && COHF_BEHIND_PROXY && isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
 		$forwarded = sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) );

@@ -135,8 +135,8 @@ function cohf_giving_settings_page() {
 				<tr>
 					<th scope="row"><label for="cohf_paystack_secret_key"><?php esc_html_e( 'Paystack secret key', 'cohf-child' ); ?></label></th>
 					<td>
-						<?php if ( defined( 'COHF_PAYSTACK_SECRET_KEY' ) ) : ?>
-							<p><strong><?php esc_html_e( 'Set in wp-config.php.', 'cohf-child' ); ?></strong> <?php esc_html_e( 'That is the safer place for it, so this field is ignored.', 'cohf-child' ); ?></p>
+						<?php if ( defined( 'COHF_PAYSTACK_SECRET_KEY' ) || '' !== trim( (string) getenv( 'COHF_PAYSTACK_SECRET_KEY' ) ) ) : ?>
+							<p><strong><?php esc_html_e( 'Set in wp-config.php or the server environment.', 'cohf-child' ); ?></strong> <?php esc_html_e( 'That is the safer place for it, so this field is ignored.', 'cohf-child' ); ?></p>
 						<?php else : ?>
 							<input name="cohf_paystack_secret_key" id="cohf_paystack_secret_key" type="password" class="regular-text code"
 								value="<?php echo esc_attr( (string) get_option( 'cohf_paystack_secret_key', '' ) ); ?>" placeholder="sk_live_..." autocomplete="off">

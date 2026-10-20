@@ -47,6 +47,15 @@ function cohf_paystack_secret() {
 		}
 	}
 
+	// 14.15.0: environment variable (set in the hosting panel or .env loader),
+	// so the live key never has to sit in the database or in a backup.
+	$env = getenv( 'COHF_PAYSTACK_SECRET_KEY' );
+	if ( is_string( $env ) && '' !== trim( $env ) ) {
+		return trim( $env );
+	}
+
+	// Legacy fallback: the key saved in Foundation > Giving. Kept so the live
+	// site does not break; move the key to wp-config.php and clear the field.
 	return trim( (string) get_option( 'cohf_paystack_secret_key', '' ) );
 }
 
