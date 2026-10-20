@@ -77,7 +77,7 @@ add_filter( 'robots_txt', function ( $output, $public ) {
  * @return string
  */
 function cohf_llms_txt() {
-	$cached = get_transient( 'cohf_llms_txt' );
+	$cached = get_transient( 'cohf_llms_txt_v2' );
 	if ( is_string( $cached ) && '' !== $cached ) {
 		return $cached;
 	}
@@ -89,7 +89,10 @@ function cohf_llms_txt() {
 	};
 
 	$lines   = array();
-	$lines[] = '# ' . $name;
+	$plain   = static function ( $text ) {
+		return trim( html_entity_decode( wp_strip_all_tags( (string) $text ), ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
+	};
+	$lines[] = '# ' . $plain( $name );
 	$lines[] = '';
 	if ( $get( 'descriptor' ) ) {
 		$lines[] = '> ' . $get( 'descriptor' );
@@ -153,7 +156,7 @@ function cohf_llms_txt() {
 		foreach ( $programmes as $programme ) {
 			$summary = has_excerpt( $programme ) ? $programme->post_excerpt : wp_trim_words( $programme->post_content, 30, '...' );
 			$summary = trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( strip_shortcodes( $summary ) ) ) );
-			$lines[] = '- [' . get_the_title( $programme ) . '](' . get_permalink( $programme ) . ')' . ( $summary ? ': ' . $summary : '' );
+			$lines[] = '- [' . $plain( get_the_title( $programme ) ) . '](' . get_permalink( $programme ) . ')' . ( $summary ? ': ' . $plain( $summary ) : '' );
 		}
 		$lines[] = '';
 	}
@@ -169,7 +172,7 @@ function cohf_llms_txt() {
 	if ( $stories ) {
 		$lines[] = '## Impact stories (published with recorded consent)';
 		foreach ( $stories as $story ) {
-			$lines[] = '- [' . get_the_title( $story ) . '](' . get_permalink( $story ) . ')';
+			$lines[] = '- [' . $plain( get_the_title( $story ) ) . '](' . get_permalink( $story ) . ')';
 		}
 		$lines[] = '';
 	}
@@ -180,7 +183,7 @@ function cohf_llms_txt() {
 	$lines[] = '- Last generated: ' . gmdate( 'Y-m-d' );
 
 	$text = implode( "\n", $lines ) . "\n";
-	set_transient( 'cohf_llms_txt', $text, 12 * HOUR_IN_SECONDS );
+	set_transient( 'cohf_llms_txt_v2', $text, 12 * HOUR_IN_SECONDS );
 	return $text;
 }
 
@@ -202,7 +205,7 @@ add_action( 'parse_request', function () {
 
 /* Rebuild the summary when content or organisation details change. */
 function cohf_llms_flush() {
-	delete_transient( 'cohf_llms_txt' );
+	delete_transient( 'cohf_llms_txt_v2' );
 }
 add_action( 'save_post_cohf_programme', 'cohf_llms_flush' );
 add_action( 'save_post_cohf_story', 'cohf_llms_flush' );

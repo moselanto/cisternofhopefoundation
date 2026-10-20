@@ -250,7 +250,54 @@ add_filter( 'rank_math/json_ld', function ( $data, $jsonld = null ) {
 		if ( has_post_thumbnail() ) {
 			$service['image'] = get_the_post_thumbnail_url( null, 'full' );
 		}
+		$answer = function_exists( 'cohf_field' ) ? cohf_field( 'answer' ) : '';
+		if ( '' !== trim( $answer ) ) {
+			$service['description'] = wp_strip_all_tags( $answer );
+		}
 		$data['cohfProgramme'] = $service;
+
+		// 14.20.0: Rank Math prints no base graph for programme pages (its
+		// schema type for this post type is "None"), so the Service pointed at
+		// an organisation that was not on the page. Add the organisation,
+		// WebPage and breadcrumb only when they are missing, so nothing is
+		// duplicated if Rank Math's settings change later.
+		$ids = array();
+		foreach ( $data as $cohf_node ) {
+			if ( is_array( $cohf_node ) && isset( $cohf_node['@id'] ) ) {
+				$ids[] = (string) $cohf_node['@id'];
+			}
+		}
+		if ( function_exists( 'cohf_schema_org_node' ) && ! in_array( $org_ref['@id'], $ids, true ) ) {
+			$cohf_org_node        = cohf_schema_org_node();
+			$cohf_org_node['@id'] = $org_ref['@id'];
+			$data['cohfOrg']      = $cohf_org_node;
+		}
+		$page_id = get_permalink() . '#webpage';
+		if ( ! in_array( $page_id, $ids, true ) ) {
+			$overview = home_url( '/programmes-overview/' );
+			$data['cohfProgrammePage'] = array(
+				'@type'         => 'WebPage',
+				'@id'           => $page_id,
+				'url'           => get_permalink(),
+				'name'          => wp_strip_all_tags( get_the_title() ),
+				'inLanguage'    => 'en-KE',
+				'isPartOf'      => array( '@id' => home_url( '/#website' ) ),
+				'about'         => $org_ref,
+				'mainEntity'    => array( '@id' => get_permalink() . '#programme' ),
+				'datePublished' => get_the_date( 'c' ),
+				'dateModified'  => get_the_modified_date( 'c' ),
+				'breadcrumb'    => array( '@id' => get_permalink() . '#breadcrumb' ),
+			);
+			$data['cohfProgrammeTrail'] = array(
+				'@type'           => 'BreadcrumbList',
+				'@id'             => get_permalink() . '#breadcrumb',
+				'itemListElement' => array(
+					array( '@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => home_url( '/' ) ),
+					array( '@type' => 'ListItem', 'position' => 2, 'name' => 'Programmes', 'item' => $overview ),
+					array( '@type' => 'ListItem', 'position' => 3, 'name' => wp_strip_all_tags( get_the_title() ), 'item' => get_permalink() ),
+				),
+			);
+		}
 	}
 
 	// Donate page: a DonateAction that search engines can show.

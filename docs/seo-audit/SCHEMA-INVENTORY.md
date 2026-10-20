@@ -7,7 +7,7 @@
 | All pages | `#organization` (NGO + NonprofitOrganization), `#website` | Rank Math + theme enrichment |
 | Pages | WebPage / AboutPage / ContactPage / CollectionPage / FAQPage (Partners, visible FAQ only) | Rank Math + theme |
 | Support Our Work | DonateAction (`/support-our-work/#donate`) | theme |
-| Programme | Service, linked to `#organization` | theme |
+| Programme | Organisation + WebPage + BreadcrumbList + Service (theme adds them because Rank Math prints no base graph for programmes; skipped if Rank Math ever does) | theme via `rank_math/json_ld` |
 | Story | Article (fallback only when Rank Math emits none) | theme |
 | Leader | Person | theme |
 | Shop / product | CollectionPage + ItemList; Product + Offer + shipping + return policy | Rank Math / WooCommerce + `cohf_schema_product` |

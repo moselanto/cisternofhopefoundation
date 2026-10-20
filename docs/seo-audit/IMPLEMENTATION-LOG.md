@@ -25,6 +25,14 @@
 - New `template-parts/programme-glance.php` printed under the programme hero: plain answer + key facts + checked date. Falls back to the existing strategic purpose and "Who it serves"; empty fields are hidden, nothing is invented.
 - Staff fill the fields per programme in wp-admin > Programmes.
 
+## 14.20.0 - 20 October 2026 (live verification of 14.19.0)
+
+Verified live at 14:20 EAT: robots.txt crawler groups present, `/llms.txt` 200 text/plain, hreflang gone, organisation `sameAs` = confirmed Facebook page, `hasMap` = confirmed pin, no `keywords`, At a glance block rendering on programme pages.
+
+Found and fixed:
+- Programme pages printed only a `Service` node whose `provider` pointed at an organisation not present on the page (Rank Math schema type for programmes is None). Added organisation, WebPage and BreadcrumbList to the same graph, only when missing (`inc/rank-math.php`). Service description now uses the Quick answer when filled.
+- `/llms.txt` showed HTML entities (`&#038;`, `&#8217;`) in titles. Now decoded to plain text (`inc/ai-discovery.php`); cache key bumped so the fix shows immediately.
+
 ## Next phases (need Foundation input)
 
 - **B:** de-duplicate "NGO in Kenya" across page keyword lists after Search Console export.
