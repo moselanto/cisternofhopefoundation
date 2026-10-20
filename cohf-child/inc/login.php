@@ -71,6 +71,9 @@ add_action( 'login_enqueue_scripts', function () {
 	if ( $photo ) {
 		$css .= 'body.cohf-login{--cohf-login-photo:url("' . esc_url( $photo ) . '")}';
 	}
+	if ( file_exists( $dir . 'images/brand/logo-mark@2x.png' ) ) {
+		$css .= 'body.cohf-login{--cohf-login-mark:url("' . esc_url( $uri . 'images/brand/logo-mark@2x.png' ) . '")}';
+	}
 	wp_add_inline_style( 'cohf-login', $css );
 
 	wp_enqueue_script( 'cohf-login', $uri . 'js/login.js', array(), file_exists( $dir . 'js/login.js' ) ? (string) filemtime( $dir . 'js/login.js' ) : COHF_CHILD_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );

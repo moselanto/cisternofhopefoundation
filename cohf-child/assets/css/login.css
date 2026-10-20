@@ -9,19 +9,22 @@ body.cohf-login {
   --lg-gold: #d9a227;
   --lg-cream: #f7f3ea;
   --lg-ink: #1c1b19;
-  --lg-muted: #5d635f;
-  --lg-line: #e3ddd0;
+  --lg-muted: #3f4642;
+  --lg-line: #c9c1b1;
+  --lg-field: #8c8576;
   --lg-radius: 18px;
   margin: 0;
   min-height: 100vh;
   min-height: 100dvh;
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(420px, 1fr);
-  align-content: center;
-  background: var(--lg-cream);
+  align-content: start;
+  align-content: safe center;
+  background: linear-gradient(180deg, #fbf8f1 0%, var(--lg-cream) 100%);
   color: var(--lg-ink);
   font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  font-size: 15px;
+  font-size: 16px;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 body.cohf-login > *:not(.cohf-lg-aside) { grid-column: 2; }
@@ -39,10 +42,11 @@ body.cohf-login > *:not(.cohf-lg-aside) { grid-column: 2; }
   flex-direction: column;
   justify-content: space-between;
   gap: 32px;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
   padding: clamp(28px, 4vw, 56px);
   color: #fff;
   background:
-    linear-gradient(160deg, rgba(18, 58, 45, 0.55) 0%, rgba(18, 58, 45, 0.82) 55%, rgba(10, 33, 26, 0.96) 100%),
+    linear-gradient(180deg, rgba(10, 33, 26, 0.35) 0%, rgba(10, 33, 26, 0.15) 30%, rgba(10, 33, 26, 0.78) 68%, rgba(10, 33, 26, 0.95) 100%),
     var(--cohf-login-photo, none) center / cover no-repeat,
     var(--lg-forest);
 }
@@ -52,7 +56,7 @@ body.cohf-login > *:not(.cohf-lg-aside) { grid-column: 2; }
   gap: 12px;
   color: #fff;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 18px;
   letter-spacing: 0.01em;
   text-decoration: none;
 }
@@ -73,13 +77,13 @@ body.cohf-login > *:not(.cohf-lg-aside) { grid-column: 2; }
 .cohf-lg-title {
   margin: 20px 0 14px;
   font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(32px, 3.6vw, 52px);
+  font-size: clamp(36px, 4vw, 58px);
   line-height: 1.08;
   font-weight: 600;
 }
-.cohf-lg-intro { margin: 0 0 22px; font-size: 16px; line-height: 1.6; color: rgba(255, 255, 255, 0.86); }
+.cohf-lg-intro { margin: 0 0 24px; font-size: 18px; line-height: 1.6; color: #fff; }
 .cohf-lg-points { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.cohf-lg-points li { position: relative; padding-inline-start: 30px; line-height: 1.5; color: rgba(255, 255, 255, 0.92); }
+.cohf-lg-points li { position: relative; padding-inline-start: 32px; font-size: 16.5px; font-weight: 500; line-height: 1.5; color: #fff; }
 .cohf-lg-points li::before {
   content: "";
   position: absolute;
@@ -90,7 +94,7 @@ body.cohf-login > *:not(.cohf-lg-aside) { grid-column: 2; }
   border-radius: 50%;
   background: var(--lg-gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23123a2d' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 12px no-repeat;
 }
-.cohf-lg-help { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13.5px; color: rgba(255, 255, 255, 0.75); }
+.cohf-lg-help { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 15px; color: rgba(255, 255, 255, 0.9); }
 .cohf-lg-help span { inline-size: 100%; }
 .cohf-lg-help a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
 
@@ -98,28 +102,40 @@ body.cohf-login > *:not(.cohf-lg-aside) { grid-column: 2; }
 .login #login {
   width: min(400px, calc(100% - 40px));
   margin: 0 auto;
-  padding: clamp(32px, 6vh, 64px) 0 12px;
+  padding: clamp(40px, 8vh, 88px) 0 12px;
 }
+.login #login { width: min(440px, calc(100% - 40px)); }
 .login h1.screen-reader-text, .login #login > h1 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.cohf-lg-head::before {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 56px;
+  margin: 0 0 20px;
+  border-radius: 16px;
+  background: #fff var(--cohf-login-mark, none) center / 40px no-repeat;
+  box-shadow: 0 6px 20px rgba(18, 58, 45, 0.14);
+}
 .cohf-lg-head h2 {
-  margin: 0 0 6px;
+  margin: 0 0 8px;
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 32px;
-  line-height: 1.15;
-  font-weight: 600;
+  font-size: 38px;
+  line-height: 1.12;
+  font-weight: 700;
   color: var(--lg-forest);
 }
-.cohf-lg-head p { margin: 0 0 22px; color: var(--lg-muted); line-height: 1.55; }
+.cohf-lg-head p { margin: 0 0 26px; color: var(--lg-muted); font-size: 16.5px; line-height: 1.55; }
 
 .login form {
   margin: 0;
-  padding: 28px;
+  padding: 32px;
   border: 1px solid var(--lg-line);
+  border-block-start: 4px solid var(--lg-forest);
   border-radius: var(--lg-radius);
   background: #fff;
-  box-shadow: 0 18px 50px rgba(18, 58, 45, 0.08), 0 2px 6px rgba(18, 58, 45, 0.04);
+  box-shadow: 0 24px 60px rgba(18, 58, 45, 0.14), 0 3px 10px rgba(18, 58, 45, 0.06);
 }
-.login label { font-size: 13.5px; font-weight: 600; color: var(--lg-ink); }
+.login label { font-size: 15px; font-weight: 650; color: var(--lg-ink); }
 .login form .input,
 .login input[type="text"],
 .login input[type="email"],
@@ -128,49 +144,49 @@ body.cohf-login > *:not(.cohf-lg-aside) { grid-column: 2; }
 .login input[type="number"] {
   box-sizing: border-box;
   width: 100%;
-  min-height: 48px;
-  margin: 6px 0 16px;
-  padding: 10px 14px;
-  font-size: 16px;
-  border: 1.5px solid var(--lg-line);
+  min-height: 54px;
+  margin: 8px 0 20px;
+  padding: 12px 16px;
+  font-size: 17px;
+  border: 2px solid var(--lg-field);
   border-radius: 12px;
-  background: #fcfbf8;
+  background: #fff;
   color: var(--lg-ink);
   box-shadow: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
 }
 .login form .input:focus,
 .login input:focus {
-  border-color: var(--lg-forest-2);
+  border-color: var(--lg-forest);
   background: #fff;
-  box-shadow: 0 0 0 4px rgba(27, 77, 60, 0.15);
+  box-shadow: 0 0 0 4px rgba(217, 162, 39, 0.35);
   outline: none;
 }
 .login .wp-pwd { position: relative; }
 .login .wp-pwd .input { padding-inline-end: 52px; }
 .login .button.wp-hide-pw {
-  inset-block-start: 6px;
-  inset-inline-end: 4px;
-  width: 44px;
-  height: 48px;
-  min-height: 48px;
-  color: var(--lg-muted);
+  inset-block-start: 10px;
+  inset-inline-end: 6px;
+  width: 46px;
+  height: 50px;
+  min-height: 50px;
+  color: var(--lg-forest);
   background: transparent;
   border: 0;
 }
 .login .button.wp-hide-pw:focus { box-shadow: 0 0 0 3px rgba(217, 162, 39, 0.5); border-radius: 10px; }
 .login .forgetmenot { display: flex; align-items: center; margin: 2px 0 18px; float: none; }
-.login .forgetmenot label { font-weight: 500; color: var(--lg-muted); }
-.login input[type="checkbox"] { width: 18px; height: 18px; border-radius: 5px; border-color: #b8b2a4; margin-inline-end: 8px; }
+.login .forgetmenot label { font-weight: 550; color: var(--lg-ink); }
+.login input[type="checkbox"] { width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--lg-field); margin-inline-end: 8px; }
 .login input[type="checkbox"]:checked::before { filter: hue-rotate(0); }
 .login .submit { margin: 0; padding: 0; }
 .login .button-primary,
 .login #wp-submit {
   float: none;
   width: 100%;
-  min-height: 50px;
+  min-height: 56px;
   padding: 0 20px;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
   letter-spacing: 0.01em;
   border: 0;
@@ -201,14 +217,15 @@ body.cohf-login > *:not(.cohf-lg-aside) { grid-column: 2; }
   border-radius: 12px;
   background: #fff;
   box-shadow: 0 2px 10px rgba(18, 58, 45, 0.06);
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.5;
+  color: var(--lg-ink);
 }
 .login #login_error, .login .notice-error { border-inline-start-color: #b32d2e; }
 .login .success, .login .notice-success { border-inline-start-color: #1a7f37; }
 
 /* Links under the card */
-.login #nav, .login #backtoblog { margin: 16px 0 0; padding: 0; text-align: center; font-size: 14px; }
+.login #nav, .login #backtoblog { margin: 20px 0 0; padding: 0; text-align: center; font-size: 16px; }
 .login #backtoblog { display: none; } /* "Back to site" lives in the footer. */
 .login #nav a, .login .privacy-policy-page-link a, .cohf-lg-links a { color: var(--lg-forest-2); font-weight: 600; text-decoration: none; }
 .login #nav a:hover, .cohf-lg-links a:hover { text-decoration: underline; text-underline-offset: 3px; }
@@ -228,13 +245,13 @@ body.cohf-login > *:not(.cohf-lg-aside) { grid-column: 2; }
 .login .backup-methods-wrap a, .login .backup-methods-wrap .button-link { color: var(--lg-forest-2); font-weight: 600; }
 
 /* Language switcher - international sites */
-.login .language-switcher { width: min(400px, calc(100% - 40px)); margin: 18px auto 0; padding: 0; }
+.login .language-switcher { width: min(440px, calc(100% - 40px)); margin: 18px auto 0; padding: 0; }
 .login .language-switcher form { padding: 10px 12px; box-shadow: none; display: flex; align-items: center; gap: 8px; justify-content: center; }
 .login .language-switcher select { min-height: 40px; border-radius: 10px; border-color: var(--lg-line); }
 .login .language-switcher .button { min-height: 40px; border-radius: 10px; }
 
 /* Footer */
-.cohf-lg-foot { width: min(400px, calc(100% - 40px)); margin: 20px auto 32px; text-align: center; font-size: 12.5px; color: var(--lg-muted); }
+.cohf-lg-foot { width: min(440px, calc(100% - 40px)); margin: 24px auto 40px; text-align: center; font-size: 14px; color: var(--lg-muted); }
 .cohf-lg-secure { display: flex; align-items: flex-start; justify-content: center; gap: 8px; margin: 0 0 12px; line-height: 1.5; }
 .cohf-lg-secure svg { flex: none; margin-block-start: 2px; color: #1a7f37; }
 .cohf-lg-links { display: flex; justify-content: center; gap: 18px; margin: 0 0 8px; }
@@ -259,7 +276,8 @@ body.cohf-login > *:not(.cohf-lg-aside) { grid-column: 2; }
   .login #login { margin-block-start: -52px; padding-block-start: 0; position: relative; }
   .cohf-lg-head { padding: 22px 22px 0; background: #fff; border-radius: var(--lg-radius) var(--lg-radius) 0 0; border: 1px solid var(--lg-line); border-block-end: 0; }
   .cohf-lg-head + form, .cohf-lg-head ~ form { border-start-start-radius: 0; border-start-end-radius: 0; border-block-start: 0; box-shadow: 0 18px 50px rgba(18, 58, 45, 0.08); }
-  .cohf-lg-head h2 { font-size: 26px; }
+  .cohf-lg-head::before { width: 48px; height: 48px; margin-block-end: 14px; background-size: 34px; }
+  .cohf-lg-head h2 { font-size: 30px; }
   .cohf-lg-head p { margin-block-end: 6px; }
   .login form { padding: 22px; }
 }
