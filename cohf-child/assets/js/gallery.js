@@ -13,6 +13,7 @@
 	var filters = Array.prototype.slice.call(document.querySelectorAll('.gallery-filter'));
 	var status = document.querySelector('.gallery-status');
 	var img = box.querySelector('.lightbox__img');
+	var video = box.querySelector('.lightbox__video');
 	var cat = box.querySelector('.lightbox__cat');
 	var title = box.querySelector('.lightbox__title');
 	var text = box.querySelector('.lightbox__text');
@@ -75,15 +76,38 @@
 	}
 
 	/* ---- Lightbox ---- */
+	function stopVideo() {
+		if (!video) { return; }
+		video.pause();
+		video.removeAttribute('src');
+		video.load();
+		video.hidden = true;
+	}
+
 	function show(i) {
 		if (!visible.length) { return; }
 		current = (i + visible.length) % visible.length;
 		var a = visible[current];
 		var thumb = a.querySelector('img');
-		box.classList.add('is-loading');
-		img.onload = function () { box.classList.remove('is-loading'); };
-		img.src = a.getAttribute('href');
-		img.alt = thumb ? thumb.alt : '';
+		var clip = a.getAttribute('data-video');
+		stopVideo();
+		if (clip && video) {
+			box.classList.remove('is-loading');
+			img.hidden = true;
+			img.removeAttribute('src');
+			video.poster = a.getAttribute('href');
+			video.src = clip;
+			video.setAttribute('aria-label', a.getAttribute('data-title') || '');
+			video.hidden = false;
+			var p = video.play();
+			if (p && p.catch) { p.catch(function () {}); }
+		} else {
+			img.hidden = false;
+			box.classList.add('is-loading');
+			img.onload = function () { box.classList.remove('is-loading'); };
+			img.src = a.getAttribute('href');
+			img.alt = thumb ? thumb.alt : '';
+		}
 		cat.textContent = a.getAttribute('data-category') || '';
 		title.textContent = a.getAttribute('data-title') || '';
 		text.textContent = a.getAttribute('data-caption') || '';
@@ -111,6 +135,7 @@
 	function close() {
 		box.classList.remove('is-open');
 		document.body.classList.remove('cohf-lightbox-open');
+		stopVideo();
 		setTimeout(function () { box.hidden = true; img.src = ''; }, 250);
 		if (opener) { opener.focus(); }
 	}

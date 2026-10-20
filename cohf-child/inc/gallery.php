@@ -68,6 +68,7 @@ function cohf_gallery_items() {
 		$item['url']   = $url;
 		$item['alt']   = cohf_img_alt( $item['key'] );
 		$item['shape'] = cohf_gallery_shape( $item['key'] );
+		$item['video'] = isset( $item['video'] ) ? $item['video'] : '';
 		$items[]       = $item;
 	}
 	return $items;
@@ -80,7 +81,7 @@ function cohf_gallery_items() {
  * @return array<int,array<string,string>>
  */
 function cohf_gallery_static_items() {
-	$items = array(
+	$items = array_merge( cohf_gallery_new_items(), array(
 		array( 'key' => 'story-06-tailoring-before', 'cat' => 'enterprise', 'title' => __( 'Mr Owino: where it began', 'cohf-child' ), 'caption' => __( 'Before: where Mr Owino started, with one sewing machine and a few shirts in a small room at home.', 'cohf-child' ) ),
 		array( 'key' => 'story-06-tailoring-workshop',       'cat' => 'enterprise', 'title' => __( 'Mr Owino at work', 'cohf-child' ),                    'caption' => __( 'Mr Owino at his sewing machine. His tailoring business began with only one machine in his house and is now growing.', 'cohf-child' ) ),
 		array( 'key' => 'story-07-dan-laptop', 'cat' => 'enterprise', 'title' => __( 'Dan at work', 'cohf-child' ), 'caption' => __( 'Dan at the laptop the Foundation helped him acquire, which lets him keep developing his skills and serving clients.', 'cohf-child' ) ),
@@ -115,7 +116,7 @@ function cohf_gallery_static_items() {
 		array( 'key' => 'hero-home',                         'cat' => 'education',  'title' => __( 'Home, in new uniforms', 'cohf-child' ),               'caption' => __( 'The three boys with our Executive Director and their grandmother outside the family home.', 'cohf-child' ) ),
 		array( 'key' => 'gallery-home-visit-child',          'cat' => 'education',  'title' => __( 'A home visit', 'cohf-child' ),                        'caption' => __( 'Our team visiting a young boy and his family at home.', 'cohf-child' ) ),
 		array( 'key' => 'story-04-back-to-school',           'cat' => 'education',  'title' => __( 'A family\'s new start', 'cohf-child' ),               'caption' => __( 'Three boys in school uniform standing with their family outside their home.', 'cohf-child' ) ),
-	);
+	) );
 
 	return apply_filters( 'cohf_gallery_items', $items );
 }
@@ -218,3 +219,30 @@ function cohf_gallery_ensure_page() {
 	update_option( 'cohf_gallery_page_version', COHF_CHILD_VERSION );
 }
 add_action( 'admin_init', 'cohf_gallery_ensure_page' );
+
+/**
+ * URL of a file in the Media Library uploads folder.
+ *
+ * @param string $relative Path below wp-content/uploads, e.g. 2026/10/clip.mp4.
+ * @return string
+ */
+function cohf_gallery_upload_url( $relative ) {
+	$dir = wp_get_upload_dir();
+	return trailingslashit( $dir['baseurl'] ) . ltrim( $relative, '/' );
+}
+
+/**
+ * The newest gallery items (14.21.0): the October 2026 school sanitary pad
+ * visit, shared by the Foundation. Videos stay in the Media Library (too
+ * large to ship in the theme); the theme ships a still for each as its
+ * poster. Added to the live gallery once by cohf_photos_seed_new().
+ *
+ * @return array<int,array<string,string>>
+ */
+function cohf_gallery_new_items() {
+	return array(
+		array( 'key' => 'gallery-school-pads-oct-2026',      'cat' => 'dignity', 'title' => __( 'Pads for every girl', 'cohf-child' ),            'caption' => __( 'Schoolgirls holding up their sanitary pads during our school visit, so that a period is never the reason a girl misses class.', 'cohf-child' ) ),
+		array( 'key' => 'gallery-school-pads-handout-video', 'cat' => 'dignity', 'title' => __( 'Video: one girl at a time', 'cohf-child' ),       'caption' => __( 'Our team handing sanitary pads to each girl in turn during the school visit.', 'cohf-child' ), 'video' => cohf_gallery_upload_url( '2026/10/WhatsApp-Video-2026-10-20-at-17.07.34.mp4' ) ),
+		array( 'key' => 'gallery-school-pads-talk-video',    'cat' => 'dignity', 'title' => __( 'Video: a word from the school visit', 'cohf-child' ), 'caption' => __( 'Our team speaking from the school visit, with the girls gathered behind.', 'cohf-child' ), 'video' => cohf_gallery_upload_url( '2026/10/WhatsApp-Video-2026-10-20-at-17.07.32.mp4' ) ),
+	);
+}

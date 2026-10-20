@@ -92,6 +92,7 @@ Visitor -> shop / homepage cards -> cart drawer (`wc-ajax=cohf_cart_qty`, nonce)
 
 | Version | Date | Change |
 | --- | --- | --- |
+| 14.21.0 | 20 Oct 2026 | Gallery video support (optional "Video" box on Gallery photos, play button, video plays in the viewer); October 2026 school pad visit added to the top of the gallery once (1 photo, 2 videos from the Media Library, theme-shipped covers) |
 | 14.20.0 | 20 Oct 2026 | Programme pages: complete schema graph (organisation, WebPage, BreadcrumbList, Service using the quick answer) added only when Rank Math has not printed them; llms.txt titles decoded (no HTML entities) |
 | 14.19.0 | 20 Oct 2026 | Programme "At a glance" answer block (`template-parts/programme-glance.php`) with new editable fields: quick answer, where it runs, delivery, status, facts-checked date |
 | 14.18.1 | 20 Oct 2026 | Foundation confirmations: Facebook, map pin, founder, Kiambu; registration details never displayed |

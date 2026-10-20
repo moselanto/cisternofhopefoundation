@@ -92,6 +92,9 @@ function cohf_photos_seed() {
 		}
 		set_post_thumbnail( $post_id, $attachment );
 		update_post_meta( $post_id, '_cohf_photo_key', $item['key'] );
+		if ( empty( $item['video'] ) === false ) {
+			update_post_meta( $post_id, '_cohf_video_url', esc_url_raw( $item['video'] ) );
+		}
 		wp_set_object_terms( $post_id, $item['cat'], 'cohf_photo_cat' );
 	}
 	update_option( 'cohf_photos_seeded', COHF_CHILD_VERSION );
@@ -136,6 +139,7 @@ function cohf_photo_items() {
 			'title'   => get_the_title( $post ),
 			'caption' => (string) $post->post_excerpt,
 			'shape'   => $shape,
+			'video'   => (string) get_post_meta( $post->ID, '_cohf_video_url', true ),
 		);
 	}
 	return $items;
@@ -173,3 +177,101 @@ function cohf_photos_fix_shoe_caption() {
 	update_option( 'cohf_photo_fix_shoes', 1, false );
 }
 add_action( 'admin_init', 'cohf_photos_fix_shoe_caption', 41 );
+
+/**
+ * Add the newest gallery items (cohf_gallery_new_items) to a gallery that was
+ * already seeded, once, at the top of the gallery. Skips any item that already
+ * exists, so it is safe to run on fresh installs too.
+ */
+function cohf_photos_seed_new() {
+	if ( get_option( 'cohf_photos_new_2026_10' ) || current_user_can( 'manage_options' ) === false ) {
+		return;
+	}
+	if ( get_option( 'cohf_photos_seeded' ) === false || function_exists( 'cohf_gallery_new_items' ) === false || function_exists( 'cohf_import_image' ) === false ) {
+		return;
+	}
+	if ( term_exists( 'dignity', 'cohf_photo_cat' ) === null ) {
+		wp_insert_term( __( 'Menstrual dignity', 'cohf-child' ), 'cohf_photo_cat', array( 'slug' => 'dignity' ) );
+	}
+	$items = cohf_gallery_new_items();
+	$order = -10 * count( $items );
+	foreach ( $items as $item ) {
+		$order += 10;
+		$exists = get_posts( array(
+			'post_type'   => 'cohf_photo',
+			'post_status' => 'any',
+			'meta_key'    => '_cohf_photo_key',
+			'meta_value'  => $item['key'],
+			'fields'      => 'ids',
+			'numberposts' => 1,
+		) );
+		if ( $exists ) {
+			continue;
+		}
+		$attachment = cohf_import_image( $item['key'] );
+		if ( empty( $attachment ) ) {
+			return; // Try again on the next admin page load.
+		}
+		$post_id = wp_insert_post( array(
+			'post_type'    => 'cohf_photo',
+			'post_status'  => 'publish',
+			'post_title'   => $item['title'],
+			'post_excerpt' => $item['caption'],
+			'menu_order'   => $order - 10,
+		) );
+		if ( empty( $post_id ) || is_wp_error( $post_id ) ) {
+			return;
+		}
+		set_post_thumbnail( $post_id, $attachment );
+		update_post_meta( $post_id, '_cohf_photo_key', $item['key'] );
+		if ( empty( $item['video'] ) === false ) {
+			update_post_meta( $post_id, '_cohf_video_url', esc_url_raw( $item['video'] ) );
+		}
+		wp_set_object_terms( $post_id, $item['cat'], 'cohf_photo_cat' );
+	}
+	update_option( 'cohf_photos_new_2026_10', COHF_CHILD_VERSION, false );
+}
+add_action( 'admin_init', 'cohf_photos_seed_new', 42 );
+
+/**
+ * "Video (optional)" box on Gallery photos: when filled, the gallery shows the
+ * photo as the video's cover with a play button and plays the video in the
+ * viewer. Upload the video to the Media Library and paste its file URL.
+ */
+function cohf_photo_video_box() {
+	add_meta_box( 'cohf-photo-video', __( 'Video (optional)', 'cohf-child' ), 'cohf_photo_video_box_render', 'cohf_photo', 'side' );
+}
+add_action( 'add_meta_boxes', 'cohf_photo_video_box' );
+
+/**
+ * Render the video box.
+ *
+ * @param WP_Post $post Gallery photo.
+ */
+function cohf_photo_video_box_render( $post ) {
+	wp_nonce_field( 'cohf_photo_video', 'cohf_photo_video_nonce' );
+	$value = (string) get_post_meta( $post->ID, '_cohf_video_url', true );
+	echo '<p><label for="cohf-photo-video-url">' . esc_html__( 'Video file URL (MP4 from the Media Library). The photo becomes the video cover.', 'cohf-child' ) . '</label></p>';
+	echo '<input type="url" class="widefat" id="cohf-photo-video-url" name="cohf_photo_video_url" value="' . esc_attr( $value ) . '" placeholder="https://">';
+}
+
+/**
+ * Save the video box.
+ *
+ * @param int $post_id Gallery photo ID.
+ */
+function cohf_photo_video_box_save( $post_id ) {
+	if ( ! isset( $_POST['cohf_photo_video_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['cohf_photo_video_nonce'] ) ), 'cohf_photo_video' ) ) {
+		return;
+	}
+	if ( ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+	$url = isset( $_POST['cohf_photo_video_url'] ) ? esc_url_raw( wp_unslash( $_POST['cohf_photo_video_url'] ) ) : '';
+	if ( '' === $url ) {
+		delete_post_meta( $post_id, '_cohf_video_url' );
+	} else {
+		update_post_meta( $post_id, '_cohf_video_url', $url );
+	}
+}
+add_action( 'save_post_cohf_photo', 'cohf_photo_video_box_save' );

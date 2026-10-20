@@ -67,9 +67,13 @@ $counts     = array_count_values( wp_list_pluck( $items, 'cat' ) );
 							data-title="<?php echo esc_attr( $item['title'] ); ?>"
 							data-caption="<?php echo esc_attr( $item['caption'] ); ?>"
 							data-category="<?php echo esc_attr( $label ); ?>"
-							aria-label="<?php echo esc_attr( sprintf( /* translators: %s: photo title. */ __( 'Open photo: %s', 'cohf-child' ), $item['title'] ) ); ?>">
+							<?php if ( ! empty( $item['video'] ) ) : ?>data-video="<?php echo esc_url( $item['video'] ); ?>"<?php endif; ?>
+							aria-label="<?php echo esc_attr( sprintf( empty( $item['video'] ) ? /* translators: %s: photo title. */ __( 'Open photo: %s', 'cohf-child' ) : /* translators: %s: video title. */ __( 'Play video: %s', 'cohf-child' ), $item['title'] ) ); ?>">
 							<span class="gallery-item__media">
 								<img src="<?php echo esc_url( $url ); ?>" alt="<?php echo esc_attr( $alt ); ?>" loading="<?php echo $i < 4 ? 'eager' : 'lazy'; ?>" decoding="async">
+								<?php if ( ! empty( $item['video'] ) ) : ?>
+								<span class="gallery-item__play" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+								<?php endif; ?>
 								<span class="gallery-item__zoom" aria-hidden="true">
 									<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
 								</span>
@@ -102,6 +106,7 @@ $counts     = array_count_values( wp_list_pluck( $items, 'cat' ) );
 		</button>
 		<figure class="lightbox__stage">
 			<img class="lightbox__img" src="" alt="">
+			<video class="lightbox__video" controls playsinline preload="none" hidden></video>
 			<figcaption class="lightbox__caption">
 				<span class="lightbox__cat"></span>
 				<strong class="lightbox__title"></strong>
