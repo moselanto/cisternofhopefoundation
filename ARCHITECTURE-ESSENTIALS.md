@@ -23,6 +23,7 @@ One-page map for anyone (human or AI) picking up the codebase. Full detail: `ARC
 | Concern | Files |
 | --- | --- |
 | Security headers, login throttle, HTTPS, sessions, passwords, CORS, uploads | `inc/security.php` |
+| Staff login screen and two-step verification | `inc/login.php`, `inc/two-factor.php`, `assets/css/login.css`, `assets/js/login.js` |
 | Anti-spam, mail circuit breaker, shop/registration/reset rate limits | `inc/anti-spam.php`, `inc/form-guard.php` |
 | Contact/enquiry form | `inc/forms.php`, `template-parts/enquiry-form.php`, `assets/js/forms.js` |
 | Giving (Paystack) | `inc/giving.php` (settings, enqueue), `inc/giving-checkout.php` (REST initialise, nonce, client IP), `inc/giving-records.php` (verify, webhook, donation records), `template-parts/giving-form.php`, `assets/js/giving.js` |
@@ -55,6 +56,7 @@ define( 'COHF_BEHIND_PROXY', true );      // only if behind a proxy that sets X-
 define( 'COHF_BEHIND_CLOUDFLARE', true ); // only if behind Cloudflare
 define( 'FORCE_SSL_ADMIN', true );
 define( 'DISALLOW_FILE_EDIT', true );     // theme also sets this
+define( 'COHF_REQUIRE_2FA', false );      // EMERGENCY ONLY: stop forcing 2FA if locked out
 ```
 
 The Paystack **public** key, plan code and suggested amounts are normal options in Foundation > Giving.

@@ -36,6 +36,8 @@ theme-functions, nav-walker, nav-structure, mobile-actions, whatsapp-chat, leade
 | `mobile-actions.php`, `whatsapp-chat.php` | Mobile quick-actions bar; floating WhatsApp chat |
 | `media.php`, `leader-photos.php`, `photos.php`, `videos.php`, `gallery.php` | Image sync from theme assets, gallery post type and rendering |
 | `performance.php` | Asset registration with filemtime versions, preloads, dequeues |
+| `login.php` | Branded wp-login.php: photo panel, headings per screen, footer, honeypot, no enumeration, no-cache |
+| `two-factor.php` | 2FA via the official Two Factor plugin: install prompt, grace period, enforcement for staff, Users column |
 | `security.php` | Headers, HTTPS redirect, secure cookies, session length, password policy, login throttle, user-enumeration block, XML-RPC off, comments off, CORS for `cohf/v1`, upload type guard, application passwords off |
 | `anti-spam.php` | Mail circuit breaker, checkout/Store API/search/registration/password-reset rate limits |
 | `form-guard.php` | Shared honeypot/time-trap/spam score, `/cohf/v1/form-token` |
@@ -89,6 +91,7 @@ Visitor -> shop / homepage cards -> cart drawer (`wc-ajax=cohf_cart_qty`, nonce)
 
 | Version | Date | Change |
 | --- | --- | --- |
+| 14.17.0 | 20 Oct 2026 | Branded international staff login (`inc/login.php`, `assets/css/login.css`, `assets/js/login.js`): split-screen photo panel, RTL-ready, language switcher kept, Caps Lock hint, busy state, styled 2FA code screen with one-time-code autofill, honeypot, no account enumeration, no-cache. Two-step verification (`inc/two-factor.php`) through the official Two Factor plugin: install prompt, 7-day grace then required for staff, Users-screen 2FA column, `COHF_REQUIRE_2FA` emergency switch |
 | 14.16.0 | 20 Oct 2026 | Mobile quick-actions bar becomes a floating blurred dock that hides on scroll down and returns on scroll up (WhatsApp button follows), clearer active dot, tactile press, haptic tap, focus ring; Speculation Rules prefetch (moderate) with shop/account exclusions, touchstart/hover prefetch fallback for Safari/Firefox, footer `content-visibility` |
 | 14.15.0 | 20 Oct 2026 | Security review: HTTPS redirect, secure cookies, 8h/7d session expiry, password policy (12+ chars), CORS lock for `cohf/v1`, no-store on `cohf/v1`, upload type/double-extension guard, application passwords off, Paystack secret from env var, Cloudflare-aware client IP, rate limit on `/giving-nonce`, salted rate-limit keys, `payment` allowed for Paystack only, extra CSP directives, CI lint + Dependabot, full documentation set |
 | 14.14.1 | Oct 2026 | Previous release (see git history) |

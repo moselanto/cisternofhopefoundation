@@ -22,6 +22,8 @@ Latest review: **20 October 2026**, release **14.15.0**, full theme code (`cohf/
 | HTTPS everywhere | **New:** front-end http requests 301 to https; HSTS 1 year; CSP `upgrade-insecure-requests` | `security.php` |
 | Security headers | X-Content-Type-Options, Referrer-Policy, X-Frame-Options, Permissions-Policy (**payment limited to self + Paystack**), HSTS, COOP, CSP (frame-ancestors, base-uri, object-src, **form-action**), X-Permitted-Cross-Domain-Policies, X-Powered-By removed | `security.php` |
 | Broken authentication | Lockout, generic login errors, user enumeration blocked (`?author=`, REST users, oEmbed), XML-RPC off, **application passwords off** | `security.php` |
+| Two-step verification | **New 14.17.0:** official Two Factor plugin (TOTP apps, security keys, email codes, recovery codes); every staff account (edit_posts) gets 7 days then must enable it; 2FA column on Users screen; emergency switch `COHF_REQUIRE_2FA` | `two-factor.php` |
+| Login screen | **New 14.17.0:** honeypot, identical response for unknown accounts on reset, never cached, branded 2FA screen | `login.php` |
 | Insecure file uploads | **New:** non-admins cannot upload SVG/HTML/XML/JS/PHP even if a plugin enables them; double extensions like `x.php.jpg` refused | `security.php` |
 | Unauthorised access | Capability checks on all admin screens and handlers; `.htaccess` blocks direct PHP, `inc/`, `docs/`, `.md` etc. | handlers, `.htaccess` |
 | Session hijacking | Secure + HttpOnly cookies, HSTS, short sessions, no session data in URLs | `security.php` |
@@ -53,7 +55,7 @@ No existing feature was removed.
 1. Move the Paystack secret into `wp-config.php` or the env var, then clear the field in Foundation > Giving.
 2. Add `define( 'FORCE_SSL_ADMIN', true );` to `wp-config.php`.
 3. SPF, DKIM and DMARC for cisternofhopefoundation.org.
-4. Two-factor login for every administrator (e.g. Two Factor plugin).
+4. Install and activate the free **Two Factor** plugin (wp-admin > Plugins > Add New > "Two Factor"). The theme then walks every staff member through setup.
 5. Turn on automatic updates for WordPress core minor releases and plugins in wp-admin; review WooCommerce and Rank Math updates weekly.
 6. If a CDN is added, define `COHF_BEHIND_CLOUDFLARE` (Cloudflare) or `COHF_BEHIND_PROXY`.
 7. Consider a full script CSP at the server once the final third-party list (Site Kit, Analytics, maps) is fixed.
