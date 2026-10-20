@@ -11,6 +11,14 @@
 | Explicit search/AI crawler groups in robots.txt; cart/checkout/account/search disallowed | Baseline robots | `inc/ai-discovery.php` | remove module from `functions.php` |
 | `/llms.txt` organisation summary | Was 404 | `inc/ai-discovery.php` | same |
 
+## 14.18.1 - 20 October 2026 (Foundation confirmations)
+
+- Facebook page confirmed; set as default `facebook` in Organisation details so `sameAs` lists it.
+- Office map pin confirmed (https://share.google/IaisvdIi4ZaCKUFms); default for `cohf_org_map_url`, used as `hasMap`.
+- Founder confirmed: Justus Kubai, Founder and Executive Director.
+- Registration details: Foundation does **not** want them displayed. Rule for all agents: never add a registration number, authority or certificate details to pages, schema or llms.txt.
+- Kiambu County confirmed as an area served (ministry visits); `areaServed` kept.
+
 ## Next phases (need Foundation input)
 
 - **B:** de-duplicate "NGO in Kenya" across page keyword lists after Search Console export.

@@ -96,7 +96,7 @@ function cohf_org_defaults() {
 		'email'        => 'info@cisternofhopefoundation.org',
 		// Social accounts. Empty until the Foundation confirms each one; an
 		// empty field hides that icon everywhere.
-		'facebook'     => '',
+		'facebook'     => 'https://www.facebook.com/people/Cistern-of-Hope-Foundation/61571155324672/', // Confirmed by the Foundation, 20 Oct 2026.
 		'instagram'    => '',
 		'x'            => '',
 		'linkedin'     => '',

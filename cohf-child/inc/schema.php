@@ -90,7 +90,8 @@ function cohf_schema_org_node() {
 	// 14.18.0: the map link used to be a search for another organisation's
 	// venue name. It is now only published when the Foundation has saved its
 	// own verified Google Maps link (option cohf_org_map_url).
-	$map_url          = esc_url_raw( (string) get_option( 'cohf_org_map_url', '' ) );
+	// Default is the office pin confirmed by the Foundation on 20 Oct 2026.
+	$map_url          = esc_url_raw( (string) get_option( 'cohf_org_map_url', 'https://share.google/IaisvdIi4ZaCKUFms' ) );
 	$node['location'] = array(
 		'@type'   => 'Place',
 		'name'    => $org['name'] . ' office, Kabete',

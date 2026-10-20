@@ -23,6 +23,7 @@ before touching forms, giving, the shop, REST routes, login or headers.
 
 ## Rules
 
+1. **Never publish the Foundation's registration number, authority or certificate details** (Foundation decision, 20 Oct 2026).
 1. **Never invent facts.** Figures, dates, partners, testimonials and names come only from the Foundation. Statistics live in `inc/template-tags.php` (editable in the Customizer); do not hard-code new ones in templates.
 2. **Content must be editable in WordPress.** Prefer options, Customizer settings, page content or post types over literals in PHP. Seed functions never overwrite existing content.
 3. **Escape on output, sanitise on input.** `esc_html`, `esc_attr`, `esc_url`, `wp_kses_post` on output; `sanitize_*`, `absint` on input; nonce + `current_user_can()` on every save and every `admin_post_*` handler.

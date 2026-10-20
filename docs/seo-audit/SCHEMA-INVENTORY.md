@@ -18,11 +18,12 @@
 |---|---|---|
 | name, alternateName, slogan, description, foundingDate, foundingLocation, email, telephone | Foundation > Organisation details (`cohf_org()`) | editable |
 | address (office) | "Behind N Market", Kabete, Kiambu (filter `cohf_office_street`) | **14.18.0: church name removed** |
-| hasMap | option `cohf_org_map_url` only | **14.18.0: no longer a search for another venue; omitted until a verified pin is saved** |
-| sameAs | saved social links only | **14.18.0: guessed Facebook fallback removed** |
+| hasMap | option `cohf_org_map_url`, default = office pin confirmed by the Foundation (https://share.google/IaisvdIi4ZaCKUFms) | **confirmed 20 Oct 2026** |
+| sameAs | saved social links; Facebook page confirmed by the Foundation and set as the default | **confirmed 20 Oct 2026** |
 | keywords | - | **14.18.0: removed (keyword list, included "street children")** |
-| founder | Justus Kubai, Founder and Executive Director | needs Foundation confirmation |
-| areaServed | Kenya, Nairobi, Kiambu County | confirm Kiambu delivery evidence |
+| founder | Justus Kubai, Founder and Executive Director | **confirmed 20 Oct 2026** |
+| areaServed | Kenya, Nairobi, Kiambu County | **confirmed 20 Oct 2026: the Foundation ministers in Kiambu** |
+| Legal registration number / authority | not published | **Foundation decision 20 Oct 2026: do not display registration details anywhere (site, schema, llms.txt)** |
 
 ## Validation
 
